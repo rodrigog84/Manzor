@@ -221,7 +221,40 @@ Ext.define('Infosys_web.view.productos.Ingresar', {
                 ]
             }
             ]
-        }]
+        }
+
+,{
+            xtype: 'fieldset',
+            title: 'Imagen Muestra',
+            items: [
+            {
+                xtype: 'fieldcontainer',
+                layout: 'hbox',
+                items: [
+                {
+                    xtype: 'filefield',
+                    id: 'imagen',
+                    emptyText: 'Agregar Imagen',
+                    fieldLabel: 'Imagen',
+                    //labelStyle: ' font-weight:bold',
+                    //labelWidth: 150,
+                    name: 'imagen',
+                    allowBlank : true,
+                    buttonText: 'Examinar',
+                    listeners:{
+                        afterrender:function(cmp){
+                          cmp.fileInputEl.set({
+                             accept: 'image/*' // or w/e type
+                          });
+                        }
+                    }              
+                }                
+
+                ]
+            }
+            ]
+        }
+        ]
     }
         ];
         

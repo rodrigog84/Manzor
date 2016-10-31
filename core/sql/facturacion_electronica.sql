@@ -339,3 +339,9 @@ ALTER TABLE `detalle_factura_cliente`
 ALTER TABLE `empresa`
 	ADD COLUMN `fono` VARCHAR(20) NULL DEFAULT '' AFTER `comuna_origen`,
 	ADD COLUMN `mail` VARCHAR(50) NULL DEFAULT '' AFTER `fono`;
+
+
+/****************************************************************************************************************/
+
+ALTER TABLE `productos`
+	ADD COLUMN `imagen` VARCHAR(50) NOT NULL AFTER `foto`;

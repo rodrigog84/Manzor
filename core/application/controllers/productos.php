@@ -43,6 +43,17 @@ class Productos extends CI_Controller {
 		
         $id = $_REQUEST['codigo'];
 
+    	$config['upload_path'] = "./imagenes_productos/"	;
+        $config['file_name'] = $_REQUEST['codigo'];
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+        $config['overwrite'] = TRUE;
+
+        $this->load->library('upload', $config);
+        $this->upload->do_upload("imagen");
+        $dataupload = $this->upload->data();
+        
+
         $data = array(
 		        'nombre' => strtoupper($_REQUEST['nombre']),
 		        'codigo' => $_REQUEST['codigo'],			
@@ -58,35 +69,10 @@ class Productos extends CI_Controller {
 		        'id_bodega' => $_REQUEST['id_bodega'],
 		        'id_familia' => $_REQUEST['id_familia'],
 		        'id_agrupacion' => $_REQUEST['id_agrupacion'],
-		        'id_subfamilia' => $_REQUEST['id_subfamilia']
+		        'id_subfamilia' => $_REQUEST['id_subfamilia'],
+		        'imagen' => $dataupload['orig_name']
 		);
 
-
-	    /*if($this->upload->do_upload("foto")) {
-
-	 	$file_data = $this->upload->data();
-			
-			$data = array(
-		        'nombre' => strtoupper($_REQUEST['nombre']),
-		        'codigo' => $_REQUEST['codigo'],			
-		        'p_ult_compra' => $_REQUEST['p_ult_compra'],
-		        'p_may_compra' => $_REQUEST['p_may_compra'],
-		        'p_promedio' => $_REQUEST['p_promedio'],
-		        'stock' => $_REQUEST['stock'],
-		        'id_ubi_prod' => $_REQUEST['id_ubi_prod'],
-		        'id_uni_medida' => $_REQUEST['id_uni_medida'],
-		        'id_bodega' => $_REQUEST['id_bodega'],
-		        'id_familia' => $_REQUEST['id_familia'],
-		        'id_agrupacion' => $_REQUEST['id_agrupacion'],
-		        'id_subfamilia' => $_REQUEST['id_subfamilia'],
-		        'foto' => $file_data['file_name']
-		        );
-
-			$resp['success'] = true;
-	        $this->db->insert('productos', $data); 
-          }else{
-          	$resp['success'] = false;
-          }*/
 
           $this->db->insert('productos', $data); 
 
@@ -105,6 +91,17 @@ class Productos extends CI_Controller {
 
 		$id = $_REQUEST['id'];
 
+  		$config['upload_path'] = "./imagenes_productos/"	;
+        $config['file_name'] = $_REQUEST['codigo'];
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+        $config['overwrite'] = TRUE;
+
+        $this->load->library('upload', $config);
+        $this->upload->do_upload("imagen");
+        $dataupload = $this->upload->data();
+
+
 		$data = array(
 
 			'nombre' => strtoupper($_REQUEST['nombre']),
@@ -121,6 +118,7 @@ class Productos extends CI_Controller {
 	        'id_familia' => $_REQUEST['id_familia'],
 	        'id_agrupacion' => $_REQUEST['id_agrupacion'],
 	        'id_subfamilia' => $_REQUEST['id_subfamilia'],
+	        'imagen' => $dataupload['orig_name']
 	    );
 
 		$this->db->where('id', $id);

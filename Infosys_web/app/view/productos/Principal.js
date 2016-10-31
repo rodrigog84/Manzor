@@ -108,6 +108,21 @@ Ext.define('Infosys_web.view.productos.Principal' ,{
         flex: 1,
         dataIndex: 'nom_agrupacion'
         
+    },{
+            header: "Ver",
+            xtype:'actioncolumn',
+            width:85,
+            align: 'center',
+            items: [{
+                icon: 'images/search_page.png',  // Use a URL in the icon config
+                tooltip: 'Ver Imagen',
+                handler: function(grid, rowIndex, colIndex) {
+                    var rec = grid.getStore().getAt(rowIndex);
+                    var imagen = rec.data.imagen;
+                    var path = imagen == '' ? gbl_site + 'core/facturacion_electronica/images/sinimagen.jpg' : gbl_site + 'core/imagenes_productos/' + imagen;
+                    Ext.create('Infosys_web.view.productos.imagenProducto', {path_imagen: path});  
+                }             
+            }]
     }],
     
     initComponent: function() {

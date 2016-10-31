@@ -10,7 +10,7 @@ Ext.define('Infosys_web.view.productos.imagenProducto' ,{
     height: 400,
     initComponent: function() {
         me = this;
-        var imagen = gbl_site + 'core/facturacion_electronica/images/sinimagen.jpg';
+        var path_imagen = me.path_imagen;        
         this.items = [
             {
                 xtype: 'form',
@@ -28,7 +28,7 @@ Ext.define('Infosys_web.view.productos.imagenProducto' ,{
                             xtype: 'image',
                             name: 'logo_img',
                             itemId : 'logo_img',
-                            src : imagen,
+                            src : path_imagen,
                             width: 350,
                             height : 350,
                             labelWidth: 150,

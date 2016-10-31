@@ -33,6 +33,7 @@ Ext.define('Infosys_web.model.Producto', {
         {name: 'nom_subfamilia'},
         {name: 'stock'},
         {name: 'valor', decimalPrecision:3},
-        {name: 'valor_lista', decimalPrecision:3}        
+        {name: 'valor_lista', decimalPrecision:3},
+        {name: 'imagen'},
     ]
 });
