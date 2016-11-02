@@ -1143,9 +1143,7 @@ class Preventa extends CI_Controller {
 
 	    };
 
-
-
-		$countAll = $this->db->count_all_results("preventa");
+		//$countAll = $this->db->count_all_results("preventa");
 
 		if($opcion == "Rut"){
 
@@ -1162,13 +1160,11 @@ class Preventa extends CI_Controller {
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
 			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and c.rut = "'.$nombres.'" and acc.estado = "'.$estado.'"
-			order by acc.id desc'		 
+			order by acc.id desc');
 
-		);
+			$total = 0;
 
-		$total = 0;
-
-		  foreach ($query->result() as $row)
+		  	foreach ($query->result() as $row)
 			{
 				$total = $total +1;
 			
@@ -1220,26 +1216,29 @@ class Preventa extends CI_Controller {
 	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
 			
 			$data = array();
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query2 = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"
-			order by acc.id desc
-			limit '.$start.', '.$limit.''	
-			
-			);
-
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"');
 
 			$total = 0;
 
-		  foreach ($query->result() as $row)
+		  	foreach ($query2->result() as $row)
 			{
 				$total = $total +1;
 			
 			}
 
 			$countAll = $total;
+
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			left join clientes c on (acc.id_cliente = c.id)
+			left join vendedores v on (acc.id_vendedor = v.id)
+			left join correlativos co on (acc.id_tip_docu = co.id)
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"
+			order by acc.id desc
+			limit '.$start.', '.$limit.'');
 	
 
 		}else if($opcion == "Numero"){
@@ -1249,8 +1248,6 @@ class Preventa extends CI_Controller {
 	        $tipo2 = 101; // FACTURA ELECTRONICA
 	        $tipo3 = 103; // FACTURA EXENTA ELECTRONICA        
 	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
-
-
 			
 			$data = array();
 			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
@@ -1265,7 +1262,7 @@ class Preventa extends CI_Controller {
 
 			$total = 0;
 
-		 foreach ($query->result() as $row)
+		 	foreach ($query->result() as $row)
 			{
 				$total = $total +1;
 			
@@ -1276,15 +1273,31 @@ class Preventa extends CI_Controller {
 
 		}else{
 			
-		$data = array();
-		$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$data = array();
+			$query2 = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.fecha_venta = "'.$fecha.'" and acc.estado = "'.$estado.'" 
-			order by acc.id desc'	
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'" 
+			order by acc.id desc');
 
-			);
+			$total = 0;
+
+		  	foreach ($query2->result() as $row)
+			{
+				$total = $total +1;
+			
+			}
+
+			$countAll = $total;
+
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			left join clientes c on (acc.id_cliente = c.id)
+			left join vendedores v on (acc.id_vendedor = v.id)
+			left join correlativos co on (acc.id_tip_docu = co.id)
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"
+			order by acc.id desc
+			limit '.$start.', '.$limit.'');	
 
 		}
 
@@ -1338,7 +1351,6 @@ class Preventa extends CI_Controller {
 		      $row->rut_cliente = ($ruta3.".".$ruta2."-".$ruta1);
 		     
 		    };
-
 		    
 			$data[] = $row;
 		}
