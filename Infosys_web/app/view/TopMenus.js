@@ -45,8 +45,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         action: ''
                 }]
 
-           },
-            {
+            },{
                 text: 'Parametros de Sistema',
                 iconCls: '',
                 itemId: 'pg_psistema',
@@ -381,7 +380,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         //itemId: 'vyf_im_flotes',
                         //disabled: true,
                         menu: [{
-                            text: 'Ingreso Nota venta',
+                            text: 'Ingreso O.trabajo',
                             iconCls: '',
                             action: 'mpreventa'
                         }]
@@ -765,7 +764,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 text : 'Acceso Directo',
                 menu: [
                 {
-                    text: 'Ventas',
+                    text: 'Orden de Trabajo',
                     iconCls: '',
                     itemId: 'vv_acc_preventa',
                     disabled: true,
