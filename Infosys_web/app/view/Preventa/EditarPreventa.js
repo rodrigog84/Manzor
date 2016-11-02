@@ -73,7 +73,7 @@ Ext.define('Infosys_web.view.Preventa.EditarPreventa', {
                                             allowBlank: false,
                                             name: 'num_ticket',
                                             itemId: 'ticketId',
-                                            fieldLabel: '<b>TICKET VENTA</b>',
+                                            fieldLabel: '<b>O.TRABAJO</b>',
                                             readOnly: true
 
                                         },{

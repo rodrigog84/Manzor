@@ -18,16 +18,22 @@ Ext.define('Infosys_web.view.cotizaciones.BuscarProductos2' ,{
             iconCls: 'icon-grid',
 
             title : 'Productos',
-            store: 'Productosf',
+            store: 'Productos',
             autoHeight: true,
             viewConfig: {
                 forceFit: true
 
             },
           columns: [{
-                header: "Id",
+                header: "id",
                 width: 100,
-                dataIndex: 'id'
+                dataIndex: 'id',
+                hidden: true
+            },{
+                header: "id Producto",
+                width: 100,
+                dataIndex: 'id_producto',
+                hidden: true
             },{
                 header: "Codigo de Barra",
                 width: 100,
@@ -89,7 +95,7 @@ Ext.define('Infosys_web.view.cotizaciones.BuscarProductos2' ,{
         {
             xtype: 'pagingtoolbar',
             dock:'bottom',
-            store: 'Productosf',
+            store: 'Productos',
             displayInfo: true
         }];
         

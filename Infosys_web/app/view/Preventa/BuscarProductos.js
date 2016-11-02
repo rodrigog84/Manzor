@@ -24,9 +24,19 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos' ,{
 
             },
            columns: [{
+                header: "Id",
+                width: 100,
+                dataIndex: 'id',
+                hidden: true
+            },{
                 header: "Codigo",
                 width: 100,
                 dataIndex: 'codigo'
+            },{
+                header: "Id Producto",
+                width: 100,
+                dataIndex: 'id_producto',
+                hidden: true
             },{
                 header: "Nombres",
                 width: 750,

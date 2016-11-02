@@ -34,9 +34,7 @@ class Cotizaciones extends CI_Controller {
 		$nombre_contacto = $row->nombre_contacto;
 		$observacion = $row->observaciones;
 		$vendedor = $row->nom_vendedor;
-		$condpago = $row->conpago;
-
-		
+		$condpago = $row->conpago;	
 						
 
 		$html = '
