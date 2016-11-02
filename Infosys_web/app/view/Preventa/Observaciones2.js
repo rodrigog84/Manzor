@@ -5,7 +5,7 @@ Ext.define('Infosys_web.view.Preventa.Observaciones2', {
     requires: ['Ext.form.Panel',
                'Ext.form.field.Text'],
 
-    title : 'Observaciones Preventa',
+    title : 'Observaciones Orden de Trabajo',
     layout: 'fit',
     autoShow: true,
     width: 380,

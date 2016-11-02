@@ -562,14 +562,14 @@ class Preventa extends CI_Controller {
 		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
-		          <p>PREVENTA N°: '.$codigo.'</p>
+		          <p>ORDEN TRABAJO N°: '.$codigo.'</p>
 		          <!--p>&nbsp;</p-->
 		          <p>FECHA EMISION : '.$fecha.'</p>
 		          <!--p>&nbsp;</p-->		         
 			</td>
 		  </tr>
 		  <tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>PREVENTA</h1></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>ORDEN DE TRABAJO</h1></td>
 		  </tr>
 		  <tr>
 		    <td colspan="3" width="987px" >

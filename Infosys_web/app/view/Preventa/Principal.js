@@ -6,7 +6,7 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
     
     iconCls: 'icon-grid',
 
-    title : 'Pre Venta',
+    title : 'ORDEN DE TRABAJO',
     store: 'Preventa',
     height: 300,
     viewConfig: {
@@ -19,7 +19,7 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
         hidden: true
                
     },{
-        header: "Ticket",
+        header: "N.O.TRABAJO",
         flex: 1,
         dataIndex: 'num_ticket'
                
@@ -41,7 +41,7 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
         dataIndex: 'nom_documento'
                
     },{
-        header: "Fecha Venta",
+        header: "Fecha Orden",
         flex: 1,
         dataIndex: 'fecha_venta',
         type: 'date',
@@ -125,7 +125,7 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
                 xtype: 'button',
                 iconCls: 'icon-add',
                 action: 'agregarpreventa',
-                text : 'Nueva Venta'
+                text : 'Nueva Orden'
             },{
                 xtype: 'button',
                 iconCls: 'icon-add',

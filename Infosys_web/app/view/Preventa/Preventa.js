@@ -22,7 +22,7 @@ Ext.define('Infosys_web.view.Preventa.Preventa', {
     height: 660,
     width: 1350,
     layout: 'fit',
-    title: 'Ticket Preventa',
+    title: 'Numero Orden de Trabajo',
 
     initComponent: function() {
         var me = this;
@@ -64,7 +64,7 @@ Ext.define('Infosys_web.view.Preventa.Preventa', {
                                             allowBlank: false,
                                             name: 'num_ticket',
                                             itemId: 'ticketId',
-                                            fieldLabel: '<b>TICKET VENTA</b>',
+                                            fieldLabel: '<b>O.TRABAJO</b>',
                                             readOnly: true
 
                                         },{

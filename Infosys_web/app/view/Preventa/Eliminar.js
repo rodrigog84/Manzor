@@ -4,7 +4,7 @@ Ext.define('Infosys_web.view.Preventa.Eliminar', {
 
     requires: ['Ext.form.Panel','Ext.form.field.Text'],
     //y: 50,
-    title : 'ELIMINAR PREVENTA',
+    title : 'ELIMINAR ORDEN DE TRABAJO',
     layout: 'fit',
     autoShow: true,
     width: 320,

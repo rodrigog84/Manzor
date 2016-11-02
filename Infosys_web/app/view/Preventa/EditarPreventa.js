@@ -22,7 +22,7 @@ Ext.define('Infosys_web.view.Preventa.EditarPreventa', {
     height: 660,
     width: 1350,
     layout: 'fit',
-    title: 'Editar Preventa',
+    title: 'Editar Orden de Trabajo',
 
     initComponent: function() {
         var me = this;        
