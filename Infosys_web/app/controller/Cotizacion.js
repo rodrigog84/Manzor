@@ -11,9 +11,7 @@ Ext.define('Infosys_web.controller.Cotizacion', {
              'Contacto_clientes',
              'cotizacion.Selector',
              'Tabladescuento',
-             'Tipo_documento.Selector',
-             'Preciosdescuentos',
-             'cotizacion.Select'],
+             'Tipo_documento.Selector'],
 
     models: ['Cotizacion', 'cotizacion.Item'],
 
@@ -24,7 +22,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         'cotizaciones.Principal',
         'cotizaciones.BuscarProductos',
         'cotizaciones.BuscarProductos2',
-        'cotizaciones.BuscarPrecios',
         'cotizaciones.Desplieguecontactos',
         'cotizaciones.EditarPreventa',
         'cotizaciones.Observaciones',
@@ -78,9 +75,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
     },{
         ref: 'cotizacionmail',
         selector: 'cotizacionmail'
-    },{
-        ref: 'buscarprecioscotiza',
-        selector: 'buscarprecioscotiza'
     }
     ],
 
@@ -157,11 +151,8 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             'cotizacionprincipal button[action=exportarcotizacion]': {
                 click: this.exportarcotizacion
             },
-            'cotizacionprincipal button[action=exportarcotizacion2]': {
-                click: this.exportarcotizacion2
-            },
             'cotizacionprincipal button[action=Buscar]': {
-                click: this.buscarcotiza
+                click: this.buscarclientes                
             },
             'topmenus menuitem[action=mcotizacion]': {
                 click: this.mcotizacion
@@ -177,6 +168,9 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             },
             'buscarproductos2 button[action=seleccionarproductos2]': {
                 click: this.seleccionarproductos2
+            },
+            'buscarproductos2 button[action=buscarprocoti]': {
+                click: this.buscarp2
             },
             'buscarproductos2 #nombreId': {
                 specialkey: this.special2
@@ -233,56 +227,19 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             'cotizacioningresar #tipoDescuentoId': {
                 change: this.changedctofinal5
             },
-            'cotizacioningresar button[action=buscarprecioscotiza]': {
-                click: this.buscarprecioscotiza
+            'cotizacioningresar #tipoDescuentoId': {
+                change: this.changedctofinal7
+            },
+            'cotizacioneditar #DescuentoproId': {
+                change: this.changedctofinal6
             },
             'cotizacionprincipal button[action=enviaremail]': {
                 click: this.enviaremail
             },
             'cotizacionmail button[action=cotizacionemail]': {
                 click: this.cotizacionemail
-            },
-            'buscarprecioscotiza button[action=seleccionarprecioscotiza]': {
-                click: this.seleccionarprecioscotiza
             }
         });
-    },
-
-    buscarprecioscotiza: function(){
-
-       var busca = this.getCotizacioningresar()
-       var id = busca.down('#productoId').getValue();
-       var nombre = busca.down('#nombreproductoId').getValue();
-
-       if (id){
-              var edit =  Ext.create('Infosys_web.view.cotizaciones.BuscarPrecios').show();
-              var st = this.getPreciosdescuentosStore();
-              st.proxy.extraParams = {nombre : id};
-              st.load();
-              edit.down('#nombreId').setValue(nombre);
-             
-           }else {
-              Ext.Msg.alert('Alerta', 'Debe seleccionar Producto.');
-              return;
-             
-        };
-      
-    },
-
-    seleccionarprecioscotiza: function(){
-
-        var view = this.getBuscarprecioscotiza();
-        var viewIngresa = this.getCotizacioningresar();
-        var grid  = view.down('grid');
-        if (grid.getSelectionModel().hasSelection()) {
-            var row = grid.getSelectionModel().getSelection()[0];
-            viewIngresa.down('#precioId').setValue(row.data.valor);
-            view.close();
-        }else{
-            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
-            return;
-        }
-       
     },
 
     cotizacionemail : function(){
@@ -291,7 +248,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         var email = view.down('#email').getValue();
         var mensaje = view.down('#mensaje').getValue();
         var idcotiza = view.down('#idCotizaId').getValue();
-        var tipo = view.down('#tipoenvioId').getValue();
        
         form   = view.down('form');
         if(!form.getForm().isValid()){
@@ -305,8 +261,7 @@ Ext.define('Infosys_web.controller.Cotizacion', {
                   params: {
                       email: email,
                       idcotiza : idcotiza,
-                      mensaje : mensaje,
-                      tipo: tipo
+                      mensaje : mensaje
                   },
              success: function(response, opts) {             
                 myMask.hide();
@@ -326,7 +281,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
     enviaremail: function(){
 
         var view = this.getCotizacionprincipal();
-        var uno = "1";
         if (view.getSelectionModel().hasSelection()) {
             var row = view.getSelectionModel().getSelection()[0];
             var idcotiza = row.data.id;
@@ -334,8 +288,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             edit =   Ext.create('Infosys_web.view.cotizaciones.CotizacionMail').show();
             edit.down('#idCotizaId').setValue(idcotiza);
             edit.down('#email').setValue(email);
-            edit.down('#tipoenvioId').setValue(uno);
-            
             edit.down("#mensaje").focus();
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
@@ -345,6 +297,43 @@ Ext.define('Infosys_web.controller.Cotizacion', {
 
     changedctofinal5: function(){
         this.recalculardescuento();
+    },
+
+    changedctofinal6: function(){
+        this.recalculardescuentopro2();
+    },
+    changedctofinal7: function(){
+        this.recalculardescuento2();
+    },
+
+    recalculardescuento2: function(){
+
+        var view = this.getCotizacioneditar();
+        var pretotal = view.down('#finalafectoId').getValue();
+        var total = view.down('#finaltotalpostId').getValue();
+        var iva = view.down('#finaltotalivaId').getValue();
+        var neto = view.down('#finaltotalnetoId').getValue();
+        var descuento = view.down('#tipoDescuentoId');
+        var stCombo = descuento.getStore();
+        var record = stCombo.findRecord('id', descuento.getValue()).data;
+        var dcto = (record.porcentaje);
+       
+        afecto = (Math.round(total / 1.19));
+        descuentopesos = (Math.round(neto * dcto) / 100);
+        afecto = neto - descuentopesos;
+        pretotal = (Math.round((afecto * 19) / 100) + afecto);
+        iva = (pretotal - afecto);
+        afecto = afecto;
+        neto = neto;
+        pretotalfinal = afecto + iva;
+
+
+        view.down('#finaltotalId').setValue(Ext.util.Format.number(pretotalfinal, '0,000'));
+        view.down('#finaltotalpostId').setValue(Ext.util.Format.number(pretotalfinal, '0'));
+        view.down('#finaltotalnetoId').setValue(Ext.util.Format.number(neto, '0'));
+        view.down('#finaltotalivaId').setValue(Ext.util.Format.number(iva, '0'));
+        view.down('#finalafectoId').setValue(Ext.util.Format.number(afecto, '0'));
+        view.down('#descuentovalorId').setValue(Ext.util.Format.number(descuentopesos, '0'));
     },
 
     recalculardescuento: function(){
@@ -393,7 +382,24 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         var stCombo = descuento.getStore();
         var record = stCombo.findRecord('id', descuento.getValue()).data;
         var dcto = (record.porcentaje);
-        totaldescuento = (((total * dcto)  / 100));
+        totaldescuento = (Math.round((total * dcto)  / 100));
+        view.down('#totdescuentoId').setValue(totaldescuento);
+        };    
+    },
+
+    recalculardescuentopro2: function(){
+
+        var view = this.getCotizacioneditar();
+        var precio = view.down('#precioId').getValue();
+        var cantidad = view.down('#cantidadId').getValue();
+        var total = ((precio * cantidad));
+        var desc = view.down('#DescuentoproId').getValue();
+        if (desc){
+        var descuento = view.down('#DescuentoproId');
+        var stCombo = descuento.getStore();
+        var record = stCombo.findRecord('id', descuento.getValue()).data;
+        var dcto = (record.porcentaje);
+        totaldescuento = (Math.round((total * dcto)  / 100));
         view.down('#totdescuentoId').setValue(totaldescuento);
         };    
     },
@@ -597,29 +603,11 @@ Ext.define('Infosys_web.controller.Cotizacion', {
     editaritem: function() {
 
         var view = this.getCotizacioningresar();
-        var idpago = view.down('#tipocondpagoId').getValue();        
-        var bolEnable = false;
-        if (idpago == 1){
-            view.down('#DescuentoproId').setDisabled(bolEnable);
-            view.down('#tipoDescuentoId').setDisabled(bolEnable);
-            view.down('#descuentovalorId').setDisabled(bolEnable);
-                
-        };
-        if (idpago == 6){
-             view.down('#DescuentoproId').setDisabled(bolEnable);
-             view.down('#tipoDescuentoId').setDisabled(bolEnable);
-             view.down('#descuentovalorId').setDisabled(bolEnable);            
-        };
-        if (idpago == 7){
-             view.down('#DescuentoproId').setDisabled(bolEnable);
-             view.down('#tipoDescuentoId').setDisabled(bolEnable);
-             view.down('#descuentovalorId').setDisabled(bolEnable);            
-        };
         var grid  = view.down('#itemsgridId');
         var cero = "";
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            var id_producto = row.data.id_producto;
+            var id_producto = row.data.id_producto;            
             Ext.Ajax.request({
             url: preurl + 'productos/buscarp?nombre='+id_producto,
             params: {
@@ -653,8 +641,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
             return;
         }
-
-        
        
     },
 
@@ -1060,24 +1046,15 @@ Ext.define('Infosys_web.controller.Cotizacion', {
 
     buscarclientes: function(){
         
-        var view = this.getClientesprincipal()
-        var st = this.getClientesStore()
-        var opcion = view.down('#tipoSeleccionId').getValue()
-        var nombre = view.down('#nombreId').getValue()
-        st.proxy.extraParams = {nombre : nombre,
-                                opcion : opcion}
-        st.load();
-    },
-
-    buscarcotiza: function(){
-        
-        var view = this.getCotizacionprincipal();
+        var view = this.getCotizacionprincipal()
         var st = this.getCotizacionesStore()
+        var cero = "";
         var opcion = view.down('#tipoSeleccionId').getValue()
         var nombre = view.down('#nombreId').getValue()
         st.proxy.extraParams = {nombre : nombre,
                                 opcion : opcion}
         st.load();
+        view.down('#nombreId').setValue(cero);
     },
 
     buscar: function(){
@@ -1437,7 +1414,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
                 view.down('#precioId').setValue(cero);
                 view.down('#cantidadOriginalId').setValue(cero);
                 view.down('#totdescuentoId').setValue(cero1);
-                view.down('#DescuentoproId').setValue(cero);
                 return; 
             }
         });
@@ -1502,7 +1478,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         view.down('#precioId').setValue(cero);
         view.down('#cantidadOriginalId').setValue(cero);
         view.down('#totdescuentoId').setValue(cero1);
-        view.down('#DescuentoproId').setValue(cero);
     },
 
     editarcotiza: function(){
@@ -1613,8 +1588,8 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             var row = grid.getSelectionModel().getSelection()[0];
             viewIngresa.down('#productoId').setValue(row.data.id);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
-            viewIngresa.down('#precioId').setValue(row.data.p_venta);
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
+            viewIngresa.down('#precioId').setValue(row.data.p_venta);
             viewIngresa.down('#cantidadOriginalId').setValue(row.data.stock);
             
             view.close();
@@ -1652,18 +1627,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             var row = view.getSelectionModel().getSelection()[0];
             //window.location = preurl +'cotizaciones/exportPDF/?idcotizacion=' + row.data.id; 
             window.open(preurl +'cotizaciones/exportPDF/?idcotizacion=' + row.data.id)
-        }else{
-            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
-            return;
-        }
-    },
-
-    exportarcotizacion2: function(){
-        var view = this.getCotizacionprincipal();
-        if (view.getSelectionModel().hasSelection()) {
-            var row = view.getSelectionModel().getSelection()[0];
-            //window.location = preurl +'cotizaciones/exportPDF/?idcotizacion=' + row.data.id; 
-            window.open(preurl +'cotizaciones/exportPDF2/?idcotizacion=' + row.data.id)
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
             return;
@@ -1755,7 +1718,8 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         iva = ((pretotal - neto));
         afecto = neto;
         neto = neto;
-        pretotalfinal = pretotal;        
+        pretotalfinal = pretotal;
+        
         //iva = (total - afecto);
         view.down('#finaltotalId').setValue(Ext.util.Format.number(pretotalfinal, '0,000'));
         view.down('#finaltotalpostId').setValue(Ext.util.Format.number(pretotalfinal, '0'));
@@ -1778,7 +1742,7 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         cero1 = "";
         cero = 0;
         var grid  = view.down('#itemsgridId');
-        if (grid.getSelectionModel().hasSelection()){
+        if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
             var totalnue = totalnue - (row.data.total);
            
@@ -1832,13 +1796,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         var netonue = view.down('#finaltotalnetoId').getValue();
         var ivanue = view.down('#finaltotalivaId').getValue();
         var afectonue = view.down('#finalafectoId').getValue();
-
-
-        if (!precio){
-            Ext.Msg.alert('Alerta', 'Debe incorporar Precio');
-            return;
-        };
-
         
         if (descuento == 1){            
             var descuento = 0;
@@ -1875,7 +1832,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
                 view.down('#precioId').setValue(cero);
                 view.down('#cantidadOriginalId').setValue(cero);
                 view.down('#totdescuentoId').setValue(cero1);
-                view.down('#DescuentoproId').setValue(cero);
                 return; 
             }
         });
@@ -2135,7 +2091,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
                 idcontacto: idcontacto,
                 items: Ext.JSON.encode(dataItems),
                 datacliente: Ext.JSON.encode(datacliente),
-                items: Ext.JSON.encode(dataItems),
                 descuento: viewIngresa.down('#descuentovalorId').getValue(),
                 neto: viewIngresa.down('#finaltotalnetoId').getValue(),
                 iva: viewIngresa.down('#finaltotalivaId').getValue(),
@@ -2169,16 +2124,6 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         var mail = viewIngresa.down('#mail_contactoId').getValue();
         var telefono = viewIngresa.down('#fono_contactoId').getValue();
         var observa = viewIngresa.down('#observacionesId').getValue();
-        var iva = viewIngresa.down('#finaltotalivaId').getValue();
-
-        console.log(iva);
-
-        if (!iva){
-             Ext.Msg.alert('Ingrese Datos a la Cotizacion');
-            return;      
-
-        };       
-
 
         if (!idcliente){
 
