@@ -7,6 +7,7 @@ Ext.define('Infosys_web.controller.Cotizacion', {
              'Cotizaeditar',
              'Preventa',
              'Productosf',
+             'Productos',
              'Vendedores',
              'Contacto_clientes',
              'cotizacion.Selector',
@@ -160,6 +161,9 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             'buscarproductos button[action=seleccionarproductos3]': {
                 click: this.seleccionarproductos3
             },
+            'buscarproductos button[action=buscar]': {
+                click: this.buscarcot
+            },
             'buscarproductos #nombreId': {
                  specialkey: this.special3
             },
@@ -168,6 +172,9 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             },
             'buscarproductos2 button[action=seleccionarproductos2]': {
                 click: this.seleccionarproductos2
+            },
+            'buscarproductos2 button[action=buscar]': {
+                click: this.buscarcot2
             },
             'buscarproductos2 button[action=buscarprocoti]': {
                 click: this.buscarp2
@@ -1024,8 +1031,26 @@ Ext.define('Infosys_web.controller.Cotizacion', {
 
     special3: function(f,e){
         if (e.getKey() == e.ENTER) {
-            this.buscarp()
+            this.buscarcot()
         }
+    },
+
+    buscarcot: function(){
+        var view = this.getBuscarproductos();
+        var st = this.getProductosStore()
+        var nombre = view.down('#nombreId').getValue()
+        st.proxy.extraParams = {nombre : nombre,
+                                opcion: "Nombre"}
+        st.load();
+    },
+
+    buscarcot2: function(){
+        var view = this.getBuscarproductos2();
+        var st = this.getProductosStore()
+        var nombre = view.down('#nombreId').getValue()
+        st.proxy.extraParams = {nombre : nombre,
+                                opcion: "Nombre"}
+        st.load();
     },
 
     buscarp: function(){
