@@ -1,7 +1,7 @@
 Ext.util.Format.thousandSeparator = '.';
 //variables globales
 
-//var gbl_site = 'http://localhost/manzor/';
+//var gbl_site = 'http://localhost/Manzor/';
 
 var gbl_site = 'http://angus.agricultorestalca.cl/manzor/';
 
@@ -22,7 +22,7 @@ Ext.application({
                   "Preventa", "Pago_caja","CuentasCorrientes","Cotizacion",
                   "Recaudacion", "Notacredito","Caja", "Guiasdespacho",
                   "Comisiones","Notadebito","Tipodocumentocompras", "Precios",
-                  "Facturaglosa", 'Cambios', 'preventaferreteria'],
+                  "Facturaglosa", 'Cambios', 'preventaferreteria','Ventadirecta'],
 	   
     views: [
         'Infosys_web.view.WLogin',

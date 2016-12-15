@@ -138,6 +138,9 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventaprincipal button[action=agregarpreventa]': {
                 click: this.agregarpreventa
             },
+            'preventaprincipal button[action=ventadirecta]': {
+                click: this.ventadirecta
+            },
             'agregarpreventa button[action=editarpreventa]': {
                 click: this.editarpreventa
             },
@@ -312,6 +315,49 @@ Ext.define('Infosys_web.controller.Preventa', {
             }
 
         });
+    },
+
+    ventadirecta: function(){
+
+         //var view = this.getPreventaingresar();
+         var viewIngresa = this.getPreventaprincipal();
+         var idbodega = viewIngresa.down('#bodegaId').getValue();
+         var tipdoc="101";
+         var nombre = "6";
+         var tipo = "2";
+
+         if(!idbodega){
+            Ext.Msg.alert('Alerta', 'Debe Elegir Bodega');
+            return;    
+         }else{
+                Ext.Ajax.request({
+                url: preurl + 'correlativos/genera?valida='+nombre,
+                params: {
+                    id: 1
+                },
+                success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+
+                if (resp.success == true) {
+                    var view = Ext.create('Infosys_web.view.Preventa.Pagodirecto').show();                   
+                    var cliente = resp.cliente;
+                    var correlanue = cliente.correlativo;
+                    correlanue = (parseInt(correlanue)+1);
+                    var correlanue = correlanue;
+                    view.down("#ticketId").setValue(correlanue);
+                    view.down("#tipoDocumento2Id").setValue(tipo);
+                    view.down('#bodegaId').setValue(idbodega);
+                    view.down('#rutId').focus();
+                    view.down("#rutId").focus();
+                }else{
+                    Ext.Msg.alert('Correlativo YA Existe');
+                    return;
+                }
+                }            
+                });     
+             
+         }   
+       
     },
 
     eliminar: function(){
@@ -2136,8 +2182,9 @@ Ext.define('Infosys_web.controller.Preventa', {
 
         var st = this.getProductosfStore();
         st.load();
-        Ext.create('Infosys_web.view.Preventa.BuscarProductos2').show();
-        edit.down('#nombreId').setValue(nombre);
+        var edit = Ext.create('Infosys_web.view.Preventa.BuscarProductos').show();
+        //edit.down('#nombreId').setValue(nombre);
+        edit.down("#nombreId").focus();
     },
 
     buscarprecios: function(){

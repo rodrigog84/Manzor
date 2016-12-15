@@ -129,6 +129,11 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
             },{
                 xtype: 'button',
                 iconCls: 'icon-add',
+                action: 'ventadirecta',
+                text : 'Venta Directa'
+            },{
+                xtype: 'button',
+                iconCls: 'icon-add',
                 action: 'editarpreventa',
                 text : 'Editar / Agregar'
             },{
@@ -147,6 +152,25 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
                 iconCls: 'icon-delete',
                 action: 'eliminarpreventa',
                 text : 'Eliminar'
+            }],
+                  
+        },{
+            xtype: 'toolbar',
+            dock: 'top',
+            items: ['-',{
+                xtype: 'combo',
+                itemId: 'bodegaId',
+                labelWidth: 60,
+                width: 205,
+                fieldCls: 'required',
+                maxHeight: 25,
+                fieldLabel: '<b>BODEGA</b>',
+                forceSelection : true,
+                name : 'id_bodega',
+                valueField : 'id',
+                displayField : 'nombre',
+                emptyText : "Seleccione",
+                store : 'Bodegas'
             },'->',{
                 xtype: 'combo',
                 align: 'center',
@@ -189,25 +213,6 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
                 iconCls: 'icon-delete',
                 action: 'cerrarpreventa',
                 text : 'Cerrar'
-            }],
-                  
-        },{
-            xtype: 'toolbar',
-            dock: 'top',
-            items: ['-',{
-                xtype: 'combo',
-                itemId: 'bodegaId',
-                labelWidth: 60,
-                width: 205,
-                fieldCls: 'required',
-                maxHeight: 25,
-                fieldLabel: '<b>BODEGA</b>',
-                forceSelection : true,
-                name : 'id_bodega',
-                valueField : 'id',
-                displayField : 'nombre',
-                emptyText : "Seleccione",
-                store : 'Bodegas'
             }],
         },{
             xtype: 'pagingtoolbar',
