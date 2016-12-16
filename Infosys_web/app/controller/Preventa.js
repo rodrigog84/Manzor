@@ -323,6 +323,7 @@ Ext.define('Infosys_web.controller.Preventa', {
          var viewIngresa = this.getPreventaprincipal();
          var idbodega = viewIngresa.down('#bodegaId').getValue();
          var tipdoc="101";
+         var rut ="19";
          var nombre = "6";
          var tipo = "2";
 
@@ -347,6 +348,7 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down("#ticketId").setValue(correlanue);
                     view.down("#tipoDocumento2Id").setValue(tipo);
                     view.down('#bodegaId').setValue(idbodega);
+                    view.down('#rutId').setValue(rut);
                     view.down('#rutId').focus();
                     view.down("#rutId").focus();
                 }else{

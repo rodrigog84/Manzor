@@ -136,7 +136,7 @@ Ext.define('Infosys_web.view.Pago_caja.Principal' ,{
             },{
                 width: 80,
                 labelWidth: 20,
-                xtype: 'numberfield',
+                xtype: 'textfield',
                 itemId: 'recaudaId',
                 fieldLabel: 'Recauda',
                 readOnly: true,

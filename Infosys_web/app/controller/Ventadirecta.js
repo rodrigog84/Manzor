@@ -13,7 +13,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
              'Preventa',
              'Sucursales_clientes',
              'Boleta',
-             'Productoslista',
              'productos.Items'
              ],
 
@@ -77,36 +76,12 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
     	
         this.control({
 
-            'topmenus menuitem[action=mpagocaja]': {
-                click: this.mpagocaja
-            },
-            'pagocajaprincipal button[action=generarpago]': {
-                click: this.generarpago
-            },
-            'pagocajaprincipal button[action=exportarexcelpagocaja]': {
-                click: this.exportarexcelpagocaja
-            },
-            'pagocajaprincipal button[action=agregarpedido]': {
-                click: this.agregarpedidocaja
-            },
-            'pagocajaprincipal button[action=cerrarcajaventa]': {
-                click: this.cerrarcajaventa
-            },
-            'generapagoingresar #tipoDocumentoId': {
-                select: this.selectItemdocuemento
-            },
             'documentosingresar #condpagoId': {
                 select: this.selectcondpago
-            },
-            'generapagoingresar #cajaId': {
-                select: this.selectItemcaja                
             },
             'documentosingresar #valorcancelaId': {
                 specialkey: this.special,
                 blur: this.selectItemcancela,
-            },
-            'generapagoingresar button[action=agregarrecaudacion]': {
-                click: this.agregarrecaudacion
             },
             'documentosingresar button[action=eliminaritem]': {
                 click: this.eliminaritem
@@ -114,39 +89,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'documentosingresar button[action=grabarboleta]': {
                 click: this.grabarboleta
             },
-            'aperturacaja button[action=mpagocaja2]': {
-                click: this.mpagocaja2
-            },
-            'aperturacaja #cajeroId': {
-                select: this.aperturacaja  
-            },
-            'facturasvizualizar button[action=grabarfactura]': {
-                click: this.grabarfactura
-            },
-            'facturasvizualizar button[action=buscarsucursalfactura]': {
-                click: this.buscarsucursalfactura
-            },
-            'buscarsucursalesfactura button[action=seleccionarsucursalfact]': {
-                click: this.seleccionarsucursalfact
-            },
-            'pagocajaprincipal button[action=generaticket]': {
-                click: this.generaticket
-            },
-            //'documentosingresar #codigoId': {
-            //    specialkey: this.specialBoleta,
-            //    change: this.buscarbarra
-            //},
             'documentosingresar #cantidadId': {
                 specialkey: this.special8
-            },
-            'pagocajaprincipal #nombresId': {
-                specialkey: this.special5
-            },
-            'facturasvizualizar button[action=observaciones]': {
-                click: this.observaciones
-            },
-            'observacionesfacturas button[action=ingresaobs]': {
-                click: this.ingresaobs
             },
             'documentosingresar button[action=validarut]': {
                 click: this.validarut
@@ -237,86 +181,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
        this.buscarproductos();
     },
 
-    mpagocaja2: function(){
-
-        var view = this.getAperturacaja();
-        var cajero = view.down('#cajeroId');        
-        var efectivo = view.down('#efectuvoId').getValue();
-        var cheques = view.down('#totchequesId').getValue();
-        var otros = view.down('#otrosmontosId').getValue();
-        var fecha = view.down('#fechaaperturaId').getValue();
-        var recauda = view.down('#recaudaId').getValue();
-        
-        var stCombo = cajero.getStore();
-        var idcajero = stCombo.findRecord('id', cajero.getValue()).data;
-        var caje = idcajero.id;
-
-        var caja = view.down('#cajaId');
-        
-        var stCombo = caja.getStore();
-        var idcaja = stCombo.findRecord('id', caja.getValue()).data;
-        correlanue = idcaja.correlativo;
-        correlanue = (parseInt(correlanue)+1);
-        var caj = idcaja.id;       
-       
-        if (!caje){
-            Ext.Msg.alert('Alerta', 'Selecciona un Cajero.');
-            return;
-        };
-
-        if (!caj){
-
-            Ext.Msg.alert('Alerta', 'Selecciona una Caja.');
-            return;
-        };
-
-        var viewport = this.getPanelprincipal();
-        viewport.removeAll();
-        viewport.add({xtype: 'pagocajaprincipal'});
-        var viewedit = this.getPagocajaprincipal();        
-        viewedit.down('#comprobanteId').setValue(correlanue);
-        viewedit.down('#nomcajaId').setValue(idcaja.nombre);
-        viewedit.down("#cajaId").setValue(idcaja.id);
-        viewedit.down('#nomcajeroId').setValue(idcajero.nombre);
-        viewedit.down('#recaudaId').setValue(recauda);
-                
-        viewedit.down("#cajeroId").setValue(idcajero.id);
-        viewedit.down('#efectivonId').setValue(efectivo);
-        viewedit.down('#efectivoId').setValue(Ext.util.Format.number(efectivo, '0,00'));        
-        viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
-        viewedit.down('#totchequesnId').setValue(cheques);
-        viewedit.down('#otrosmontosnId').setValue(otros);
-        viewedit.down('#otrosmontosId').setValue(Ext.util.Format.number(otros, '0,00'));
-        viewedit.down('#fechaaperturaId').setValue(fecha);
-        //var stPreventa = this.getPreventaStore();
-        //stPreventa.proxy.extraParams = {fecha : fecha}
-        //stPreventa.load();
-        
-        Ext.Ajax.request({
-            
-            url: preurl + 'genera_pagos/grabar',
-            params: {
-                cajero: caje,
-                caja: caj,
-                fecha: Ext.Date.format(fecha,'Y-m-d'),
-                efectivo: efectivo,
-                cheques: cheques,
-                otros: otros 
-            },
-            success: function(response){
-                var resp = Ext.JSON.decode(response.responseText);
-                //myMask.hide();
-                recauda = (resp.recauda);
-                viewedit.down('#recaudaId').setValue(recauda);
-                view.close();
-                
-            }
-           
-        });
-        //viewedit.down("#nombresId").focus() 
-
-        
-    },
+    
 
     changedctofinal: function(){
         this.recalcularFinal();
@@ -440,7 +305,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var idbodega = 1;
                   
         if (!codigo){
-            var st = this.getProductoslistaStore()
+            var st = this.getProductosfStore()
             st.proxy.extraParams = {idlista: lista,
                                     idbodega: idbodega}
             st.load();

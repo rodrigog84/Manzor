@@ -2241,8 +2241,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         viewedit.down('#comprobanteId').setValue(correlanue);
         viewedit.down('#nomcajaId').setValue(idcaja.nombre);
         viewedit.down("#cajaId").setValue(idcaja.id);
-        viewedit.down('#nomcajeroId').setValue(idcajero.nombre);
-                
+        viewedit.down('#nomcajeroId').setValue(idcajero.nombre);                
         viewedit.down("#cajeroId").setValue(idcajero.id);
         viewedit.down('#efectivonId').setValue(efectivo);
         viewedit.down('#efectivoId').setValue(Ext.util.Format.number(efectivo, '0,00'));        
@@ -2268,15 +2267,17 @@ Ext.define('Infosys_web.controller.Pago_caja', {
             },
             success: function(response){
                 var resp = Ext.JSON.decode(response.responseText);
-                //myMask.hide();
-                recauda = (resp.recauda);
+                if (resp.success == true) {    
+                var recauda = (resp.recauda);
                 viewedit.down('#recaudaId').setValue(recauda);
                 view.close();
+                };
                 
             }
            
         });
         viewedit.down("#nombresId").focus() 
+        //view.close();
 
         
     },
