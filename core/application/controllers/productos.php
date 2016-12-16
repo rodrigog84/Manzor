@@ -193,29 +193,10 @@ class Productos extends CI_Controller {
         $bodega = $this->input->get('idbodega');
         $total= 0;
 
-        if($nombres){
+        if($nombres) {	        
 		
-			$query2 = $this->db->query('SELECT acc.*, c.codigo as codigo ,c.nombre as nombre, b.nombre as nom_bodega, c.p_costo as p_costo, c.p_venta as p_venta FROM existencia acc
-			left join productos c on (acc.id_producto = c.id)
-			left join bodegas b on (acc.id_bodega = b.id)
-			WHERE acc.id_bodega = "'.$nombres.'"');
-
-			foreach ($query2->result() as $row)		    
-			{
-			$total = $total +1;		
-			}
-			$countAll = $total;
-
-			$query = $this->db->query('SELECT acc.*, c.codigo as codigo ,c.nombre as nombre, b.nombre as nom_bodega, c.p_costo as p_costo, c.p_venta as p_venta FROM existencia acc
-			left join productos c on (acc.id_producto = c.id)
-			left join bodegas b on (acc.id_bodega = b.id)
-			WHERE acc.id_bodega = "'.$nombres.'"
-			limit '.$start.', '.$limit.'');
-
-		}else{
-
-			    $sql_nombre = "";
-		        $arrayNombre =  explode(" ",$opcion);
+			$sql_nombre = "";
+		        $arrayNombre =  explode(" ",$nombres);
 
 		        foreach ($arrayNombre as $nombre) {
 		        	$sql_nombre .= "c.nombre like '%".$nombre."%' and ";
@@ -236,6 +217,26 @@ class Productos extends CI_Controller {
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas b on (acc.id_bodega = b.id)
 				WHERE ' . $sql_nombre . ' 1 = 1 and acc.id_bodega = "'.$bodega.'"
+				limit '.$start.', '.$limit.'');		
+
+			
+		}else{
+
+			  $query2 = $this->db->query('SELECT acc.*, c.codigo as codigo ,c.nombre as nombre, b.nombre as nom_bodega, c.p_costo as p_costo, c.p_venta as p_venta FROM existencia acc
+			left join productos c on (acc.id_producto = c.id)
+			left join bodegas b on (acc.id_bodega = b.id)
+				WHERE acc.id_bodega = "'.$opcion.'"');
+
+				foreach ($query2->result() as $row)		    
+				{
+				$total = $total +1;		
+				}
+				$countAll = $total;
+
+				$query = $this->db->query('SELECT acc.*, c.codigo as codigo ,c.nombre as nombre, b.nombre as nom_bodega, c.p_costo as p_costo, c.p_venta as p_venta FROM existencia acc
+			left join productos c on (acc.id_producto = c.id)
+			left join bodegas b on (acc.id_bodega = b.id)
+				WHERE acc.id_bodega = "'.$opcion.'"
 				limit '.$start.', '.$limit.'');		
 
 		};		

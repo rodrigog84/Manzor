@@ -260,12 +260,17 @@ class Productosfact extends CI_Controller {
 		
 		if($nombres){
 
+			
+
+
 			$sql_nombre = "";
 	        $arrayNombre =  explode(" ",$nombres);
 
 	        foreach ($arrayNombre as $nombre) {
 	        	$sql_nombre .= "p.nombre like '%".$nombre."%' and ";
 	        }
+
+	        
 	        
 			$query2 = $this->db->query('SELECT acc.*, ca.nombre as nom_medida, p.stock as stock, p.codigo as codigo, p.codigo_barra as codigo_barra, p.nombre as nombre FROM detalle_lista_precios acc
 			left join mae_medida ca on (acc.id_medida = ca.id)

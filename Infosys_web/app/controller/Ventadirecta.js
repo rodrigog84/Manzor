@@ -707,7 +707,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var busca = this.getDocumentosingresar()
         var idbodega = busca.down('#bodegaId').getValue();
         var st = this.getProductosfStore();
-        st.proxy.extraParams = {nombre : idbodega};
+        st.proxy.extraParams = {opcion : idbodega};
         st.load();
         var edit = Ext.create('Infosys_web.view.Preventa.BuscarProductos3').show();
         edit.down('#bodegaId').setValue(idbodega);
@@ -716,7 +716,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
     buscarp: function(){
         var view = this.getBuscarproductospreventa3();
-        var st = this.getProductoslistaStore()
+        var st = this.getProductosfStore()
         var nombre = view.down('#nombreId').getValue();
         var lista = 1;
         var idbodega = view.down('#bodegaId').getValue();                
