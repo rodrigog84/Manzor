@@ -131,6 +131,95 @@ class Correlativos extends CI_Controller {
 
 	}
 
+	public function buscaboletarut(){
+
+		 $resp = array();
+		 $rut1="19";
+		 $query2 = $this->db->query('SELECT acc.*, ciu.nombre as nombre_ciudad, com.nombre as nombre_comuna, g.nombre as nom_giro, 
+			ven.nombre as nombre_vendedor, g.nombre as giro FROM clientes acc
+			left join ciudad c on (acc.id_ciudad = c.id)
+			left join cod_activ_econ g on (acc.id_giro = g.id)
+			left join comuna com on (acc.id_comuna = com.id)
+			left join comuna ciu on (acc.id_ciudad = ciu.id)
+			left join vendedores ven on (acc.id_vendedor = ven.id)
+		    WHERE acc.rut="'.$rut1.'"');
+
+			
+	   		if($query2->num_rows()>0){
+	   			$row = $query2->first_row();
+	   			$resp['detalle'] = $row;
+	   			$resp['success'] = true;
+	   		}
+
+	   		 echo json_encode($resp);
+
+
+	}
+
+
+	public function generaventa(){
+
+		$resp = array();
+		$factura = $this->input->get('valida');
+		$query = $this->db->query('SELECT * FROM correlativos WHERE id like "'.$factura.'"');
+        $rut1="19";
+		if($query->num_rows()>0){
+	   		$row = $query->first_row();
+	   		$resp['cliente'] = $row;
+	   		$corr = (($row->correlativo)+1); 
+	   		$id = ($row->id);
+
+	   		$data3 = array(
+	         'correlativo' => $corr
+		    );
+
+		    $this->db->where('id', $id);
+		  
+		    $this->db->update('correlativos', $data3);
+
+		    $this->Bitacora->logger("M", 'correlativos', $id);
+
+		    $query = $this->db->query('SELECT * FROM preventa WHERE num_ticket like "'.$corr.'"');
+
+			if($query->num_rows()>0){
+
+				$resp['success'] = false;
+			    
+
+			}else{
+
+				$resp['success'] = true;
+			   
+				
+
+			}
+
+	   }else{
+	   	    $resp['success'] = false;
+	   	    echo json_encode($resp);
+	        return false;
+	   }
+	   
+	   $query2 = $this->db->query('SELECT acc.*, ciu.nombre as nombre_ciudad, com.nombre as nombre_comuna, g.nombre as nom_giro, 
+			ven.nombre as nombre_vendedor, g.nombre as giro FROM clientes acc
+			left join ciudad c on (acc.id_ciudad = c.id)
+			left join cod_activ_econ g on (acc.id_giro = g.id)
+			left join comuna com on (acc.id_comuna = com.id)
+			left join comuna ciu on (acc.id_ciudad = ciu.id)
+			left join vendedores ven on (acc.id_vendedor = ven.id)
+		    WHERE acc.rut="'.$rut1.'"');
+
+			
+	   		if($query2->num_rows()>0){
+	   			$row = $query2->first_row();
+	   			$resp['detalle'] = $row;
+	   		}
+
+	   		 echo json_encode($resp);
+		
+
+	}
+
 	public function generacoti(){
 
 		$resp = array();

@@ -10,6 +10,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
              'recaudacion.Items',
              'Factura5',
              'Productosf',
+             'Clientes',
              'Preventa',
              'Sucursales_clientes',
              'Boleta',
@@ -101,6 +102,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'documentosingresar #DescuentoproId': {
                 change: this.changedctofinal3
             },
+            'documentosingresar #tipoDocumento2Id': {
+                select: this.selectItemdocuemento,
+            },
             'buscarclientesboleta2 button[action=buscar]': {
                 click: this.buscar
             },
@@ -121,6 +125,67 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             }
         });
     },
+
+   
+    selectItemdocuemento: function() {
+        
+        var view =this.getDocumentosingresar();
+        var tipo_documento = view.down('#tipoDocumento2Id');
+        var tipo = tipo_documento.getValue();
+        var cero="";
+        var nombre="19";
+        
+        if(tipo == 101){  // limpiar campos
+            view.down('#rutId').setValue(cero);
+            view.down('#id_cliente').setValue(cero);
+            view.down('#nombre_id').setValue(cero);
+            view.down('#tipocondpagoId').setValue(cero);
+            view.down('#direccionId').setValue(cero);
+            view.down('#giroId').setValue(cero);  
+            view.down('#tipoVendedorId').setValue(cero);
+            view.down("#rutId").focus();         
+                
+        };
+
+        if(tipo == 105){  // limpiar campos
+            view.down('#rutId').setValue(cero);
+            view.down('#id_cliente').setValue(cero);
+            view.down('#nombre_id').setValue(cero);
+            view.down('#tipocondpagoId').setValue(cero);
+            view.down('#direccionId').setValue(cero);
+            view.down('#giroId').setValue(cero);  
+            view.down('#tipoVendedorId').setValue(cero);           
+            view.down("#codigoId").focus();     
+        };
+
+        if(tipo == 2){  // limpiar campos
+            Ext.Ajax.request({
+                url: preurl + 'correlativos/buscaboletarut?valida='+nombre,
+                params: {
+                    id: 1
+                },
+                success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                var detalle = resp.detalle;
+                if (resp.success == true) {
+                    view.down('#rutId').setValue(detalle.rut);
+                    view.down('#id_cliente').setValue(detalle.id);
+                    view.down('#nombre_id').setValue(detalle.nombres);
+                    view.down('#tipocondpagoId').setValue(detalle.id_pago);
+                    view.down('#direccionId').setValue(detalle.direccion);
+                    view.down('#giroId').setValue(detalle.id_giro);  
+                    view.down('#tipoVendedorId').setValue(detalle.id_vendedor);           
+                    view.down("#codigoId").focus(); 
+
+                 }
+                 }            
+                });  
+                    
+        };         
+       
+        view.down("#rutId").focus();       
+
+     },
 
     agregarpedidocaja: function(){
 
@@ -609,7 +674,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             viewIngresa.down('#rutId').setValue(row.data.rut);
             viewIngresa.down('#tipocondpagoId').setValue(row.data.id_pago);
             viewIngresa.down('#direccionId').setValue(row.data.direccion);
-            viewIngresa.down('#giroId').setValue(row.data.giro);           
+            viewIngresa.down('#giroId').setValue(row.data.id_giro);
+            viewIngresa.down('#tipoVendedorId').setValue(row.data.id_vendedor);          
             view.close();
             viewIngresa.down("#codigoId").focus();   
        
@@ -626,9 +692,17 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         var view = this.getBuscarclientesboleta2()
         var st = this.getClientesStore()
-        var nombre = view.down('#nombreId').getValue()
+        var nombre = view.down('#nombreId').getValue();
+        var rut = view.down('#rutId').getValue();
+        if(nombre){
+            var opcion="Nombre";
+        };
+        if(rut){
+            var opcion="Rut";
+            var nombre=rut;
+        };
         st.proxy.extraParams = {nombre : nombre,
-                                opcion : "Nombre"}
+                                opcion : opcion}
         st.load();
     },
 
@@ -663,13 +737,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
    validarut: function(){
 
         var viewedit = this.getPagocajaprincipal();
-        //var idcaja = viewedit.down('#cajaId').getValue();
-        //var nomcaja = viewedit.down('#nomcajaId').getValue();
-        //var contado = viewedit.down('#efectivonId').getValue();
-        //var cheques = viewedit.down('#totchequesnId').getValue();
-        //var otros = viewedit.down('#otrosmontosnId').getValue();
-        //var idcajero = viewedit.down('#cajeroId').getValue();
-        //var nomcajero = viewedit.down('#nomcajeroId').getValue();
         var view = this.getDocumentosingresar();
         var rut = view.down('#rutId').getValue();
         var okey = "SI";
@@ -981,11 +1048,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 var text = response.responseText;
                 var resp = Ext.JSON.decode(response.responseText);
                 var idboleta= resp.idboleta;
-
-                viewIngresa.close();
+                //viewIngresa.close();
                 Ext.Msg.alert('Informacion', 'Creada Exitosamente.');
-                st.load();
-                window.open(preurl + 'facturas/exportPDF/?idfactura='+idboleta);
+                //st.load();
+                //window.open(preurl + 'facturas/exportPDF/?idfactura='+idboleta);
             }
         });
 
@@ -1027,7 +1093,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 afecto: finalafectoId,
                 total: totaldocumento
             },
-             success: function(response){
+            success: function(response){
                  var resp = Ext.JSON.decode(response.responseText);
                  var idpreventa= resp.idpreventa;
                  viewIngresa.close();

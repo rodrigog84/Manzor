@@ -332,7 +332,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             return;    
          }else{
                 Ext.Ajax.request({
-                url: preurl + 'correlativos/genera?valida='+nombre,
+                url: preurl + 'correlativos/generaventa?valida='+nombre,
                 params: {
                     id: 1
                 },
@@ -341,16 +341,23 @@ Ext.define('Infosys_web.controller.Preventa', {
 
                 if (resp.success == true) {
                     var view = Ext.create('Infosys_web.view.Preventa.Pagodirecto').show();                   
-                    var cliente = resp.cliente;
-                    var correlanue = cliente.correlativo;
+                    var correlativo = resp.cliente;
+                    var detalle = resp.detalle;
+                    var correlanue = correlativo.correlativo;
                     correlanue = (parseInt(correlanue)+1);
                     var correlanue = correlanue;
                     view.down("#ticketId").setValue(correlanue);
                     view.down("#tipoDocumento2Id").setValue(tipo);
                     view.down('#bodegaId').setValue(idbodega);
-                    view.down('#rutId').setValue(rut);
-                    view.down('#rutId').focus();
-                    view.down("#rutId").focus();
+                    view.down('#rutId').setValue(detalle.rut);
+                    view.down('#id_cliente').setValue(detalle.id);
+                    view.down('#nombre_id').setValue(detalle.nombres);
+                    view.down('#tipocondpagoId').setValue(detalle.id_pago);
+                    view.down('#direccionId').setValue(detalle.direccion);
+                    view.down('#giroId').setValue(detalle.id_giro);  
+                    view.down('#tipoVendedorId').setValue(detalle.id_vendedor);           
+                    view.down("#codigoId").focus();   
+                    
                 }else{
                     Ext.Msg.alert('Correlativo YA Existe');
                     return;

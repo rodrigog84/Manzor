@@ -598,6 +598,7 @@ class Preventa extends CI_Controller {
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Cantidad</td>
 		        <td width="395px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Descripci&oacute;n</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Unidad</td>
+		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Descuento</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
 		      </tr>';
@@ -615,6 +616,7 @@ class Preventa extends CI_Controller {
 			<td style="text-align:right">'.$v->cantidad.'&nbsp;&nbsp;</td>			
 			<td style="text-align:left">'.$producto->nombre.'</td>			
 			<td align="right">$ '.number_format($v->valor_unit, 0, '.', ',').'</td>
+			<td align="right">$ '.number_format($v->desc, 0, '.', ',').'</td>
 			<td align="right">$ '.number_format($v->neto - $v->desc, 0, '.', ',').'</td>
 			<td align="right">$ '.number_format($v->total, 0, '.', ',').'</td>
 			</tr>';
@@ -808,6 +810,7 @@ class Preventa extends CI_Controller {
 		        'valor_unit' => $v->precio,
 		        'neto' => $v->neto,
 		        'cantidad' => $v->cantidad,
+		        'desc' => $v->dcto,
 		        'neto' => $v->neto,
 		        'iva' => $v->iva,
 		        'total' => $v->total,

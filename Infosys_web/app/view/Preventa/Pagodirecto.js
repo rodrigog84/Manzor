@@ -91,7 +91,7 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             xtype: 'combo',
                                             align: 'center',
                                             editable: false,
-                                            width: 350,
+                                            width: 450,
                                             maxHeight: 25,
                                             matchFieldWidth: false,
                                             listConfig: {
