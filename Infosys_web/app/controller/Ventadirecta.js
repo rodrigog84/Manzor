@@ -134,7 +134,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var tipo = tipo_documento.getValue();
         var cero="";
         var nombre="19";
-
+        
         if(tipo == 101){  // limpiar campos
             view.down('#rutId').setValue(cero);
             view.down('#id_cliente').setValue(cero);
@@ -160,7 +160,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         if(tipo == 2){  // limpiar campos
             Ext.Ajax.request({
-                url: preurl + 'correlativos/buscaboletarut?valida='+tipo,
+                url: preurl + 'correlativos/buscaboletarut?valida='+nombre,
                 params: {
                     id: 1
                 },
@@ -181,45 +181,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                  }            
                 });  
                     
-        }else if(tipo == 101 || tipo == 105){ //FACTURA ELECTRÓNICA O GUÍA
-
-
-            // se valida que exista certificado
-            response_certificado = Ext.Ajax.request({
-            async: false,
-            url: preurl + 'facturas/existe_certificado/'});
-
-            var obj_certificado = Ext.decode(response_certificado.responseText);
-
-            if(obj_certificado.existe == true){
-
-                //buscar folio factura electronica
-                // se buscan folios pendientes, o ocupados hace más de 4 horas
-
-                response_folio = Ext.Ajax.request({
-                async: false,
-                url: preurl + 'facturas/folio_documento_electronico/'+tipo});  
-                var obj_folio = Ext.decode(response_folio.responseText);
-
-                nuevo_folio = obj_folio.folio;
-                if(nuevo_folio != 0){
-                    view.down('#ticketId').setValue(nuevo_folio);  
-                    habilita = true;
-                }else{
-                    Ext.Msg.alert('Atención','No existen folios disponibles');
-                    view.down('#ticketId').setValue('');  
-
-                    //return
-                }
-
-            }else{
-                    Ext.Msg.alert('Atención','No se ha cargado certificado');
-                    view.down('#ticketId').setValue('');  
-            }
-
-
-
-        }         
+        };         
        
         view.down("#rutId").focus();       
 
@@ -946,7 +908,49 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var stPreventa = this.getPreventaStore();
         var observa = viewIngresa.down('#observaId').getValue();
         var idbodega = viewIngresa.down('#bodegaId').getValue();
-        var numdoc = viewIngresa.down('#numboleta2Id').getValue();
+
+        if(idtipo == 101 || idtipo == 105){
+
+
+            // se valida que exista certificado
+            response_certificado = Ext.Ajax.request({
+            async: false,
+            url: preurl + 'facturas/existe_certificado/'});
+
+            var obj_certificado = Ext.decode(response_certificado.responseText);
+
+            if(obj_certificado.existe == true){
+
+                //buscar folio factura electronica
+                // se buscan folios pendientes, o ocupados hace más de 4 horas
+
+                response_folio = Ext.Ajax.request({
+                async: false,
+                url: preurl + 'facturas/folio_documento_electronico/'+idtipo});  
+                var obj_folio = Ext.decode(response_folio.responseText);
+                //console.log(obj_folio); 
+                nuevo_folio = obj_folio.folio;
+                if(nuevo_folio != 0){
+                    numdoc = nuevo_folio;
+                    habilita = true;
+                }else{
+                    Ext.Msg.alert('Atención','No existen folios disponibles');
+                    return;
+
+                    //return
+                }
+
+            }else{
+                    Ext.Msg.alert('Atención','No se ha cargado certificado');
+                    return;
+            }
+
+        }else{
+            var numdoc = viewIngresa.down('#numboleta2Id').getValue();
+
+        }
+
+        
         var idcajero = 1;
         var idcaja = 1;
         var totaldocumento = viewIngresa.down('#finaltotalpostId').getValue();
