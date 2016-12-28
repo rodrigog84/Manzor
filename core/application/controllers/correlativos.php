@@ -161,6 +161,7 @@ class Correlativos extends CI_Controller {
 
 		$resp = array();
 		$factura = $this->input->get('valida');
+		$boleta = 2;
 		$query = $this->db->query('SELECT * FROM correlativos WHERE id like "'.$factura.'"');
         $rut1="19";
 		if($query->num_rows()>0){
@@ -214,6 +215,29 @@ class Correlativos extends CI_Controller {
 	   			$row = $query2->first_row();
 	   			$resp['detalle'] = $row;
 	   		}
+
+	   		$query = $this->db->query('SELECT * FROM correlativos WHERE id like "'.$boleta.'"');
+       
+		if($query->num_rows()>0){
+	   		$row = $query->first_row();
+	   		$resp['boletas'] = $row;
+	   		$corr = (($row->correlativo)+1); 
+	   		$id = ($row->id);
+	   		$row->correlativo = $corr;
+	   		$resp['boletas'] = $row;
+
+	   		$data3 = array(
+	         'correlativo' => $corr
+		    );
+
+		    $this->db->where('id', $id);
+		  
+		    $this->db->update('correlativos', $data3);
+
+		    $this->Bitacora->logger("M", 'correlativos', $id);
+
+		};
+
 
 	   		 echo json_encode($resp);
 		

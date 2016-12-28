@@ -342,8 +342,10 @@ Ext.define('Infosys_web.controller.Preventa', {
                 if (resp.success == true) {
                     var view = Ext.create('Infosys_web.view.Preventa.Pagodirecto').show();                   
                     var correlativo = resp.cliente;
+                    var boleta = resp.boletas;
                     var detalle = resp.detalle;
                     var correlanue = correlativo.correlativo;
+                    var numboleta = boleta.correlativo;
                     correlanue = (parseInt(correlanue)+1);
                     var correlanue = correlanue;
                     view.down("#ticketId").setValue(correlanue);
@@ -355,7 +357,8 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down('#tipocondpagoId').setValue(detalle.id_pago);
                     view.down('#direccionId').setValue(detalle.direccion);
                     view.down('#giroId').setValue(detalle.id_giro);  
-                    view.down('#tipoVendedorId').setValue(detalle.id_vendedor);           
+                    view.down('#tipoVendedorId').setValue(detalle.id_vendedor);
+                    view.down('#numboleta2Id').setValue(boleta.correlativo);           
                     view.down("#codigoId").focus();   
                     
                 }else{

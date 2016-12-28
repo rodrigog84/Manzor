@@ -33,7 +33,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'Pago_caja.Apertura',
             'Pago_caja.BuscarSucursales',
             'Preventa.BuscarProductos3',
-            'Preventa.BuscarClientes3'],
+            'Preventa.BuscarClientes3',
+            'Preventa.Pagocheque'],
 
     //referencias, es un alias interno para el controller
     //podemos dejar el alias de la vista en el ref y en el selector
@@ -69,6 +70,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
     },{    
         ref: 'buscarproductospreventa3',
         selector: 'buscarproductospreventa3'
+    },{    
+        ref: 'generapagocheque',
+        selector: 'generapagocheque'
     }
 
     ],
@@ -122,8 +126,122 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             },
             'documentosingresar button[action=agregarItem]': {
                 click: this.agregarItem
+            },
+            'generapagocheque button[action=agregarrecaudacion]': {
+                click: this.agregarrecaudacion
+            },
+            'generapagocheque button[action=aceptacheques]': {
+                click: this.aceptacheques
             }
         });
+    },
+
+    aceptacheques: function(){
+
+        var view = this.getGenerapagocheque();
+        var viewIngresa = this.getDocumentosingresar();
+        var valida = view.down('#validapagoId').getValue();
+        var cero=0;
+        if (valida == "SI"){
+        var valorcheque = view.down('#valorpagoId').getValue();        
+        var valortotal = viewIngresa.down('#finaltotalpostId').getValue();
+        if (valorcheque == 0){
+            viewIngresa.down('#valorcancelaId').setValue(valortotal);
+            viewIngresa.down('#valorvueltoId').setValue(cero);
+        }else{
+            viewIngresa.down('#finaltotalId').setValue(valorcheque);            
+        };
+        view.close();
+        }else{
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Datos de Cheque');
+            return;
+            
+        }
+        
+    },
+
+    agregarrecaudacion: function() {
+
+        var view = this.getGenerapagocheque();
+        var viewIngresa = this.getDocumentosingresar();
+        var stItem = this.getRecaudacionItemsStore();
+        var formapago = 2;
+        var numcheque = view.down('#numchequeId').getValue();
+        var fechacheque = view.down('#fechacheqId').getValue();
+        var valortotal = view.down('#valorpagoId').getValue(); 
+        var valorpago = view.down('#valorchequeId').getValue();
+        var valorvalida = valortotal - valorpago;
+        var numdoc = view.down('#numfacturaId').getValue();
+        var nompago = view.down('#condpagoId').getValue();
+        var banco = view.down('#bancoId').getValue();
+        var id_banco = view.down('#bancoId').getValue();
+        if (!banco){
+            Ext.Msg.alert('Alerta', 'Debe Seleccionar Banco');
+            return;
+        };
+        var banco = view.down('#bancoId');
+        var stCombo = banco.getStore();
+        var nombrebanco = stCombo.findRecord('id', banco.getValue()).data;
+        var nombrebanco = nombrebanco.nombre;
+        //var id_banco = nombrebanco.id;
+        var valida = "SI";
+        var cero = "";
+        
+              
+        if (valorpago==0){
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Monto Cheque Banco');
+            return;
+        };        
+        if (numcheque==0) {
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Numero de Cheque');
+            return;
+        };  
+        if (!numcheque){
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Numero de Cheque');
+            return;
+        };
+        if (!valorpago){
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Monto Cheque Banco');
+            return;
+        };
+       
+        var exists = 0;        
+        stItem.each(function(r){
+        if (r.data.nom_forma == "PAGO CHEQUE "){
+            if(r.data.num_cheque == numcheque ){
+                Ext.Msg.alert('Alerta', 'El Cheque ya existe.');
+                exists = 1;
+                return; 
+            }
+        }           
+        });
+
+        if(exists == 1)
+            return;
+
+        stItem.add(new Infosys_web.model.recaudacion.Item({
+            id_pago: formapago,
+            detalle: nombrebanco,
+            nom_forma: nompago,
+            num_doc : numdoc,            
+            id_forma: formapago,
+            num_cheque: numcheque,
+            fecha_comp: fechacheque,
+            nom_banco: nombrebanco,
+            id_banco: id_banco,
+            valor_pago: valorpago,
+            valor_cancelado: valorpago,
+           
+        }));
+
+       
+        view.down('#valorpagoId').setValue(valorvalida);
+        view.down('#valorchequeId').setValue(cero);
+        view.down('#numchequeId').setValue(cero);
+        view.down('#bancoId').setValue(cero);
+        view.down('#validapagoId').setValue(valida);  
+        viewIngresa.down('#validapagoId').setValue(valida);        
+        
     },
 
    
@@ -543,7 +661,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         view.down('#totdescuentoId').setValue(cero1);
         view.down('#DescuentoproId').setValue(cero);
         view.down('#condpagoId').setValue(tipopago);
-        view.down('#numboleta2Id').setValue(numdoc);
         view.down("#codigoId").focus();
     },
 
@@ -889,6 +1006,21 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var sucursal = viewIngresa.down('#id_sucursalID').getValue();
         var idpago = viewIngresa.down('#tipocondpagoId').getValue();
         var vender = viewIngresa.down('#tipoVendedorId').getValue();
+        var valida = viewIngresa.down('#validapagoId').getValue();
+        console.log(valida)
+        if (valida=="SI"){
+            
+        }else{
+            if (valorapagar>valorpagado){
+
+            var bolEnable = false;
+            viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
+            Ext.Msg.alert('Valor Pagado Es Menor a Total Boleta');
+            return;
+        };
+
+        }
+        var rtItem = this.getRecaudacionItemsStore();
                 
         if(!vender){
 
@@ -966,18 +1098,18 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var idrecauda=1;
         var valorcancela = viewIngresa.down('#valorcancelaId').getValue(); 
         var valorvuelto = viewIngresa.down('#valorvueltoId').getValue();
+        if (!valorvuelto){
+            valorvuelto=0;
+        }
 
         var valorapagar = parseInt(viewIngresa.down('#finaltotalpostId').getValue());
         var valorpagado = parseInt(viewIngresa.down('#valorcancelaId').getValue());
         
-
-        if (valorapagar>valorpagado){
-
-            var bolEnable = false;
-            viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
-            Ext.Msg.alert('Valor Pagado Es Menor a Total Boleta');
-            return;
-        };
+        if (valida=="SI"){
+            
+        }else{
+        
+        console.log(valorcancela)       
 
         if (!valorcancela){
 
@@ -986,6 +1118,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             Ext.Msg.alert('Alerta', 'Debe Cancelar Documento');
             return;
         };
+
+        };
+
+
                
         if (record.nombre == "CONTADO") {
                    
@@ -1008,42 +1144,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             var valorvuelto = 0;                    
 
         };
-
-        if (record.nombre == "PAGO CHEQUE ") {
-
-            if (!banco){
-
-                var bolEnable = false;
-                viewIngresa.down('#grababoletaId').setDisabled(bolEnable);       
-
-                Ext.Msg.alert('Alerta', 'Debe Seleccionar Banco');
-                return;
-                
-
-            }else{
-
-                var banco = viewIngresa.down('#bancoId');
-                var stCombo = banco.getStore();
-                var nombrebanco = stCombo.findRecord('id', banco.getValue()).data;
-                var nombrebanco = nombrebanco.nombre;
-                var id_banco = nombrebanco.id;          
-            
-            };
-
-            var valortotal = ((valorcancela));
-            var valort = (valorcancela);
-            var cheques = (cheques) + (valortotal); 
-                       
-            if (!numcheque){
-
-             var bolEnable = false;
-             viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
-             Ext.Msg.alert('Alerta', 'Ingrese Numero de Cheque');
-             return; 
-            };
-
-        };
-
+        
         if (record.nombre == "TARJETA DE DEBITO") {
 
             
@@ -1065,6 +1166,11 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             dataItems.push(r.data)
         });
 
+        var recItems = new Array();
+        rtItem.each(function(r){
+            recItems.push(r.data)
+        });
+
         Ext.Ajax.request({
             url: preurl + 'recaudacion/save',
             params: {
@@ -1073,6 +1179,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 numboleta: numdoc,
                 tipdocumento: idtipo, 
                 numcheque: numcheque,
+                recitems: Ext.JSON.encode(recItems),
                 items: Ext.JSON.encode(dataItems),                
                 id_cliente : idcliente,
                 id_caja : idcaja,
@@ -1184,11 +1291,11 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         };
 
-        if (valorapagar>valorpagado){
+        /*if (valorapagar>valorpagado){
 
             Ext.Msg.alert('Valor Pagado Es Menor a Total Boleta');
                     return;
-        };
+        };*/
 
         }
 
@@ -1197,9 +1304,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             calculo = 0;
             view.down('#valorvueltoId').setValue(calculo);
             view.down('#valorcancelaId').setValue(valorapagar);
-
-
-
         }
 
         
@@ -1245,23 +1349,30 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var view =this.getDocumentosingresar();
         var condpago = view.down('#condpagoId');
         var totdocu = view.down('#finaltotalpostId').getValue();
+        var numdocu = view.down('#numboleta2Id').getValue();
+
+        
         var stCombo = condpago.getStore();
         var record = stCombo.findRecord('id', condpago.getValue()).data;
         var valida = record.nombre;
-
-        console.log(valida);
-
         var bolDisabled = valida == "CONTADO" ? true : false; // campos se habilitan sólo en factura
-        
+        var cero="";
         view.down('#numchequeId').setDisabled(bolDisabled);
         view.down('#bancoId').setDisabled(bolDisabled);        
 
         if (valida == "PAGO CHEQUE "){
             calculo = 0;
-            view.down('#valorvueltoId').setDisabled(false);
-            view.down('#valorvueltoId').setValue(calculo);
-            view.down('#valorcancelaId').setValue(totdocu);
-            view.down("#numchequeId").focus();
+            if(totdocu){
+            var viewIngresa = Ext.create('Infosys_web.view.Preventa.Pagocheque').show();
+            viewIngresa.down('#condpagoId').setValue(valida);
+            viewIngresa.down('#valorpagoId').setValue(totdocu);
+            viewIngresa.down('#numfacturaId').setValue(numdocu);
+            viewIngresa.down("#numchequeId").focus();
+            }else{
+                view.down('#condpagoId').setValue(cero);
+                Ext.Msg.alert('Debe Agregar Valores');
+                return;                
+            }
         };
 
         if (valida == "CREDITO") {

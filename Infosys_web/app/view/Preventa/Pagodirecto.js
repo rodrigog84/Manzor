@@ -136,6 +136,11 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             hidden: true
                                         },{
                                             xtype: 'textfield',
+                                            itemId: 'validapagoId',
+                                            name : 'valid',
+                                            hidden: true
+                                        },{
+                                            xtype: 'textfield',
                                             fieldCls: 'required',
                                             msgTarget: 'side',
                                             maxHeight: 25,
