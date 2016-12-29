@@ -83,9 +83,39 @@ Ext.define('Infosys_web.controller.Recaudacion', {
             },
             'recaudacionprincipal button[action=actualizar]': {
                 click: this.actualizar
-            }
+            },
+            'recaudacionprincipal #bodegaId': {
+                select: this.seleccionbodega
+            },
+
            
         });
+    },
+
+    seleccionbodega: function(){
+
+        var view = this.getRecaudacionprincipal();
+        var st = this.getRecaudaStore()
+        var bodega = view.down('#bodegaId').getValue();
+        if (bodega==1){
+            caja=1;
+        };
+        if (bodega==2){
+            caja=2;
+        };
+        if (bodega==3){
+            caja=3;
+        };
+        if (bodega==4){
+            caja=4;
+        };
+        if (bodega==5){
+            caja=5;
+        };
+        st.proxy.extraParams = {idcaja : caja,
+                                opcion : "Todos"}
+        st.load();
+        
     },
 
     actualizar: function(){

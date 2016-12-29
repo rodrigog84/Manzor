@@ -1989,12 +1989,12 @@ class Recaudacion extends CI_Controller {
         $start = $this->input->post('start');
         $limit = $this->input->post('limit');
 
-
+        $idcaja = $this->input->post('idcaja');
         //filtro por nombre
-        $nombre = $this->input->get('nombre');
+        $nombre = $this->input->post('nombre');
         $estado = "";
 
-		$countAll = $this->db->count_all_results("recaudacion");
+		//$countAll = $this->db->count_all_results("recaudacion");
 
 		if($nombre){
 			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
@@ -2003,14 +2003,53 @@ class Recaudacion extends CI_Controller {
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
-			WHERE nom_caja like "%'.$nombre.'%"
+			WHERE nom_caja like "%'.$nombre.'%" and acc.id_caja= "'.$idcaja.'"
+			');
+
+			$total = 0;
+
+		  	foreach ($query->result() as $row)
+			{
+				$total = $total +1;
+			
+			}
+
+			$countAll = $total;
+
+
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
+			left join preventa p on (acc.id_ticket = p.id)
+			left join clientes c on (acc.id_cliente = c.id)
+			left join cajas n on (acc.id_caja = n.id)
+			left join cajeros e on (acc.id_cajero = e.id)
+			left join vendedores v on (acc.id_vendedor = v.id)
+			WHERE nom_caja like "%'.$nombre.'%" and acc.id_caja= "'.$idcaja.'"
 			limit '.$start.', '.$limit.'');
 		}else{
+
 			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
-			left join vendedores v on (acc.id_vendedor = v.id) order by acc.id desc			
+			left join vendedores v on (acc.id_vendedor = v.id)
+			WHERE acc.id_caja = "'.$idcaja.'"');
+
+		    $total = 0;
+
+		  	foreach ($query->result() as $row)
+			{
+				$total = $total +1;
+			
+			}
+
+			$countAll = $total;
+
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
+			left join clientes c on (acc.id_cliente = c.id)
+			left join cajas n on (acc.id_caja = n.id)
+			left join cajeros e on (acc.id_cajero = e.id)
+			left join vendedores v on (acc.id_vendedor = v.id)
+			WHERE acc.id_caja= "'.$idcaja.'" order by acc.id desc			
 			limit '.$start.', '.$limit.' ' 
 
 		);
@@ -2146,17 +2185,15 @@ class Recaudacion extends CI_Controller {
 
             $query = $this->db->query('SELECT acc.*, t.nombre as desc_pago,
             r.id_caja as id_caja, r.id_cajero as id_cajero, n.nombre as nom_caja,
-            e.nombre as nom_cajero, r.num_comp as num_comp, b.nombre as nom_banco,
-            r.num_doc as num_doc, cor.nombre as nom_documento, cli.nombres as nom_cliente FROM recaudacion_detalle acc
+            e.nombre as nom_cajero, r.num_comp as num_comp, r.num_doc as num_doc, cor.nombre as nom_documento, cli.nombres as nom_cliente FROM recaudacion_detalle acc
             left join cond_pago t on (acc.id_forma = t.id)
             left join recaudacion r on (acc.id_recaudacion = r.id)
-            left join preventa pr on (r.id_ticket = pr.id)
+            left join preventa pr on (r.id_ticket = pr.num_ticket)
             left join correlativos cor on (pr.id_tip_docu = cor.id)
             left join cajas n on (r.id_caja = n.id)
             left join cajeros e on (r.id_cajero = e.id)
-            left join banco b on (acc.id_banco = b.id)
             left join clientes cli on (r.id_cliente = cli.id)
-            WHERE acc.fecha_comp = "'.$fecha.'" 
+            WHERE acc.fecha_comp = "'.$fecha.'" and n.id="'.$idcaja.'" 
             order by num_doc asc');
 
 
@@ -2243,8 +2280,7 @@ class Recaudacion extends CI_Controller {
 
 			$array_detail = array();
 			$body_detail = "";	  
-		    foreach($users as $v){
-		      	    		      		     	
+		    foreach($users as $v){		      	    		      		     	
 
 		      	list($dia, $mes, $anio) = explode("-",$v['fecha_transac']);
 				$fecha3 = $anio ."-". $mes ."-". $dia;
@@ -2953,7 +2989,7 @@ class Recaudacion extends CI_Controller {
             left join cajas n on (acc.id_caja = n.id)
             left join cajeros e on (acc.id_cajero = e.id)
             left join clientes cli on (r.id_cliente = cli.id)
-            WHERE acc.fecha = "'.$fecha.'"
+            WHERE acc.fecha = "'.$fecha.'" and acc.id_caja="'.$idcaja.'"
             order by num_documento asc');
 
                 $header = '
