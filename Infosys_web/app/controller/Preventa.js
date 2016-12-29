@@ -194,9 +194,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventaingresar #tipocondpagoId': {
                 select: this.condicionpago
             },
-            'preventaeditar #tipocondpagoId': {
-                select: this.condicionpago2
-            },
+            
             'buscarproductospreventa button[action=buscar]': {
                 click: this.buscarp
             },
@@ -312,9 +310,23 @@ Ext.define('Infosys_web.controller.Preventa', {
             },
             'preventaprincipal button[action=eliminarpreventa]': {
                 click: this.eliminarpreventa
-            }
+            },
+            'preventaprincipal #bodegaId': {
+                select: this.seleccionbodega
+            },
 
         });
+    },
+
+    seleccionbodega: function(){
+
+        var view = this.getPreventaprincipal();
+        var st = this.getPreventaStore()
+        var bodega = view.down('#bodegaId').getValue();
+        st.proxy.extraParams = {bodega : bodega,
+                                opcion : "Todos"}
+        st.load();
+        
     },
 
     ventadirecta: function(){

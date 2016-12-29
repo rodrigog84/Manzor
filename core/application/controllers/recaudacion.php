@@ -919,6 +919,7 @@ class Recaudacion extends CI_Controller {
 		$valorvuelto = json_decode($this->input->post('valorvuelto'));
 		$contado = json_decode($this->input->post('contado'));
 		$cheques = json_decode($this->input->post('cheques'));
+		$numpreventa = json_decode($this->input->post('numeroticket'));
 		$otros = json_decode($this->input->post('otros'));		
 		$condpago = json_decode($this->input->post('condpago'));
 		$formadepago = json_decode($this->input->post('condpago'));
@@ -997,7 +998,7 @@ class Recaudacion extends CI_Controller {
 	        'num_comp' => $numcomp,
 	        'fecha' => date('Y-m-d'),
 	        'id_cliente' => $idcliente,
-	        'id_ticket' => 2,
+	        'id_ticket' => $numpreventa,
 	        'id_vendedor' => 1,
 			'num_doc' => $numdocum,
 			'id_caja' => $idcaja,
@@ -1996,20 +1997,20 @@ class Recaudacion extends CI_Controller {
 		$countAll = $this->db->count_all_results("recaudacion");
 
 		if($nombre){
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, p.num_ticket as num_ticket, p.total as total, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
 			left join preventa p on (acc.id_ticket = p.id)
 			left join clientes c on (acc.id_cliente = c.id)
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
+			left join vendedores v on (acc.id_vendedor = v.id)
 			WHERE nom_caja like "%'.$nombre.'%"
 			limit '.$start.', '.$limit.'');
 		}else{
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, p.num_ticket as num_ticket, p.total as total, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
-			left join preventa p on (acc.id_ticket = p.id)
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, n.nombre as nom_caja, e.nombre as nom_cajero FROM recaudacion acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
-			left join vendedores v on (p.id_vendedor = v.id) order by acc.id desc			
+			left join vendedores v on (acc.id_vendedor = v.id) order by acc.id desc			
 			limit '.$start.', '.$limit.' ' 
 
 		);
@@ -2906,7 +2907,7 @@ class Recaudacion extends CI_Controller {
 			$cantidad_hoja = 50;
 			$fila = 1;
 
-			$this->mpdf->SetHeader('Vibrados Chile Ltda - Libro Recaudación');
+			$this->mpdf->SetHeader('Manzor - Libro Recaudación');
 			$this->mpdf->setFooter('{PAGENO}');			
 			foreach ($array_detail as $detail) {
 				if($fila == 1){
@@ -3288,7 +3289,7 @@ class Recaudacion extends CI_Controller {
 
 			$cantidad_hoja = 50;
 			$fila = 1;
-			$this->mpdf->SetHeader('Vibrados Chile Ltda - Libro Recaudación');
+			$this->mpdf->SetHeader('Manzor - Libro Recaudación');
 			$this->mpdf->setFooter('{PAGENO}');					
 			foreach ($array_detail as $detail) {
 				if($fila == 1){

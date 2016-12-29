@@ -1132,6 +1132,7 @@ class Preventa extends CI_Controller {
         $nombres = $this->input->post('nombre');
         $tipo = $this->input->post('documento');
         $fecha = $this->input->post('fecha');
+        $idbodega = $this->input->post('bodega');
         if(!$fecha){
          $fecha = date('Y-m-d');
         };
@@ -1223,7 +1224,7 @@ class Preventa extends CI_Controller {
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"');
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'" and acc.id_bodega = "'.$idbodega.'"');
 
 			$total = 0;
 
@@ -1239,7 +1240,7 @@ class Preventa extends CI_Controller {
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'" and acc.id_bodega = "'.$idbodega.'"
 			order by acc.id desc
 			limit '.$start.', '.$limit.'');
 	
@@ -1281,7 +1282,7 @@ class Preventa extends CI_Controller {
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'" 
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'" and acc.id_bodega = "'.$idbodega.'" 
 			order by acc.id desc');
 
 			$total = 0;
@@ -1294,11 +1295,12 @@ class Preventa extends CI_Controller {
 
 			$countAll = $total;
 
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$data = array();
+			$query2 = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'"
+			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and acc.estado = "'.$estado.'" and acc.id_bodega = "'.$idbodega.'" 
 			order by acc.id desc
 			limit '.$start.', '.$limit.'');	
 
@@ -1347,7 +1349,7 @@ class Preventa extends CI_Controller {
 		    };	
 
 
-		     if (strlen($rutautoriza) == 6){
+		    if (strlen($rutautoriza) == 6){
 		      $ruta1 = substr($rutautoriza, -1);
 		      $ruta2 = substr($rutautoriza, -4, 3);
 		      $ruta3 = substr($rutautoriza, -6, 2);

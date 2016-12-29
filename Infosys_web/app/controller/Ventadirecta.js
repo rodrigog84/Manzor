@@ -1080,11 +1080,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         }else{
             var numdoc = viewIngresa.down('#numboleta2Id').getValue();
 
-        }
-
+        }        
         
-        var idcajero = 1;
-        var idcaja = 1;
         var totaldocumento = viewIngresa.down('#finaltotalpostId').getValue();
         var finalafectoId = (totaldocumento / 1.19);
         var banco = viewIngresa.down('#bancoId').getValue(); 
@@ -1101,6 +1098,50 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         if (!valorvuelto){
             valorvuelto=0;
         }
+
+        console.log(bodega);
+
+        if (bodega==1){
+
+        var idcajero = 1;
+        var idcaja = 1;
+
+        };
+
+        if (bodega==2){
+
+        var idcajero = 1;
+        var idcaja = 2;
+
+        };
+
+        if (bodega==3){
+
+        var idcajero = 1;
+        var idcaja = 3;
+
+        };
+
+        if (bodega==4){
+
+        var idcajero = 1;
+        var idcaja = 4;
+
+        };
+
+        if (bodega==5){
+
+        var idcajero = 1;
+        var idcaja = 5;
+
+        };
+
+        if (bodega==6){
+
+        var idcajero = 1;
+        var idcaja = 6;
+
+        };
 
         var valorapagar = parseInt(viewIngresa.down('#finaltotalpostId').getValue());
         var valorpagado = parseInt(viewIngresa.down('#valorcancelaId').getValue());
@@ -1150,9 +1191,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             
             var otros = (otros) + (valortotal);
            
-        };                 
-
-       
+        };
 
         if (record.nombre == "TARJETA DE CREDITO") {
 
@@ -1177,6 +1216,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 fecha : Ext.Date.format(fechapreventa,'Y-m-d'),
                 fechapago : Ext.Date.format(fechapago,'Y-m-d'),
                 numboleta: numdoc,
+                numeroticket: numeroticket,
                 tipdocumento: idtipo, 
                 numcheque: numcheque,
                 recitems: Ext.JSON.encode(recItems),

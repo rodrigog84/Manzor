@@ -48,7 +48,7 @@ Ext.define('Infosys_web.view.recaudacion.Principal' ,{
         header: "Documento",
         flex: 1,
         align: 'right',
-        dataIndex: 'num_ticket'
+        dataIndex: 'id_ticket'
                
     },{
         header: "Comprobante",
