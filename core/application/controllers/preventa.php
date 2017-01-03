@@ -1220,7 +1220,7 @@ class Preventa extends CI_Controller {
 	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
 			
 			$data = array();
-			$query2 = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
@@ -1228,7 +1228,7 @@ class Preventa extends CI_Controller {
 
 			$total = 0;
 
-		  	foreach ($query2->result() as $row)
+		  	foreach ($query->result() as $row)
 			{
 				$total = $total +1;
 			
@@ -1278,7 +1278,7 @@ class Preventa extends CI_Controller {
 		}else{
 			
 			$data = array();
-			$query2 = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
@@ -1287,7 +1287,7 @@ class Preventa extends CI_Controller {
 
 			$total = 0;
 
-		  	foreach ($query2->result() as $row)
+		  	foreach ($query->result() as $row)
 			{
 				$total = $total +1;
 			
@@ -1296,7 +1296,7 @@ class Preventa extends CI_Controller {
 			$countAll = $total;
 
 			$data = array();
-			$query2 = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
 			left join clientes c on (acc.id_cliente = c.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			left join correlativos co on (acc.id_tip_docu = co.id)
@@ -1305,6 +1305,8 @@ class Preventa extends CI_Controller {
 			limit '.$start.', '.$limit.'');	
 
 		}
+
+		if($query->num_rows()>0){
 
 		foreach ($query->result() as $row)
 		{
@@ -1359,6 +1361,7 @@ class Preventa extends CI_Controller {
 		    
 			$data[] = $row;
 		}
+	    }
         $resp['success'] = true;
         $resp['total'] = $countAll;
         $resp['data'] = $data;

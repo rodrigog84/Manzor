@@ -524,7 +524,8 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                             fieldLabel: '<b>NUMCHEQUE</b>',
                             value: 0,
                             labelAlign: 'top',
-                            disabled : true  
+                            disabled : true,
+                            hidden: true
                         },{xtype: 'splitter'},{
                             xtype: 'datefield',
                             labelAlign: 'top',
@@ -565,6 +566,10 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                         },{
                             xtype: 'numberfield',
                             itemId: 'finaltotalpostId',
+                            hidden: true
+                        },{
+                            xtype: 'numberfield',
+                            itemId: 'finaltotalpId',
                             hidden: true
                         }]
                     }

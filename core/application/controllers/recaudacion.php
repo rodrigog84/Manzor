@@ -915,6 +915,7 @@ class Recaudacion extends CI_Controller {
 		$items = json_decode($this->input->post('items'));
 		$recitems = json_decode($this->input->post('recitems'));
 		$totaldocumento = json_decode($this->input->post('totaldocumento'));
+		$tdocumento = json_decode($this->input->post('tdocumento'));
 		$valorcancela = json_decode($this->input->post('valorcancela'));
 		$valorvuelto = json_decode($this->input->post('valorvuelto'));
 		$contado = json_decode($this->input->post('contado'));
@@ -1199,20 +1200,20 @@ class Recaudacion extends CI_Controller {
 
 		}else{
 
-		foreach($recitems as $r){
+		if($tdocumento<$totaldocumento){
 
-			 $recaudacion_detalle = array(				
+			$recaudacion_detalle = array(				
 	        'id_recaudacion' => $recauda,
-	        'id_forma' => $r->id_forma,
-	        'detalle' => $r->detalle,
-	        'num_cheque' => $r->num_cheque,
-	        'id_banco' => $r->id_banco,
-	        'valor_pago' => $r->valor_pago,
-	        'valor_cancelado' => $r->valor_cancelado,
-	        'valor_vuelto' => $r->valor_vuelto,
+	        'id_forma' => $condpago,
+	        'detalle' => "CANCELA BOLETA",
+	        'num_cheque' => $numcheque,
+	        'id_banco' => $banco,
+	        'valor_pago' => $tdocumento,
+	        'valor_cancelado' => $valorcancela,
+	        'valor_vuelto' => $valorvuelto,
 	        'fecha_transac' => date('Y-m-d'),
-	        'fecha_comp' => $r->fecha_comp,
-			);
+	        'fecha_comp' => date('Y-m-d'),
+		);
 		
 		$this->db->insert('recaudacion_detalle', $recaudacion_detalle);
 
@@ -1234,12 +1235,12 @@ class Recaudacion extends CI_Controller {
 	   			$transferencia = $row->transferencia;
 				if ($condpago == 1){
 					$update_general = array(				        
-				        'contado' => (($r->valor_pago-$r->valor_vuelto)+$contado)			        
+				        'contado' => (($valorcancela-$valorvuelto)+$contado)			        
 					);
 				};
 				if ($condpago == 2){
 					$update_general = array(				        
-				        'chequealdia' => ($r->valor_pago+$chequealdia)			        
+				        'chequealdia' => ($valorcancela+$chequealdia)			        
 					);
 				};
 				if ($condpago == 8){
@@ -1386,12 +1387,200 @@ class Recaudacion extends CI_Controller {
 				$this->db->insert('recaudacion_general', $update_general);
 
 		    };
-
-		}
 			
 		}
 
+		foreach($recitems as $r){
+
+			 $recaudacion_detalle = array(				
+	        'id_recaudacion' => $recauda,
+	        'id_forma' => $r->id_forma,
+	        'detalle' => $r->detalle,
+	        'num_cheque' => $r->num_cheque,
+	        'id_banco' => $r->id_banco,
+	        'valor_pago' => $r->valor_pago,
+	        'valor_cancelado' => $r->valor_cancelado,
+	        'valor_vuelto' => $r->valor_vuelto,
+	        'fecha_transac' => date('Y-m-d'),
+	        'fecha_comp' => $r->fecha_comp,
+			);
 		
+		$this->db->insert('recaudacion_detalle', $recaudacion_detalle);
+
+		$query5 = $this->db->query('SELECT * FROM recaudacion_general 
+			WHERE id_recaudacion = '.$recauda.'');
+			
+			if($query5->num_rows()>0){
+
+				$row = $query5->first_row();
+	   			$id = $row->id;
+	   			$contado = $row->contado;
+	   			$chequealdia = $row->chequealdia;
+	   			$chequeafecha = $row->chequeafecha;
+	   			$credito = $row->credito;
+	   			$tarjetadebito = $row->tarjetadebito;
+	   			$tarjetacredito = $row->tarjetacredito;
+	   			$credito30dias = $row->credito30dias;
+	   			$credito60dias = $row->credito60dias;
+	   			$transferencia = $row->transferencia;
+				if ($r->id_forma == 1){
+					$update_general = array(				        
+				        'contado' => (($r->valor_pago-$r->valor_vuelto)+$contado)			        
+					);
+				};
+				if ($r->id_forma == 2){
+					$update_general = array(				        
+				        'chequealdia' => ($r->valor_pago+$chequealdia)			        
+					);
+				};
+				if ($r->id_forma == 8){
+					$update_general = array(				        
+				        'chequeafecha' => ($valorcancela+$chequeafecha)			        
+					);
+				};
+				if ($r->id_forma == 11){
+					$update_general = array(				        
+				        'credito' => ($valorcancela+$credito)			        
+					);
+				};
+				if ($r->id_forma == 7){
+					$update_general = array(				        
+				        'tarjetadebito' => ($valorcancela+$tarjetadebito)			        
+					);
+				};
+				if ($r->id_forma == 4){
+					$update_general = array(				        
+				        'tarjetacredito' => ($valorcancela+$tarjetacredito)				        
+					);
+				};
+				if ($r->id_forma == 6){
+					$update_general = array(				        
+				        'transferencia' => ($valorcancela+$transferencia)				        
+					);
+				};
+				if ($r->id_forma == 3){
+					$update_general = array(				        
+				        'credito30dias' => ($valorcancela+$credito30dias)			        
+					);
+				};
+				if ($r->id_forma == 5){
+					$update_general = array(				        
+				        'credito60dias' => ($valorcancela+$credito60dias)			        
+					);
+				};
+
+				$this->db->where('id', $id);		  
+	    		$this->db->update('recaudacion_general', $update_general);				
+					
+			}else{
+
+				if ($r->id_forma == 1){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'contado' => ($valorcancela-$valorvuelto),
+				        'id_caja' => $idcaja,
+				        'id_forma' =>$condpago,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 2){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'chequealdia' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 8){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'chequeafecha' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 11){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'credito' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 7){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'tarjetadebito' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 4){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'tarjetacredito' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 6){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'transferencia' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 3){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'credito30dias' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				if ($r->id_forma == 5){
+					$update_general = array(
+					    'id_recaudacion' =>	$recauda,		        
+				        'credito60dias' => $valorcancela,
+				        'id_forma' =>$condpago,
+				        'id_caja' => $idcaja,
+						'num_documento' => $numdocum,
+					    'id_cajero' => $idcajero,
+					    'fecha' => date('Y-m-d')			        
+					);
+				};
+				
+				$this->db->insert('recaudacion_general', $update_general);
+
+		    };
+
+		}
+			
+		}		
 			
 		$factura_cliente = array(
 			'tipo_documento' => $tipodocumento,
@@ -2183,20 +2372,13 @@ class Recaudacion extends CI_Controller {
 
  			$this->load->database();
 
-            $query = $this->db->query('SELECT acc.*, t.nombre as desc_pago,
-            r.id_caja as id_caja, r.id_cajero as id_cajero, n.nombre as nom_caja,
-            e.nombre as nom_cajero, r.num_comp as num_comp, r.num_doc as num_doc, cor.nombre as nom_documento, cli.nombres as nom_cliente FROM recaudacion_detalle acc
-            left join cond_pago t on (acc.id_forma = t.id)
-            left join recaudacion r on (acc.id_recaudacion = r.id)
-            left join preventa pr on (r.id_ticket = pr.num_ticket)
-            left join correlativos cor on (pr.id_tip_docu = cor.id)
-            left join cajas n on (r.id_caja = n.id)
-            left join cajeros e on (r.id_cajero = e.id)
-            left join clientes cli on (r.id_cliente = cli.id)
-            WHERE acc.fecha_comp = "'.$fecha.'" and n.id="'.$idcaja.'" 
-            order by num_doc asc');
+ 			$query = $this->db->query('SELECT acc.*, n.nombre as nom_caja, e.nombre as 
+ 			nom_cajero FROM recaudacion acc
+            left join cajas n on (acc.id_caja = n.id)
+			left join cajeros e on (acc.id_cajero = e.id)
+			WHERE acc.fecha = "'.$fecha.'" and n.id="'.$idcaja.'" ');
 
-
+           
                 $header = '
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -2271,16 +2453,36 @@ class Recaudacion extends CI_Controller {
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque a fecha</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Credito</td>
 	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cred 30d</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Deb/Credito</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta AbcDin</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Debito</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Credito</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Transfer.</td>	        	             
 	       </tr>';	
 	       
 	        $a="ok";
 
 			$array_detail = array();
-			$body_detail = "";	  
-		    foreach($users as $v){		      	    		      		     	
+			$body_detail = "";
+			 
+		    foreach($users as $t){
+
+		    	$iddetalle = ($t['id']);
+		    
+				$query2 = $this->db->query('SELECT acc.*, t.nombre as desc_pago,
+		        r.id_caja as id_caja, r.id_cajero as id_cajero, n.nombre as nom_caja,
+		        e.nombre as nom_cajero, r.num_comp as num_comp, r.num_doc as num_doc, cor.nombre as nom_documento, cli.nombres as nom_cliente FROM recaudacion_detalle acc
+		        left join cond_pago t on (acc.id_forma = t.id)
+		        left join recaudacion r on (acc.id_recaudacion = r.id)
+		        left join preventa pr on (r.id_ticket = pr.num_ticket)
+		        left join correlativos cor on (pr.id_tip_docu = cor.id)
+		        left join cajas n on (r.id_caja = n.id)
+		        left join cajeros e on (r.id_cajero = e.id)
+		        left join clientes cli on (r.id_cliente = cli.id)
+		        WHERE acc.id_recaudacion = "'.$iddetalle.'"  
+		        order by num_doc asc');	  
+		        
+		        $users2 = $query2->result_array();
+		        
+		        foreach($users2 as $v){  	    		      		     	
 
 		      	list($dia, $mes, $anio) = explode("-",$v['fecha_transac']);
 				$fecha3 = $anio ."-". $mes ."-". $dia;
@@ -2761,6 +2963,8 @@ class Recaudacion extends CI_Controller {
 
 			};
 
+		};
+
 		    $body_detail .= '
 				<tr>				
 				<td width="60px" style="text-align:center;font-size:12px">'.$v['num_doc'].'</td>	
@@ -3066,8 +3270,8 @@ class Recaudacion extends CI_Controller {
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque a fecha</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Credito</td>
 	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cred 30d</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Deb/Cred</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta AbcDin</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Debito</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Credito</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Transfer.</td>	        	             
 	       </tr>';	
 	       
@@ -3182,13 +3386,13 @@ class Recaudacion extends CI_Controller {
 			    };
 				};
 				if ($tarjetacredito>0){
-				$doc4 = "TARJETA ABCDIN";
+				$doc4 = "TARJETA CREDITO";
 				if ($v['estado']!="NUL"){
 				$cancelado4 +=$tarjetacredito;
 				};
 				};
 				if ($tarjetadebito>0){
-				$doc5 = "TARJETA DEBITO/CREDITO";
+				$doc5 = "TARJETA DEBITO";
 				if ($v['estado']!="NUL"){
 				$cancelado5 +=$tarjetadebito;
 			    };
