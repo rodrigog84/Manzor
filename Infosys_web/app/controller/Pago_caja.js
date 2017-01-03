@@ -64,6 +64,9 @@ Ext.define('Infosys_web.controller.Pago_caja', {
     },{    
         ref: 'buscarclientespagocaja',
         selector: 'buscarclientespagocaja'
+    },{    
+        ref: 'preventaprincipal',
+        selector: 'preventaprincipal'
     }
     
     ],
@@ -72,9 +75,9 @@ Ext.define('Infosys_web.controller.Pago_caja', {
     	
         this.control({
 
-            'topmenus menuitem[action=mpagocaja]': {
-                click: this.mpagocaja
-            },
+            //'topmenus menuitem[action=mpagocaja]': {
+            //    click: this.mpagocaja
+            //},
             'pagocajaprincipal button[action=generarpago]': {
                 click: this.generarpago
             },
@@ -2234,10 +2237,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
             return;
         };
 
-        var viewport = this.getPanelprincipal();
-        viewport.removeAll();
-        viewport.add({xtype: 'pagocajaprincipal'});
-        var viewedit = this.getPagocajaprincipal();        
+        var viewedit = this.getPreventaprincipal();   
         viewedit.down('#comprobanteId').setValue(correlanue);
         viewedit.down('#nomcajaId').setValue(idcaja.nombre);
         viewedit.down("#cajaId").setValue(idcaja.id);
@@ -2276,7 +2276,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
             }
            
         });
-        viewedit.down("#nombresId").focus() 
+        //viewedit.down("#nombresId").focus() 
         //view.close();
 
         

@@ -67,6 +67,29 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                         align: 'stretch'
                                     },
                                     items: [{
+                                    width: 80,
+                                    labelWidth: 20,
+                                    xtype: 'textfield',
+                                    itemId: 'recaudaId',
+                                    fieldLabel: 'recau',
+                                    readOnly: true,
+                                    hidden :true
+                                },{
+                                    width: 80,
+                                    labelWidth: 20,
+                                    xtype: 'textfield',
+                                    itemId: 'cajaId',
+                                    fieldLabel: 'Caja',
+                                    readOnly: true,
+                                    hidden :true
+                                },{
+                                    width: 120,
+                                    xtype: 'textfield',
+                                    itemId: 'cajeroId',
+                                    fieldLabel: 'Cajero',
+                                    readOnly: true,
+                                    hidden: true
+                                },{
                                             xtype: 'numberfield',
                                             fieldCls: 'required',
                                             maxHeight: 25,

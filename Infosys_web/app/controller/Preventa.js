@@ -206,8 +206,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             },
             'buscarproductospreventa2 button[action=buscar2]': {
                 click: this.buscarp2
-            },
-           
+            },           
             'buscarclientespreventa button[action=buscar]': {
                 click: this.buscar
             },
@@ -326,14 +325,68 @@ Ext.define('Infosys_web.controller.Preventa', {
         st.proxy.extraParams = {bodega : bodega,
                                 opcion : "Todos"}
         st.load();
-        
+
+        var cajero = "1";
+        console.log(bodega)
+        if (bodega==1){
+        var caja = "1";
+        };
+        if (bodega==2){
+        var caja = "2";
+        };
+        if (bodega==3){
+        var caja = "3";
+        };
+        if (bodega==4){
+        var caja = "4";
+        };
+        if (bodega==5){
+        var caja = "5";
+        };
+        var fecha = 0;
+        console.log(caja)
+                
+        Ext.Ajax.request({
+            url: preurl + 'genera_pagos/leer',
+            params: {
+                cajero: cajero,
+                caja: caja,
+                fecha: fecha
+            },
+            success: function(response){
+                var view = Ext.create('Infosys_web.view.Pago_caja.Apertura').show();
+                var resp = Ext.JSON.decode(response.responseText);
+                var caja= resp.caja;
+                if (resp.success == true) {
+                    view.down('#efectuvoId').setValue(caja.efectivo);
+                    view.down('#totchequesId').setValue(caja.cheques);
+                    view.down('#otrosmontosId').setValue(caja.otros);
+                    view.down('#recaudaId').setValue(caja.id);
+                    view.down('#cajaId').setValue(caja.id_caja);
+                    view.down('#cajeroId').setValue(caja.id_cajero);
+                    view.down('#efectuvoId').focus();                 
+                    
+                }else{
+
+                
+                 view.down('#efectuvoId').focus();
+                 view.down('#cajaId').setValue(caja);   
+                 view.down('#cajeroId').setValue(cajero);   
+                }
+            }
+           
+        });
+
+            
     },
 
     ventadirecta: function(){
 
          //var view = this.getPreventaingresar();
          var viewIngresa = this.getPreventaprincipal();
-         var idbodega = viewIngresa.down('#bodegaId').getValue();
+         var idcajero = view.down('#cajeroId').getValue();
+         var idcaja = view.down('#cajaId').getValue();
+         var recauda = viewIngresa.down('#recaudaId').getValue();
          var tipdoc="101";
          var rut ="19";
          var nombre = "6";
@@ -370,7 +423,10 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down('#direccionId').setValue(detalle.direccion);
                     view.down('#giroId').setValue(detalle.id_giro);  
                     view.down('#tipoVendedorId').setValue(detalle.id_vendedor);
-                    view.down('#numboleta2Id').setValue(boleta.correlativo);           
+                    view.down('#numboleta2Id').setValue(boleta.correlativo);
+                    view.down('#numboleta2Id').setValue(idcajero);
+                    view.down('#numboleta2Id').setValue(idcaja);
+                    view.down('#numboleta2Id').setValue(recauda);           
                     view.down("#codigoId").focus();   
                     
                 }else{

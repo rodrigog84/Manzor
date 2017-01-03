@@ -136,6 +136,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'generapagocheque button[action=eliminaritem]': {
                 click: this.eliminaritem2
             },
+            'topmenus menuitem[action=mpagocaja]': {
+                click: this.mpagocaja
+            },
         });
     },
 
@@ -1023,6 +1026,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var viewIngresa = this.getDocumentosingresar();
         var bolEnable = true;
         viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
+        var idcajero = viewIngresa.down('#cajeroId').getValue();
+        var idcaja = viewIngresa.down('#cajaId').getValue();
         var numeroticket = viewIngresa.down('#ticketId').getValue();
         var idtipo = viewIngresa.down('#tipoDocumento2Id').getValue();
         var idcliente = viewIngresa.down('#id_cliente').getValue();
@@ -1063,6 +1068,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var stPreventa = this.getPreventaStore();
         var observa = viewIngresa.down('#observaId').getValue();
         var idbodega = viewIngresa.down('#bodegaId').getValue();
+        var recauda =  viewIngresa.down('#recaudaId').getValue();
 
         if(idtipo == 101 || idtipo == 105){
 
@@ -1103,7 +1109,12 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         }else{
             var numdoc = viewIngresa.down('#numboleta2Id').getValue();
 
-        }        
+        }
+        
+        var viewedit = this.getPagocajaprincipal();
+        var contado =  viewedit.down('#contadoId').getValue();
+        var cheques =  viewedit.down('#chequesId').getValue();
+        var otros =  viewedit.down('#otrosId').getValue();      
         
         var totaldocumento = viewIngresa.down('#finaltotalpostId').getValue();
         var tdocumento = (viewIngresa.down('#finaltotalpId').getValue());        
@@ -1116,59 +1127,21 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var stCombo = formapago.getStore();
         var record = stCombo.findRecord('id', formapago.getValue()).data;
         var condpago = (record.id);        
-        var idrecauda=1;
         var valorcancela = viewIngresa.down('#valorcancelaId').getValue(); 
         var valorvuelto = viewIngresa.down('#valorvueltoId').getValue();
         if (!valorvuelto){
             valorvuelto=0;
         }
 
-        if (bodega==1){
-
-        var idcajero = 1;
-        var idcaja = 1;
-
-        };
-
-        if (bodega==2){
-
-        var idcajero = 1;
-        var idcaja = 2;
-
-        };
-
-        if (bodega==3){
-
-        var idcajero = 1;
-        var idcaja = 3;
-
-        };
-
-        if (bodega==4){
-
-        var idcajero = 1;
-        var idcaja = 4;
-
-        };
-
-        if (bodega==5){
-
-        var idcajero = 1;
-        var idcaja = 5;
-
-        };
-
-        if (bodega==6){
-
-        var idcajero = 1;
-        var idcaja = 6;
-
-        };
-
         var valorapagar = parseInt(viewIngresa.down('#finaltotalpostId').getValue());
         var valorpagado = parseInt(viewIngresa.down('#valorcancelaId').getValue());
         
         if (valida=="SI"){
+
+            var valora = parseInt(viewIngresa.down('#finaltotalpostId').getValue());
+            var valorb = parseInt(viewIngresa.down('#finaltotalpId').getValue());
+            var valortotal = ((valora - valorb));
+            var cheques = (cheques) + (valortotal); 
             
         }else{
         
@@ -1212,6 +1185,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             var numcheque = 0;
             var nombrebanco = "Venta al credito";
             var valorvuelto = 0;
+            var otros = (otros) + (valorcancela - tdocumento);
             if (valorcancela<tdocumento){
 
                 var bolEnable = false;
@@ -1226,7 +1200,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         if (record.nombre == "TARJETA DE DEBITO") {
 
             
-            var otros = (otros) + (valortotal);
+            var otros = (otros) + (valorcancela - tdocumento);
+            
             if (valorcancela<tdocumento){
 
                 var bolEnable = false;
@@ -1240,7 +1215,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         if (record.nombre == "TARJETA DE CREDITO") {
 
-            var otros = (otros) + (valortotal);
+            var otros = (otros) + (valorcancela - tdocumento);
+            
             if (valorcancela<tdocumento){
 
                 var bolEnable = false;
@@ -1284,7 +1260,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 totaldocumento: totaldocumento,
                 tdocumento: tdocumento,
                 bodega: bodega,
-                idrecauda: idrecauda 
+                idrecauda: recauda,
+                contado: contado,
+                cheques: cheques,
+                otros: otros
             },
 
             success: function(response){
@@ -1295,6 +1274,13 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 Ext.Msg.alert('Informacion', 'Creada Exitosamente.');
                 //st.load();
                 //window.open(preurl + 'facturas/exportPDF/?idfactura='+idboleta);
+                var viewedit = this.getPreventaprincipal();             
+                viewedit.down('#efectivonId').setValue(contado);
+                viewedit.down('#efectivoId').setValue(Ext.util.Format.number(contado, '0,00'));        
+                viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
+                viewedit.down('#totchequesnId').setValue(cheques);
+                viewedit.down('#otrosmontosnId').setValue(otros);
+                viewedit.down('#otrosmontosId').setValue(Ext.util.Format.number(otros, '0,00'));
             }
         });
 
