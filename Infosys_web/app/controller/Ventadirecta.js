@@ -1478,7 +1478,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             calculo = 0;
             view.down('#valorvueltoId').setDisabled(true);
             view.down('#valorvueltoId').setValue(calculo);
-            view.down('#valorcancelaId').setValue(totdoc);
+            //view.down('#valorcancelaId').setValue(totdoc);
 
         };
                
@@ -1500,7 +1500,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
            view.down("#numchequeId").setDisabled(true);
            view.down('#valorvueltoId').setDisabled(true);
            view.down("#bancoId").setDisabled(false);
-           view.down("#valorcancelaId").setValue(totdocu);                     
+           //view.down("#valorcancelaId").setValue(totdocu);                     
            view.down("#numboleta2Id").focus();
         
         };
@@ -1510,7 +1510,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
            view.down("#numchequeId").setDisabled(true);
            view.down('#valorvueltoId').setDisabled(true);
            view.down("#bancoId").setDisabled(false);
-           view.down("#valorcancelaId").setValue(totdocu);           
+           //view.down("#valorcancelaId").setValue(totdocu);           
            view.down("#numboleta2Id").focus();
         
         };
