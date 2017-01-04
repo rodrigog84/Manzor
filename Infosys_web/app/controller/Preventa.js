@@ -387,6 +387,7 @@ Ext.define('Infosys_web.controller.Preventa', {
          var idcajero = view.down('#cajeroId').getValue();
          var idcaja = view.down('#cajaId').getValue();
          var recauda = viewIngresa.down('#recaudaId').getValue();
+         var idbodega = viewIngresa.down('#bodegaId').getValue();
          var tipdoc="101";
          var rut ="19";
          var nombre = "6";

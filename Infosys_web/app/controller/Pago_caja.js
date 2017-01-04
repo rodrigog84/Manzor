@@ -2210,20 +2210,17 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         var cheques = view.down('#totchequesId').getValue();
         var otros = view.down('#otrosmontosId').getValue();
         var fecha = view.down('#fechaaperturaId').getValue();
-        var recauda = view.down('#recaudaId').getValue();
-        
+        var recauda = view.down('#recaudaId').getValue();        
         var stCombo = cajero.getStore();
         var idcajero = stCombo.findRecord('id', cajero.getValue()).data;
         var caje = idcajero.id;
-
         var caja = view.down('#cajaId');
         
         var stCombo = caja.getStore();
         var idcaja = stCombo.findRecord('id', caja.getValue()).data;
         correlanue = idcaja.correlativo;
         correlanue = (parseInt(correlanue)+1);
-        var caj = idcaja.id;
-        
+        var caj = idcaja.id;       
        
         if (!caje){
 
@@ -2237,7 +2234,8 @@ Ext.define('Infosys_web.controller.Pago_caja', {
             return;
         };
 
-        var viewedit = this.getPreventaprincipal();   
+        var viewedit = this.getPreventaprincipal();
+        var idbodega = viewedit.down('#bodegaId').getValue();
         viewedit.down('#comprobanteId').setValue(correlanue);
         viewedit.down('#nomcajaId').setValue(idcaja.nombre);
         viewedit.down("#cajaId").setValue(idcaja.id);
@@ -2251,8 +2249,11 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         viewedit.down('#otrosmontosId').setValue(Ext.util.Format.number(otros, '0,00'));
         viewedit.down('#fechaaperturaId').setValue(fecha);
         var stPreventa = this.getPreventaStore();
-        stPreventa.proxy.extraParams = {fecha : fecha}
+        stPreventa.proxy.extraParams = {fecha: fecha,
+                                        bodega: idbodega,
+                                        opcion: "Todos"}
         stPreventa.load();
+        console.log("llegamis")
         
         Ext.Ajax.request({
             
