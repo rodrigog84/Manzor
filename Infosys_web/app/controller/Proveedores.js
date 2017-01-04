@@ -109,7 +109,7 @@ Ext.define('Infosys_web.controller.Proveedores', {
             },
             'proveedoringresar #rutId': {
                 specialkey: this.special,
-                //blur: this.validarut,
+                blur: this.validarut
             },
             'proveedordesplegar button[action=grabareditarproveedor]': {
                 click: this.grabareditarproveedor
@@ -368,13 +368,16 @@ Ext.define('Infosys_web.controller.Proveedores', {
             var dig = (Ext.util.Format.substr(rut,1,1));          
 
         };
-        
-        if (dig == "-"){
-            Ext.Msg.alert('Rut Erroneo Ingrese Sin Guion');
-            view.down("#rutId").setValue(cero);
-            return;      
 
-        }else{
+        //console.log(dig);
+
+        /*if (dig != "-"){
+
+            Ext.Msg.alert('Rut Erroneo Ingrese Guion');
+            view.down("#rutId").setValue(cero);
+            return;           
+
+        };*/
        
         Ext.Ajax.request({
             url: preurl + 'proveedores/validaRut?valida='+rut,
@@ -418,8 +421,7 @@ Ext.define('Infosys_web.controller.Proveedores', {
             }
               
 
-        });
-        };      
+        });       
       
     },
 
@@ -503,7 +505,7 @@ Ext.define('Infosys_web.controller.Proveedores', {
         //var tipocliente = view.down('#tipoClienteId').getValue();        
         var st = this.getProveedoresStore();
 
-        Ext.Ajax.request({
+         Ext.Ajax.request({
             url: preurl + 'proveedores/update',
             params: {               
                 nombre: nombre,

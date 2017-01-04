@@ -384,8 +384,8 @@ Ext.define('Infosys_web.controller.Preventa', {
 
          //var view = this.getPreventaingresar();
          var viewIngresa = this.getPreventaprincipal();
-         var idcajero = view.down('#cajeroId').getValue();
-         var idcaja = view.down('#cajaId').getValue();
+         var idcajero = viewIngresa.down('#cajeroId').getValue();
+         var idcaja = viewIngresa.down('#cajaId').getValue();
          var recauda = viewIngresa.down('#recaudaId').getValue();
          var idbodega = viewIngresa.down('#bodegaId').getValue();
          var tipdoc="101";
@@ -933,7 +933,6 @@ Ext.define('Infosys_web.controller.Preventa', {
             },
             success: function(response){
                 var resp = Ext.JSON.decode(response.responseText);
-                console.log("llegamos")
                 if (resp.success == true){                
                 var observar = (resp.observar);
                 var rut = (observar.rut);

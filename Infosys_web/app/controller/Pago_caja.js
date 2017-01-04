@@ -2253,7 +2253,6 @@ Ext.define('Infosys_web.controller.Pago_caja', {
                                         bodega: idbodega,
                                         opcion: "Todos"}
         stPreventa.load();
-        console.log("llegamis")
         
         Ext.Ajax.request({
             
