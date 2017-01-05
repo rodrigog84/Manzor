@@ -17,8 +17,7 @@ Ext.define('Infosys_web.controller.Ordencompra', {
               'Tipo_documento.Selector3',
               'Ordeneditar',
               'Tabladescuento',
-              'clientes.Clientes',
-              'Ordencompra_recepcion'],
+              'clientes.Clientes'],
 
     models: ['Orden_compra', 'ordencompra.Item'],
 
@@ -27,7 +26,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         'ordencompra.Recepcionforzada',
         'ordencompra.BusquedaProveedor2',
         'ordencompra.Principal',
-        'recepciones.Principal',
         'ordencompra.Principaltodas',
         'ordencompra.Principal_recepcion',
         'ordencompra.Principal_forzada',
@@ -107,13 +105,7 @@ Ext.define('Infosys_web.controller.Ordencompra', {
     },{
         ref: 'buscarproductosord',
         selector: 'buscarproductosord'
-    },{
-        ref: 'recepcionesprincipal',
-        selector: 'recepcionesprincipal'
     }
-
-
-
 
 
 
@@ -177,18 +169,11 @@ Ext.define('Infosys_web.controller.Ordencompra', {
             'ordencompraprincipal button[action=exportarordencompra]': {
                 click: this.exportarordencompra
             },
-
-            'recepcionesprincipal button[action=exportarordencompra4]': {
-                click: this.exportarordencompra4
-            },
             'ordencompraprincipaltodas button[action=exportarordencompra]': {
                 click: this.exportarordencompra2
             },
             'topmenus menuitem[action=mordencompra]': {
                 click: this.mordencompra
-            },
-            'topmenus menuitem[action=mrecepcion]': {
-                click: this.mrecepcion
             },
             'topmenus menuitem[action=rordencompra]': {
                 click: this.rordencompra
@@ -452,10 +437,10 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var record = stCombo.findRecord('id', descuento.getValue()).data;
         var dcto = (record.porcentaje);
        
-        afecto = (Math.round(total / 1.19));
-        descuentopesos = (Math.round(neto * dcto) / 100);
+        afecto = (total / 1.19);
+        descuentopesos = ((neto * dcto) / 100);
         afecto = neto - descuentopesos;
-        pretotal = (Math.round((afecto * 19) / 100) + afecto);
+        pretotal = (((afecto * 19) / 100) + afecto);
         iva = (pretotal - afecto);
         afecto = afecto;
         neto = neto;
@@ -547,7 +532,7 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var cantmedidad = view.down('#cantmedId').getValue();
         var cantidadori = view.down('#cantidadOriginalId').getValue();
         var precio = ((view.down('#precioId').getValue()));
-        var precioun = (Math.round(view.down('#precioId').getValue())/ 1.19);
+        var precioun = ((view.down('#precioId').getValue())/ 1.19);
         var descuento = view.down('#totdescuentoId').getValue(); 
         var iddescuento = view.down('#DescuentoproId').getValue();
         var bolEnable = true;
@@ -561,14 +546,13 @@ Ext.define('Infosys_web.controller.Ordencompra', {
             var iddescuento = 0;
         };
               
-        var neto = ((cantidad * precio) - descuento);
         var tot = ((cantidad * precio) - descuento);
-        var tot = (Math.round(neto * 1.19));
+        var neto = ((tot / 1.19));
         var exists = 0;
-        var iva = (tot - neto );
+        var iva = (tot - neto);
+        var neto = (tot - iva);
         var total = ((neto + iva ));
         
-         
         if(!producto){            
             Ext.Msg.alert('Alerta', 'Debe Seleccionar un Producto');
             return false;
@@ -769,7 +753,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
 
         var view = this.getOrdencompraeditar();
         var idproveedor = view.down('#idproveedor').getValue();
-        var vendedor = view.down('#tipoVendedorId').getValue();
         var neto = view.down('#finaltotalnetoId').getValue();
         var iva = view.down('#finaltotalivaId').getValue();
         var total = view.down('#finaltotalpostId').getValue();
@@ -777,7 +760,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var descuentofinal = view.down('#descuentovalorId').getValue();
         var fecha = view.down('#fechaordenId').getValue();
         var fecharecepcion = view.down('#fecharecepcionId').getValue();
-        var vendedor = view.down('#tipoVendedorId').getValue();
 
         var stItem = this.getOrdeneditarStore();
         var stCotiz = this.getOrden_compraStore();
@@ -813,7 +795,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
                 idproveedor: idproveedor,
                 id_orden: idId,
                 num_orden: numorden,
-                idvendedor: vendedor,
                 dataproveedor: Ext.JSON.encode(dataproveedor),
                 items: Ext.JSON.encode(dataItems),
                 afecto : afecto,
@@ -875,7 +856,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
                     view.down('#fecharecepcionId').setValue(cliente.fecha_recepcion);
                     view.down('#num_ordenId').setValue(cliente.num_orden);                    
                     view.down('#direccionId').setValue(cliente.direccion);
-                    view.down('#tipoVendedorId').setValue(cliente.id_vendedor);
                     view.down('#rutId').setValue(cliente.rut);
                     view.down('#fechaordenId').setValue(cliente.fecha);                    
                     view.down('#giroId').setValue(cliente.id_giro);                    
@@ -1328,25 +1308,11 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var view = this.getOrdencomprarecepcion();
         var id = view.down('#Id').getValue();
         var idbodega = view.down('#bodegaId').getValue();
-        var numeroorden = view.down('#numeroId').getValue();
-        var numerorecepcion = view.down('#numrecepcionId').getValue();
+        var numero = view.down('#numeroId').getValue();
         var idproveedor = view.down('#idproveedor').getValue();
         var numerodoc = view.down('#numdocId').getValue();
         var recepcion = view.down('#recepcionId').getValue();
         var fecha = view.down('#fechaordenId').getValue();
-        var fecharec = view.down('#fechaordenId').getValue();
-
-        console.log(fecharec);
-
-        if (!fecharec){
-
-             Ext.Msg.alert('Debe Selecionar Fecha');
-             return;
-            
-
-        };
-
-
 
         if (!idbodega){
 
@@ -1374,15 +1340,19 @@ Ext.define('Infosys_web.controller.Ordencompra', {
             cant = (r.data.stock)
         });
 
-              
+        /* if (!cant){
+             Ext.Msg.alert('Recepcione producto');
+             return;
+        };*/
+
+       
         Ext.Ajax.request({
             url: preurl + 'ordencompra/update',
             params: {
                 items: Ext.JSON.encode(dataItems),
                 id: id,
                 idbodega: idbodega,
-                numeroorden: numeroorden,
-                numerorecepcion: numerorecepcion,
+                numero: numero,
                 numerodoc: numerodoc,
                 recepcion: recepcion,
                 idproveedor: idproveedor,
@@ -1459,14 +1429,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         view.down("#nombreId").focus();
     },
 
-    mrecepcion: function(){
-        var viewport = this.getPanelprincipal();
-        viewport.removeAll();
-        viewport.add({xtype: 'recepcionesprincipal'});
-        var view = this.getRecepcionesprincipal();        
-        view.down("#nombreId").focus();
-    },
-
     rordencompra: function(){
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
@@ -1494,21 +1456,10 @@ Ext.define('Infosys_web.controller.Ordencompra', {
 
     exportarordencompra: function(){
         var view = this.getOrdencompraprincipal();
+        console.log("llegamos")
         if (view.getSelectionModel().hasSelection()) {
             var row = view.getSelectionModel().getSelection()[0];
-            window.open(preurl +'ordencompra/exportPDF/?idordencompra=' + row.data.id);
-            
-        }else{
-            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
-            return;
-        }
-    },
-
-    exportarordencompra4: function(){
-        var view = this.getRecepcionesprincipal();
-        if (view.getSelectionModel().hasSelection()) {
-            var row = view.getSelectionModel().getSelection()[0];
-            window.open(preurl +'ordencompra/exportPDF2/?idordencompra=' + row.data.id);
+            window.open(preurl +'ordencompra/exportPDF3/?idordencompra=' + row.data.id);
             
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
@@ -1536,7 +1487,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var view = this.getOrdencompraprincipalrecepcion();
         if (view.getSelectionModel().hasSelection()) {
             var row = view.getSelectionModel().getSelection()[0];
-            var id = (row.get('id'));
             var cumplida = (row.get('cumplida'));
             if (cumplida=="SI"){
 
@@ -1544,39 +1494,13 @@ Ext.define('Infosys_web.controller.Ordencompra', {
             return;                
 
             }else{
-                var nombre = "22";
-                var edit = Ext.create('Infosys_web.view.ordencompra.Recepcion').show();
-                var st = this.getOrden_compradetalleStore()
-                st.proxy.extraParams = {nombre : id}
-                st.load();
-                Ext.Ajax.request({
-                url: preurl + 'correlativos/generarecepcion?valida='+nombre,
-                params: {
-                id: 1
-                },
-                success: function(response){
-                var resp = Ext.JSON.decode(response.responseText);
-                if (resp.success == true) {                
-                edit.down('form').loadRecord(row);
-                var cliente = resp.cliente;
-                var correlanue = cliente.correlativo;
-                correlanue = (parseInt(correlanue)+1);
-                var correlanue = correlanue;
-                edit.down("#numrecepcionId").setValue(correlanue);
-                }else{
-                Ext.Msg.alert('Correlativo YA Existe');
-                return;
-                }
-
-                }
-                
-                            
-                });
-                  
-            
+            var edit = Ext.create('Infosys_web.view.ordencompra.Recepcion').show();
+            var nombre = (row.get('id'));
+            edit.down('form').loadRecord(row);
+            var st = this.getOrden_compradetalleStore()
+            st.proxy.extraParams = {nombre : nombre}
+            st.load();
             }
-
-           
            
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
@@ -1653,11 +1577,11 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var dcto = view.down('#descuentovalorId').getValue();
 
        stItem.each(function(r){
-            pretotal = pretotal + (parseInt(r.data.total))
+            pretotal = pretotal + r.data.total
             //iva = iva + r.data.iva
             //neto = neto + r.data.neto
         });
-        neto = (Math.round(pretotal /1.19));
+        neto = ((pretotal /1.19));
         iva = ((pretotal - neto));
         afecto = neto;
         neto = neto;
@@ -1688,7 +1612,7 @@ Ext.define('Infosys_web.controller.Ordencompra', {
             iva = iva + r.data.iva
             neto = neto + r.data.neto
         });
-        neto = (Math.round(pretotal /1.19));
+        neto = ((pretotal /1.19));
         iva = ((pretotal - neto));
         afecto = neto;
         neto = neto;
@@ -1807,7 +1731,7 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var cantmedidad = view.down('#cantmedId').getValue();
         var cantidadori = view.down('#cantidadOriginalId').getValue();
         var precio = ((view.down('#precioId').getValue()));
-        var precioun = (Math.round(view.down('#precioId').getValue())/ 1.19);
+        var precioun = ((view.down('#precioId').getValue())/ 1.19);
         var descuento = view.down('#totdescuentoId').getValue(); 
         var iddescuento = view.down('#DescuentoproId').getValue();
         var bolEnable = true;
@@ -1822,7 +1746,7 @@ Ext.define('Infosys_web.controller.Ordencompra', {
               
         var neto = ((cantidad * precio) - descuento);
         var tot = ((cantidad * precio) - descuento);
-        var tot = (Math.round(neto * 1.19));
+        var tot = (parseInt(neto * 1.19));
         var exists = 0;
         var iva = (tot - neto );
         var total = ((neto + iva ));
@@ -1952,7 +1876,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
         var view = this.getOrdencompraingresar();
         var idproveedor = view.down('#idproveedor').getValue();
         var neto = view.down('#finaltotalnetoId').getValue();
-        var vendedor = view.down('#tipoVendedorId').getValue();
         var iva = view.down('#finaltotalivaId').getValue();
         var total = view.down('#finaltotalpostId').getValue();
         var afecto = view.down('#finalafectoId').getValue();
@@ -1966,12 +1889,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
              Ext.Msg.alert('Debe Ingresar Datos del Proveedor');
              return;
         }
-
-        if (!vendedor){            
-             Ext.Msg.alert('Debe Ingresar Vendedor');
-             return;
-        }
-
 
         var dataproveedor = {
             mail_contacto: view.down('#mail_contactoId').getValue(),
@@ -1995,7 +1912,6 @@ Ext.define('Infosys_web.controller.Ordencompra', {
                 idproveedor: idproveedor,
                 dataproveedor: Ext.JSON.encode(dataproveedor),
                 items: Ext.JSON.encode(dataItems),
-                idvendedor: vendedor,
                 afecto : afecto,
                 neto: neto,
                 iva: iva,
@@ -2006,9 +1922,12 @@ Ext.define('Infosys_web.controller.Ordencompra', {
             },
             success: function(response){
                 var text = response.responseText;
+                var resp = Ext.JSON.decode(response.responseText);
+                var idorden= resp.idorden;
                 Ext.Msg.alert('Informacion', 'Creada Exitosamente.');
                 view.close();
                 stCotiz.load();
+                window.open(preurl +'ordencompra/exportPDF3/?idordencompra='+idorden);
             }
         });
 

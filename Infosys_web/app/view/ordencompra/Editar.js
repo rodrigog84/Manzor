@@ -198,20 +198,6 @@ Ext.define('Infosys_web.view.ordencompra.Editar', {
                                     name : 'e_mail_contacto',
                                     itemId: 'mail_contactoId',
                                     fieldLabel: 'Mail Contacto'
-                                },{xtype: 'splitter'},{
-                                    xtype: 'combo',
-                                    itemId: 'tipoVendedorId',
-                                    width: 350,
-                                    labelWidth: 80,
-                                    fieldCls: 'required',
-                                    maxHeight: 25,
-                                    fieldLabel: '<b>VENDEDOR</b>',
-                                    forceSelection : true,
-                                    name : 'id_vendedor',
-                                    valueField : 'id',
-                                    displayField : 'nombre',
-                                    emptyText : "Seleccione",
-                                    store : 'Vendedores'                                    //disabled : true, 
                                 }
 
 

@@ -29,31 +29,20 @@ Ext.define('Infosys_web.view.ordencompra.Principal_recepcion' ,{
         dataIndex: 'num_orden'
     },{
         header: "Empresa",
-         width: 350,
+        flex: 1,
         dataIndex: 'empresa'
     },{
         header: "Emitida",
         flex: 1,
-        dataIndex: 'emitida',
-        hidden: true
+        dataIndex: 'emitida'
     },{
         header: "Semi Cumplida",
         flex: 1,
-        dataIndex: 'semicumplida',
-        hidden: true
+        dataIndex: 'semicumplida'
     },{
         header: "Cumplida",
         flex: 1,
         dataIndex: 'cumplida'
-    },{
-        header: "id_vendedor",
-        flex: 1,
-        dataIndex: 'id_vendedor',
-        hidden: true
-    },{
-        header: "Vendedor",
-        flex: 1,
-        dataIndex: 'nom_vendedor'
     },{
         header: "Contacto",
         flex: 1,

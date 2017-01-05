@@ -347,37 +347,15 @@ class Ordencompra extends CI_Controller {
 
 		$resp = array();
 		$data = json_decode($this->input->post('items'));
-		$numeroorden = $this->input->post('numeroorden');
-		$numerorecepcion = $this->input->post('numerorecepcion');
+		$numero = $this->input->post('numero');
 		$id = $this->input->post('id');
 		$idbodega = $this->input->post('idbodega');
-		$idproveedor = $this->input->post('idproveedor');		
 		$fecha = $this->input->post('fecha');
 		$numdoc = $this->input->post('numerodoc');
 		$tipdoc = $this->input->post('recepcion');
-
-		$totalfinal = 0;
-		$netofinal = 0;
-		$ivafinal = 0;
-
-		$totalr = 0;
-		$netor = 0;
-		$ivar = 0;
 		
 		$tipodocumento="4";
-
-		$recepcion_compra = array(
-		    'num_recepcion' => $numerorecepcion,
-		    'id_orden' => $id,
-            'id_proveedor' => $idproveedor,
-	        'fecha_recepcion' => $fecha,
-	        'fecha_recepcion' => $fecha,
-	        'num_doc' => $numdoc,
-	        'tip_documento' => $tipdoc,
-		);
-
-		$this->db->insert('recepcion_compra', $recepcion_compra); 
-		$idrecepcion = $this->db->insert_id();		
+		
 		
 	    $data3 = array(
 	        'recepcionada' => "SI"
@@ -390,7 +368,7 @@ class Ordencompra extends CI_Controller {
 		$data2 = array(
 	        'semicumplida' => "SI",
 	        'id_bodega' => $idbodega
-	    );
+	    	);
 
     	$this->db->where('id', $id);
 
@@ -451,9 +429,10 @@ class Ordencompra extends CI_Controller {
 		        'fecha_movimiento' => $fecha
 			);
 
-			$this->db->insert('existencia_detalle', $datos2);			
+			$this->db->insert('existencia_detalle', $datos2);
 
-			$query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
+
+			 $query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
 	    	 $row = $query->result();
 			 if ($query->num_rows()>0){
 
@@ -489,10 +468,6 @@ class Ordencompra extends CI_Controller {
 
 	    	if ($vstock==$v->cantidad){
 
-	    		$cantidad = ($v->cantidad);
-	    		$neto = ($v->subtotal * $cantidad);
-	    		$total = ($neto * 1.19);
-	    		$iva = ($total - $neto);
 
 	    		$data4 = array(
 		        'cant_final' => $v->stock,
@@ -503,39 +478,8 @@ class Ordencompra extends CI_Controller {
 	    		$this->db->where('id', $v->id);
 			    $this->db->update('orden_compra_item', $data4);
 
-			    $recepcion_compra_item = array(
-		        'id_producto' => $v->id_producto,
-		        'id_recepcion' => $idrecepcion,
-		        'precio' => $v->subtotal,
-		        'cantidad' => $v->cantidad,
-		        'cant_medida' => $v->cant_medida,
-		        'descuento' => $v->dcto,
-		        'id_bodega' => $idbodega,
-		        'fecha_recepcion' => date('Y-m-d H:i:s'),
-		        'total' => $total,
-		        'neto' => $neto,
-		        'iva' => $iva
-			);
 
-				$this->db->insert('recepcion_compra_item', $recepcion_compra_item);
-
-				$totalfinal = ($totalfinal + $total);
-				$netofinal = ($netofinal + $neto);
-				$afectofinal = ($netofinal + $neto);
-				$ivafinal = ($ivafinal + $iva);
-
-				$recepcion_compra2 = array(
-			    'neto' => $netofinal,
-			    'afecto' => $afectofinal,
-	            'iva' => $ivafinal,
-		        'total' => $totalfinal,
-				);
-
-				$this->db->where('id', $idrecepcion);
-
-				$this->db->update('recepcion_compra', $recepcion_compra2); 
-
-				$this->Bitacora->logger("I", 'recepcion_compra_item', $id);	    		
+	    		
 
 	    	}else{
 
@@ -567,8 +511,6 @@ class Ordencompra extends CI_Controller {
 	    		$total = ($neto * 1.19);
 	    		$iva = ($total - $neto);
 
-
-
 	    	$orden_compra_item = array(
 		        'id_producto' => $v->id_producto,
 		        'id_ordencompra' => $id,
@@ -586,39 +528,11 @@ class Ordencompra extends CI_Controller {
 		        'valor_prom' => $v->subtotal
 			);
 
-			$totalr = (((($v->stock * $v->valor) - $v->dcto )*1.19));
-			$netor= (($v->stock * $v->valor));
-			$ivar= ($totalr- $netor);
-
-			$recepcion_compra_item = array(
-		        'id_producto' => $v->id_producto,
-		        'id_recepcion' => $idrecepcion,
-		        'precio' => $v->valor,
-		        'cantidad' => $v->stock,
-		        'cant_medida' => $v->cant_medida,
-		        'total' => $totalr,
-		        'descuento' => $v->dcto,
-		        'id_bodega' => $idbodega,
-		        'fecha_recepcion' => date('Y-m-d H:i:s'),
-		        'total' => $totalr,
-		        'neto' => $netor,
-		        'iva' => $ivar
-			);
-
-			$this->db->insert('recepcion_compra_item', $recepcion_compra_item);
-
-			$totalfinal = ($totalfinal + $totalr);
-			$netofinal = ($netofinal + $netor);
-			$ivafinal = ($ivafinal + $ivar);
-
-		
-			$this->Bitacora->logger("I", 'recepcion_compra_item', $id);
-
-
 
 			$this->db->insert('orden_compra_item', $orden_compra_item);	
 
-			
+			$this->Bitacora->logger("I", 'orden_compra_item', $id);
+
 	    	};
 
 	        };
@@ -631,9 +545,9 @@ class Ordencompra extends CI_Controller {
 	        'id_bodega' => $idbodega,
 	    );
 
-    	$this->db->where('id', $id);
+	    	$this->db->where('id', $id);
 
-		$this->db->update('orden_compra', $data2);	
+			$this->db->update('orden_compra', $data2);	
 
 
 		$rec = 0;
@@ -665,18 +579,6 @@ class Ordencompra extends CI_Controller {
 
         $resp['success'] = true;
 
-        	$recepcion_compra2 = array(
-		    'neto' => $netofinal,
-		    'afecto' => $afectofinal,
-            'iva' => $ivafinal,
-	        'total' => $totalfinal,
-			);
-
-			$this->db->where('id', $idrecepcion);
-
-			$this->db->update('recepcion_compra', $recepcion_compra2); 
-
-
         $this->Bitacora->logger("M", 'orden_compra', $id);
         $this->Bitacora->logger("M", 'orden_compra_item', $id);
 
@@ -699,10 +601,9 @@ class Ordencompra extends CI_Controller {
 
 		if($opcion == "Rut"){
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM orden_compra ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -714,10 +615,9 @@ class Ordencompra extends CI_Controller {
 
 		}else if($opcion == "Numero"){
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM orden_compra ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -736,10 +636,9 @@ class Ordencompra extends CI_Controller {
 	        	$sql_nombre .= "and pro.nombres like '%".$nombre."%' ";
 	        }
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM orden_compra ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -749,10 +648,9 @@ class Ordencompra extends CI_Controller {
 
 		}else if($opcion == "Todos"){
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado 
 			FROM orden_compra ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -762,10 +660,9 @@ class Ordencompra extends CI_Controller {
 
 		}else{
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ctz.semicumplida as estado
 			FROM orden_compra ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -828,10 +725,9 @@ class Ordencompra extends CI_Controller {
 
 		if($opcion == "Rut"){
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM ordencompra_original ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -843,10 +739,9 @@ class Ordencompra extends CI_Controller {
 
 		}else if($opcion == "Numero"){
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM ordencompra_original ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -865,10 +760,9 @@ class Ordencompra extends CI_Controller {
 	        	$sql_nombre .= "and pro.nombres like '%".$nombre."%' ";
 	        }
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM ordencompra_original ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -878,10 +772,9 @@ class Ordencompra extends CI_Controller {
 
 		}else if($opcion == "Todos"){
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM ordencompra_original ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
@@ -890,147 +783,15 @@ class Ordencompra extends CI_Controller {
 
 		}else{
 
-			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro, ven.nombre as nom_vendedor
+			$query = $this->db->query('SELECT ctz.*, pro.nombres as empresa, pro.rut as rut, pro.direccion as direccion, ciu.nombre as ciudad, com.nombre as comuna, gir.nombre as giro 
 			FROM ordencompra_original ctz
 			LEFT JOIN clientes pro ON (ctz.id_proveedor = pro.id)
-			LEFT JOIN vendedores ven ON (ctz.id_vendedor = ven.id)
 			LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 			LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 			LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
 			order by ctz.id desc		
 			limit '.$start.', '.$limit.'');
 
-			
-		};
-
-		foreach ($query->result() as $row)
-		{
-
-			$rutautoriza = $row->rut;
-		   	if (strlen($rutautoriza) == 8){
-		      $ruta1 = substr($rutautoriza, -1);
-		      $ruta2 = substr($rutautoriza, -4, 3);
-		      $ruta3 = substr($rutautoriza, -7, 3);
-		      $ruta4 = substr($rutautoriza, -8, 1);
-		      $row->rut = ($ruta4.".".$ruta3.".".$ruta2."-".$ruta1);
-		    };
-		    if (strlen($rutautoriza) == 9){
-		      $ruta1 = substr($rutautoriza, -1);
-		      $ruta2 = substr($rutautoriza, -4, 3);
-		      $ruta3 = substr($rutautoriza, -7, 3);
-		      $ruta4 = substr($rutautoriza, -9, 2);
-		      $row->rut = ($ruta4.".".$ruta3.".".$ruta2."-".$ruta1);
-		   
-		    };
-		    if (strlen($rutautoriza) == 2){
-		      $ruta1 = substr($rutautoriza, -1);
-		      $ruta2 = substr($rutautoriza, -4, 1);
-		      $row->rut = ($ruta2."-".$ruta1);
-		     
-		    };
-		   
-			$data[] = $row;
-			//$total = $total +1;
-			//$countAll = $total;
-		}
-        $resp['success'] = true;
-        $resp['total'] = $countAll;
-        $resp['data'] = $data;
-
-        echo json_encode($resp);
-	}
-
-	public function getAllrecepcion(){
-
-		$resp = array();
-        $start = $this->input->get('start');
-        $limit = $this->input->get('limit');
-        $opcion = $this->input->get('opcion');
-        $nombres = $this->input->get('nombre');
-        $semi ="NO";        
-
-		$countAll = $this->db->count_all_results("recepcion_compra");
-		$data = array();
-		$total = 0;
-
-		if($opcion == "Rut"){
-
-			$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_recepcion, orcom.telefono_contacto as telefono_contacto, orcom.mail_contacto as mail_contacto, orcom.nombre_contacto as nombre_contacto, cli.nombres as empresa , cli.rut as rut, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, orcom.num_orden as num_orden, orcom.fecha as fecha, ven.nombre as nom_vendedor, ctz.num_doc, ctz.tip_documento FROM recepcion_compra ctz
-			LEFT JOIN orden_compra orcom on (ctz.id_orden = orcom.id)
-			LEFT JOIN vendedores ven on (orcom.id_vendedor = ven.id)
-			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
-			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
-			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
-			LEFT JOIN ciudad c on cli.id_ciudad = c.id
-			WHERE pro.rut = '.$nombres.'
-			order by ctz.id desc		
-			limit '.$start.', '.$limit.''		 
-
-			);
-
-		}else if($opcion == "Numero"){
-
-			$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_recepcion, orcom.telefono_contacto as telefono_contacto, orcom.mail_contacto as mail_contacto, orcom.nombre_contacto as nombre_contacto, cli.nombres as empresa , cli.rut as rut, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, orcom.num_orden as num_orden, orcom.fecha as fecha, ven.nombre as nom_vendedor, ctz.num_doc, ctz.tip_documento FROM recepcion_compra ctz
-			LEFT JOIN orden_compra orcom on (ctz.id_orden = orcom.id)
-			LEFT JOIN vendedores ven on (orcom.id_vendedor = ven.id)
-			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
-			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
-			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
-			LEFT JOIN ciudad c on cli.id_ciudad = c.id
-			WHERE ctz.num_orden = '.$nombres.'
-			order by ctz.id desc		
-			limit '.$start.', '.$limit.''		 
-
-			);
-
-		}else if($opcion == "Nombre"){
-
-			$sql_nombre = "";
-	        $arrayNombre =  explode(" ",$nombres);
-
-	        foreach ($arrayNombre as $nombre) {
-	        	$sql_nombre .= "and pro.nombres like '%".$nombre."%' ";
-	        }
-
-			$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_recepcion, orcom.telefono_contacto as telefono_contacto, orcom.mail_contacto as mail_contacto, orcom.nombre_contacto as nombre_contacto, cli.nombres as empresa , cli.rut as rut, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, orcom.num_orden as num_orden, orcom.fecha as fecha, ven.nombre as nom_vendedor, ctz.num_doc, ctz.tip_documento FROM recepcion_compra ctz
-			LEFT JOIN orden_compra orcom on (ctz.id_orden = orcom.id)
-			LEFT JOIN vendedores ven on (orcom.id_vendedor = ven.id)
-			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
-			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
-			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
-			LEFT JOIN ciudad c on cli.id_ciudad = c.id
-			WHERE '. $sql_nombre . '
-			order by ctz.id desc		
-			limit '.$start.', '.$limit.'');
-
-		}else if($opcion == "Todos"){
-
-			$$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_recepcion, orcom.telefono_contacto as telefono_contacto, orcom.mail_contacto as mail_contacto, orcom.nombre_contacto as nombre_contacto, cli.nombres as empresa , cli.rut as rut, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, orcom.num_orden as num_orden, orcom.fecha as fecha, ven.nombre as nom_vendedor, ctz.num_doc, ctz.tip_documento FROM recepcion_compra ctz
-			LEFT JOIN orden_compra orcom on (ctz.id_orden = orcom.id)
-			LEFT JOIN vendedores ven on (orcom.id_vendedor = ven.id)
-			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
-			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
-			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
-			LEFT JOIN ciudad c on cli.id_ciudad = c.id
-			order by ctz.id desc		
-			limit '.$start.', '.$limit.'');	
-			
-		}else{
-
-			$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_recepcion, orcom.telefono_contacto as telefono_contacto, orcom.mail_contacto as mail_contacto, orcom.nombre_contacto as nombre_contacto, cli.nombres as empresa , cli.rut as rut, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, orcom.num_orden as num_orden, orcom.fecha as fecha, ven.nombre as nom_vendedor, ctz.num_doc, ctz.tip_documento FROM recepcion_compra ctz
-			LEFT JOIN orden_compra orcom on (ctz.id_orden = orcom.id)
-			LEFT JOIN vendedores ven on (orcom.id_vendedor = ven.id)
-			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
-			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
-			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
-			LEFT JOIN ciudad c on cli.id_ciudad = c.id
-			order by ctz.id desc		
-			limit '.$start.', '.$limit.'');	
 			
 		};
 
@@ -1251,8 +1012,7 @@ class Ordencompra extends CI_Controller {
 		LEFT JOIN ciudad ciu ON (pro.id_ciudad = ciu.id)
 		LEFT JOIN comuna com ON (pro.id_comuna = com.id)
 		LEFT JOIN cod_activ_econ gir ON (pro.id_giro = gir.id)
-		WHERE ctz.emitida="'.$nombre.'"
-		order by ctz.id desc	');
+		WHERE ctz.emitida="'.$nombre.'"');
 
 		foreach ($query->result() as $row)
 		{
@@ -1300,7 +1060,6 @@ class Ordencompra extends CI_Controller {
 		$idproveedor = $this->input->post('idproveedor');
 		$idorden = $this->input->post('id_orden');
 		$numorden = $this->input->post('numorden');
-		$vendedor = $this->input->post('idvendedor');
 		$dataproveedor = json_decode($this->input->post('dataproveedor'));
 		$items = json_decode($this->input->post('items'));
 		$neto = $this->input->post('neto');
@@ -1325,7 +1084,6 @@ class Ordencompra extends CI_Controller {
 		        'descuento' => $descuento,
 		        'afecto' => $afecto,
 		        'neto' => $neto,
-		        'id_vendedor' => $vendedor,
 		        'iva' => $iva,
 		        'total' => $total,
 				'fecha' => $fecha,
@@ -1343,7 +1101,6 @@ class Ordencompra extends CI_Controller {
 			'mail_contacto' => $dataproveedor->mail_contacto,
 	        'id_proveedor' => $idproveedor,
 	        'descuento' => $descuento,
-	        'id_vendedor' => $vendedor,
 	        'afecto' => $afecto,
 	        'neto' => $neto,
 	        'iva' => $iva,
@@ -1411,7 +1168,6 @@ class Ordencompra extends CI_Controller {
 		$dataproveedor = json_decode($this->input->post('dataproveedor'));
 		$items = json_decode($this->input->post('items'));
 		$neto = $this->input->post('neto');
-		$vendedor = $this->input->post('idvendedor');
 		$iva = $this->input->post('iva');
 		$total = $this->input->post('total');
 		$fecharecepcion = $this->input->post('fecharecepcion');
@@ -1447,7 +1203,6 @@ class Ordencompra extends CI_Controller {
 			'mail_contacto' => $dataproveedor->mail_contacto,
 	        'id_proveedor' => $idproveedor,
 	        'descuento' => $descuento,
-	        'id_vendedor' => $vendedor,
 	        'afecto' => $afecto,
 	        'neto' => $neto,
 	        'iva' => $iva,
@@ -1471,7 +1226,6 @@ class Ordencompra extends CI_Controller {
 			'mail_contacto' => $dataproveedor->mail_contacto,
 	        'id_proveedor' => $idproveedor,
 	        'descuento' => $descuento,
-	        'id_vendedor' => $vendedor,
 	        'afecto' => $afecto,
 	        'neto' => $neto,
 	        'iva' => $iva,
@@ -1483,6 +1237,8 @@ class Ordencompra extends CI_Controller {
 
 		$this->db->insert('ordencompra_original', $orden_compra2); 
 		$idordencompra = $this->db->insert_id();
+
+		$resp['idorden'] = $idordencompra;
 
 		foreach($items as $v){
 
@@ -1539,9 +1295,8 @@ class Ordencompra extends CI_Controller {
 		$estado = $this->input->get('estado');		
 		
 		$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, ven.nombre as nom_vendedor  FROM ordencompra_original ctz
+			ctz.fecha_recepcion, ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago FROM orden_compra ctz
 			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
-			LEFT JOIN vendedores ven on (ctz.id_vendedor = ven.id)
 			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
 			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
 			LEFT JOIN ciudad c on cli.id_ciudad = c.id
@@ -1552,7 +1307,7 @@ class Ordencompra extends CI_Controller {
 		$row = $query->result();
 		$row = $row[0];
 		//items
-		$items = $this->db->get_where('ordenconpra_item', array('id_ordencompra' => $row->id));
+		$items = $this->db->get_where('orden_compra_item', array('id_ordencompra' => $row->id));
 		//variables generales
 		$codigo = $row->num_orden;
 		$nombre = $row->empresa;
@@ -1582,13 +1337,13 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		    <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
 		          <p>RECEPCION DE COMPRA N°: '.$codigo.'</p>
@@ -1601,7 +1356,7 @@ class Ordencompra extends CI_Controller {
 			</td>
 		  </tr>
 		  <tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>ORDEN DE COMPRA</h1></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>RECEPCION DE COMPRA</h1></td>
 		  </tr>
 		  <tr>
 		    <td colspan="3" width="987px" >
@@ -1648,7 +1403,7 @@ class Ordencompra extends CI_Controller {
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Cantidad</td>
 		        <td width="395px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Descripci&oacute;n</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Unidad</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
+		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Oferta</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
 		      </tr>';
 		$descripciones = '';
@@ -1661,14 +1416,22 @@ class Ordencompra extends CI_Controller {
 			$producto = $producto->result();
 			$producto = $producto[0];
 
-	
-			$html .= '<tr>
-			<td style="text-align:right">'.number_format($v->cantidad,3,',','.').'&nbsp;&nbsp;</td>			
-			<td style="text-align:left">'.$producto->nombre.'</td>			
-			<td align="right">$ '.number_format($v->precio, 3, ',', '.').'</td>
-			<td align="right">$ '.number_format($v->neto - ($v->descuento/$v->cantidad), 0, ',', '.').'</td>
 
-			<td align="right">$ '.number_format($v->total, 0, ',', '.').'</td>
+			//if($row->semicumplida=="SI"){
+
+			/*$afecto = $afecto + $v->neto;
+			$neto = $neto + $v->neto;
+			$descuento = $descuento + $v->descuento;
+			$iva = $neto + $v->iva;
+			$total = $total + $v->total;*/
+			
+			$html .= '<tr>
+			<td style="text-align:right">'.number_format($v->cantidad,0,'.',',').'&nbsp;&nbsp;</td>			
+			<td style="text-align:left">'.$producto->nombre.'</td>			
+			<td align="right">$ '.number_format($v->neto, 0, '.', ',').'</td>
+			<td align="right">$ '.number_format($v->neto - ($v->descuento/$v->cantidad), 0, '.', ',').'</td>
+
+			<td align="right">$ '.number_format($v->total, 0, '.', ',').'</td>
 			</tr>';
 			
 			//}
@@ -1696,7 +1459,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">Afecto</td>
-						<td width="146px" style="text-align:right;">$ '. number_format($row->neto, 0, ',', '.') .'</td>
+						<td width="146px" style="text-align:right;">$ '. number_format($row->neto, 0, '.', ',') .'</td>
 					</tr>
 				</table>
 		  	</td>
@@ -1716,7 +1479,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">Neto</td>
-						<td width="146px" style="text-align:right;">$ '.number_format($row->afecto, 0, ',', '.').'</td>
+						<td width="146px" style="text-align:right;">$ '.number_format($row->afecto, 0, '.', ',').'</td>
 					</tr>
 				</table>
 		  	</td>		  
@@ -1726,7 +1489,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">IVA</td>
-						<td width="146px" style="text-align:right;">$ '.number_format($row->iva, 0, ',', '.').'</td>
+						<td width="146px" style="text-align:right;">$ '.number_format($row->iva, 0, '.', ',').'</td>
 					</tr>
 				</table>
 		  	</td>		  
@@ -1736,7 +1499,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">Total</td>
-						<td width="146px" style="text-align:right;">$ '. number_format($row->total, 0, ',', '.') .'</td>
+						<td width="146px" style="text-align:right;">$ '. number_format($row->total, 0, '.', ',') .'</td>
 					</tr>
 				</table>
 		  	</td>		  
@@ -1806,7 +1569,7 @@ class Ordencompra extends CI_Controller {
 		$this->db->update('orden_compra', $data);
 
 		$query = $this->db->query('SELECT 
-			ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago FROM ordencompra_original ctz
+			ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago FROM orden_compra ctz
 			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
 			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
 			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
@@ -1846,13 +1609,13 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		    <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
 		          <p>ORDEN DE COMPRA N°: '.$codigo.'</p>
@@ -1912,7 +1675,7 @@ class Ordencompra extends CI_Controller {
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Cantidad</td>
 		        <td width="395px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Descripci&oacute;n</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Unidad</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
+		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Oferta</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
 		      </tr>';
 		$descripciones = '';
@@ -1933,7 +1696,7 @@ class Ordencompra extends CI_Controller {
 			$html .= '<tr>
 			<td style="text-align:right">'.number_format($v->cantidad,0,'.',',').'&nbsp;&nbsp;</td>			
 			<td style="text-align:left">'.$producto->nombre.'</td>			
-			<td align="right">$ '.number_format($v->subtotal, 0, '.', ',').'</td>
+			<td align="right">$ '.number_format($v->neto, 0, '.', ',').'</td>
 			<td align="right">$ '.number_format($v->neto - ($v->descuento/$v->cantidad), 0, '.', ',').'</td>
 
 			<td align="right">$ '.number_format($v->total, 0, '.', ',').'</td>
@@ -2100,9 +1863,7 @@ class Ordencompra extends CI_Controller {
 		$estado = $this->input->get('estado');		
 		
 		$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_recepcion, orcom.telefono_contacto as telefono_contacto, orcom.mail_contacto as mail_contacto, orcom.nombre_contacto as nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago, orcom.num_orden as num_orden, orcom.fecha as fecha, ven.nombre as nom_vendedor FROM recepcion_compra ctz
-			LEFT JOIN orden_compra orcom on (ctz.id_orden = orcom.id)
-			LEFT JOIN vendedores ven on (orcom.id_vendedor = ven.id)
+			ctz.fecha_recepcion, ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto,ctz.semicumplida, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago  FROM orden_compra ctz
 			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
 			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
 			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
@@ -2114,10 +1875,9 @@ class Ordencompra extends CI_Controller {
 		$row = $query->result();
 		$row = $row[0];
 		//items
-		$items = $this->db->get_where('recepcion_compra_item', array('id_recepcion' => $row->id));
+		$items = $this->db->get_where('orden_compra_item', array('id_ordencompra' => $row->id));
 		//variables generales
 		$codigo = $row->num_orden;
-		$numrecepcion = $row->num_recepcion;
 		$nombre = $row->empresa;
 		$fecha = $row->fecha;
         list($dia, $mes, $anio) = explode("-",$fecha); 
@@ -2126,9 +1886,6 @@ class Ordencompra extends CI_Controller {
 		$direccion = $row->direccion_empresa;
 		$nombre_contacto = $row->nombre_contacto;
         $fono_contacto = $row->telefono_contacto;
-        $neto=0;
-        $iva=0;
-        $total=0;
 		
 		$html = '
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -2148,22 +1905,22 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
-		          <p>RECEPCION N°: '.$numrecepcion.'</p>
+		          <p>ORDEN DE COMPRA N°: '.$codigo.'</p>
 		          <!--p>&nbsp;</p-->
 		          <p>FECHA EMISION : '.$fecha.'</p>
 		          <!--p>&nbsp;</p-->
 		          <p>VALIDEZ ORDEN DE COMPRA : 15 DIAS</p>
 		          <!--p>&nbsp;</p-->
-		          <p>ESTADO : Recepcionada</p>
+		          <p>ESTADO : Pendiente</p>
 			</td>
 		  </tr>
 		  <tr>
@@ -2194,7 +1951,7 @@ class Ordencompra extends CI_Controller {
 		    			<td width="197px">Ciudad:</td>
 		    			<td width="395px">' . $row->ciudad_empresa .'</td>
 		    			<td width="197px">O.C N°:</td>
-		    			<td width="197px">'.$codigo.'</td>
+		    			<td width="197px">&nbsp;</td>
 		    		</tr>		    				    				    		
 		    		<tr>
 		    			<td width="197px">Contacto:</td>
@@ -2214,7 +1971,7 @@ class Ordencompra extends CI_Controller {
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Cantidad</td>
 		        <td width="395px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Descripci&oacute;n</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Unidad</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
+		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Oferta</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
 		      </tr>';
 		$descripciones = '';
@@ -2227,24 +1984,26 @@ class Ordencompra extends CI_Controller {
 			$producto = $producto->result();
 			$producto = $producto[0];
 
+			if($row->semicumplida=="SI" and $v->estado=="SI"){
+
 			$afecto = $afecto + $v->neto;
 			$neto = $neto + $v->neto;
 			//$descuento = $descuento + $v->descuento;
-			$iva = $iva + $v->iva;
+			$iva = $neto + $v->iva;
 			$total = $total + $v->total;
 
 
 
 			$html .= '<tr>
-			<td style="text-align:right">'.number_format($v->cantidad,3,',','.').'&nbsp;&nbsp;</td>			
+			<td style="text-align:right">'.number_format($v->cantidad,0,'.',',').'&nbsp;&nbsp;</td>			
 			<td style="text-align:left">'.$producto->nombre.'</td>			
-			<td align="right">$ '.number_format($v->precio, 3, ',', '.').'</td>
+			<td align="right">$ '.number_format($v->neto, 0, '.', ',').'</td>
 			<td align="right">$ '.number_format($v->neto - ($v->descuento/$v->cantidad), 0, '.', ',').'</td>
 
-			<td align="right">$ '.number_format($v->total, 0, ',', '.').'</td>
+			<td align="right">$ '.number_format($v->total, 0, '.', ',').'</td>
 			</tr>';
 			
-			
+			}
 			$i++;
 
 		
@@ -2269,7 +2028,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">Afecto</td>
-						<td width="146px" style="text-align:right;">$ '. number_format($neto, 0, ',', '.') .'</td>
+						<td width="146px" style="text-align:right;">$ '. number_format($neto, 0, '.', ',') .'</td>
 					</tr>
 				</table>
 		  	</td>
@@ -2289,7 +2048,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">Neto</td>
-						<td width="146px" style="text-align:right;">$ '.number_format($afecto, 0, ',', '.').'</td>
+						<td width="146px" style="text-align:right;">$ '.number_format($afecto, 0, '.', ',').'</td>
 					</tr>
 				</table>
 		  	</td>		  
@@ -2299,7 +2058,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">IVA</td>
-						<td width="146px" style="text-align:right;">$ '.number_format($iva, 0, ',', '.').'</td>
+						<td width="146px" style="text-align:right;">$ '.number_format($iva, 0, '.', ',').'</td>
 					</tr>
 				</table>
 		  	</td>		  
@@ -2309,7 +2068,7 @@ class Ordencompra extends CI_Controller {
 				<table width="296px" border="0">
 					<tr>
 						<td width="150px" style="font-size: 20px;text-align:left;">Total</td>
-						<td width="146px" style="text-align:right;">$ '. number_format($total, 0, ',', '.') .'</td>
+						<td width="146px" style="text-align:right;">$ '. number_format($total, 0, '.', ',') .'</td>
 					</tr>
 				</table>
 		  	</td>		  
@@ -2357,23 +2116,21 @@ class Ordencompra extends CI_Controller {
 	public function exportPDF3(){
 		
 		$idordencompra = $this->input->get('idordencompra');
-
+		
 		$query = $this->db->query('SELECT 
-			ctz.fecha_recepcion, ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago  FROM orden_compra ctz
+			ctz.fecha_recepcion, ctz.id, ctz.fecha, ctz.afecto, ctz.neto, ctz.iva, ctz.neto, ctz.descuento, ctz.total, ctz.num_orden, ctz.telefono_contacto, ctz.mail_contacto, ctz.nombre_contacto, cli.nombres as empresa , cli.rut as rut_empresa, cli.direccion as direccion_empresa, cli.fono as fono_empresa, cae.nombre as giro_empresa, c.nombre as ciudad_empresa, pa.nombre as conpago  FROM ordencompra_original ctz
 			LEFT JOIN clientes cli on (ctz.id_proveedor = cli.id)
 			LEFT JOIN cod_activ_econ cae on cli.id_giro = cae.id
 			LEFT JOIN cond_pago pa on cli.id_pago = pa.id
 			LEFT JOIN ciudad c on cli.id_ciudad = c.id
 			WHERE ctz.id = '.$idordencompra.'');
-		
-		
 
 		
 		//cotizacion header
 		$row = $query->result();
 		$row = $row[0];
 		//items
-		$items = $this->db->get_where('orden_compra_item', array('id_recepcion' => $row->id));
+		$items = $this->db->get_where('ordenconpra_item', array('id_ordencompra' => $row->id));
 		//variables generales
 		$codigo = $row->num_orden;
 		$nombre = $row->empresa;
@@ -2384,9 +2141,6 @@ class Ordencompra extends CI_Controller {
 		$direccion = $row->direccion_empresa;
 		$nombre_contacto = $row->nombre_contacto;
         $fono_contacto = $row->telefono_contacto;
-        $neto=0;
-        $iva=0;
-        $total=0;
 		
 		$html = '
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -2406,13 +2160,13 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		  <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
 		          <p>ORDEN DE COMPRA N°: '.$codigo.'</p>
@@ -2472,7 +2226,7 @@ class Ordencompra extends CI_Controller {
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Cantidad</td>
 		        <td width="395px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Descripci&oacute;n</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Unidad</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
+		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Oferta</td>
 		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
 		      </tr>';
 		$descripciones = '';
@@ -2490,16 +2244,17 @@ class Ordencompra extends CI_Controller {
 			$afecto = $afecto + $v->neto;
 			$neto = $neto + $v->neto;
 			//$descuento = $descuento + $v->descuento;
-			$iva = $iva + $v->iva;
+			$iva = $neto + $v->iva;
 			$total = $total + $v->total;
 
 
 
 			$html .= '<tr>
-			<td style="text-align:right">'.number_format($v->cantidad,3,',','.').'&nbsp;&nbsp;</td>			
+			<td style="text-align:right">'.number_format($v->cantidad,0,'.',',').'&nbsp;&nbsp;</td>			
 			<td style="text-align:left">'.$producto->nombre.'</td>			
-			<td align="right">$ '.number_format($v->precio, 3, ',', '.').'</td>
+			<td align="right">$ '.number_format($v->neto, 0, '.', ',').'</td>
 			<td align="right">$ '.number_format($v->neto - ($v->descuento/$v->cantidad), 0, '.', ',').'</td>
+
 			<td align="right">$ '.number_format($v->total, 0, '.', ',').'</td>
 			</tr>';
 			

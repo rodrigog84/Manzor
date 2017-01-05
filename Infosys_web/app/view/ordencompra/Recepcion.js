@@ -67,16 +67,7 @@ Ext.define('Infosys_web.view.ordencompra.Recepcion', {
                             },{
                                 xtype: 'numberfield',
                                 width: 140,
-                                fieldLabel: ' Numero Recepcion',
-                                itemId: 'numrecepcionId',
-                                name: 'num_recepcion',
-                                style: 'font-weight: bold;',
-                                readOnly : true
-                            },
-                            {xtype: 'splitter'},{
-                                xtype: 'numberfield',
-                                width: 140,
-                                fieldLabel: 'Numero Orden',
+                                fieldLabel: 'Numero',
                                 itemId: 'numeroId',
                                 name: 'num_orden',
                                 style: 'font-weight: bold;',
@@ -176,9 +167,8 @@ Ext.define('Infosys_web.view.ordencompra.Recepcion', {
                                     fieldLabel: '<b>RECEPCION</b>',
                                     itemId: 'fecharecepcionId',
                                     name: 'fecha_recepcion',
-                                    value: "0000-00-00"
+                                    value: new Date()
                                 }
-
                                 ]
                             },
                             {
@@ -254,22 +244,7 @@ Ext.define('Infosys_web.view.ordencompra.Recepcion', {
                                     name : 'e_mail_contacto',
                                     itemId: 'mail_contactoId',
                                     fieldLabel: 'Mail Contacto'
-                                },{xtype: 'splitter'},{
-                                    xtype: 'combo',
-                                    itemId: 'tipoVendedorId',
-                                    width: 350,
-                                    labelWidth: 80,
-                                    fieldCls: 'required',
-                                    maxHeight: 25,
-                                    fieldLabel: '<b>VENDEDOR</b>',
-                                    forceSelection : true,
-                                    name : 'id_vendedor',
-                                    valueField : 'id',
-                                    displayField : 'nombre',
-                                    emptyText : "Seleccione",
-                                    store : 'Vendedores',
-                                    readOnly : true
-                                   }
+                                }
 
 
                                 ]

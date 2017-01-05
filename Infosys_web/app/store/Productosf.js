@@ -8,8 +8,8 @@ Ext.define('Infosys_web.store.Productosf', {
         type: 'ajax',
 
         api: {
-            create: preurl + 'productofact/save', 
-            read: preurl + 'productos/productosfact',
+            create: preurl + 'productosfact/save', 
+            read: preurl + 'productosfact/getAll',
             update: preurl + 'productosfact/update'
             },
         reader: {

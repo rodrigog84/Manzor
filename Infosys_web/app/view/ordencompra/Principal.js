@@ -29,21 +29,12 @@ Ext.define('Infosys_web.view.ordencompra.Principal' ,{
         dataIndex: 'num_orden'
     },{
         header: "Empresa",
-        width: 350,
+        flex: 1,
         dataIndex: 'empresa'
     },{
         header: "Rut",
         flex: 1,
         dataIndex: 'rut'
-    },{
-        header: "id_vendedor",
-        flex: 1,
-        dataIndex: 'id_vendedor',
-        hidden: true
-    },{
-        header: "Vendedor",
-        flex: 1,
-        dataIndex: 'nom_vendedor'
     },{
         header: "Direccion",
         flex: 1,
@@ -88,22 +79,19 @@ Ext.define('Infosys_web.view.ordencompra.Principal' ,{
         flex: 1,
         dataIndex: 'descuento',
         align: 'right',
-        renderer: function(valor){return Ext.util.Format.number((valor),"0,00")},
-        hidden: true
+        renderer: function(valor){return Ext.util.Format.number((valor),"0,00")}
     },{
         header: "Neto",
         flex: 1,
         dataIndex: 'neto',
         align: 'right',
-        renderer: function(valor){return Ext.util.Format.number((valor),"0,00")},
-        hidden: true
+        renderer: function(valor){return Ext.util.Format.number((valor),"0,00")}
     },{
         header: "Iva",
         flex: 1,
         dataIndex: 'iva',
         align: 'right',
-        renderer: function(valor){return Ext.util.Format.number((valor),"0,00")},
-        hidden: true
+        renderer: function(valor){return Ext.util.Format.number((valor),"0,00")}
     },{
         header: "Total",
         flex: 1,
@@ -202,7 +190,7 @@ Ext.define('Infosys_web.view.ordencompra.Principal' ,{
         {
             xtype: 'pagingtoolbar',
             dock:'bottom',
-            store: 'Ordencompra_original',
+            store: 'Orden_compra',
             displayInfo: true
         }];
         
