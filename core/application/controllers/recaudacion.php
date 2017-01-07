@@ -912,6 +912,7 @@ class Recaudacion extends CI_Controller {
 		$idcliente = json_decode($this->input->post('id_cliente'));
 		$idcaja = json_decode($this->input->post('id_caja'));
 		$idcajero = json_decode($this->input->post('id_cajero'));
+		$idmecanicos = json_decode($this->input->post('id_mecanicos'));
 		$items = json_decode($this->input->post('items'));
 		$recitems = json_decode($this->input->post('recitems'));
 		$totaldocumento = json_decode($this->input->post('totaldocumento'));
@@ -932,6 +933,11 @@ class Recaudacion extends CI_Controller {
 		$sucursal= 0;
 		//$tipodocumento=2;
 		$ftotal=$totaldocumento;
+        
+        if (!$idmecanicos){			
+			$idmecanicos=0;
+		};
+		
 
 		if (!$banco){			
 			$banco=0;
@@ -1587,6 +1593,7 @@ class Recaudacion extends CI_Controller {
 	        'id_cliente' => $idcliente,
 	        'num_factura' => $numdocum,
 	        'id_vendedor' => $vendedor,
+	        'id_mecanicos' => $idmecanicos,
 	        'id_cond_venta' => $formadepago,
 	        'sub_total' => $neto,
 	        'neto' => $neto,

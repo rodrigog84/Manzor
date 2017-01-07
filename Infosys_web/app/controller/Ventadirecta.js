@@ -10,6 +10,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
              'recaudacion.Items',
              'Factura5',
              'Productosf',
+             'Mecanicos',
              'Clientes',
              'Preventa',
              'Sucursales_clientes',
@@ -73,6 +74,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
     },{    
         ref: 'generapagocheque',
         selector: 'generapagocheque'
+    },{    
+        ref: 'preventaprincipal',
+        selector: 'preventaprincipal'
     }
 
     ],
@@ -148,7 +152,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var valortotal = view.down('#valorpagoId').getValue();
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            console.log(row.data.valor_cancelado);
             var valortotal = valortotal + row.data.valor_cancelado;
             view.down('#valorpagoId').setValue(valortotal);
             grid.getStore().remove(row);
@@ -607,7 +610,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var iva = (tot - neto);
         var neto = (tot - iva);
         var total = (neto + iva );
-        
+
+       
         if(!producto){
             
             Ext.Msg.alert('Alerta', 'Debe Seleccionar un Producto');
@@ -699,7 +703,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var grid  = view.down('grid');
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            viewIngresa.down('#productoId').setValue(row.data.id_producto);
+            viewIngresa.down('#productoId').setValue(row.data.id);
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
             viewIngresa.down('#precioId').setValue(row.data.p_venta);
@@ -1026,15 +1030,22 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var viewIngresa = this.getDocumentosingresar();
         var bolEnable = true;
         viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
-        var idcajero = viewIngresa.down('#cajeroId').getValue();
-        var idcaja = viewIngresa.down('#cajaId').getValue();
         var numeroticket = viewIngresa.down('#ticketId').getValue();
         var idtipo = viewIngresa.down('#tipoDocumento2Id').getValue();
         var idcliente = viewIngresa.down('#id_cliente').getValue();
         var sucursal = viewIngresa.down('#id_sucursalID').getValue();
         var idpago = viewIngresa.down('#tipocondpagoId').getValue();
         var vender = viewIngresa.down('#tipoVendedorId').getValue();
+        var mecanicos = viewIngresa.down('#mecanicosId').getValue();
         var valida = viewIngresa.down('#validapagoId').getValue();
+
+        /*if(!mecanicos){
+
+            var bolEnable = false;
+            viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
+            Ext.Msg.alert('Seleccione Mecanicos');
+            return;   
+        }*/
         
         if (valida=="SI"){
             
@@ -1089,7 +1100,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 async: false,
                 url: preurl + 'facturas/folio_documento_electronico/'+idtipo});  
                 var obj_folio = Ext.decode(response_folio.responseText);
-                //console.log(obj_folio); 
                 nuevo_folio = obj_folio.folio;
                 if(nuevo_folio != 0){
                     numdoc = nuevo_folio;
@@ -1109,13 +1119,15 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         }else{
             var numdoc = viewIngresa.down('#numboleta2Id').getValue();
 
-        }
+        };
         
-        var viewedit = this.getPagocajaprincipal();
-        var contado =  viewedit.down('#contadoId').getValue();
-        var cheques =  viewedit.down('#chequesId').getValue();
-        var otros =  viewedit.down('#otrosId').getValue();      
-        
+        var viewedit = this.getPreventaprincipal();
+        var recauda =  viewedit.down('#recaudaId').getValue();
+        var idcajero = viewedit.down('#cajeroId').getValue();
+        var idcaja = viewedit.down('#cajaId').getValue();
+        var contado =  viewedit.down('#efectivonId').getValue();
+        var cheques =  viewedit.down('#totchequesnId').getValue();
+        var otros =  viewedit.down('#otrosmontosnId').getValue();       
         var totaldocumento = viewIngresa.down('#finaltotalpostId').getValue();
         var tdocumento = (viewIngresa.down('#finaltotalpId').getValue());        
         var finalafectoId = (totaldocumento / 1.19);
@@ -1253,6 +1265,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 id_cliente : idcliente,
                 id_caja : idcaja,
                 id_cajero : idcajero,
+                id_mecanicos: mecanicos,
                 valorcancela: valorcancela,
                 valorvuelto: valorvuelto,
                 condpago: condpago,
@@ -1274,7 +1287,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 Ext.Msg.alert('Informacion', 'Creada Exitosamente.');
                 //st.load();
                 //window.open(preurl + 'facturas/exportPDF/?idfactura='+idboleta);
-                var viewedit = this.getPreventaprincipal();             
+                //var viewedit = this.getPreventaprincipal();             
                 viewedit.down('#efectivonId').setValue(contado);
                 viewedit.down('#efectivoId').setValue(Ext.util.Format.number(contado, '0,00'));        
                 viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
@@ -1311,6 +1324,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 sucursal: sucursal,
                 observa: observa,
                 idtipo : idtipo,
+                idmecanicos : mecanicos,
                 idpago : idpago,
                 idgiro : idgiro,
                 idbodega : idbodega,
@@ -1353,12 +1367,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var record = stCombo.findRecord('id', condpago.getValue()).data;
         var valida = record.nombre;
 
-        console.log(valorapagar)
-        console.log("si")
-        console.log(valorpagado)
-        console.log(valida)
-        
-
+       
         if (valida == "CONTADO") {
 
         if (valorapagar<valorpagado){

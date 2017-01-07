@@ -754,7 +754,7 @@ Ext.define('Infosys_web.controller.General', {
             'mecanicosprincipal button[action=buscarmecanicos]': {
                 click: this.buscarmecanicos
             },
-            'mecanicosprincipal button[action=grabarmecanicos]': {
+            'mecanicosingresar button[action=grabarmecanicos]': {
                 click: this.grabarmecanicos
             },
             'mecanicosprincipal button[action=agregarmecanicos]': {
@@ -1949,7 +1949,7 @@ Ext.define('Infosys_web.controller.General', {
         
         if (values.id > 0){
             record.set(values);
-        } else{
+        }else{
             record = Ext.create('Infosys_web.model.Mecanicos');
             record.set(values);
             st.add(record);

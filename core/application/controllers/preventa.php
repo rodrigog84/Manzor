@@ -748,6 +748,7 @@ class Preventa extends CI_Controller {
 		$idcliente = $this->input->post('idcliente');
 		$numticket = $this->input->post('numeroticket');
 		$idbodega = $this->input->post('idbodega');
+		$idmecanicos = $this->input->post('idmecanicos');
 		$idtipo = $this->input->post('idtipo');
 		$idpago = $this->input->post('idpago');
 		$idgiro = $this->input->post('idgiro');
@@ -762,6 +763,10 @@ class Preventa extends CI_Controller {
 		$fafecto = $this->input->post('afecto');
 		$ftotal = $this->input->post('total');
 		$observa = $this->input->post('observa');
+
+		if (!$idmecanicos){			
+			$idmecanicos=0;
+		};
 
 		$agregaclient = array(
          'id_pago' => $idpago,
@@ -787,6 +792,7 @@ class Preventa extends CI_Controller {
 	        'id_cliente' => $idcliente,
 	        'id_sucursal' => $sucursal,
 	        'id_vendedor' => $vendedor,
+	        'id_mecanicos' => $idmecanicos,
 	        'neto' => $neto,
 	        'id_tip_docu' => $idtipo,
 	        'id_pago' => $idpago,

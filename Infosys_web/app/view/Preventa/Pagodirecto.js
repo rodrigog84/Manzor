@@ -315,6 +315,20 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             emptyText : "Seleccione",
                                             store : 'Bodegas',
                                             readOnly: true
+                                        },{xtype: 'splitter'},{
+                                            xtype: 'combo',
+                                            itemId: 'mecanicosId',
+                                            labelWidth: 80,
+                                            width: 255,
+                                            fieldCls: 'required',
+                                            maxHeight: 25,
+                                            fieldLabel: '<b>MECANICOS</b>',
+                                            forceSelection : true,
+                                            name : 'id_mecanicos',
+                                            valueField : 'id',
+                                            displayField : 'nombre',
+                                            emptyText : "Seleccione",
+                                            store : 'Mecanicos'
                                         },{
                                             xtype: 'textareafield',
                                             width: 110,
@@ -434,7 +448,8 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                             store: 'Tabladescuento',
                             emptyText : "Seleccione",
                             valueField: 'id',
-                            displayField: 'nombre'
+                            displayField: 'nombre',
+                            //hidden: true
                             },
                             {xtype: 'splitter'},
                             {

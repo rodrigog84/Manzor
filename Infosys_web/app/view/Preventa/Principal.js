@@ -125,7 +125,8 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
                 xtype: 'button',
                 iconCls: 'icon-add',
                 action: 'agregarpreventa',
-                text : 'Nueva Orden'
+                text : 'Nueva Orden',
+                hidden: true
             },{
                 xtype: 'button',
                 iconCls: 'icon-add',
