@@ -2640,6 +2640,78 @@ class AdminServicesExcel extends CI_Controller {
             echo '</table>';
         }
 
+        public function exportarExcelCajeros(){
+            
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=cajeros.xls"); 
+            
+            $columnas = json_decode($this->input->get('cols'));
+            
+            $this->load->database();
+            
+            $query = $this->db->query("select cl.id, cl.nombre from cajeros cl");
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<tr>";
+                if (in_array("id", $columnas)):
+                     echo "<td>ID</td>";
+                endif;
+                
+                if (in_array("nombre", $columnas)):
+                     echo "<td>NOMBRE</td>";
+                endif;
+                
+              echo "<tr>";
+              
+              foreach($users as $v){
+                 echo "<tr>";
+                   if (in_array("id", $columnas)) :
+                      echo "<td>".$v['id']."</td>";
+                   endif;
+                   if (in_array("nombre", $columnas)) :
+                      echo "<td>".$v['nombre']."</td>";
+                   endif;
+                 }
+            echo '</table>';
+        }
+
+        public function exportarExcelMecanicos(){
+            
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=mecanicos.xls"); 
+            
+            $columnas = json_decode($this->input->get('cols'));
+            
+            $this->load->database();
+            
+            $query = $this->db->query("select cl.id, cl.nombre from mecanicos cl");
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<tr>";
+                if (in_array("id", $columnas)):
+                     echo "<td>ID</td>";
+                endif;
+                
+                if (in_array("nombre", $columnas)):
+                     echo "<td>NOMBRE</td>";
+                endif;
+                
+              echo "<tr>";
+              
+              foreach($users as $v){
+                 echo "<tr>";
+                   if (in_array("id", $columnas)) :
+                      echo "<td>".$v['id']."</td>";
+                   endif;
+                   if (in_array("nombre", $columnas)) :
+                      echo "<td>".$v['nombre']."</td>";
+                   endif;
+                 }
+            echo '</table>';
+        }
+
         public function exportarExcelTipodocumento(){
             
             header("Content-type: application/vnd.ms-excel"); 

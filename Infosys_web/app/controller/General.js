@@ -27,6 +27,7 @@ Ext.define('Infosys_web.controller.General', {
               'bancos.Items',
               'cajeros.Items',
               'Cajeros',
+              'Mecanicos',
               'cajas.Items',
               'Cajas',
               'Banco',
@@ -51,6 +52,7 @@ Ext.define('Infosys_web.controller.General', {
               'Caja',
               'Cajero.Item',
               'Cajero',
+              'Mecanicos',
               'Ubica',
               'Medida',
               'Login',
@@ -85,6 +87,9 @@ Ext.define('Infosys_web.controller.General', {
         'cajeros.BusquedaCajeros',
         'cajeros.Ingresar',
         'cajeros.Principal',
+        'mecanicos.BusquedaMecanicos',
+        'mecanicos.Ingresar',
+        'mecanicos.Principal',
         'cajas.BusquedaCajas',
         'cajas.Ingresar',
         'cajas.Principal',
@@ -298,6 +303,12 @@ Ext.define('Infosys_web.controller.General', {
     },{
         ref: 'cambiopassword',
         selector: 'cambiopassword'
+    },{
+        ref: 'mecanicosingresar',
+        selector: 'mecanicosingresar'
+    },{
+        ref: 'mecanicosprincipal',
+        selector: 'mecanicosprincipal'
     }
     ],
 
@@ -341,6 +352,9 @@ Ext.define('Infosys_web.controller.General', {
             },
             'topmenus menuitem[action=mcajeros]': {
                 click: this.mcajeros
+            },
+            'topmenus menuitem[action=mmecanicos]': {
+                click: this.mmecanicos
             },
             'topmenus menuitem[action=mtablas]': {
                 click: this.mtablas
@@ -732,7 +746,26 @@ Ext.define('Infosys_web.controller.General', {
             
             'cambiopassword button[action=grabaclave]': {
                 click: this.grabaclave
-            }          
+            },
+            
+            'mecanicosprincipal button[action=cerrarmecanicos]': {
+                click: this.cerrarmecanicos
+            },
+            'mecanicosprincipal button[action=buscarmecanicos]': {
+                click: this.buscarmecanicos
+            },
+            'mecanicosprincipal button[action=grabarmecanicos]': {
+                click: this.grabarmecanicos
+            },
+            'mecanicosprincipal button[action=agregarmecanicos]': {
+                click: this.agregarmecanicos
+            },
+            'mecanicosprincipal button[action=exportarexcelmecanicos]': {
+                click: this.exportarexcelmecanicos
+            },
+            'mecanicosprincipal button[action=editarmecanicos]': {
+                click: this.editarmecanicos
+            },        
 
 
         });
@@ -892,6 +925,23 @@ Ext.define('Infosys_web.controller.General', {
         })     
                          
         window.open(preurl + 'adminServicesExcel/exportarExcelCajeros?cols='+Ext.JSON.encode(jsonCol));
+ 
+    },
+
+    exportarexcelmecanicos: function(){
+        
+        var jsonCol = new Array()
+        var i = 0;
+        var grid =this.getMecanicosprincipal()
+        Ext.each(grid.columns, function(col, index){
+          if(!col.hidden){
+              jsonCol[i] = col.dataIndex;
+          }
+          
+          i++;
+        })     
+                         
+        window.open(preurl + 'adminServicesExcel/exportarExcelMecanicos?cols='+Ext.JSON.encode(jsonCol));
  
     },
 
@@ -1130,6 +1180,14 @@ Ext.define('Infosys_web.controller.General', {
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
         viewport.add({xtype: 'cajerosprincipal'});
+        
+    },
+
+    mmecanicos: function(){
+
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+        viewport.add({xtype: 'mecanicosprincipal'});
         
     },
 
@@ -1878,6 +1936,34 @@ Ext.define('Infosys_web.controller.General', {
         }
     },
 
+    grabarmecanicos: function(){
+
+        var win    = this.getMecanicosingresar(),
+            form   = win.down('form'),
+            record = form.getRecord(),
+            values = form.getValues();
+
+        var st = this.getMecanicosStore();
+        
+        var nuevo = false;
+        
+        if (values.id > 0){
+            record.set(values);
+        } else{
+            record = Ext.create('Infosys_web.model.Mecanicos');
+            record.set(values);
+            st.add(record);
+            nuevo = true;
+        }
+        
+        win.close();
+        st.sync();
+
+        if (nuevo){ 
+            st.load();
+        }
+    },
+
     grabarcajas: function(){
 
         var win    = this.getCajasingresar(),
@@ -2074,6 +2160,15 @@ Ext.define('Infosys_web.controller.General', {
     buscarcajeros: function(){
         var view = this.getCajerosprincipal()
         var st = this.getCajerosStore()
+        var nombre = view.down('#nombreId').getValue()
+        st.proxy.extraParams = {nombre : nombre}
+        st.load();
+
+    },
+
+    buscarmecanicos: function(){
+        var view = this.getMecanicosprincipal()
+        var st = this.getMecanicosStore()
         var nombre = view.down('#nombreId').getValue()
         st.proxy.extraParams = {nombre : nombre}
         st.load();
@@ -2325,6 +2420,19 @@ Ext.define('Infosys_web.controller.General', {
 
     },
 
+    editarmecanicos: function(){
+        var view = this.getMecanicosprincipal();
+        if (view.getSelectionModel().hasSelection()) {
+            var row = view.getSelectionModel().getSelection()[0];
+            var edit = Ext.create('Infosys_web.view.mecanicos.Ingresar').show();
+            edit.down('form').loadRecord(row);
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+
+    },
+
     editarcajas: function(){
         var view = this.getCajasprincipal();
         if (view.getSelectionModel().hasSelection()) {
@@ -2407,6 +2515,11 @@ Ext.define('Infosys_web.controller.General', {
 
     agregarcajeros: function(){
         Ext.create('Infosys_web.view.cajeros.Ingresar').show();
+
+    },
+
+    agregarmecanicos: function(){
+        Ext.create('Infosys_web.view.mecanicos.Ingresar').show();
 
     },
 
@@ -2504,6 +2617,12 @@ Ext.define('Infosys_web.controller.General', {
     },
 
     cerrarcajeros: function(){
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+     
+    },
+
+    cerrarmecanicos: function(){
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
      

@@ -2560,7 +2560,7 @@ class Recaudacion extends CI_Controller {
 					$credito30dias = 0;
 					$credito = 0;
 				};
-				if ($v['desc_pago']=="TARJETA DEBITO/CREDITO"){				
+				if ($v['desc_pago']=="TARJETA DEBITO"){				
 					$tarjetadebito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -2572,7 +2572,7 @@ class Recaudacion extends CI_Controller {
 					$credito30dias = 0;
 					$credito60dias = 0;
 				};
-				if ($v['desc_pago']=="TARJETA ABCDIN"){				
+				if ($v['desc_pago']=="TARJETA CREDITO"){				
 					$tarjetacredito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -2672,7 +2672,7 @@ class Recaudacion extends CI_Controller {
 					$credito60dias = 0;
 				};
 				
-				if ($v['desc_pago']=="TARJETA DEBITO/CREDITO"){				
+				if ($v['desc_pago']=="TARJETA DEBITO"){				
 					$tarjetadebito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -2684,7 +2684,7 @@ class Recaudacion extends CI_Controller {
 					$credito30dias = 0;
 					$credito60dias = 0;
 				};
-				if ($v['desc_pago']=="TARJETA ABCDIN"){				
+				if ($v['desc_pago']=="TARJETA CREDITO"){				
 					$tarjetacredito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -2780,7 +2780,7 @@ class Recaudacion extends CI_Controller {
 					$credito60dias = 0;
 				};
 				
-				if ($v['desc_pago']=="TARJETA DEBITO/CREDITO"){				
+				if ($v['desc_pago']=="TARJETA DEBITO"){				
 					$tarjetadebito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -2792,7 +2792,7 @@ class Recaudacion extends CI_Controller {
 					$credito30dias = 0;
 					$credito60dias = 0;
 				};
-				if ($v['desc_pago']=="TARJETA ABCDIN"){;
+				if ($v['desc_pago']=="TARJETA CREDITO"){;
 					$chequealdia = 0;
 					$chequeafecha = 0;
 					$boleta = 0;
@@ -2885,7 +2885,7 @@ class Recaudacion extends CI_Controller {
 					$credito60dias = 0;
 				};
 				
-				if ($v['desc_pago']=="TARJETA DEBITO/CREDITO"){				
+				if ($v['desc_pago']=="TARJETA DEBITO"){				
 					$tarjetadebito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -2897,7 +2897,7 @@ class Recaudacion extends CI_Controller {
 					$credito30dias = 0;
 					$credito60dias = 0;
 				};
-				if ($v['desc_pago']=="TARJETA ABCDIN"){				
+				if ($v['desc_pago']=="TARJETA CREDITO"){				
 					$tarjetacredito = $v['valor_pago'];
 					$chequealdia = 0;
 					$chequeafecha = 0;
@@ -3003,13 +3003,13 @@ class Recaudacion extends CI_Controller {
 			    };
 				};
 				if ($tarjetacredito>0){
-				$doc4 = "TARJETA ABCDIN";
+				$doc4 = "TARJETA CREDITO";
 				if ($v['estado']!="NUL"){
 				$cancelado4 +=$tarjetacredito;
 				};
 				};
 				if ($tarjetadebito>0){
-				$doc5 = "TARJETA DEBITO/CREDITO";
+				$doc5 = "TARJETA DEBITO";
 				if ($v['estado']!="NUL"){
 				$cancelado5 +=$tarjetadebito;
 			    };

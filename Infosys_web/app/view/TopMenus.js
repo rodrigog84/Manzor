@@ -310,6 +310,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         iconCls: '',
                         action: 'mvendedores'
                 },{
+                        text: 'Mecanicos',
+                        itemId: 'vyf_tg_mecanicos',
+                        disabled: true,
+                        iconCls: '',
+                        action: 'mmecanicos'
+                },{
                         text: 'Ciudad',
                         itemId: 'vyf_tg_ciudad',
                         disabled: true,
