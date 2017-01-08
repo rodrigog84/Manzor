@@ -162,23 +162,23 @@ class Correlativos extends CI_Controller {
 		$resp = array();
 		$factura = $this->input->get('valida');
 		$boleta = 2;
-		$query = $this->db->query('SELECT * FROM correlativos WHERE id like "'.$factura.'"');
+		$query = $this->db->query('SELECT * FROM bodegas WHERE id like "'.$factura.'"');
         $rut1="19";
 		if($query->num_rows()>0){
 	   		$row = $query->first_row();
 	   		$resp['cliente'] = $row;
-	   		$corr = (($row->correlativo)+1); 
+	   		$corr = (($row->num_otrabajo)+1); 
 	   		$id = ($row->id);
 
 	   		$data3 = array(
-	         'correlativo' => $corr
+	         'num_otrabajo' => $corr
 		    );
 
 		    $this->db->where('id', $id);
 		  
-		    $this->db->update('correlativos', $data3);
+		    $this->db->update('bodegas', $data3);
 
-		    $this->Bitacora->logger("M", 'correlativos', $id);
+		    $this->Bitacora->logger("M", 'bodegas', $id);
 
 		    $query = $this->db->query('SELECT * FROM preventa WHERE num_ticket like "'.$corr.'"');
 
@@ -216,25 +216,25 @@ class Correlativos extends CI_Controller {
 	   			$resp['detalle'] = $row;
 	   		}
 
-	   		$query = $this->db->query('SELECT * FROM correlativos WHERE id like "'.$boleta.'"');
+	   		$query = $this->db->query('SELECT * FROM bodegas WHERE id like "'.$factura.'"');
        
 		if($query->num_rows()>0){
 	   		$row = $query->first_row();
 	   		$resp['boletas'] = $row;
-	   		$corr = (($row->correlativo)+1); 
+	   		$corr = (($row->num_boleta)+1); 
 	   		$id = ($row->id);
 	   		$row->correlativo = $corr;
 	   		$resp['boletas'] = $row;
 
 	   		$data3 = array(
-	         'correlativo' => $corr
+	         'num_boleta' => $corr
 		    );
 
 		    $this->db->where('id', $id);
 		  
-		    $this->db->update('correlativos', $data3);
+		    $this->db->update('bodegas', $data3);
 
-		    $this->Bitacora->logger("M", 'correlativos', $id);
+		    $this->Bitacora->logger("M", 'bodegas', $id);
 
 		};
 

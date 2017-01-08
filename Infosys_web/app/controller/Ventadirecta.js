@@ -1038,6 +1038,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var vender = viewIngresa.down('#tipoVendedorId').getValue();
         var mecanicos = viewIngresa.down('#mecanicosId').getValue();
         var valida = viewIngresa.down('#validapagoId').getValue();
+        var otrabajo = viewIngresa.down('#otrabajoId').getValue();
 
         /*if(!mecanicos){
 
@@ -1327,6 +1328,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 idmecanicos : mecanicos,
                 idpago : idpago,
                 idgiro : idgiro,
+                otrabajo: otrabajo,
                 idbodega : idbodega,
                 numeroticket : numeroticket,
                 fechapreventa : fechapreventa,

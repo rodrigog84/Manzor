@@ -390,7 +390,7 @@ Ext.define('Infosys_web.controller.Preventa', {
          var idbodega = viewIngresa.down('#bodegaId').getValue();
          var tipdoc="101";
          var rut ="19";
-         var nombre = "6";
+         var nombre =idbodega;
          var tipo = "2";
 
          if(!idbodega){
@@ -410,10 +410,9 @@ Ext.define('Infosys_web.controller.Preventa', {
                     var correlativo = resp.cliente;
                     var boleta = resp.boletas;
                     var detalle = resp.detalle;
-                    var correlanue = correlativo.correlativo;
-                    var numboleta = boleta.correlativo;
-                    correlanue = (parseInt(correlanue)+1);
-                    var correlanue = correlanue;
+                    var correlanue = correlativo.num_otrabajo;
+                    var numboleta = (parseInt(boleta.num_boleta) +1);
+                    var correlanue = (parseInt(correlanue) +1);
                     view.down("#ticketId").setValue(correlanue);
                     view.down("#tipoDocumento2Id").setValue(tipo);
                     view.down('#bodegaId').setValue(idbodega);
@@ -424,10 +423,10 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down('#direccionId').setValue(detalle.direccion);
                     view.down('#giroId').setValue(detalle.id_giro);  
                     view.down('#tipoVendedorId').setValue(detalle.id_vendedor);
-                    view.down('#numboleta2Id').setValue(boleta.correlativo);
-                    view.down('#numboleta2Id').setValue(idcajero);
-                    view.down('#numboleta2Id').setValue(idcaja);
-                    view.down('#numboleta2Id').setValue(recauda);           
+                    view.down('#numboleta2Id').setValue(numboleta);
+                    view.down('#cajeroId').setValue(idcajero);
+                    view.down('#cajaId').setValue(idcaja);
+                    view.down('#recaudaId').setValue(recauda);           
                     view.down("#codigoId").focus();   
                     
                 }else{

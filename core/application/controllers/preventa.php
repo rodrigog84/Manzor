@@ -562,14 +562,14 @@ class Preventa extends CI_Controller {
 		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
-		          <p>ORDEN TRABAJO N°: '.$codigo.'</p>
+		          <p>VALE N°: '.$codigo.'</p>
 		          <!--p>&nbsp;</p-->
 		          <p>FECHA EMISION : '.$fecha.'</p>
 		          <!--p>&nbsp;</p-->		         
 			</td>
 		  </tr>
 		  <tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>ORDEN DE TRABAJO</h1></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>VALE</h1></td>
 		  </tr>
 		  <tr>
 		    <td colspan="3" width="987px" >
@@ -752,6 +752,7 @@ class Preventa extends CI_Controller {
 		$idtipo = $this->input->post('idtipo');
 		$idpago = $this->input->post('idpago');
 		$idgiro = $this->input->post('idgiro');
+		$otrabajo = $this->input->post('otrabajo');
 	    $fechapreventa = $this->input->post('fechapreventa');
 		$vendedor = $this->input->post('vendedor');
 		$sucursal = $this->input->post('sucursal');
@@ -766,6 +767,10 @@ class Preventa extends CI_Controller {
 
 		if (!$idmecanicos){			
 			$idmecanicos=0;
+		};
+
+		if (!$otrabajo){			
+			$otrabajo=0;
 		};
 
 		$agregaclient = array(
@@ -799,7 +804,8 @@ class Preventa extends CI_Controller {
 	        'desc' => $desc,
 	        'total' => $ftotal,
 	        'id_observa' => $observa,
-	        'id_bodega' => $idbodega
+	        'id_bodega' => $idbodega,
+	        'o_trabajo' => $otrabajo
 		);
 
 		$this->db->insert('preventa', $preventa); 

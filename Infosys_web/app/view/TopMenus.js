@@ -770,7 +770,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 text : 'Acceso Directo',
                 menu: [
                 {
-                    text: 'Orden de Trabajo',
+                    text: 'Vale',
                     iconCls: '',
                     itemId: 'vv_acc_preventa',
                     disabled: true,

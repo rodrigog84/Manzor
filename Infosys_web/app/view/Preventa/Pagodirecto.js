@@ -22,7 +22,7 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
     height: 640,
     width: 1300,
     layout: 'fit',
-    title: 'Genera O.Trabajo',
+    title: 'Genera Vale',
 
     initComponent: function() {
         var me = this;
@@ -97,7 +97,7 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             allowBlank: false,
                                             name: 'num_ticket',
                                             itemId: 'ticketId',
-                                            fieldLabel: '<b>O.TRABAJO</b>',
+                                            fieldLabel: '<b>VALE</b>',
                                             readOnly: true
 
                                         },{
@@ -139,6 +139,22 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             itemId: 'fechaventaId',
                                             name: 'fecha_venta',
                                             value: new Date()
+                                        },{
+                                            xtype: 'displayfield',
+                                            width: 10
+                                           
+                                        },{
+                                            xtype: 'numberfield',
+                                            fieldCls: 'required',
+                                            maxHeight: 25,
+                                            labelWidth: 70,
+                                            width: 200,
+                                            allowBlank: false,
+                                            name: 'num_otrabajo',
+                                            itemId: 'otrabajoId',
+                                            fieldLabel: '<b>O. Trabajo</b>',
+                                            readOnly: true
+
                                         }
                                     ]
                                 },
