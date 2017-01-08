@@ -49,6 +49,16 @@ Ext.define('Infosys_web.view.bodegas.Ingresar', {
                         xtype: 'textfield',
                         name : 'direccion',
                         fieldLabel: 'Direccion'
+                    },    
+                    {
+                        xtype: 'numberfield',
+                        name : 'num_otrabajo',
+                        fieldLabel: 'Vale'
+                    },    
+                    {
+                        xtype: 'numberfield',
+                        name : 'num_boleta',
+                        fieldLabel: 'Boleta'
                     }
                 ]
             }

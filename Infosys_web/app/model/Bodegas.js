@@ -4,6 +4,9 @@ Ext.define('Infosys_web.model.Bodegas', {
     	{name: 'id'},
     	{name: 'nombre'},
     	{name: 'direccion'},
-    	{name: 'codigo'}
+    	{name: 'codigo'},
+    	{name: 'num_boleta'},
+    	{name: 'num_otrabajo'}
+    	
     	]
 });

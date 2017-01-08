@@ -25,6 +25,14 @@ Ext.define('Infosys_web.view.bodegas.Principal' ,{
         header: "Direccion",
         flex: 1,
         dataIndex: 'direccion'
+    },{
+        header: "Vale",
+        flex: 1,
+        dataIndex: 'num_otrabajo'
+    },{
+        header: "Boleta",
+        flex: 1,
+        dataIndex: 'num_boleta'
     }],
     
     initComponent: function() {

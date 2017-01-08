@@ -18,7 +18,9 @@ class Bodegas extends CI_Controller {
 		$data = array(
 	        'nombre' => strtoupper($data->nombre),
 	        'direccion' => strtoupper($data->direccion),
-	        'codigo' => $data->codigo
+	        'codigo' => $data->codigo,
+	        'num_otrabajo' => $data->num_otrabajo,
+	        'num_boleta' => $data->num_boleta
 		);
 
 		$this->db->insert('bodegas', $data); 
@@ -38,8 +40,10 @@ class Bodegas extends CI_Controller {
 		$id = $data->id;
 		$data = array(
 	        'nombre' => strtoupper($data->nombre),
+	        'direccion' => strtoupper($data->direccion),
 	        'codigo' => $data->codigo,
-	        'direccion' => strtoupper($data->direccion)
+	        'num_otrabajo' => $data->num_otrabajo,
+	        'num_boleta' => $data->num_boleta
 	        
 	    );
 		$this->db->where('id', $id);
