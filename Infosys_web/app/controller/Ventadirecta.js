@@ -924,6 +924,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                         view.down("#tipocondpagoId").setValue(cliente.id_pago)                        
                         //view.down("#buscarproc").focus()  
             
+                    }else{
+                        var edit = Ext.create('Infosys_web.view.clientes.Ingresar').show();
+                        edit.down("#rutId").setValue(rut)                        
+                        edit.down("#nombre_id").focus()  
                     }
                 }else{
                       Ext.Msg.alert('Informacion', 'Rut Incorrecto');
