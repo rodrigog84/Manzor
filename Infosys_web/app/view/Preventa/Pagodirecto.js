@@ -152,8 +152,8 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             allowBlank: false,
                                             name: 'num_otrabajo',
                                             itemId: 'otrabajoId',
-                                            fieldLabel: '<b>O. Trabajo</b>',
-                                            readOnly: true
+                                            fieldLabel: '<b>O. Trabajo</b>'
+                                            //readOnly: true
 
                                         }
                                     ]
