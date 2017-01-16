@@ -10,6 +10,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
              'recaudacion.Items',
              'Factura5',
              'Productosf',
+             'ProductosE',
              'Mecanicos',
              'Clientes',
              'Preventa',
@@ -504,77 +505,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         view.down("#codigoId").focus();
     },
 
-    lectura: function(){
-
-        var viewIngresa = this.getDocumentosingresar();
-        var codigo = viewIngresa.down('#codigoId').getValue()
-        var rut = viewIngresa.down('#rutId').getValue();
-        var valida = "";
-        if(!rut){
-             Ext.Msg.alert('Alerta', 'Debe Seleccionar Cliente');
-            return;  
-            
-        }
-        var lista = 1;
-        var idbodega = 1;
-                  
-        if (!codigo){
-            var st = this.getProductosfStore()
-            st.proxy.extraParams = {idlista: lista,
-                                    idbodega: idbodega}
-            st.load();
-            var view = Ext.create('Infosys_web.view.Pago_caja.BuscarProductos').show();
-            view.down('#listaId').setValue(lista);
-            view.down('#bodegaId').setValue(idbodega);
-            view.down("#codigoId").focus();  
-        }else{
-
-            Ext.Ajax.request({
-            url: preurl + 'productosfact/buscacodigoboleta',
-            params: {
-                id: 1,
-                codigo : codigo,
-                idlista : lista
-            },
-            success: function(response){
-                var resp = Ext.JSON.decode(response.responseText);
-                var cero = "";
-                if (resp.success == true){                    
-                    if(resp.cliente){
-                        var cliente = resp.cliente;                        
-                        viewIngresa.down('#productoId').setValue(cliente.id_producto);
-                        viewIngresa.down('#nombreproductoId').setValue(cliente.nombre);
-                        viewIngresa.down('#codigoId').setValue(cliente.codigo_barra);
-                        viewIngresa.down('#precioId').setValue(cliente.valor_lista);
-                        viewIngresa.down('#cantidadOriginalId').setValue(cliente.stock);
-                        viewIngresa.down("#cantidadId").focus();                                             
-                    }                    
-                };              
-                                          
-                if(resp.success == false){                
-                  if (resp.cliente){
-                        var cliente = resp.cliente;                        
-                        viewIngresa.down('#productoId').setValue(cliente.id_producto);
-                        viewIngresa.down('#nombreproductoId').setValue(cliente.nombre);
-                        viewIngresa.down('#codigoId').setValue(cliente.codigo_barra);
-                        viewIngresa.down('#precioId').setValue(cliente.valor_lista);
-                        viewIngresa.down('#cantidadOriginalId').setValue(cliente.stock);
-                        viewIngresa.down("#cantidadId").setValue(cliente.cantidad);
-                        viewIngresa.down("#agregarId").focus();
-                        //this.agregarItem();
-
-                  }else{
-                       Ext.Msg.alert('Alerta', 'Producto no existe');
-                        return;
-                };          
-              };
-          }
-
-        });
-        };
-        //this.agregarItem3();
-        
-    },
+    
 
     agregarItem: function() {
 
@@ -785,7 +716,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         var busca = this.getDocumentosingresar()
         var idbodega = busca.down('#bodegaId').getValue();
-        var st = this.getProductosfStore();
+        var st = this.getProductosEStore();
         st.proxy.extraParams = {opcion : idbodega};
         st.load();
         var edit = Ext.create('Infosys_web.view.Preventa.BuscarProductos3').show();
@@ -795,14 +726,12 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
     buscarp: function(){
         var view = this.getBuscarproductospreventa3();
-        var st = this.getProductosfStore()
-        var nombre = view.down('#nombreId').getValue();
-        var lista = 1;
-        var idbodega = view.down('#bodegaId').getValue();                
-
-        st.proxy.extraParams = {nombre : nombre,
-                                idlista: lista,
-                                idbodega: idbodega}
+        var st = this.getProductosEStore()
+        var nombre = view.down('#nombreId').getValue()
+        var bodega = view.down('#bodegaId').getValue()
+        st.proxy.extraParams = {opcion : bodega,
+                                tipo : "Nombre",
+                                nombre: nombre}
         st.load();
     },
 

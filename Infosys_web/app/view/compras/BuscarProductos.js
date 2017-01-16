@@ -1,13 +1,13 @@
-Ext.define('Infosys_web.view.Preventa.BuscarProductos2' ,{
+Ext.define('Infosys_web.view.compras.BuscarProductos' ,{
     extend: 'Ext.window.Window',
-    alias : 'widget.buscarproductospreventa2',
+    alias : 'widget.buscarproductosfacturascompras',
     
     requires: ['Ext.toolbar.Paging'],
     title : 'Busqueda Productos',
     layout: 'fit',
     autoShow: true,
     width: 1080,
-    height: 580,
+    height: 480,
     modal: true,
     iconCls: 'icon-sheet',
     y: 10,
@@ -16,7 +16,6 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos2' ,{
         this.items = {
             xtype: 'grid',
             iconCls: 'icon-grid',
-
             title : 'Productos',
             store: 'ProductosE',
             autoHeight: true,
@@ -25,27 +24,17 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos2' ,{
 
             },
            columns: [{
-                header: "Id",
-                width: 100,
-                dataIndex: 'id',
-                hidden: true
-            },{
                 header: "Codigo",
                 width: 100,
                 dataIndex: 'codigo'
-            },{
-                header: "Id Producto",
-                width: 100,
-                dataIndex: 'id_producto',
-                hidden: true
             },{
                 header: "Nombres",
                 width: 750,
                 dataIndex: 'nombre'
             },{
                 header: "Ubicacion Fisica",
-                flex: 1,
-                dataIndex: 'nom_ubi_prod',
+                 width: 100,
+                dataIndex: 'nom_bodega',
                 hidden: true
             },{
                 header: "Precio Venta",
@@ -74,6 +63,12 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos2' ,{
             {
                 width: 450,
                 xtype: 'textfield',
+                itemId: 'bodegaId',
+                fieldLabel: 'Bodega',
+                hidden: true
+            },{
+                width: 450,
+                xtype: 'textfield',
                 itemId: 'nombreId',
                 fieldLabel: 'Nombre'
             },
@@ -81,14 +76,14 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos2' ,{
             {
                 xtype: 'button',
                 iconCls: 'icon-search',
-                action: 'buscar2',
+                action: 'buscar',
                 text : 'Buscar'
             }
             ]      
         },{
             xtype: 'button',
             margin: 5,
-            action: 'seleccionarproductos2',
+            action: 'seleccionarproductos',
             dock: 'bottom',
             text : 'Seleccionar'
         },

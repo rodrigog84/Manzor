@@ -393,6 +393,108 @@ class Productosfact extends CI_Controller {
 
         echo json_encode($resp);
 
+	}
+	
+	public function getAllExiste(){
+
+		$resp = array();
+		$start = $this->input->get('start');
+        $limit = $this->input->get('limit');
+        $nombres = $this->input->get('nombre');
+        $opcion = $this->input->get('opcion');
+        $tipo = $this->input->get('tipo');
+
+        if(!$tipo){        	
+        	$tipo = "Todos";
+        };
+       
+        if($tipo=="Nombre"){
+
+
+			$sql_nombre = "";
+	        $arrayNombre =  explode(" ",$nombres);
+
+	        foreach ($arrayNombre as $nombre) {
+	        	$sql_nombre .= "c.nombre like '%".$nombre."%' and ";
+	        }
+
+        	$query2 = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
+        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
+        	FROM existencia acc
+			left join bodegas b on (acc.id_bodega = b.id)	
+			left join productos c on (acc.id_producto = c.id)
+			left join mae_medida m on (c.id_uni_medida = m.id)
+			WHERE acc.id_bodega = "'.$opcion.'" AND ' . $sql_nombre . ' 1 = 1 ');
+			
+			$total = 0;
+
+		  foreach ($query2->result() as $row)
+			{
+				$total = $total +1;
+			
+			}
+
+			$countAll = $total;
+
+			$query = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
+        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
+        	FROM existencia acc
+			left join bodegas b on (acc.id_bodega = b.id)	
+			left join productos c on (acc.id_producto = c.id)
+			left join mae_medida m on (c.id_uni_medida = m.id)
+			WHERE acc.id_bodega = "'.$opcion.'" AND ' . $sql_nombre . ' 1 = 1 
+			limit '.$start.', '.$limit.'');
+
+			foreach ($query->result() as $row)
+			{
+			$data[] = $row;
+			}
+				      
+        };
+
+        if ($tipo=="Todos"){
+
+        	$query2 = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
+        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
+        	FROM existencia acc
+			left join bodegas b on (acc.id_bodega = b.id)	
+			left join productos c on (acc.id_producto = c.id)
+			left join mae_medida m on (c.id_uni_medida = m.id)
+			WHERE acc.id_bodega = "'.$opcion.'"');
+			
+			$total = 0;
+
+		  foreach ($query2->result() as $row)
+			{
+				$total = $total +1;
+			
+			}
+
+			$countAll = $total;
+
+			$query = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
+        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
+        	FROM existencia acc
+			left join bodegas b on (acc.id_bodega = b.id)	
+			left join productos c on (acc.id_producto = c.id)
+			left join mae_medida m on (c.id_uni_medida = m.id)
+			WHERE acc.id_bodega = "'.$opcion.'"
+			limit '.$start.', '.$limit.'');
+
+			foreach ($query->result() as $row)
+			{
+			$data[] = $row;
+			}
+				       	
+
+        };
+                
+        $resp['success'] = true;
+        $resp['total'] = $countAll;
+        $resp['data'] = $data;
+
+        echo json_encode($resp);
+
 	}	
 	
 	public function getAll(){
@@ -406,7 +508,7 @@ class Productosfact extends CI_Controller {
         $subfamilia = $this->input->get('subfamilia');
         $agrupacion = $this->input->get('agrupacion');
         
-		$countAll = $this->db->count_all_results("productos");
+		//$countAll = $this->db->count_all_results("productos");
         
 		if($nombres){
 

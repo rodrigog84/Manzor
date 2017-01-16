@@ -8,6 +8,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventa.Items2',
             'preventa.Editar',
             'Productosf',
+            'ProductosE',
             'Preventaeditar',
             'Correlativos',
             'Clientes',
@@ -2249,7 +2250,7 @@ Ext.define('Infosys_web.controller.Preventa', {
 
         var busca = this.getPreventaingresar()
         var idbodega = busca.down('#bodegaId').getValue();
-        var st = this.getProductosfStore();
+        var st = this.getProductosEStore();
         st.proxy.extraParams = {opcion : idbodega};
         st.load();
         var edit = Ext.create('Infosys_web.view.Preventa.BuscarProductos').show();
@@ -2262,7 +2263,7 @@ Ext.define('Infosys_web.controller.Preventa', {
 
         var busca = this.getPreventaeditar()
         var idbodega = busca.down('#bodegaId').getValue();
-        var st = this.getProductosfStore();
+        var st = this.getProductosEStore();
         st.proxy.extraParams = {opcion : idbodega};
         st.load();
         var edit = Ext.create('Infosys_web.view.Preventa.BuscarProductos2').show();
@@ -2393,25 +2394,23 @@ Ext.define('Infosys_web.controller.Preventa', {
 
     buscarp: function(){
         var view = this.getBuscarproductospreventa();
-        var st = this.getProductosfStore();
-        var nombre = view.down('#nombreId').getValue();
-        var lista = 1;
-        var bodega = view.down('#bodegaId').getValue();
-        st.proxy.extraParams = {nombre : nombre,
-                                idlista: lista,
-                                idbodega: bodega}
+        var st = this.getProductosEStore()
+        var nombre = view.down('#nombreId').getValue()
+        var bodega = view.down('#bodegaId').getValue()
+        st.proxy.extraParams = {opcion : bodega,
+                                tipo : "Nombre",
+                                nombre: nombre}
         st.load();
     },
 
     buscarp2: function(){
         var view = this.getBuscarproductospreventa2();
-        var st = this.getProductosfStore();
-        var nombre = view.down('#nombreId').getValue();
-        var lista = 1;
-        var bodega = view.down('#bodegaId').getValue();
-        st.proxy.extraParams = {nombre : nombre,
-                                idlista: lista,
-                                idbodega: bodega}
+        var st = this.getProductosEStore()
+        var nombre = view.down('#nombreId').getValue()
+        var bodega = view.down('#bodegaId').getValue()
+        st.proxy.extraParams = {opcion : bodega,
+                                tipo : "Nombre",
+                                nombre: nombre}
         st.load();
     },
 

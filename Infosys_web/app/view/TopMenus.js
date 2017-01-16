@@ -236,6 +236,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 text: 'Movimiento Diario',
                 iconCls: '',
                 menu: [{
+                    text: 'Compras',
+                    iconCls: '',
+                    itemId: 'adq_md_compras',
+                    disabled: true,
+                    action: 'mcompras'         
+                },{
                         text: 'Orden de Compra',
                         iconCls: '',
                         itemId: 'adq_md_oc',
@@ -782,6 +788,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                     disabled: true,
                     action: 'mpreventaferreteria',
                     hidden: true               
+                },{
+                    text: 'Compras',
+                    iconCls: '',
+                    itemId: 'vv_acc_compras',
+                    disabled: true,
+                    action: 'mcompras'         
                 },{
                     text: 'Cotizaciones',
                     iconCls: '',

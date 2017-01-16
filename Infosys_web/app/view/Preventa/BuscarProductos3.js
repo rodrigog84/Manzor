@@ -17,7 +17,7 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos3' ,{
             xtype: 'grid',
             iconCls: 'icon-grid',
             title : 'Productos',
-            store: 'Productosf',
+            store: 'ProductosE',
             autoHeight: true,
             viewConfig: {
                 forceFit: true
@@ -100,7 +100,7 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos3' ,{
         {
             xtype: 'pagingtoolbar',
             dock:'bottom',
-            store: 'Productosf',
+            store: 'ProductosE',
             displayInfo: true
         }];
         
