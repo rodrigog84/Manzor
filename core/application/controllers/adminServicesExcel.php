@@ -790,6 +790,179 @@ class AdminServicesExcel extends CI_Controller {
             echo '</table>';
         }
 
+        public function exportarExcelFacturascompras()
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=Compras.xls");
+            
+            $columnas = json_decode($this->input->get('cols'));
+            $fecha = $this->input->get('fecha');
+            $nombres = $this->input->get('nombre');
+            $opcion = $this->input->get('opcion');
+            list($dia, $mes, $anio) = explode("/",$fecha);
+            $fecha3 = $anio ."-". $mes ."-". $dia;
+            $fecha2 = $this->input->get('fecha2');
+            list($dia, $mes, $anio) = explode("/",$fecha2);
+            $fecha4 = $anio ."-". $mes ."-". $dia;
+            $tipo = 1;
+            $tipo2 = 2;
+            $tipo3 = 3;
+            $tipo4 = 4;
+            
+            $data = array();
+                                   
+            $this->load->database();
+            
+            if($fecha){
+            
+            if($opcion == "Rut"){
+    
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedor = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and c.rut = '.$nombres.' and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.id desc'    
+
+              );
+
+                }else if($opcion == "Nombre"){
+
+                  
+                $sql_nombre = "";
+                    $arrayNombre =  explode(" ",$nombres);
+
+                    foreach ($arrayNombre as $nombre) {
+                      $sql_nombre .= "and c.nombres like '%".$nombre."%' ";
+                    }
+                            
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedor = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') ' . $sql_nombre . ' and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'" 
+                order by acc.id desc' 
+                
+                );
+             
+              }else if($opcion == "Todos"){
+
+                
+                $data = array();
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedor = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.id desc' 
+                
+                );
+            
+
+              }else{
+
+                
+              $data = array();
+              $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedor = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.id desc' 
+
+                );
+
+
+              }
+
+            };            
+             
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<td></td>";
+            echo "<td>LIBRO DE COMPRAS</td>";
+            echo "<td>FACTURAS</td>";
+            echo "<tr>";
+                if (in_array("id", $columnas)):
+                     echo "<td>ID</td>";
+                endif;
+                if (in_array("num_factura", $columnas)):
+                    echo "<td>NUMERO</td>";
+                endif;
+                if (in_array("fecha_factura", $columnas)):
+                     echo "<td>FECHA</td>";
+                endif;
+                if (in_array("fecha_venc", $columnas)):
+                     echo "<td>VENCIMIENTO</td>";
+                endif;
+                if (in_array("rut_cliente", $columnas)) :
+                    echo "<td>RUT</td>";
+                endif;
+                if (in_array("nombre_cliente", $columnas)) :
+                    echo "<td>NOMBRE</td>";
+                endif;
+                if (in_array("nom_vendedor", $columnas)) :
+                    echo "<td>VENDEDOR</td>";
+                endif;
+                if (in_array("sub_total", $columnas)) :
+                    echo "<td>AFECTO</td>";
+                endif;
+                if (in_array("descuento", $columnas)) :
+                    echo "<td>DESCUENTO</td>";
+                endif;
+                if (in_array("neto", $columnas)) :
+                    echo "<td>NETO</td>";
+                endif;
+                 if (in_array("iva", $columnas)) :
+                    echo "<td>IVA</td>";
+                endif;
+                if (in_array("totalfactura", $columnas)) :
+                    echo "<td>TOTAL</td>";
+                endif;
+
+                echo "<tr>";
+              
+              foreach($users as $v){
+                 echo "<tr>";
+                   if (in_array("id", $columnas)) :
+                      echo "<td>".$v['id']."</td>";
+                   endif;
+                    
+                   if (in_array("num_factura", $columnas)) :
+                      echo "<td>".$v['num_factura']."</td>";
+                   endif;
+                   if (in_array("fecha_factura", $columnas)) :
+                      echo "<td>".$v['fecha_factura']."</td>";
+                   endif;
+                   if (in_array("fecha_venc", $columnas)) :
+                      echo "<td>".$v['fecha_venc']."</td>";
+                   endif;
+                   if (in_array("rut_cliente", $columnas)) :
+                      echo "<td>".$v['rut_cliente']."</td>";
+                   endif;
+                  if (in_array("nombre_cliente", $columnas)) :
+                      echo "<td>".$v['nombre_cliente']."</td>";
+                  endif;
+                  if (in_array("nom_vendedor", $columnas)) :
+                      echo "<td>".$v['nom_vendedor']."</td>";
+                  endif;
+                  if (in_array("sub_total", $columnas)) :
+                      echo "<td>".$v['sub_total']."</td>";
+                  endif;
+                  if (in_array("descuento", $columnas)) :
+                      echo "<td>".$v['descuento']."</td>";
+                  endif;
+                  if (in_array("neto", $columnas)) :
+                      echo "<td>".$v['neto']."</td>";
+                  endif;
+                  if (in_array("iva", $columnas)) :
+                      echo "<td>".$v['iva']."</td>";
+                  endif;
+                  if (in_array("totalfactura", $columnas)) :
+                      echo "<td>".$v['totalfactura']."</td>";
+                  endif;
+                  //echo "<tr>";
+            }
+            echo '</table>';
+        }
+
         public function exportarExcelGuias()
          {
             header("Content-type: application/vnd.ms-excel"); 
@@ -1323,6 +1496,201 @@ class AdminServicesExcel extends CI_Controller {
                   $cantfac = $cantfac +1;                   
                  };
                  if ($v['tipo_documento']==104){
+                  $tip="N/D";
+                  $totalnd = $totalnd + $total;
+                  $totalafnd = $totalafnd + $afecto;
+                  $totalnetond = $totalnetond + $neto;
+                  $totalivand = $totalivand + $iva;
+                  $cantnd = $cantnd +1;                   
+                 };
+
+                echo "<tr>";
+                   echo "<td>".$v['num_factura']."</td>";
+                   echo "<td>".$tip."</td>";
+                   echo "<td>".$v['fecha_factura']."</td>";
+                   echo "<td>".$v['fecha_venc']."</td>";
+                   echo "<td>".$v['rut_cliente']."</td>";
+                   echo "<td>".$v['nombre_cliente']."</td>";
+                   echo "<td>".$afecto."</td>";
+                   echo "<td>".$v['descuento']."</td>";
+                   echo "<td>".$neto."</td>";
+                   echo "<td>".$iva."</td>";
+                   echo "<td>".$total."</td>";
+                echo "</tr>";
+            }
+            echo "<tr>";
+                echo "<td>TIPO</td>";
+                echo "<td>VIGENTES</td>";
+                echo "<td>NULOS</td>";
+                echo "<td>AFECTO</td>";
+                echo "<td>EXENTO</td>";
+                echo "<td>IMPUESTO IVA</td>";
+                echo "<td>OTROS IMP.</td>";
+                echo "<td>TOTAL FACTURAS</td>";
+            echo "<tr>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+            echo "<tr>";
+                   echo "<td>FACTURAS</td>";
+                   echo "<td>".$cantfac."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalaffa."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalivafa."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalfa."</td>";
+            echo "</tr>";
+            echo "<tr>";
+                   echo "<td>NOTAS CREDITO</td>";                
+                   echo "<td>".$cantnc."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalafnc."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totaliva."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalnc."</td>";
+            echo "</tr>";
+             $totalafecto = $totalaffa + $totalafnc;
+             $totalivafin = $totalivafa + $totaliva;
+             $totalfinala = $totalfa + $totalnc;
+            echo "<tr>";
+                   echo "<td>NOTAS DEBITO</td>";                
+                   echo "<td>".$cantnd."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalafnd."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalivand."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalnd."</td>";
+            echo "</tr>";
+             $totalafecto = $totalaffa + $totalafnc + $totalafnd;
+             $totalivafin = $totalivafa + $totaliva + $totalivand ;
+             $totalfinala = $totalfa + $totalnc + $totalnd;
+             
+            echo "<tr>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+                echo "<td>-------------</td>";
+            echo "<tr>";                
+                   echo "<td>TOTALES</td>";                
+                   echo "<td></td>";
+                   echo "<td></td>";
+                   echo "<td>".$totalafecto."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalivafin."</td>";
+                   echo "<td>".$otros."</td>";
+                   echo "<td>".$totalfinala."</td>";                  
+            echo "</tr>";
+            echo '</table>';
+        }
+
+        public function exportarExcellibroFacturascompras()
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=LibroFacturasCompras.xls");
+            
+            $columnas = json_decode($this->input->get('cols'));
+            $fecha = $this->input->get('fecha');
+            list($dia, $mes, $anio) = explode("/",$fecha);
+            $fecha3 = $anio ."-". $mes ."-". $dia;
+            $fecha2 = $this->input->get('fecha2');
+            list($dia, $mes, $anio) = explode("/",$fecha2);
+            $fecha4 = $anio ."-". $mes ."-". $dia;
+            $tipo = 1;
+            $tipo2 = 2;
+            $tipo3 = 3;
+            $totalnc = 0;
+            $totalafnc = 0;
+            $totalnetonc = 0;
+            $totalnetond = 0;
+            $totaliva = 0;
+            $totalfa = 0;
+            $totalnd = 0;
+            $totalaffa = 0;
+            $totalafnd = 0;
+            $totalnetofa = 0;
+            $totalivafa = 0;
+            $totalivand = 0;
+            $cantfac = 0;
+            $cantnc = 0;
+            $cantnd = 0;
+            $otros = 0;
+
+            $data = array();
+                                   
+            $this->load->database();
+            
+            if($fecha){            
+                          
+                $data = array();
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedor = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in ( '.$tipo.','.$tipo2.','.$tipo3.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.fecha_factura, acc.tipo_documento, acc.num_factura' 
+                
+                );           
+
+              };
+              
+             
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<td></td>";
+            echo "<td>LIBRO DE COMPRAS</td>";
+            echo "<td>FACTURAS</td>";
+            echo "<tr>";
+                echo "<td>NUMERO</td>";
+                echo "<td>TIPO</td>";
+                echo "<td>FECHA</td>";
+                echo "<td>VENCIMIENTO</td>";
+                echo "<td>RUT</td>";
+                echo "<td>NOMBRE</td>";
+                echo "<td>AFECTO</td>";
+                echo "<td>DESCUENTO</td>";
+                echo "<td>NETO</td>";
+                echo "<td>IVA</td>";
+                echo "<td>TOTAL</td>";
+                echo "<tr>";
+              
+              foreach($users as $v){
+                 $total = $v['totalfactura'];
+                 $afecto = $v['sub_total'];
+                 $neto = $v['neto'];
+                 $iva = $v['iva'];
+                 if ($v['tipo_documento']==5){
+                  $total = ($v['totalfactura']/-1);
+                  $afecto = ($v['sub_total']/-1);
+                  $neto = ($v['neto']/-1);
+                  $iva = $v['iva']/-1;
+                  $cantnc = $cantnc + 1;
+                  $totalnc = $totalnc + $total;
+                  $totalafnc = $totalafnc + $afecto;
+                  $totalnetonc = $totalnetonc + $neto;
+                  $totaliva = $totaliva + $iva;
+                  $tip="N/C";
+                 };
+                 if ($v['tipo_documento']==1){
+                  $tip="FACT";
+                  $totalfa = $totalfa + $total;
+                  $totalaffa = $totalaffa + $afecto;
+                  $totalnetofa = $totalnetofa + $neto;
+                  $totalivafa = $totalivafa + $iva;
+                  $cantfac = $cantfac +1;                   
+                 };
+                 if ($v['tipo_documento']==6){
                   $tip="N/D";
                   $totalnd = $totalnd + $total;
                   $totalafnd = $totalafnd + $afecto;

@@ -135,24 +135,24 @@ Ext.define('Infosys_web.view.compras.Principalfactura' ,{
                 xtype: 'button',
                 iconCls: 'icon-add',
                 action: 'editarcompras',
-                text : 'Editar / Agregar'
+                text : 'Editar / Agregar',
+                hidden: true
             },{
                 xtype: 'button',
                 iconCls : 'icon-pdf',
                 text: 'Imprimir PDF',
-                action:'exportarpreventa'
+                action:'generarlibropdf'
             },{
                 xtype: 'button',
                 width: 120,
                 iconCls : 'icon-exel',
                 text: 'Exportar EXCEL',
-                action:'exportarexcelpreventa'
+                action:'exportarexcelfacturas'
             },{
                 xtype: 'button',
                 iconCls: 'icon-delete',
-                action: 'eliminarpreventa',
-                text : 'Eliminar',
-                hidden: true
+                action: 'eliminarcompras',
+                text : 'Eliminar'
             }],
                   
         },{

@@ -11,7 +11,7 @@ Ext.define('Infosys_web.controller.Compras', {
              'Tipo_documento',
              'Sucursales_clientes',
              'Tipo_documento.Selector5',
-             'facturas.Selector'],
+             'facturas.Selector3'],
 
     models: ['Facturas.Item',
              'Factura',
@@ -26,7 +26,8 @@ Ext.define('Infosys_web.controller.Compras', {
              'compras.BuscarProductos',
              'compras.Exportar',
              'compras.Exportartxt',
-             'compras.Observaciones'
+             'compras.Observaciones',
+             'compras.Eliminar'
           ],
 
     //referencias, es un alias interno para el controller
@@ -51,11 +52,11 @@ Ext.define('Infosys_web.controller.Compras', {
         ref: 'buscarsucursalesclientescompras',
         selector: 'buscarsucursalesclientescompras'
     },{
-        ref: 'formularioexportar',
-        selector: 'formularioexportar'
+        ref: 'formularioexportarcompras',
+        selector: 'formularioexportarcompras'
     },{
-        ref: 'formularioexportarpdf',
-        selector: 'formularioexportarpdf'
+        ref: 'formularioexportarpdfcompras',
+        selector: 'formularioexportarpdfcompras'
     },{
         ref: 'observacionesfacturasdirectas',
         selector: 'observacionesfacturasdirectas'
@@ -65,10 +66,10 @@ Ext.define('Infosys_web.controller.Compras', {
     },{
         ref: 'buscarproductosfacturascompras',
         selector: 'buscarproductosfacturascompras'
+    },{
+        ref: 'eliminarcompra',
+        selector: 'eliminarcompra'
     }  
-
-
-
     
     ],
     //init es lo primero que se ejecuta en el controller
@@ -146,10 +147,10 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasprincipal button[action=generarlibropdf]': {
                 click: this.generarlibropdf
             },            
-            'formularioexportar button[action=exportarExcelFormulario]': {
+            'formularioexportarcompras button[action=exportarExcelFormulario]': {
                 click: this.exportarExcelFormulario
             },
-            'formularioexportarpdf button[action=exportarPdfFormulario]': {
+            'formularioexportarpdfcompras button[action=exportarPdfFormulario]': {
                 click: this.exportarPdfFormulario
             },            
             'facturascomprasingresar button[action=observaciones]': {
@@ -173,7 +174,79 @@ Ext.define('Infosys_web.controller.Compras', {
              'facturascomprasingresar button[action=agregarItem]': {
                 click: this.agregarItem
             },
+            'eliminarcompra button[action=salircompra]': {
+                click: this.salircompra
+            },
+            'eliminarcompra button[action=eliminarsi]': {
+                click: this.eliminarsi
+            },
+             'facturascomprasprincipal button[action=eliminarcompras]': {
+                click: this.eliminarcompras
+            },
              });
+    },
+
+    eliminarcompras: function(){
+
+        var view = this.getFacturascomprasprincipal()
+       
+        if (view.getSelectionModel().hasSelection()) {
+            var row = view.getSelectionModel().getSelection()[0];
+            var edit =   Ext.create('Infosys_web.view.compras.Eliminar').show();
+            edit.down('#idclienteID').setValue(row.data.id);
+           
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+        
+    },
+
+    eliminarsi: function(){
+
+        var view = this.getEliminarcompra();
+        var viedit = this.getFacturascomprasprincipal();
+        var idcliente = view.down('#idclienteID').getValue()
+        var bodega = viedit.down('#bodegaId').getValue()
+        var st = this.getFacturaComprasStore();
+        Ext.Ajax.request({
+            url: preurl + 'compras/elimina2',
+            params: {
+
+                idcliente: idcliente,
+                bodega : bodega
+                
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) {
+                    view.close();
+                    st.load(); 
+                    Ext.Msg.alert('Datos Eliminados Exitosamente');
+                    return;                                   
+
+                 }else{
+
+                    view.close();
+                    st.load();
+
+                    Ext.Msg.alert('Preventa Ya Cancelada No se Elimino');
+                    return;
+                   
+                                         
+                 };
+        }
+        });
+
+        view.close();
+        st.load();            
+    },
+
+    salircompra: function(){
+
+       var view = this.getEliminarcompra()
+       view.close();
+
     },
 
     agregarItem: function() {
@@ -566,7 +639,7 @@ Ext.define('Infosys_web.controller.Compras', {
           i++;
         })
 
-        var view =this.getFormularioexportar()
+        var view =this.getFormularioexportarcompras()
         var viewnew =this.getFacturascomprasprincipal()
         var fecha = view.down('#fechaId').getSubmitValue();
         var opcion = viewnew.down('#tipoSeleccionId').getValue()
@@ -584,14 +657,14 @@ Ext.define('Infosys_web.controller.Compras', {
 
         if (opcion == "LIBRO VENTAS"){
 
-              window.open(preurl + 'adminServicesExcel/exportarExcellibroFacturas?cols='+Ext.JSON.encode(jsonCol)+'&fecha='+fecha+'&fecha2='+fecha2);
+              window.open(preurl + 'adminServicesExcel/exportarExcellibroFacturascompras?cols='+Ext.JSON.encode(jsonCol)+'&fecha='+fecha+'&fecha2='+fecha2);
             view.close();
             
             
 
         }else{
 
-             window.open(preurl + 'adminServicesExcel/exportarExcelFacturas?cols='+Ext.JSON.encode(jsonCol)+'&fecha='+fecha+'&fecha2='+fecha2+'&opcion='+opcion+'&nombre='+nombre);
+             window.open(preurl + 'adminServicesExcel/exportarExcelFacturascompras?cols='+Ext.JSON.encode(jsonCol)+'&fecha='+fecha+'&fecha2='+fecha2+'&opcion='+opcion+'&nombre='+nombre);
         view.close();
 
           
@@ -613,7 +686,7 @@ Ext.define('Infosys_web.controller.Compras', {
           i++;
         })
 
-        var view =this.getFormularioexportarpdf()
+        var view =this.getFormularioexportarpdfcompras()
         var viewnew =this.getFacturascomprasprincipal()
         var fecha = view.down('#fechaId').getSubmitValue();
         var opcion = viewnew.down('#tipoSeleccionId').getValue()
@@ -632,7 +705,7 @@ Ext.define('Infosys_web.controller.Compras', {
 
         if (opcion == "LIBRO VENTAS"){
 
-              window.open(preurl + 'facturas/exportarPdflibroFacturas?cols='+Ext.JSON.encode(jsonCol)+'&fecha='+fecha+'&fecha2='+fecha2);
+              window.open(preurl + 'compras/exportarPdflibroFacturas?cols='+Ext.JSON.encode(jsonCol)+'&fecha='+fecha+'&fecha2='+fecha2);
             view.close();
             
             

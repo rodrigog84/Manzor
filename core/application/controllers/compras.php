@@ -9,6 +9,614 @@ class Compras extends CI_Controller {
 		$this->load->database();
 	}
 
+	public function elimina2(){
+
+	    $resp = array();
+	    $idcliente = $this->input->post('idcliente');
+	    $idbodega = $this->input->post('bodega');
+
+
+        $items = $this->db->get_where('factura_compras', array('id' => $idcliente));
+
+	    if($items->num_rows()>0){
+
+	     
+	   	 	$items = $this->db->get_where('detalle_factura_compra', array('id_factura' => $idcliente));
+
+	   	 if($items->num_rows()>0){
+
+	   	 	$users = $items->result_array();
+		    foreach($users as $v){
+
+		    	$producto = $v['id_producto'];
+		    	$cantidad = $v['cantidad'];
+		    	$numfactura = $v['num_factura'];
+		    	$precio = $v['precio'];
+		    	$query = $this->db->query('SELECT * FROM existencia
+		    	WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
+	    	 	$row = $query->result();
+				if ($query->num_rows()>0){
+				$row = $row[0];	
+				$saldo = ($row->stock)-($cantidad);
+				$idexiste = ($row->id);
+		        if ($producto==($row->id_producto) and $idbodega==($row->id_bodega)){
+				    $datos3 = array(
+					'stock' => $saldo,
+			        'fecha_ultimo_movimiento' => date('Y-m-d H:i:s')
+					);
+					$this->db->where('id', $idexiste);
+		    	    $this->db->update('existencia', $datos3);
+	    	    }
+
+	    	    $datos2 = array(
+						'num_movimiento' => $numfactura,
+				        'id_producto' => $producto,
+				        'id_tipo_movimiento' => 4,
+				        'valor_producto' =>  $precio,
+				        'cantidad_salida' => $cantidad,
+				        'id_bodega' => $idbodega,
+				        'fecha_movimiento' => date('Y-m-d H:i:s')
+				);
+
+				$this->db->insert('existencia_detalle', $datos2);
+
+	    	
+
+	        }
+	       };
+
+	   	 	$query = $this->db->query('DELETE FROM factura_compras WHERE id = "'.$idcliente.'"
+	   	 	');
+
+	   	 	$query = $this->db->query('DELETE FROM detalle_factura_compra WHERE id_factura = "'.$idcliente.'"');
+
+
+   	
+	    	$resp['success'] = true;
+
+	    }else{
+
+	    	$query = $this->db->query('DELETE FROM factura_compras WHERE id = "'.$idcliente.'"
+	   	 	');
+
+	    	$query = $this->db->query('DELETE FROM detalle_factura_glosa_compras WHERE id_factura = "'.$idcliente.'"');
+
+	    	$resp['success'] = true;
+
+	    	
+
+	    }
+
+	   	 }else{
+
+	   	 	$resp['success'] = false;
+	   	 	
+
+	   	 };	  
+	   
+	    
+	    echo json_encode($resp);	   
+
+	}
+
+	public function exportarPdflibroFacturas()
+         {            
+            $columnas = json_decode($this->input->get('cols'));
+            $fecha = $this->input->get('fecha');
+            list($dia, $mes, $anio) = explode("/",$fecha);
+            $fecha3 = $anio ."-". $mes ."-". $dia;
+            $fecha2 = $this->input->get('fecha2');
+            list($dia, $mes, $anio) = explode("/",$fecha2);
+            $fecha4 = $anio ."-". $mes ."-". $dia;
+            $tipo = 1;
+            $tipo2 = 2;
+            $tipo3 = 3;
+            $tipo4 = 4;
+            $this->load->library("mpdf");
+
+			$this->mpdf->mPDF(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);  
+			//echo $html; exit
+            $data = array();
+                                   
+            $this->load->database();
+            
+            if($fecha){
+                          
+                $data = array();
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedor = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in ( '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.tipo_documento and acc.fecha_factura' 
+                
+                );
+            
+
+              };
+
+
+		$header = '
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Libro de Compras/title>
+		<style type="text/css">
+		td {
+			font-size: 16px;
+		}
+		p {
+		}
+		</style>
+		</head>
+
+		<body>
+		<table width="987px" height="602" border="0">
+		  <tr>
+		   <td width="197px"><img src="http://localhost/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
+		    </td>
+		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
+		          <p>FECHA EMISION : '.date('d/m/Y').'</p>
+			</td>
+		  </tr>';              
+              
+		  $header2 = '<tr>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>LIBRO DE COMPRAS</h2></td>
+		  </tr>
+			<tr><td colspan="3">&nbsp;</td></tr>		  
+			';              
+
+
+		$body_header = '<tr>
+		    <td colspan="3" >
+		    	<table width="987px" cellspacing="0" cellpadding="0" >
+		      <tr>
+		        <td width="57"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Dia</td>
+		        <td width="40px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Num</td>
+		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Tipo</td>
+		        <td width="100px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Rut</td>
+		        <td width="350px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Nombre</td>
+		        <td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ></td>
+		        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Exento</td>
+		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
+		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >IVA</td>
+		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
+		      </tr>';
+		      $sub_total = 0;
+		      $descuento = 0;
+		      $neto = 0;
+		      $iva = 0;
+		      $cantfact = 0;
+		      $cantnc =0;
+		      $totalfactura = 0;
+              $i = 0;
+              $body_detail = '';
+              $users = $query->result_array();
+		      foreach($users as $v){
+
+		      	    list($anio, $mes, $dia) = explode("-",$v['fecha_factura']);
+                    $rutautoriza = $v['rut_cliente'];
+				   	if (strlen($rutautoriza) == 8){
+				      $ruta1 = substr($rutautoriza, -1);
+				      $ruta2 = substr($rutautoriza, -4, 3);
+				      $ruta3 = substr($rutautoriza, -7, 3);
+				      $ruta4 = substr($rutautoriza, -8, 1);
+				      $v['rut_cliente'] = ($ruta4.".".$ruta3.".".$ruta2."-".$ruta1);
+				    };
+				    if (strlen($rutautoriza) == 9){
+				      $ruta1 = substr($rutautoriza, -1);
+				      $ruta2 = substr($rutautoriza, -4, 3);
+				      $ruta3 = substr($rutautoriza, -7, 3);
+				      $ruta4 = substr($rutautoriza, -9, 2);
+				      $v['rut_cliente'] = ($ruta4.".".$ruta3.".".$ruta2."-".$ruta1);			   
+				    };
+				    if (strlen($rutautoriza) == 2){
+				      $ruta1 = substr($rutautoriza, -1);
+				      $ruta2 = substr($rutautoriza, -4, 1);
+				      $v['rut_cliente'] = ($ruta2."-".$ruta1);
+				      				     
+				    };
+
+				    if ($v['tipo_documento'] == 5){
+
+				    	$v['neto'] = ($v['neto']/-1);
+				    	$v['iva'] = ($v['iva']/-1);
+				    	$v['totalfactura'] = ($v['totalfactura']/-1);
+				    	$tipo="N/C";
+
+				    };
+				     if ($v['tipo_documento'] == 1 or $v['tipo_documento'] == 2){
+				      $sub_total += $v['sub_total'];
+				      $descuento += $v['descuento'];
+				      $neto += $v['neto'];
+				      $iva += $v['iva'];
+				      $totalfactura += $v['totalfactura'];
+				      $cantfact++;
+				      $tipo="Fact";
+				      };
+
+				       
+			      if ($v['tipo_documento'] == 3){
+			      $netoex += $v['neto'];
+			      $ivaex += $v['iva'];
+			      $totalfacturaex += $v['totalfactura'];
+			      $cantex++;
+			      $tipo="F/Exe";
+			      };
+			      if ($v['tipo_documento'] == 4){
+			      $netond += $v['neto'];
+			      $ivand += $v['iva'];
+			      $totalfacturand += $v['totalfactura'];
+			      $cantnd++;
+			      $tipo="N/D";
+			      };
+			      if ($v['tipo_documento'] == 5){
+			      $netonc += $v['neto'];
+			      $ivanc += $v['iva'];
+			      $totalfacturanc += $v['totalfactura'];
+			      $cantnc++;
+			      };
+				    	      	    
+
+					$body_detail .= '<tr><td colspan="10">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<table width="997" cellspacing="0" cellpadding="0" >
+				    <tr>				
+					<td width="47px" style="text-align:left">'.$dia.'</td>
+					<td width="70px" style="text-align:left">'.$v['num_factura'].'</td>
+					<td width="70px" style="text-align:left">'.$tipo.'</td>
+					<td width="100px" style="text-align:right">'.$v['rut_cliente'].'</td>
+					<td width="10px" style="text-align:left"></td>
+					<td width="350px" style="text-align:left">'.$v['nombre_cliente'].'</td>
+					<td width="50px" style="text-align:left"></td>
+					<td width="100px" style="text-align:right">$ '.number_format($v['neto'], 0, '.', ',').'</td>
+					<td width="100px" style="text-align:right">$ '.number_format($v['iva'], 0, '.', ',').'</td>
+					<td width="100px" style="text-align:right">$ '.number_format($v['totalfactura'], 0, '.', ',').'</td>
+				    </tr>
+				    </table>
+				  </tr>';
+					
+			      
+                 
+
+
+		            $i++;
+		         }  
+
+				$footer .= '<tr><td colspan="10">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<td colspan="3" >
+				    	<table width="987px" cellspacing="0" cellpadding="0" >
+				      <tr>
+				        <td width="477px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
+				        <td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b></b></td>
+				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b></b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($neto, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($iva, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfactura, 0, ',', '.').'</b></td>
+				      </tr>
+				      	</table>
+				  	</td>
+				  </tr></table>
+				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<td colspan="3" >
+				    	<table width="987px" cellspacing="0" cellpadding="0" >
+				      <tr>
+				        <td width="477px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
+				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Facturas</b></td>
+				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantfact, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($neto, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($iva, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfactura, 0, ',', '.').'</b></td>
+				      </tr>
+				      	</table>
+				  	</td>
+				  </tr></table>
+				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<td colspan="3" >
+				    	<table width="987px" cellspacing="0" cellpadding="0" >
+				      <tr>
+				        <td width="477px"  style="border-bottom:0pt solid black;border-top:0pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
+				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Facturas Excentas</b></td>
+				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantex, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($netoex, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($ivaex, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfacturaex, 0, ',', '.').'</b></td>
+				      </tr>
+				      	</table>
+				  	</td>
+				  </tr></table>
+				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<td colspan="3" >
+				    	<table width="987px" cellspacing="0" cellpadding="0" >
+				      <tr>
+				        <td width="477px"  style="border-bottom:0pt solid black;border-top:0pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
+				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Notas Debito</b></td>
+				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantnd, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($netond, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($ivand, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfacturand, 0, ',', '.').'</b></td>
+				      </tr>
+				      	</table>
+				  	</td>
+				  </tr></table>
+				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<td colspan="3" >
+				    	<table width="987px" cellspacing="0" cellpadding="0" >
+				      <tr>
+				         <td width="477px"  style="border-bottom:0pt solid black;border-top:0pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
+				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Notas de Ctredito</b></td>
+				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantnc, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($netonc, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($ivanc, 0, ',', '.').'</b></td>
+				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfacturanc, 0, ',', '.').'</b></td>
+				      </tr>
+				      </tr>
+				      	</table>
+				  	</td>
+				  </tr></table>
+				</body>
+				</html>';		              
+             
+        			  
+	        $html = $header.$header2;
+	        $html2 =$body_header.$body_detail.$footer;
+	      	$this->mpdf->WriteHTML($html);
+			$this->mpdf->WriteHTML($html2);
+			$this->mpdf->Output("LibroCompras.pdf", "I");
+            exit;		          
+
+        }
+
+        public function exportarPdfFacturas()
+         {
+
+            
+            $columnas = json_decode($this->input->get('cols'));
+            $fecha = $this->input->get('fecha');
+            $nombres = $this->input->get('nombre');
+            $opcion = $this->input->get('opcion');
+            list($dia, $mes, $anio) = explode("/",$fecha);
+            $fecha3 = $anio ."-". $mes ."-". $dia;
+            $fecha2 = $this->input->get('fecha2');
+            list($dia, $mes, $anio) = explode("/",$fecha2);
+            $fecha4 = $anio ."-". $mes ."-". $dia;
+            $tipo = 1;
+            $tipo2 = 2;
+            $tipo3 = 3;
+            $tipo4 = 4;
+                        
+
+            $data = array();
+                                   
+            $this->load->database();
+            
+            if($fecha){
+            
+            if($opcion == "Rut"){
+    
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedores = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and c.rut = '.$nombres.' and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.id desc'    
+
+              );
+
+                }else if($opcion == "Nombre"){
+
+                  
+                $sql_nombre = "";
+                    $arrayNombre =  explode(" ",$nombres);
+
+                    foreach ($arrayNombre as $nombre) {
+                      $sql_nombre .= "and c.nombres like '%".$nombre."%' ";
+                    }
+                            
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedores = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') ' . $sql_nombre . ' and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'" 
+                order by acc.id desc' 
+                
+                );
+             
+              }else if($opcion == "Todos"){
+
+                
+                $data = array();
+                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedores = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.id desc' 
+                
+                );
+            
+
+              }else{
+
+                
+              $data = array();
+              $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
+                left join clientes c on (acc.id_proveedores = c.id)
+                left join vendedores v on (acc.id_vendedor = v.id)
+                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
+                order by acc.id desc' 
+
+                );
+
+
+              }
+
+            };
+		$header = '
+		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Untitled Document</title>
+		<style type="text/css">
+		td {
+			font-size: 16px;
+		}
+		p {
+		}
+		</style>
+		</head>
+
+		<body>
+		<table width="987px" height="602" border="0">
+		  <tr>
+		  <td width="197px"><img src="http://localhost/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
+		    </td>
+		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
+		          <p>FECHA EMISION : '.date('d/m/Y').'</p>
+			</td>
+		  </tr>';              
+              
+		  $header2 = '<tr>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>LIBRO DE COMPRAS</h2></td>
+		  </tr>
+			<tr><td colspan="3">&nbsp;</td></tr>		  
+			';              
+
+
+		$body_header = '<tr>
+		    <td colspan="3" >
+		    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
+		      <tr>
+		      	<td width="55px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Id</td>
+		        <td width="62px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Numero</td>
+		        <td width="65px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Fecha</td>
+		        <td width="65px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Vencimiento</td>
+		        <td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Rut</td>
+		        <td width="180px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Nombre</td>
+		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Vendedor</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Afecto</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Descuento</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >IVA</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
+		      </tr>';
+
+
+		      $sub_total = 0;
+		      $descuento = 0;
+		      $neto = 0;
+		      $iva = 0;
+		      $totalfactura = 0;
+              $i = 0;
+              $body_detail = '';
+              $users = $query->result_array();
+		      foreach($users as $v){
+
+					$body_detail .= '<tr>
+					<td style="text-align:left;font-size: 14px;">'.$v['id'].'</td>		
+					<td style="text-align:left;font-size: 14px;">'.$v['num_factura'].'</td>			
+					<td style="text-align:left;font-size: 14px;">'.$v['fecha_factura'].'</td>
+					<td style="text-align:right;font-size: 14px;">'.$v['fecha_venc'].'</td>
+					<td style="text-align:center;font-size: 14px;">'.$v['rut_cliente'].'</td>
+					<td style="text-align:left;font-size: 14px;">'.$v['nombre_cliente'].'</td>
+					<td style="text-align:left;font-size: 14px;">'.$v['nom_vendedor'].'</td>
+					<td align="right" style="font-size: 14px;">$ '.number_format($v['sub_total'], 0, '.', ',').'</td>
+					<td align="right" style="font-size: 14px;">$ '.number_format($v['descuento'], 0, '.', ',').'</td>
+					<td align="right" style="font-size: 14px;">$ '.number_format($v['neto'], 0, '.', ',').'</td>
+					<td align="right" style="font-size: 14px;">$ '.number_format($v['iva'], 0, '.', ',').'</td>
+					<td align="right" style="font-size: 14px;">$ '.number_format($v['totalfactura'], 0, '.', ',').'</td>
+					</tr>';
+					
+			      $sub_total += $v['sub_total'];
+			      $descuento += $v['descuento'];
+			      $neto += $v['neto'];
+			      $iva += $v['iva'];
+			      $totalfactura += $v['totalfactura'];
+
+		            $i++;
+		         }  
+
+				$footer .= '<tr><td colspan="12">&nbsp;</td></tr></table></td>
+				  </tr>
+				  <tr>
+				  	<td colspan="3" >
+				    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
+				      <tr>
+				        <td width="635px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
+				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($sub_total, 0, ',', '.').'</b></td>
+				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($descuento, 0, ',', '.').'</b></td>
+				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($neto, 0, ',', '.').'</b></td>
+				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($iva, 0, ',', '.').'</b></td>
+				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfactura, 0, ',', '.').'</b></td>
+				      </tr>
+				      	</table>
+				  	</td>
+				  </tr></table>
+				</body>
+				</html>';		              
+             
+        $html = $header.$header2.$body_header.$body_detail.$footer;
+        //echo $html; exit;
+        //$html = $header.$header2.$body_header.$body_detail.$spaces;
+			$this->load->library("mpdf");
+			//include(defined('BASEPATH')."/libraries/MPDF54/mpdf.php");
+			//include(dirname(__FILE__)."/../libraries/MPDF54/mpdf.php");
+
+			$this->mpdf->mPDF(
+				'',    // mode - default ''
+				'',    // format - A4, for example, default ''
+				8,     // font size - default 0
+				'',    // default font family
+				10,    // margin_left
+				5,    // margin right
+				16,    // margin top
+				16,    // margin bottom
+				9,     // margin header
+				9,     // margin footer
+				'L'    // L - landscape, P - portrait
+				);  
+			//echo $html; exit;
+			$this->mpdf->WriteHTML($html);
+			$this->mpdf->Output("Compras.pdf", "I");
+
+			exit;            
+
+        }
+
+
 	public function anulacion(){
 
 		$resp = array();		
@@ -3013,524 +3621,7 @@ font-family: Arial, Helvetica, sans-serif;
 	}
 
 
-        public function exportarPdflibroFacturas()
-         {            
-            $columnas = json_decode($this->input->get('cols'));
-            $fecha = $this->input->get('fecha');
-            list($dia, $mes, $anio) = explode("/",$fecha);
-            $fecha3 = $anio ."-". $mes ."-". $dia;
-            $fecha2 = $this->input->get('fecha2');
-            list($dia, $mes, $anio) = explode("/",$fecha2);
-            $fecha4 = $anio ."-". $mes ."-". $dia;
-            $tipo = 1;
-            $tipo2 = 102;
-            $tipo3 = 101;
-            $tipo4 = 103;
-            $this->load->library("mpdf");
-
-			$this->mpdf->mPDF(
-				'',    // mode - default ''
-				'',    // format - A4, for example, default ''
-				8,     // font size - default 0
-				'',    // default font family
-				10,    // margin_left
-				5,    // margin right
-				16,    // margin top
-				16,    // margin bottom
-				9,     // margin header
-				9,     // margin footer
-				'L'    // L - landscape, P - portrait
-				);  
-			//echo $html; exit
-            $data = array();
-                                   
-            $this->load->database();
-            
-            if($fecha){
-                          
-                $data = array();
-                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
-                left join clientes c on (acc.id_proveedor = c.id)
-                left join vendedores v on (acc.id_vendedor = v.id)
-                WHERE acc.tipo_documento in ( '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
-                order by acc.tipo_documento and acc.fecha_factura' 
-                
-                );
-            
-
-              };
-
-
-		$header = '
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Libro de Ventas</title>
-		<style type="text/css">
-		td {
-			font-size: 16px;
-		}
-		p {
-		}
-		</style>
-		</head>
-
-		<body>
-		<table width="987px" height="602" border="0">
-		  <tr>
-		   <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
-		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
-		    </td>
-		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
-		          <p>FECHA EMISION : '.date('d/m/Y').'</p>
-			</td>
-		  </tr>';              
-              
-		  $header2 = '<tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>LIBRO DE VENTAS</h2></td>
-		  </tr>
-			<tr><td colspan="3">&nbsp;</td></tr>		  
-			';              
-
-
-		$body_header = '<tr>
-		    <td colspan="3" >
-		    	<table width="987px" cellspacing="0" cellpadding="0" >
-		      <tr>
-		        <td width="57"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Dia</td>
-		        <td width="40px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Num</td>
-		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Tipo</td>
-		        <td width="100px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Rut</td>
-		        <td width="350px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Nombre</td>
-		        <td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ></td>
-		        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Exento</td>
-		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
-		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >IVA</td>
-		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
-		      </tr>';
-		      $sub_total = 0;
-		      $descuento = 0;
-		      $neto = 0;
-		      $iva = 0;
-		      $cantfact = 0;
-		      $cantnc =0;
-		      $totalfactura = 0;
-              $i = 0;
-              $body_detail = '';
-              $users = $query->result_array();
-		      foreach($users as $v){
-
-		      	    list($anio, $mes, $dia) = explode("-",$v['fecha_factura']);
-                    $rutautoriza = $v['rut_cliente'];
-				   	if (strlen($rutautoriza) == 8){
-				      $ruta1 = substr($rutautoriza, -1);
-				      $ruta2 = substr($rutautoriza, -4, 3);
-				      $ruta3 = substr($rutautoriza, -7, 3);
-				      $ruta4 = substr($rutautoriza, -8, 1);
-				      $v['rut_cliente'] = ($ruta4.".".$ruta3.".".$ruta2."-".$ruta1);
-				    };
-				    if (strlen($rutautoriza) == 9){
-				      $ruta1 = substr($rutautoriza, -1);
-				      $ruta2 = substr($rutautoriza, -4, 3);
-				      $ruta3 = substr($rutautoriza, -7, 3);
-				      $ruta4 = substr($rutautoriza, -9, 2);
-				      $v['rut_cliente'] = ($ruta4.".".$ruta3.".".$ruta2."-".$ruta1);			   
-				    };
-				    if (strlen($rutautoriza) == 2){
-				      $ruta1 = substr($rutautoriza, -1);
-				      $ruta2 = substr($rutautoriza, -4, 1);
-				      $v['rut_cliente'] = ($ruta2."-".$ruta1);
-				      				     
-				    };
-
-				    if ($v['tipo_documento'] == 102){
-
-				    	$v['neto'] = ($v['neto']/-1);
-				    	$v['iva'] = ($v['iva']/-1);
-				    	$v['totalfactura'] = ($v['totalfactura']/-1);
-				    	$tipo="N/C";
-
-				    };
-				     if ($v['tipo_documento'] == 1 or $v['tipo_documento'] == 101){
-				      $sub_total += $v['sub_total'];
-				      $descuento += $v['descuento'];
-				      $neto += $v['neto'];
-				      $iva += $v['iva'];
-				      $totalfactura += $v['totalfactura'];
-				      $cantfact++;
-				      $tipo="Fact";
-				      };
-
-				       
-			      if ($v['tipo_documento'] == 103){
-			      $netoex += $v['neto'];
-			      $ivaex += $v['iva'];
-			      $totalfacturaex += $v['totalfactura'];
-			      $cantex++;
-			      $tipo="F/Exe";
-			      };
-			      if ($v['tipo_documento'] == 104){
-			      $netond += $v['neto'];
-			      $ivand += $v['iva'];
-			      $totalfacturand += $v['totalfactura'];
-			      $cantnd++;
-			      $tipo="N/D";
-			      };
-			      if ($v['tipo_documento'] == 102){
-			      $netonc += $v['neto'];
-			      $ivanc += $v['iva'];
-			      $totalfacturanc += $v['totalfactura'];
-			      $cantnc++;
-			      };
-				    	      	    
-
-					$body_detail .= '<tr><td colspan="10">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<table width="997" cellspacing="0" cellpadding="0" >
-				    <tr>				
-					<td width="47px" style="text-align:left">'.$dia.'</td>
-					<td width="70px" style="text-align:left">'.$v['num_factura'].'</td>
-					<td width="70px" style="text-align:left">'.$tipo.'</td>
-					<td width="100px" style="text-align:right">'.$v['rut_cliente'].'</td>
-					<td width="10px" style="text-align:left"></td>
-					<td width="350px" style="text-align:left">'.$v['nombre_cliente'].'</td>
-					<td width="50px" style="text-align:left"></td>
-					<td width="100px" style="text-align:right">$ '.number_format($v['neto'], 0, '.', ',').'</td>
-					<td width="100px" style="text-align:right">$ '.number_format($v['iva'], 0, '.', ',').'</td>
-					<td width="100px" style="text-align:right">$ '.number_format($v['totalfactura'], 0, '.', ',').'</td>
-				    </tr>
-				    </table>
-				  </tr>';
-					
-			      
-                 
-
-
-		            $i++;
-		         }  
-
-				$footer .= '<tr><td colspan="10">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<td colspan="3" >
-				    	<table width="987px" cellspacing="0" cellpadding="0" >
-				      <tr>
-				        <td width="477px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
-				        <td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b></b></td>
-				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b></b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($neto, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($iva, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfactura, 0, ',', '.').'</b></td>
-				      </tr>
-				      	</table>
-				  	</td>
-				  </tr></table>
-				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<td colspan="3" >
-				    	<table width="987px" cellspacing="0" cellpadding="0" >
-				      <tr>
-				        <td width="477px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
-				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Facturas</b></td>
-				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantfact, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($neto, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($iva, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfactura, 0, ',', '.').'</b></td>
-				      </tr>
-				      	</table>
-				  	</td>
-				  </tr></table>
-				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<td colspan="3" >
-				    	<table width="987px" cellspacing="0" cellpadding="0" >
-				      <tr>
-				        <td width="477px"  style="border-bottom:0pt solid black;border-top:0pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
-				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Facturas Excentas</b></td>
-				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantex, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($netoex, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($ivaex, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfacturaex, 0, ',', '.').'</b></td>
-				      </tr>
-				      	</table>
-				  	</td>
-				  </tr></table>
-				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<td colspan="3" >
-				    	<table width="987px" cellspacing="0" cellpadding="0" >
-				      <tr>
-				        <td width="477px"  style="border-bottom:0pt solid black;border-top:0pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
-				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Notas Debito</b></td>
-				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantnd, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($netond, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($ivand, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfacturand, 0, ',', '.').'</b></td>
-				      </tr>
-				      	</table>
-				  	</td>
-				  </tr></table>
-				  <tr><td colspan="10">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<td colspan="3" >
-				    	<table width="987px" cellspacing="0" cellpadding="0" >
-				      <tr>
-				         <td width="477px"  style="border-bottom:0pt solid black;border-top:0pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
-				        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>Notas de Ctredito</b></td>
-				        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>'.number_format($cantnc, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($netonc, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($ivanc, 0, ',', '.').'</b></td>
-				        <td width="120px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfacturanc, 0, ',', '.').'</b></td>
-				      </tr>
-				      </tr>
-				      	</table>
-				  	</td>
-				  </tr></table>
-				</body>
-				</html>';		              
-             
-        			  
-	        $html = $header.$header2;
-	        $html2 =$body_header.$body_detail.$footer;
-	      	$this->mpdf->WriteHTML($html);
-			$this->mpdf->WriteHTML($html2);
-			$this->mpdf->Output("LibroVentas.pdf", "I");
-            exit;		          
-
-        }
-
-
-        public function exportarPdfFacturas()
-         {
-
-            
-            $columnas = json_decode($this->input->get('cols'));
-            $fecha = $this->input->get('fecha');
-            $nombres = $this->input->get('nombre');
-            $opcion = $this->input->get('opcion');
-            list($dia, $mes, $anio) = explode("/",$fecha);
-            $fecha3 = $anio ."-". $mes ."-". $dia;
-            $fecha2 = $this->input->get('fecha2');
-            list($dia, $mes, $anio) = explode("/",$fecha2);
-            $fecha4 = $anio ."-". $mes ."-". $dia;
-            $tipo = 1;
-            $tipo2 = 19;
-            $tipo3 = 101;
-            $tipo4 = 103;
-                        
-
-            $data = array();
-                                   
-            $this->load->database();
-            
-            if($fecha){
-            
-            if($opcion == "Rut"){
-    
-                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
-                left join clientes c on (acc.id_proveedor = c.id)
-                left join vendedores v on (acc.id_vendedor = v.id)
-                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and c.rut = '.$nombres.' and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
-                order by acc.id desc'    
-
-              );
-
-                }else if($opcion == "Nombre"){
-
-                  
-                $sql_nombre = "";
-                    $arrayNombre =  explode(" ",$nombres);
-
-                    foreach ($arrayNombre as $nombre) {
-                      $sql_nombre .= "and c.nombres like '%".$nombre."%' ";
-                    }
-                            
-                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
-                left join clientes c on (acc.id_proveedor = c.id)
-                left join vendedores v on (acc.id_vendedor = v.id)
-                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') ' . $sql_nombre . ' and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'" 
-                order by acc.id desc' 
-                
-                );
-             
-              }else if($opcion == "Todos"){
-
-                
-                $data = array();
-                $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
-                left join clientes c on (acc.id_proveedor = c.id)
-                left join vendedores v on (acc.id_vendedor = v.id)
-                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
-                order by acc.id desc' 
-                
-                );
-            
-
-              }else{
-
-                
-              $data = array();
-              $query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor  FROM factura_compras acc
-                left join clientes c on (acc.id_proveedor = c.id)
-                left join vendedores v on (acc.id_vendedor = v.id)
-                WHERE acc.tipo_documento in (  '.$tipo.','.$tipo2.','.$tipo3.','.$tipo4.') and acc.fecha_factura between "'.$fecha3.'"  AND "'.$fecha4.'"
-                order by acc.id desc' 
-
-                );
-
-
-              }
-
-            };
-		$header = '
-		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-		<html xmlns="http://www.w3.org/1999/xhtml">
-		<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Untitled Document</title>
-		<style type="text/css">
-		td {
-			font-size: 16px;
-		}
-		p {
-		}
-		</style>
-		</head>
-
-		<body>
-		<table width="987px" height="602" border="0">
-		  <tr>
-		  <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
-		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
-		    </td>
-		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
-		          <p>FECHA EMISION : '.date('d/m/Y').'</p>
-			</td>
-		  </tr>';              
-              
-		  $header2 = '<tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>LIBRO DE VENTAS</h2></td>
-		  </tr>
-			<tr><td colspan="3">&nbsp;</td></tr>		  
-			';              
-
-
-		$body_header = '<tr>
-		    <td colspan="3" >
-		    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
-		      <tr>
-		      	<td width="55px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Id</td>
-		        <td width="62px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Numero</td>
-		        <td width="65px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Fecha</td>
-		        <td width="65px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Vencimiento</td>
-		        <td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Rut</td>
-		        <td width="180px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Nombre</td>
-		        <td width="90px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Vendedor</td>
-		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Afecto</td>
-		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Descuento</td>
-		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
-		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >IVA</td>
-		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
-		      </tr>';
-
-
-		      $sub_total = 0;
-		      $descuento = 0;
-		      $neto = 0;
-		      $iva = 0;
-		      $totalfactura = 0;
-              $i = 0;
-              $body_detail = '';
-              $users = $query->result_array();
-		      foreach($users as $v){
-
-					$body_detail .= '<tr>
-					<td style="text-align:left;font-size: 14px;">'.$v['id'].'</td>		
-					<td style="text-align:left;font-size: 14px;">'.$v['num_factura'].'</td>			
-					<td style="text-align:left;font-size: 14px;">'.$v['fecha_factura'].'</td>
-					<td style="text-align:right;font-size: 14px;">'.$v['fecha_venc'].'</td>
-					<td style="text-align:center;font-size: 14px;">'.$v['rut_cliente'].'</td>
-					<td style="text-align:left;font-size: 14px;">'.$v['nombre_cliente'].'</td>
-					<td style="text-align:left;font-size: 14px;">'.$v['nom_vendedor'].'</td>
-					<td align="right" style="font-size: 14px;">$ '.number_format($v['sub_total'], 0, '.', ',').'</td>
-					<td align="right" style="font-size: 14px;">$ '.number_format($v['descuento'], 0, '.', ',').'</td>
-					<td align="right" style="font-size: 14px;">$ '.number_format($v['neto'], 0, '.', ',').'</td>
-					<td align="right" style="font-size: 14px;">$ '.number_format($v['iva'], 0, '.', ',').'</td>
-					<td align="right" style="font-size: 14px;">$ '.number_format($v['totalfactura'], 0, '.', ',').'</td>
-					</tr>';
-					
-			      $sub_total += $v['sub_total'];
-			      $descuento += $v['descuento'];
-			      $neto += $v['neto'];
-			      $iva += $v['iva'];
-			      $totalfactura += $v['totalfactura'];
-
-		            $i++;
-		         }  
-
-				$footer .= '<tr><td colspan="12">&nbsp;</td></tr></table></td>
-				  </tr>
-				  <tr>
-				  	<td colspan="3" >
-				    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
-				      <tr>
-				        <td width="635px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
-				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($sub_total, 0, ',', '.').'</b></td>
-				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($descuento, 0, ',', '.').'</b></td>
-				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($neto, 0, ',', '.').'</b></td>
-				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($iva, 0, ',', '.').'</b></td>
-				        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($totalfactura, 0, ',', '.').'</b></td>
-				      </tr>
-				      	</table>
-				  	</td>
-				  </tr></table>
-				</body>
-				</html>';		              
-             
-        $html = $header.$header2.$body_header.$body_detail.$footer;
-        //echo $html; exit;
-        //$html = $header.$header2.$body_header.$body_detail.$spaces;
-			$this->load->library("mpdf");
-			//include(defined('BASEPATH')."/libraries/MPDF54/mpdf.php");
-			//include(dirname(__FILE__)."/../libraries/MPDF54/mpdf.php");
-
-			$this->mpdf->mPDF(
-				'',    // mode - default ''
-				'',    // format - A4, for example, default ''
-				8,     // font size - default 0
-				'',    // default font family
-				10,    // margin_left
-				5,    // margin right
-				16,    // margin top
-				16,    // margin bottom
-				9,     // margin header
-				9,     // margin footer
-				'L'    // L - landscape, P - portrait
-				);  
-			//echo $html; exit;
-			$this->mpdf->WriteHTML($html);
-			$this->mpdf->Output("Ventas.pdf", "I");
-
-			exit;            
-
-        }
-
+        
 
 }
 

@@ -4728,13 +4728,13 @@ font-family: Arial, Helvetica, sans-serif;
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://localhost/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
 		          <p>FECHA EMISION : '.date('d/m/Y').'</p>
@@ -5060,15 +5060,15 @@ font-family: Arial, Helvetica, sans-serif;
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		  <td width="197px"><img src="http://localhost/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		  <td width="197px"><img src="http://localhost/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>VIBRADOS CHILE LTDA.</p>
-		    <p>RUT:77.748.100-2</p>
-		    <p>Cienfuegos # 1595 San Javier - Chile</p>
-		    <p>Fonos: (73)2 321100</p>
-		    <p>Correo Electronico : info@vibradoschile.cl</p>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
-		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
+		     <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
 		          <p>FECHA EMISION : '.date('d/m/Y').'</p>
 			</td>
 		  </tr>';              

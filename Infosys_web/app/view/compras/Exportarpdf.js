@@ -83,7 +83,7 @@ Ext.define('Infosys_web.view.compras.Exportarpdf', {
                             },
                             itemId: 'tipoId',
                             fieldCls: 'required',
-                            store: 'facturas.Selector',
+                            store: 'facturas.Selector3',
                             valueField: 'id',
                             displayField: 'nombre'
                             
