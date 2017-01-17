@@ -548,7 +548,8 @@ Ext.define('Infosys_web.view.compras.Facturas', {
                             emptyText : "Seleccione",
                             valueField: 'id',
                             labelAlign: 'top',
-                            displayField: 'nombre'
+                            displayField: 'nombre',
+                            hidden: true
                         },{
                             xtype: 'numberfield',
                             fieldCls: 'required',
@@ -569,7 +570,8 @@ Ext.define('Infosys_web.view.compras.Facturas', {
                             itemId: 'descuentovalorId',
                             readOnly: true,
                             fieldLabel: '<b>DESCUENTO $</b>',
-                            labelAlign: 'top'
+                            labelAlign: 'top',
+                            hidden: true
                         },{xtype: 'splitter'},{
                             xtype: 'numberfield',
                             fieldCls: 'required',
@@ -626,7 +628,8 @@ Ext.define('Infosys_web.view.compras.Facturas', {
                             //iconCls: 'icono',
                             scale: 'large',
                             action: 'observaciones',
-                            text: 'OBSERVACIONES'
+                            text: 'OBSERVACIONES',
+                            hidden: true
                         },{
                             xtype: 'button',
                             iconCls: 'icon-save',

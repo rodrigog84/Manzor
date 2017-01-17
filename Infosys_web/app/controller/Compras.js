@@ -922,6 +922,7 @@ Ext.define('Infosys_web.controller.Compras', {
 
         var viewIngresa = this.getFacturascomprasingresar();
         var bolEnable = true;
+
         viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
         var tipo_documento = viewIngresa.down('#tipoDocumentoId');
         var idcliente = viewIngresa.down('#id_cliente').getValue();
@@ -939,27 +940,31 @@ Ext.define('Infosys_web.controller.Compras', {
         var stItem = this.getProductosItemsStore();
         var stFactura = this.getFacturaComprasStore();
 
-        if(vendedor==0  && tipo_documento.getValue() == 1){                 
-            //viewIngresa.down('#grabarId').setDisabled(bolEnable);
+        if(vendedor==0  && tipo_documento.getValue() == 1){  
+            var bolEnable = false;               
+            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
             Ext.Msg.alert('Ingrese Datos del Vendedor');
             return;   
         }
 
         if(vendedor==0  && tipo_documento.getValue() == 1){                 
-            //viewIngresa.down('#grabarId').setDisabled(bolEnable);
+            var bolEnable = false;               
+            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
             Ext.Msg.alert('Ingrese Datos del Vendedor');
             return;   
         }
 
          if(!numfactura){
-             
+
+            var bolEnable = false;               
+            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);             
             Ext.Msg.alert('Ingrese Numero de Factura');
             return;   
         }
 
         if(numfactura==0){
-            //viewIngresa.down('#grabarId').setDisabled(bolEnable);
-            
+            var bolEnable = false;               
+            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);           
             Ext.Msg.alert('Ingrese Datos a La Factura');
             return;   
             }

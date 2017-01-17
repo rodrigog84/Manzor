@@ -36,8 +36,12 @@ class Compras extends CI_Controller {
 		    	WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
 	    	 	$row = $query->result();
 				if ($query->num_rows()>0){
-				$row = $row[0];	
-				$saldo = ($row->stock)-($cantidad);
+				$row = $row[0];
+				if (($row->stock)<0){
+				    $saldo = ($row->stock)+($cantidad);
+			    }else{
+			    	$saldo = ($row->stock)-($cantidad);			    	
+			    };
 				$idexiste = ($row->id);
 		        if ($producto==($row->id_producto) and $idbodega==($row->id_bodega)){
 				    $datos3 = array(
@@ -1780,7 +1784,7 @@ class Compras extends CI_Controller {
 		 $query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
 	    	 $row = $query->result();
 			 if ($query->num_rows()>0){
-				$row = $row[0];	
+				$row = $row[0];
 				$saldo = ($row->stock)+($v->cantidad);
 				$idexiste = ($row->id);
 		        if ($producto==($row->id_producto) and $idbodega==($row->id_bodega)){
