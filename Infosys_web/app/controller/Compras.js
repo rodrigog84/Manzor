@@ -174,6 +174,12 @@ Ext.define('Infosys_web.controller.Compras', {
              'facturascomprasingresar button[action=agregarItem]': {
                 click: this.agregarItem
             },
+             'facturascomprasingresar button[action=editaritem]': {
+                click: this.editaritem
+            },
+            'facturascomprasingresar button[action=eliminaritem]': {
+                click: this.eliminaritem
+            },
             'eliminarcompra button[action=salircompra]': {
                 click: this.salircompra
             },
@@ -183,8 +189,122 @@ Ext.define('Infosys_web.controller.Compras', {
              'facturascomprasprincipal button[action=eliminarcompras]': {
                 click: this.eliminarcompras
             },
+            'facturascomprasingresar #numfacturaId': {
+                specialkey: this.special7,
+                //blur: this.validanumfact              
+            },
+
+            
              });
     },
+
+    eliminaritem: function(){
+        var view = this.getFacturascomprasingresar();
+        var grid  = view.down('#itemsgridId');
+        if (grid.getSelectionModel().hasSelection()) {
+            var row = grid.getSelectionModel().getSelection()[0];
+            grid.getStore().remove(row);
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+
+        this.recalcularFinal();       
+    },
+
+    editaritem: function() {
+
+        var view = this.getFacturascomprasingresar();
+        var bodega = view.down('#bodegaId').getValue();
+        var grid  = view.down('#itemsgridId');
+        var cero = "";
+        if (grid.getSelectionModel().hasSelection()) {
+            var row = grid.getSelectionModel().getSelection()[0];
+            var id_producto = row.data.id_producto;
+                       
+            Ext.Ajax.request({
+            url: preurl + 'productos/buscarp?nombre='+id_producto,
+            params: {
+                id: 1,
+                bodega: bodega,
+                nombre: id_producto
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) { 
+                    if(resp.cliente){
+                        var cliente = resp.cliente;
+                        view.down('#precioId').setValue(cliente.p_venta);
+                        view.down('#productoId').setValue(row.data.id_producto);
+                        view.down('#nombreproductoId').setValue(row.data.nombre);
+                        view.down('#codigoId').setValue(cliente.codigo);
+                        view.down('#cantidadOriginalId').setValue(cliente.stock);
+                        view.down('#cantidadId').setValue(row.data.cantidad);
+                                                     
+                    }
+                }
+            }
+
+        });
+        grid.getStore().remove(row);
+        this.recalcularFinal();
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+       
+    },
+
+    special7: function(f,e){
+        if (e.getKey() == e.ENTER) {
+            this.validanumfact()
+        };
+
+        if (e.getKey() == e.TAB) {
+           this.validanumfact()
+        };
+    },
+
+    validanumfact: function(){
+
+        var viedit = this.getFacturascomprasingresar();
+        var numfactura = viedit.down('#numfacturaId').getValue();
+        var idproveedor = viedit.down('#id_cliente').getValue();
+        var SI = "SI";
+        var NO = "NO";
+        var CERO = "";
+        if (!idproveedor){
+            Ext.Msg.alert('Debe ingresar Rut');
+            return;
+        };
+
+        Ext.Ajax.request({
+            url: preurl + 'compras/validanumero',
+            params: {
+                idproveedor: idproveedor,
+                numfactura : numfactura
+                
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) {
+
+                    //viedit.down('#valfacturaId').setValue(SI);
+                    viedit.down('#numfacturaId').setValue(CERO);
+                    Ext.Msg.alert('Factura Ya existe para Cliente');
+                    return;                                   
+
+                }else{
+
+                    viedit.down('#valfacturaId').setValue(NO);
+                    
+                };
+        }
+        });       
+
+    },
+
+
 
     eliminarcompras: function(){
 
@@ -265,8 +385,7 @@ Ext.define('Infosys_web.controller.Compras', {
         var iddescuento = view.down('#DescuentoproId').getValue();
         var bolEnable = true;
 
-        console.log(producto)
-        
+         
         if (descuento == 1){            
             var descuento = 0;
             var iddescuento = 0;
@@ -285,20 +404,27 @@ Ext.define('Infosys_web.controller.Compras', {
         var total = ((neto + iva ));
 
         
-        if(!producto){
-            
+        if(!producto){            
             Ext.Msg.alert('Alerta', 'Debe Seleccionar un Producto');
             return false;
-
         }
 
         if(precio==0){
-
             Ext.Msg.alert('Alerta', 'Debe Ingresar Precio Producto');
             return false;
-            
-
         }
+
+        if(!precio){
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Precio Producto');
+            return false;
+        }
+
+
+        if(!cantidad){
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Cantidad.');
+            return false;
+        }
+
 
         if(cantidad==0){
             Ext.Msg.alert('Alerta', 'Debe Ingresar Cantidad.');
@@ -875,9 +1001,8 @@ Ext.define('Infosys_web.controller.Compras', {
             return;
         }
 
+        this.validanumfact();
         viewIngresa.down("#codigoId").focus();
-
-
        
     },    
 
@@ -937,80 +1062,176 @@ Ext.define('Infosys_web.controller.Compras', {
         var formadepago = viewIngresa.down('#tipocondpagoId').getValue();
         var fechafactura = viewIngresa.down('#fechafacturaId').getValue();
         var fechavenc = viewIngresa.down('#fechavencId').getValue();
+        var valfactura = viewIngresa.down('#valfacturaId').getValue();
         var stItem = this.getProductosItemsStore();
         var stFactura = this.getFacturaComprasStore();
 
-        if(vendedor==0  && tipo_documento.getValue() == 1){  
-            var bolEnable = false;               
-            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
-            Ext.Msg.alert('Ingrese Datos del Vendedor');
-            return;   
-        }
 
-        if(vendedor==0  && tipo_documento.getValue() == 1){                 
-            var bolEnable = false;               
-            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
-            Ext.Msg.alert('Ingrese Datos del Vendedor');
-            return;   
-        }
 
-         if(!numfactura){
+        if (valfactura=="NO"){
 
-            var bolEnable = false;               
-            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);             
-            Ext.Msg.alert('Ingrese Numero de Factura');
-            return;   
-        }
-
-        if(numfactura==0){
-            var bolEnable = false;               
-            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);           
-            Ext.Msg.alert('Ingrese Datos a La Factura');
-            return;   
+            if(vendedor==0  && tipo_documento.getValue() == 1){  
+                var bolEnable = false;               
+                viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
+                Ext.Msg.alert('Ingrese Datos del Vendedor');
+                return;   
             }
 
-        var dataItems = new Array();
-        stItem.each(function(r){
-            dataItems.push(r.data)
-        });
-
-        Ext.Ajax.request({
-            url: preurl + 'compras/save',
-            params: {
-                idcliente: idcliente,
-                idfactura: idfactura,
-                idsucursal: idsucursal,
-                idcondventa: idcondventa,
-                idtipo:idtipo,
-                items: Ext.JSON.encode(dataItems),
-                observacion: observa,
-                idobserva: idobserva,
-                vendedor : vendedor,
-                numfactura : numfactura,
-                fechafactura : fechafactura,
-                fechavenc: fechavenc,
-                formadepago: formadepago,
-                tipodocumento : tipo_documento.getValue(),
-                netofactura: viewIngresa.down('#finaltotalnetoId').getValue(),
-                ivafactura: viewIngresa.down('#finaltotalivaId').getValue(),
-                afectofactura: viewIngresa.down('#finalafectoId').getValue(),
-                descuentofactura : viewIngresa.down('#descuentovalorId').getValue(),
-                totalfacturas: viewIngresa.down('#finaltotalpostId').getValue()
-            },
-             success: function(response){
-                var resp = Ext.JSON.decode(response.responseText);
-                var idfactura= resp.idfactura;
-                 viewIngresa.close();
-                 stFactura.load();
-                 window.open(preurl + 'compras/exportPDF/?idfactura='+idfactura);
-
+            if(vendedor==0  && tipo_documento.getValue() == 1){                 
+                var bolEnable = false;               
+                viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
+                Ext.Msg.alert('Ingrese Datos del Vendedor');
+                return;   
             }
-           
-        });
 
-       
-      
-        
+            if(!numfactura){
+
+                var bolEnable = false;               
+                viewIngresa.down('#grabarfactura').setDisabled(bolEnable);             
+                Ext.Msg.alert('Ingrese Numero de Factura');
+                return;   
+            }
+
+            if(numfactura==0){
+                var bolEnable = false;               
+                viewIngresa.down('#grabarfactura').setDisabled(bolEnable);           
+                Ext.Msg.alert('Ingrese Datos a La Factura');
+                return;   
+            }
+
+            var dataItems = new Array();
+            stItem.each(function(r){
+                dataItems.push(r.data)
+            });
+
+                        
+            Ext.Ajax.request({
+                url: preurl + 'compras/save',
+                params: {
+                    idcliente: idcliente,
+                    idfactura: idfactura,
+                    idsucursal: idsucursal,
+                    idcondventa: idcondventa,
+                    idtipo:idtipo,
+                    items: Ext.JSON.encode(dataItems),
+                    observacion: observa,
+                    idobserva: idobserva,
+                    vendedor : vendedor,
+                    numfactura : numfactura,
+                    fechafactura : fechafactura,
+                    fechavenc: fechavenc,
+                    formadepago: formadepago,
+                    tipodocumento : tipo_documento.getValue(),
+                    netofactura: viewIngresa.down('#finaltotalnetoId').getValue(),
+                    ivafactura: viewIngresa.down('#finaltotalivaId').getValue(),
+                    afectofactura: viewIngresa.down('#finalafectoId').getValue(),
+                    descuentofactura : viewIngresa.down('#descuentovalorId').getValue(),
+                    totalfacturas: viewIngresa.down('#finaltotalpostId').getValue()
+                },
+                 success: function(response){
+                    var resp = Ext.JSON.decode(response.responseText);
+                    var idfactura= resp.idfactura;
+                     viewIngresa.close();
+                     stFactura.load();
+                     window.open(preurl + 'compras/exportPDF/?idfactura='+idfactura);
+
+                }           
+            });          
+
+        }else{
+
+            var numfactura = viewIngresa.down('#numfacturaId').getValue();
+            var idproveedor = viewIngresa.down('#id_cliente').getValue();
+            console.log("llegamos");
+            Ext.Ajax.request({
+                url: preurl + 'compras/validanumero',
+                params: {
+                    idproveedor: idproveedor,
+                    numfactura : numfactura
+                    
+                },
+                success: function(response){
+                    var resp = Ext.JSON.decode(response.responseText);
+                    if (resp.success == true) {
+
+                        var bolEnable = false;               
+                        viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
+                        Ext.Msg.alert('Factura Ya existe para Cliente');
+                        return;                                   
+
+                    }else{
+
+                       if(vendedor==0  && tipo_documento.getValue() == 1){  
+                            var bolEnable = false;               
+                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
+                            Ext.Msg.alert('Ingrese Datos del Vendedor');
+                            return;   
+                        }
+
+                        if(vendedor==0  && tipo_documento.getValue() == 1){                 
+                            var bolEnable = false;               
+                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
+                            Ext.Msg.alert('Ingrese Datos del Vendedor');
+                            return;   
+                        }
+
+                        if(!numfactura){
+
+                            var bolEnable = false;               
+                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);             
+                            Ext.Msg.alert('Ingrese Numero de Factura');
+                            return;   
+                        }
+
+                        if(numfactura==0){
+                            var bolEnable = false;               
+                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);           
+                            Ext.Msg.alert('Ingrese Datos a La Factura');
+                            return;   
+                        }
+
+                        var dataItems = new Array();
+                        stItem.each(function(r){
+                            dataItems.push(r.data)
+                        });
+
+                        
+                    Ext.Ajax.request({
+                        url: preurl + 'compras/save',
+                        params: {
+                            idcliente: idcliente,
+                            idfactura: idfactura,
+                            idsucursal: idsucursal,
+                            idcondventa: idcondventa,
+                            idtipo:idtipo,
+                            items: Ext.JSON.encode(dataItems),
+                            observacion: observa,
+                            idobserva: idobserva,
+                            vendedor : vendedor,
+                            numfactura : numfactura,
+                            fechafactura : fechafactura,
+                            fechavenc: fechavenc,
+                            formadepago: formadepago,
+                            tipodocumento : tipo_documento.getValue(),
+                            netofactura: viewIngresa.down('#finaltotalnetoId').getValue(),
+                            ivafactura: viewIngresa.down('#finaltotalivaId').getValue(),
+                            afectofactura: viewIngresa.down('#finalafectoId').getValue(),
+                            descuentofactura : viewIngresa.down('#descuentovalorId').getValue(),
+                            totalfacturas: viewIngresa.down('#finaltotalpostId').getValue()
+                        },
+                         success: function(response){
+                            var resp = Ext.JSON.decode(response.responseText);
+                            var idfactura= resp.idfactura;
+                             viewIngresa.close();
+                             stFactura.load();
+                             window.open(preurl + 'compras/exportPDF/?idfactura='+idfactura);
+
+                        }           
+                        });
+                    }
+            }
+            });
+        };
     },
 
     cerrarfactura: function(){
@@ -1186,6 +1407,7 @@ Ext.define('Infosys_web.controller.Compras', {
 
         });       
         }
+        this.validanumfact();
         view.down("#codigoId").focus();
     },
     

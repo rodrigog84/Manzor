@@ -91,6 +91,13 @@ Ext.define('Infosys_web.view.compras.Facturas', {
                                             itemId: 'numfacturaId',
                                             fieldLabel: '<b>NUMERO DOCUMENTO</b>'
                                         },{
+                                            xtype: 'textfield',
+                                            fieldCls: 'required',
+                                            name: 'val_factura',
+                                            itemId: 'valfacturaId',
+                                            fieldLabel: '<b>VALIDADOR</b>',
+                                            hidden: true
+                                        },{
                                             xtype: 'displayfield',
                                             width: 145
                                            

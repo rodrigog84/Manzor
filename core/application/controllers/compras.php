@@ -9,6 +9,23 @@ class Compras extends CI_Controller {
 		$this->load->database();
 	}
 
+	public function validanumero(){
+
+		$resp = array();
+	    $numfact = $this->input->post('numfactura');
+	    $idproveedor = $this->input->post('idproveedor');
+
+	    $query = $this->db->query('SELECT * FROM factura_compras
+	    WHERE id_proveedor='.$idproveedor.' and num_factura='.$numfact.'');
+
+	    if ($query->num_rows()>0){
+	     $resp['success'] = true;
+	    };	   
+	    
+	    echo json_encode($resp);	  	
+
+	}
+
 	public function elimina2(){
 
 	    $resp = array();
