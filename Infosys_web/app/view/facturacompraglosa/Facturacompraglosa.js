@@ -95,6 +95,13 @@ Ext.define('Infosys_web.view.facturacompraglosa.Facturacompraglosa', {
                                             width: 45
                                            
                                         },{
+                                            xtype: 'textfield',
+                                            fieldCls: 'required',
+                                            name: 'val_factura',
+                                            itemId: 'valfacturaId',
+                                            fieldLabel: '<b>VALIDADOR</b>',
+                                            hidden: true
+                                        },{
                                             xtype: 'datefield',
                                             fieldCls: 'required',
                                             maxHeight: 25,

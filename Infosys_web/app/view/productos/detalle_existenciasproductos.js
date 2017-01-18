@@ -74,8 +74,7 @@ Ext.define('Infosys_web.view.productos.detalle_existenciasproductos' ,{
                 fieldLabel: '<b>Stock</b>',
                 labelAlign: 'right',
                 align: 'top',
-                readOnly: true,
-                hidden: true
+                readOnly: true
             }
             ]      
         },

@@ -354,12 +354,26 @@ Ext.define('Infosys_web.controller.Productos', {
             var row = view.getSelectionModel().getSelection()[0];
             var edit = Ext.create('Infosys_web.view.productos.detalle_existenciasproductos').show();
             var nombre = (row.get('id'));
-            var stock = (row.get('stock'));
-            edit.down('#productoId').setValue(nombre);
-            edit.down('#stockId').setValue(stock);
-            var st = this.getExistencias2Store()
+            edit.down('#productoId').setValue(nombre);            
+            var st = this.getExistencias2Store();
             st.proxy.extraParams = {nombre : nombre}
             st.load();
+            Ext.Ajax.request({
+            url: preurl + 'existencias2/getAll2',
+            params: {
+                id: 1,
+                nombre: nombre
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);                
+                if (resp.success == true) {                    
+                    var stock = resp.stock;
+                    edit.down('#stockId').setValue(stock);                                           
+                }                    
+            }
+
+        });           
+           
            
                    
         }else{

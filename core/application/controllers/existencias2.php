@@ -27,7 +27,8 @@ class Existencias2 extends CI_Controller {
         $start = $this->input->get('start');
         $limit = $this->input->get('limit');
         $nombres = $this->input->get('nombre');
-        $total= 0;
+        $total = 0;
+        $stock = 0;
            
 		//$countAll = $this->db->count_all_results("existencia");
         
@@ -61,9 +62,42 @@ class Existencias2 extends CI_Controller {
 		foreach ($query->result() as $row)
 		{
 			$data[] = $row;
+			//$stock = $stock + $row->stock;
 		}
         $resp['success'] = true;
         $resp['total'] = $countAll;
+        $resp['stock'] = $stock;
+        $resp['data'] = $data;
+
+        echo json_encode($resp);
+	}
+
+	public function getAll2(){
+		
+		$resp = array();
+        $nombres = $this->input->post('nombre');
+        $total = 0;
+        $stock = 0;
+           
+		//$countAll = $this->db->count_all_results("existencia");
+        
+		if($nombres){			
+			$query = $this->db->query('SELECT acc.*, c.nombre as nom_producto, bod.nombre as nom_bodega FROM existencia acc
+			left join productos c on (acc.id_producto = c.id)
+			left join bodegas bod on (acc.id_bodega = bod.id)
+			WHERE acc.id_producto="'.$nombres.'"');
+		}
+
+		$data = array();
+		
+		foreach ($query->result() as $row)
+		{
+			$data[] = $row;
+			//$row = $query->first_row();
+			$stock = ($stock + $row->stock);
+		}
+        $resp['success'] = true;
+        $resp['stock'] = $stock;
         $resp['data'] = $data;
 
         echo json_encode($resp);

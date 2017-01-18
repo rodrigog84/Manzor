@@ -41,13 +41,6 @@ Ext.define('Infosys_web.view.productos.Principal' ,{
         renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00.00")}
 
     },{
-        header: "Stock",
-        flex: 1,
-        dataIndex: 'stock',
-        align: 'right',
-        renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00.00")}
-
-    },{
         header: "Ubicacion Fisica",
         flex: 1,
         dataIndex: 'nom_ubi_prod',

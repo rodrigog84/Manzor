@@ -113,11 +113,66 @@ Ext.define('Infosys_web.controller.Facturacompraglosa', {
             },
             'facturacompraglosaingresar #tipoDocumentoId': {
                 select: this.selectItemdocuemento
-            }
+            },
+            'facturacompraglosaingresar #numfacturaId': {
+                specialkey: this.special7,
+                //blur: this.validanumfact              
+            },
+
 
             
         });
     },
+
+    special7: function(f,e){
+        if (e.getKey() == e.ENTER) {
+            this.validanumfact()
+        };
+
+        if (e.getKey() == e.TAB) {
+           this.validanumfact()
+        };
+    },
+
+    validanumfact: function(){
+
+        var viedit = this.getFacturacompraglosaingresar();
+        var numfactura = viedit.down('#numfacturaId').getValue();
+        var idproveedor = viedit.down('#id_cliente').getValue();
+        var SI = "SI";
+        var NO = "NO";
+        var CERO = "";
+        if (!idproveedor){
+            Ext.Msg.alert('Debe ingresar Rut');
+            return;
+        };
+
+        Ext.Ajax.request({
+            url: preurl + 'compras/validanumero',
+            params: {
+                idproveedor: idproveedor,
+                numfactura : numfactura
+                
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) {
+
+                    //viedit.down('#valfacturaId').setValue(SI);
+                    viedit.down('#numfacturaId').setValue(CERO);
+                    Ext.Msg.alert('Factura Ya existe para Cliente');
+                    return;                                   
+
+                }else{
+
+                    viedit.down('#valfacturaId').setValue(NO);
+                    
+                };
+        }
+        });       
+
+    },
+
 
     validaboleta: function(){
 
@@ -612,6 +667,8 @@ Ext.define('Infosys_web.controller.Facturacompraglosa', {
             return;
         };
 
+        this.validanumfact();
+
               
     },
            
@@ -629,12 +686,15 @@ Ext.define('Infosys_web.controller.Facturacompraglosa', {
         var fechafactura = viewIngresa.down('#fechafacturaId').getValue();
         var fechavenc = viewIngresa.down('#fechavencId').getValue();
         var stItem = this.getFacturaglosaItemsStore();
-        var stFactura = this.getFacturaComprasStore();        
+        var stFactura = this.getFacturaComprasStore();
+        var valfactura = viewIngresa.down('#valfacturaId').getValue();
+        
+        if (valfactura=="NO"){       
         
         if(numdocumento==0){
             Ext.Msg.alert('Ingrese Datos a La Factura');
             return;   
-            }
+        }
 
        
         var dataItems = new Array();
@@ -672,11 +732,81 @@ Ext.define('Infosys_web.controller.Facturacompraglosa', {
            
         });
         
+        
+        }else{
+            
+            var numfactura = viewIngresa.down('#numfacturaId').getValue();
+            var idproveedor = viewIngresa.down('#id_cliente').getValue();
+            console.log("llegamos");
+            Ext.Ajax.request({
+                url: preurl + 'compras/validanumero',
+                params: {
+                    idproveedor: idproveedor,
+                    numfactura : numfactura
+                    
+                },
+                success: function(response){
+                    var resp = Ext.JSON.decode(response.responseText);
+                    if (resp.success == true) {
+
+                        var bolEnable = false;               
+                        viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
+                        Ext.Msg.alert('Factura Ya existe para Cliente');
+                        return;                                   
+
+                    }else{
+
+                        if(numdocumento==0){
+                        Ext.Msg.alert('Ingrese Datos a La Factura');
+                        return;
+                        };
+                          
+                        var dataItems = new Array();
+                        stItem.each(function(r){
+                            dataItems.push(r.data)
+                        });
+
+                        Ext.Ajax.request({
+                            url: preurl + 'facturacompraglosa/save',
+                            params: {
+                                idcliente: idcliente,
+                                numdocumento: numdocumento,
+                                idsucursal: idsucursal,
+                                idcondventa: idcondventa,
+                                idtipo: idtipo,
+                                idbodega: idbodega,
+                                items: Ext.JSON.encode(dataItems),
+                                vendedor : vendedor,
+                                fechafactura : fechafactura,
+                                fechavenc: fechavenc,
+                                tipodocumento : tipo_documento,
+                                netofactura: viewIngresa.down('#finaltotalnetoId').getValue(),
+                                ivafactura: viewIngresa.down('#finaltotalivaId').getValue(),
+                                afectofactura: viewIngresa.down('#finalafectoId').getValue(),
+                                totalfacturas: viewIngresa.down('#finaltotalpostId').getValue()
+                            },
+                             success: function(response){
+                                var resp = Ext.JSON.decode(response.responseText);
+                                var idfactura= resp.idfactura;
+                                 viewIngresa.close();
+                                 stFactura.load();
+                                 window.open(preurl + 'facturacompraglosa/exportfacturaglosaPDF/?idfactura='+idfactura);
+
+                            }
+                           
+                        });
+                 }
+
+                }
+
+                });
+
+            };
+            
         var view = this.getFacturacompraglosaingresar();
         var st = this.getFacturaComprasStore();
         st.proxy.extraParams = {documento: idtipo}
-        st.load();       
-        
+        st.load();    
     },
 
     
@@ -741,6 +871,8 @@ Ext.define('Infosys_web.controller.Facturacompraglosa', {
 
         });       
         }
+
+        this.validanumfact();
     },
 
     mfacturaglosa: function(){
