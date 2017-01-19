@@ -27,6 +27,11 @@ class Existencias extends CI_Controller {
         $start = $this->input->get('start');
         $limit = $this->input->get('limit');
         $nombres = $this->input->get('nombre');
+        $idBodega = $this->input->get('bodega');
+
+        if (!$idBodega){        	
+        	$idBodega = 1;
+        };
            
 		$countAll = $this->db->count_all_results("existencia");
         
@@ -40,11 +45,12 @@ class Existencias extends CI_Controller {
 			$query = $this->db->query('SELECT acc.*, c.nombre as nom_producto, b.nombre as nom_bodega FROM existencia acc
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas b on (acc.id_bodega = b.id)
-			WHERE ' . $sql_nombre . ' 1 = 1');
+			WHERE ' . $sql_nombre . ' 1 = 1 acc.id_bodega = "'.$idBodega.'"');
 		}else{
 			$query = $this->db->query('SELECT acc.*, c.nombre as nom_producto, b.nombre as nom_bodega FROM existencia acc
 			left join productos c on (acc.id_producto = c.id)
-			left join bodegas b on (acc.id_bodega = b.id) order by acc.id desc
+			left join bodegas b on (acc.id_bodega = b.id)
+			WHERE acc.id_bodega = "'.$idBodega.'"
 		    limit '.$start.', '.$limit.' ' );
 		}
 

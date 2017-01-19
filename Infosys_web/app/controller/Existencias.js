@@ -5,6 +5,7 @@ Ext.define('Infosys_web.controller.Existencias', {
 
     stores: ['Existencias',
              'Existencias2',
+             'Existencias3',
              'InventarioSlectivo',
              'Bodegas'],
 
@@ -76,8 +77,22 @@ Ext.define('Infosys_web.controller.Existencias', {
             'existenciaprincipalselectivo #bodegaId': {
                 select: this.buscarDoc
             },
+            'existenciaprincipal #bodegaId': {
+                select: this.seleccionbodega
+            },
            
         });
+    },
+
+    seleccionbodega: function(){
+
+        var view = this.getExistenciaprincipal();
+        var st = this.getExistenciasStore()
+        var bodega = view.down('#bodegaId').getValue();
+        st.proxy.extraParams = {bodega : bodega
+        }
+        st.load();
+
     },
 
     buscarDoc: function(){
@@ -92,6 +107,7 @@ Ext.define('Infosys_web.controller.Existencias', {
     editarexistencia: function(){
 
         var view = this.getExistenciaprincipal();
+        var bodega = view.down('#bodegaId').getValue();
         if (view.getSelectionModel().hasSelection()) {
             var row = view.getSelectionModel().getSelection()[0];
             var edit = Ext.create('Infosys_web.view.existencia.detalle_existencias').show();
@@ -99,8 +115,9 @@ Ext.define('Infosys_web.controller.Existencias', {
             var stock = (row.get('stock'));
             edit.down('#productoId').setValue(nombre);
             edit.down('#stockId').setValue(stock);
-            var st = this.getExistencias2Store()
-            st.proxy.extraParams = {nombre : nombre}
+            var st = this.getExistencias3Store()
+            st.proxy.extraParams = {nombre : nombre,
+                                    bodega: bodega}
             st.load();
            
                    
@@ -127,6 +144,9 @@ Ext.define('Infosys_web.controller.Existencias', {
         var st = this.getExistenciasStore()
         st.load();
         viewport.add({xtype: 'existenciaprincipal'});
+        var viewIngresa = this.getExistenciaprincipal();
+        var idbodega = "1";
+        viewIngresa.down('#bodegaId').setValue(idbodega);
     },
 
     minventarioselectivo: function(){

@@ -1838,7 +1838,7 @@ class Compras extends CI_Controller {
 		        'id_producto' => $v->id_producto,
 		        'id_tipo_movimiento' => $tipodocumento,
 		        'valor_producto' =>  $v->precio,
-		        'cantidad_salida' => $v->cantidad,
+		        'cantidad_entrada' => $v->cantidad,
 		        'id_bodega' => $idbodega,
 		        'fecha_movimiento' => $fechafactura
 		);

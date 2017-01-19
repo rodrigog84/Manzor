@@ -8,6 +8,7 @@ Ext.define('Infosys_web.model.existencias2', {
         {name: 'nom_bodega'},
         {name: 'nom_producto'},
         {name: 'tipo_movimiento'},
+        {name: 'nom_tipo_movimiento'},
         {name: 'stock'},
         {name: 'num_movimiento'},
         {name: 'cantidad_entrada', decimalPrecision: 3},
