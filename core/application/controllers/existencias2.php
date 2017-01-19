@@ -123,7 +123,7 @@ class Existencias2 extends CI_Controller {
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas bod on (acc.id_bodega = bod.id)
 			left join correlativos cor on (acc.id_tipo_movimiento = cor.id)
-			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega="'.$nombres.'"');
+			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega="'.$bodega.'"');
 
 			foreach ($query->result() as $row)		    
 			{
@@ -135,7 +135,7 @@ class Existencias2 extends CI_Controller {
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas bod on (acc.id_bodega = bod.id)
 			left join correlativos cor on (acc.id_tipo_movimiento = cor.id)
-			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega="'.$nombres.'"
+			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega="'.$bodega.'"
 			 order by acc.id desc
 		    limit '.$start.', '.$limit.'');
 		}else{
@@ -143,7 +143,7 @@ class Existencias2 extends CI_Controller {
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas bod on (acc.id_bodega = bod.id)
 			left join correlativos cor on (acc.id_tipo_movimiento = cor.id)
-			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega="'.$nombres.'"
+			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega="'.$bodega.'"
 			order by acc.id desc
 		    limit '.$start.', '.$limit.' ' );
 		}        
