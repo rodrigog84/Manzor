@@ -45,7 +45,7 @@ class Existencias extends CI_Controller {
 			$query = $this->db->query('SELECT acc.*, c.nombre as nom_producto, b.nombre as nom_bodega FROM existencia acc
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas b on (acc.id_bodega = b.id)
-			WHERE ' . $sql_nombre . ' 1 = 1 acc.id_bodega = "'.$idBodega.'"');
+			WHERE ' . $sql_nombre . ' 1 = 1 and acc.id_bodega = "'.$idBodega.'"');
 		}else{
 			$query = $this->db->query('SELECT acc.*, c.nombre as nom_producto, b.nombre as nom_bodega FROM existencia acc
 			left join productos c on (acc.id_producto = c.id)

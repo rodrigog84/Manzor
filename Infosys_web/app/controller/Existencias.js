@@ -221,7 +221,9 @@ Ext.define('Infosys_web.controller.Existencias', {
         var view = this.getExistenciaprincipal()
         var st = this.getExistenciasStore()
         var nombre = view.down('#nombreId').getValue()
-        st.proxy.extraParams = {nombre : nombre}
+        var bodega = view.down('#bodegaId').getValue()
+        st.proxy.extraParams = {nombre : nombre,
+                                bodega : bodega}
         st.load();
 
    },
