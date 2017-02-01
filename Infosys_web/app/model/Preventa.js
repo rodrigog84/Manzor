@@ -4,6 +4,7 @@ Ext.define('Infosys_web.model.Preventa', {
     fields: [
     	{name: 'id'},
     	{name: 'num_ticket'},
+        {name: 'num_vale'},
     	{name: 'fecha_venta', type:'date',dateFormat:"Y-m-d"},
         {name: 'fecha_venc', type:'date',dateFormat:"Y-m-d"},
         {name: 'id_cliente'},

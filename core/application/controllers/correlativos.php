@@ -156,6 +156,47 @@ class Correlativos extends CI_Controller {
 
 	}
 
+	public function generaventa2(){
+
+		$resp = array();
+		$factura = $this->input->get('valida');
+		$boleta = 2;
+		$query = $this->db->query('SELECT * FROM bodegas WHERE id like "'.$factura.'"');
+        if($query->num_rows()>0){
+	   		$row = $query->first_row();
+	   		$resp['cliente'] = $row;
+	   		$corr = (($row->num_despacho)+1); 
+	   		$id = ($row->id);
+
+	   		$data3 = array(
+	         'num_despacho' => $corr
+		    );
+
+		    $this->db->where('id', $id);
+		  
+		    $this->db->update('bodegas', $data3);
+
+		    $this->Bitacora->logger("M", 'bodegas', $id);
+
+		    $query = $this->db->query('SELECT * FROM vale WHERE num_vale like "'.$corr.'"');
+
+			if($query->num_rows()>0){
+				$resp['success'] = false;
+			}else{
+				$resp['success'] = true;
+			}
+
+	   }else{
+	   	    $resp['success'] = false;
+	   	    echo json_encode($resp);
+	        return false;
+	   }
+	  
+	    echo json_encode($resp);
+		
+
+	}
+
 
 	public function generaventa(){
 

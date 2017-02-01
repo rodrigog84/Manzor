@@ -26,6 +26,10 @@ Ext.define('Infosys_web.view.bodegas.Principal' ,{
         flex: 1,
         dataIndex: 'direccion'
     },{
+        header: "Rut",
+        flex: 1,
+        dataIndex: 'rut'
+    },{
         header: "Vale",
         flex: 1,
         dataIndex: 'num_otrabajo'
@@ -33,6 +37,10 @@ Ext.define('Infosys_web.view.bodegas.Principal' ,{
         header: "Boleta",
         flex: 1,
         dataIndex: 'num_boleta'
+    },{
+        header: "Valde Despacho",
+        flex: 1,
+        dataIndex: 'num_despacho'
     }],
     
     initComponent: function() {

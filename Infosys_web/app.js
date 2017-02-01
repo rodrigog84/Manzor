@@ -1,9 +1,9 @@
 Ext.util.Format.thousandSeparator = '.';
 //variables globales
 
-var gbl_site = 'http://localhost/Manzor/';
+//var gbl_site = 'http://localhost/Manzor/';
 
-//var gbl_site = 'http://angus.agricultorestalca.cl/manzor/';
+var gbl_site = 'http://angus.agricultorestalca.cl/manzor/';
 
 //var gbl_site = 'http://192.168.1.100/vibrados_web/';
 var preurl = gbl_site + 'core/index.php/';
@@ -12,18 +12,17 @@ var preurl_js = gbl_site + 'Infosys_web/';
 var config_iva = 19;
 var rol =  "";
 
-
 Ext.application({
 
    controllers: ["General", "Clientes", "Proveedores", "Productos", 
                 "Ventas", "Facturacion", "Inventario", "Tipo_movimientos",
                 "Correlativos", "Ordencompra", "Cuentas_centralizacion", 
-                  "Existencias", "Bitacora", "Tipo_movimientos_inventario",
-                  "Preventa", "Pago_caja","CuentasCorrientes","Cotizacion",
-                  "Recaudacion", "Notacredito","Caja", "Guiasdespacho",
-                  "Comisiones","Notadebito","Tipodocumentocompras", "Precios",
-                  "Facturaglosa", 'Cambios', 'preventaferreteria','Ventadirecta',
-                  'Compras',"Facturacompraglosa"],
+                "Existencias", "Bitacora", "Tipo_movimientos_inventario",
+                "Preventa", "Pago_caja","CuentasCorrientes","Cotizacion",
+                "Recaudacion", "Notacredito","Caja", "Guiasdespacho",
+                "Comisiones","Notadebito","Tipodocumentocompras", "Precios",
+                "Facturaglosa", 'Cambios', 'preventaferreteria','Ventadirecta',
+                'Compras',"Facturacompraglosa","Vale"],
 	   
     views: [
         'Infosys_web.view.WLogin',
