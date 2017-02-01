@@ -1599,6 +1599,11 @@ Ext.define('Infosys_web.controller.Vale', {
         var stVale = this.getValeStore();
         var observa = viewIngresa.down('#observaId').getValue();
         var observacion = viewIngresa.down('#dobservaId').getValue();
+
+        if(!idbodega2){
+            Ext.Msg.alert('Seleccione Bodega Destino');
+            return;   
+        }
         if(!finalafectoId){
             Ext.Msg.alert('Ingrese Productos a la Venta');
             return;   
