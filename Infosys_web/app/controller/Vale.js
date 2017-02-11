@@ -1205,7 +1205,7 @@ Ext.define('Infosys_web.controller.Vale', {
         }
     },
 
-        exportarexcelpreventa: function(){
+    exportarexcelpreventa: function(){
         
         var jsonCol = new Array()
         var i = 0;
@@ -1293,7 +1293,7 @@ Ext.define('Infosys_web.controller.Vale', {
         var neto = 0;
         var dcto = view.down('#finaldescuentoId').getValue();
 
-         stItem.each(function(r){
+        stItem.each(function(r){
             pretotal = pretotal + (parseInt(r.data.total))
             iva = iva + r.data.iva
             neto = neto + r.data.neto

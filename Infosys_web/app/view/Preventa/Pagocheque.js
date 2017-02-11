@@ -20,12 +20,22 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
 
     autoShow: true,
     height: 460,
-    width: 1310,
+    width: 1360,
     layout: 'fit',
     title: 'Pago Cheque Caja',
 
     initComponent: function() {
         var me = this;
+        var formaPago = Ext.create('Ext.data.Store', {
+        fields: ['id', 'nombre'],
+        data : [
+            {"id":1, "nombre":"CONTADO"},
+            {"id":11, "nombre":"CREDITO"},
+            {"id":2, "nombre":"PAGO CHEQUE "},
+            {"id":4, "nombre":"TARJETA DE DEBITO"},
+            {"id":7, "nombre":"TARJETA DE CREDITO"}
+        ]
+        }); 
         var stItms = Ext.getStore('recaudacion.Items');
         stItms.removeAll();
         Ext.applyIf(me, {
@@ -70,14 +80,38 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                             itemId: 'condpagoId',
                             fieldLabel: '<b>FORMA PAGO</b>',
                             fieldCls: 'required',
-                            store: 'Cond_pago',
+                            store: formaPago,
                             name: 'cond_pago',
+                            value: 1,
                             valueField: 'id',
-                            displayField: 'nombre',
-                            readOnly: true
-                           
-                        },
-                        {xtype: 'splitter'},
+                            displayField: 'nombre'                           
+                        },{
+                            xtype: 'textfield',
+                            fieldCls: 'required',
+                            width: 100,
+                            name : 'total',
+                            itemId: 'finaltotalId',
+                            readOnly: true,
+                            fieldLabel: '<b>TOTAL</b>',
+                            labelAlign: 'top'
+                        },{xtype: 'splitter'},{
+                            xtype: 'numberfield',
+                            fieldCls: 'required',
+                            width: 100,
+                            name : 'cancela',
+                            itemId: 'valorcancelaId',
+                            fieldLabel: '<b>CANCELA</b>',
+                            labelAlign: 'top'
+                        },{xtype: 'splitter'},{
+                            xtype: 'numberfield',
+                            fieldCls: 'required',
+                            width: 100,
+                            name : 'vuelto',
+                            itemId: 'valorvueltoId',
+                            fieldLabel: '<b>VUELTO</b>',
+                            disabled : false,
+                            labelAlign: 'top'
+                        },{xtype: 'splitter'},
                         {
                             xtype: 'numberfield',
                             fieldCls: 'required',
@@ -88,18 +122,18 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                             fieldLabel: '<b>NUMCHEQUE</b>',
                             value: 0,
                             labelAlign: 'top',
-                            disabled : false  
-                        },{
-                            xtype: 'numberfield',
-                            fieldCls: 'required',
-                            width: 180,
-                            minValue: 0,
-                            name : 'afecto',
-                            itemId: 'numfacturaId',
-                            fieldLabel: '<b>NUMDOCUMENTO</b>',
-                            value: 0,
+                            disabled : true
+                        },{xtype: 'splitter'},{
+                            xtype: 'datefield',
                             labelAlign: 'top',
-                            hidden: true
+                            fieldCls: 'required',
+                            maxHeight: 35,
+                            labelWidth: 50,
+                            width: 170,
+                            fieldLabel: '<b>FECHA</b>',
+                            itemId: 'fechacheqId',
+                            name: 'fecha_cheque',
+                            value: new Date()
                         },{xtype: 'splitter'},{
                             xtype: 'combo',
                             labelAlign: 'top',
@@ -115,65 +149,37 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                             name: 'banco',
                             valueField: 'id',
                             displayField: 'nombre',
-                            disabled : false  
+                            disabled : true  
                            
-                        },{xtype: 'splitter'},
-                        {
-                            xtype: 'datefield',
+                        },{
+                            xtype: 'textfield',
                             fieldCls: 'required',
                             width: 140,
-                            name : 'fecha_cheq',
-                            itemId: 'fechacheqId',
-                             format: 'd/m/Y',
-                             submitFormat: 'd/m/Y',
-                            fieldLabel: '<b>FECHA</b>',
+                            name : 'num_boleta',
+                            itemId: 'numboleta2Id',
+                            fieldLabel: '<b>No.BOLETA</b>',
                             labelAlign: 'top',
-
-                            value: new Date()
-                        },
-                        {xtype: 'splitter'},
-                        {
-                            xtype: 'numberfield',
-                            fieldCls: 'required',
-                            width: 140,
-                            name : 'valorcheque',
-                            value: 0,
-                            minValue: 0,
-                            itemId: 'valorchequeId',
-                            fieldLabel: '<b>VALOR CHEQUE</b>',
-                            labelAlign: 'top'
-                        },
-                        {xtype: 'splitter'},{
-                            xtype: 'numberfield',
-                            fieldCls: 'required',
-                            width: 140,
-                            name : 'valorpago',
-                            value: 0,
-                            minValue: 0,
-                            readOnly: true,
-                            itemId: 'valorpagoId',
-                            fieldLabel: '<b>VALOR PAGO</b>',
-                            labelAlign: 'top'
-                        },
-                        {xtype: 'splitter'},
-                        {
-                            xtype: 'button',
-                            text: 'Agregar',
-                            iconCls: '',
-                            maxHeight: 60,
-                            scale: 'large',
-                            labelAlign: 'top',
-                            action: 'agregarrecaudacion'
+                            align: 'right'
                         },{
                             xtype: 'numberfield',
-                            fieldCls: 'required',
-                            width: 140,
-                            name : 'valortotal',
-                            itemId: 'valortotalId',
-                            value : 0,
-                            fieldLabel: '<b>TOTAL</b>',
-                            hidden : true
-                        }]
+                            itemId: 'finaltotalpostId',
+                            hidden: true
+                        },{
+                            xtype: 'numberfield',
+                            itemId: 'finaltotalpId',
+                            hidden: true
+                        },
+                            {xtype: 'splitter'},
+                            {
+                                xtype: 'button',
+                                text: 'Agregar',
+                                //labelAlign: 'top',
+                                itemId: 'agregarId',
+                                iconCls: 'icon-plus',
+                                width: 80,
+                                allowBlank: true,
+                                action: 'agregarrecaudacion'
+                            }]
                     }
                     ]
 
@@ -199,12 +205,14 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                           height: 200,
                           columns: [
                               { text: 'Forma Pago',  dataIndex: 'nom_forma', width: 250 },
-                              { text: 'Documento',  dataIndex: 'num_cheque', width: 100},
-                              { text: 'Nombre Banco',  dataIndex: 'detalle', width: 200},
-                              { text: 'Id_banco',  dataIndex: 'id_banco', width: 200, hidden: true},
+                              { text: 'Documento',  dataIndex: 'num_doc', width: 100},
+                              { text: 'Num Cheque',  dataIndex: 'num_cheque', width: 100},
+                              { text: 'Detalle',  dataIndex: 'detalle', width: 200},
                               { text: 'Valor', dataIndex: 'valor_pago', width: 150},
-                              { text: 'Valor Cancela', dataIndex: 'valor_cancelado', width: 150, hidden: true},
-                              { text: 'Fecha Docu', dataIndex: 'fecha_comp',hidden: true, width: 150, renderer:Ext.util.Format.dateRenderer('d/m/Y')}
+                              { text: 'Monto', dataIndex: 'valor_cancelado', width: 150},
+                              { text: 'Vuelto', dataIndex: 'valor_vuelto', width: 150},
+                              { text: 'Fecha Docu', dataIndex: 'fecha_comp',hidden: true, width: 150, renderer:Ext.util.Format.dateRenderer('d/m/Y')},
+                              { text: 'Fecha Transac', dataIndex: 'fecha_transac',hidden: true, width: 150, renderer:Ext.util.Format.dateRenderer('d/m/Y')}
                              
                           ]
                       }],
@@ -233,7 +241,7 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                             disabled : false,
                             maxHeight: 40,
                             action: 'aceptacheques',
-                            text: 'Aceptar'
+                            text: 'PAGAR'
                         }
                     ]
                 }

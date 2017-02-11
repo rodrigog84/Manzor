@@ -26,16 +26,6 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
 
     initComponent: function() {
         var me = this;
-        var formaPago = Ext.create('Ext.data.Store', {
-        fields: ['id', 'nombre'],
-        data : [
-            {"id":1, "nombre":"CONTADO"},
-            {"id":11, "nombre":"CREDITO"},
-            {"id":2, "nombre":"PAGO CHEQUE "},
-            {"id":4, "nombre":"TARJETA DE DEBITO"},
-            {"id":7, "nombre":"TARJETA DE CREDITO"}
-        ]
-        }); 
         var stItms = Ext.getStore('productos.Items');
         stItms.removeAll();
         Ext.applyIf(me, {
@@ -155,6 +145,27 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             fieldLabel: '<b>O. Trabajo</b>'
                                             //readOnly: true
 
+                                        },{
+                                            width: 110,
+                                            xtype: 'numberfield',
+                                            itemId: 'efectivonId',
+                                            fieldLabel: 'Efectivo',
+                                            hidden: true
+                                        },{
+                                            width: 140,
+                                            labelWidth: 50,
+                                            xtype: 'numberfield',
+                                            itemId: 'totchequesnId',
+                                            fieldLabel: 'Cheques',
+                                            hidden: true
+                                        },{
+                                            width: 100,
+                                            labelWidth: 40,
+                                            xtype: 'numberfield',
+                                            itemId: 'otrosmontosnId',
+                                            labelAlign: 'top',
+                                            fieldLabel: 'Otros',
+                                            hidden: true
                                         }
                                     ]
                                 },
@@ -527,103 +538,52 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                         xtype: 'fieldcontainer',
                         layout: 'hbox',
                         items: [{
-                            xtype: 'combo',
-                            labelAlign: 'top',
-                            width: 180,
-                            matchFieldWidth: false,
-                            listConfig: {
-                                width: 210
-                            },
-                            itemId: 'condpagoId',
-                            fieldLabel: '<b>FORMA PAGO</b>',
+                            xtype: 'numberfield',
                             fieldCls: 'required',
-                            store: formaPago,
-                            name: 'cond_pago',
-                            valueField: 'id',
-                            displayField: 'nombre'                           
-                        },{
-                            xtype: 'textfield',
-                            fieldCls: 'required',
-                            width: 100,
-                            name : 'total',
-                            itemId: 'finaltotalId',
+                            width: 200,
+                            name : 'neto',
+                            itemId: 'finaltotalnetoId',
                             readOnly: true,
-                            fieldLabel: '<b>TOTAL</b>',
+                            fieldLabel: '<b>VALOR NETO</b>',
                             labelAlign: 'top'
-                        },{xtype: 'splitter'},{
+                        },
+                        {xtype: 'splitter'},
+                        {
                             xtype: 'numberfield',
                             fieldCls: 'required',
-                            width: 100,
-                            name : 'cancela',
-                            itemId: 'valorcancelaId',
-                            fieldLabel: '<b>CANCELA</b>',
-                            labelAlign: 'top'
-                        },{xtype: 'splitter'},{
-                            xtype: 'numberfield',
-                            fieldCls: 'required',
-                            width: 100,
-                            name : 'vuelto',
-                            itemId: 'valorvueltoId',
-                            fieldLabel: '<b>VUELTO</b>',
-                            disabled : false,
+                            width: 150,
+                            name : 'afecto',
+                            itemId: 'finalafectoId',
+                            readOnly: true,
+                            fieldLabel: '<b>AFECTO</b>',
                             labelAlign: 'top'
                         },{xtype: 'splitter'},
                         {
                             xtype: 'numberfield',
+                            width: 150,
                             fieldCls: 'required',
-                            width: 180,
-                            minValue: 0,
-                            name : 'afecto',
-                            itemId: 'numchequeId',
-                            fieldLabel: '<b>NUMCHEQUE</b>',
-                            value: 0,
-                            labelAlign: 'top',
-                            disabled : true,
-                            hidden: true
+                            name : 'iva',
+                            itemId: 'finaltotalivaId',
+                            readOnly: true,
+                            fieldLabel: '<b>IVA</b>',
+                            labelAlign: 'top'
+                            //renderer: function(valor){return Ext.util.Format.number((iva),"0.000")} 
                         },{xtype: 'splitter'},{
-                            xtype: 'datefield',
-                            labelAlign: 'top',
-                            fieldCls: 'required',
-                            maxHeight: 35,
-                            labelWidth: 50,
-                            width: 170,
-                            fieldLabel: '<b>FECHA</b>',
-                            itemId: 'fechachequeId',
-                            name: 'fecha_cheque',
-                            value: new Date()
-                        },{xtype: 'splitter'},{
-                            xtype: 'combo',
-                            labelAlign: 'top',
-                            width: 210,
-                            matchFieldWidth: false,
-                            listConfig: {
-                                width: 210
-                            },
-                            itemId: 'bancoId',
-                            fieldLabel: '<b>BANCO</b>',
-                            fieldCls: 'required',
-                            store: 'Banco',
-                            name: 'banco',
-                            valueField: 'id',
-                            displayField: 'nombre',
-                            disabled : true  
-                           
-                        },{
                             xtype: 'textfield',
                             fieldCls: 'required',
-                            width: 180,
-                            name : 'num_boleta',
-                            itemId: 'numboleta2Id',
-                            fieldLabel: '<b>No.BOLETA</b>',
-                            labelAlign: 'top',
-                            align: 'right'
+                            width: 230,
+                            name : 'total',
+                            itemId: 'finaltotalId',
+                            readOnly: true,
+                            fieldLabel: '<b>TOTAL DOCUMENTO</b>',
+                            labelAlign: 'top'
                         },{
                             xtype: 'numberfield',
                             itemId: 'finaltotalpostId',
                             hidden: true
                         },{
                             xtype: 'numberfield',
-                            itemId: 'finaltotalpId',
+                            itemId: 'numboleta2Id',
                             hidden: true
                         }]
                     }
@@ -642,8 +602,16 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                         align: 'middle',
                         pack: 'center'
                     },
-                    items: ['->',
-                        {
+                    items: ['->',{
+                            xtype: 'button',
+                            text: 'PAGO',
+                            itemId: 'pagoId',
+                            iconCls: '',
+                            width: 150,
+                            scale: 'large',
+                            disabled : false,
+                            action: 'pagar'
+                        },'-',{
                             xtype: 'button',
                             iconCls: 'icon-save',
                             scale: 'large',

@@ -389,6 +389,10 @@ Ext.define('Infosys_web.controller.Preventa', {
          var idcaja = viewIngresa.down('#cajaId').getValue();
          var recauda = viewIngresa.down('#recaudaId').getValue();
          var idbodega = viewIngresa.down('#bodegaId').getValue();
+         var contado = viewIngresa.down('#efectivonId').getValue();
+         var cheques = viewIngresa.down('#totchequesnId').getValue();
+         var otros = viewIngresa.down('#otrosmontosnId').getValue();
+         
          var tipdoc="101";
          var rut ="19";
          var nombre =idbodega;
@@ -427,7 +431,10 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down('#numboleta2Id').setValue(numboleta);
                     view.down('#cajeroId').setValue(idcajero);
                     view.down('#cajaId').setValue(idcaja);
-                    view.down('#recaudaId').setValue(recauda);           
+                    view.down('#recaudaId').setValue(recauda);                     
+                    view.down('#efectivonId').setValue(contado); 
+                    view.down('#totchequesnId').setValue(cheques); 
+                    view.down('#otrosmontosnId').setValue(otros);
                     view.down("#codigoId").focus();   
                     
                 }else{
