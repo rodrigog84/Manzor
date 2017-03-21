@@ -39,12 +39,14 @@ Ext.define('Infosys_web.view.productos.Ingresar', {
             {
                 xtype: 'textfield',
                 name : 'codigo',
+                itemId: 'codigoId',
                 fieldLabel: 'Codigo'
                           
             }]
         },{
             xtype: 'textfield',
             name : 'nombre',
+            itemId: 'nombreId',
             fieldLabel: 'Nombre Producto',
             anchor: '80%'
         },{

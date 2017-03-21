@@ -1449,11 +1449,42 @@ Ext.define('Infosys_web.controller.Compras', {
           
         var viewIngresa = this.getFacturascomprasingresar();
         var idbodega = viewIngresa.down('#bodegaId').getValue();
-        var st = this.getProductosEStore();
-        st.proxy.extraParams = {opcion : idbodega};
-        st.load();
-        var edit = Ext.create('Infosys_web.view.compras.BuscarProductos').show();
-        edit.down('#bodegaId').setValue(idbodega);
+        var codproducto = viewIngresa.down('#codigoId').getValue();
+
+        if (codproducto){
+
+            Ext.Ajax.request({
+            url: preurl + 'productos/buscacodigo',
+            params: {
+                idBodega: idbodega,
+                codigo: codproducto                 
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                var cero = "";
+                if (resp.success == true) {
+                    
+                var cliente = resp.cliente;
+                viewIngresa.down("#productoId").setValue(cliente.id_producto)
+                viewIngresa.down("#nombreproductoId").setValue(cliente.nombre)
+                viewIngresa.down("#precioId").setValue(cliente.p_costo)
+                viewIngresa.down("#cantidadOriginalId").setValue(cliente.stock)
+                viewIngresa.down("#cantidadId").focus();
+                }else{                      
+                    var view = Ext.create('Infosys_web.view.productos.Ingresar').show();
+                    view.down("#codigoId").setValue(codproducto);
+                    view.down("#tipobodegaId").setValue(idbodega);                    
+                    view.down("#nombreId").focus();
+                }
+            }
+        });
+        }else{        
+            var st = this.getProductosEStore();
+            st.proxy.extraParams = {opcion : idbodega};
+            st.load();
+            var edit = Ext.create('Infosys_web.view.compras.BuscarProductos').show();
+            edit.down('#bodegaId').setValue(idbodega);
+        };
       
     },
 
