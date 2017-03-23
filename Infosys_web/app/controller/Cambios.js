@@ -420,6 +420,7 @@ Ext.define('Infosys_web.controller.Cambios', {
             var idproducto = (row.data.id_producto);
             var nomproducto = (row.data.nombre);
             var idfactura = (row.data.id_factura);
+            var cantidad = (row.data.stock);
             var pventa = (row.data.p_venta);
 
             Ext.Ajax.request({
@@ -434,7 +435,7 @@ Ext.define('Infosys_web.controller.Cambios', {
                    if(resp.cliente){
                       var cliente = resp.cliente;
                       var canti = cliente.cantidad;
-                      viewIngresa.down('#cantidadOriginalId').setValue(canti);
+                      viewIngresa.down('#cantidadOriginalId').setValue(cantidad);
                       viewIngresa.down('#productoId').setValue(idproducto);
                       viewIngresa.down('#nombreproductoId').setValue(nomproducto);
                       viewIngresa.down('#codigoId').setValue(row.data.codigo);
