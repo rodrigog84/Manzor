@@ -305,7 +305,7 @@ Ext.define('Infosys_web.view.Cambios.Ingresar', {
                                 width: 160,
                                 labelWidth: 70,
                                 minValue: 0,
-                                value: 1,
+                                value: 0,
                                 fieldLabel: 'Devolucion',
                                 itemId: 'cantidadId'
                             },

@@ -76,7 +76,7 @@ class Cambios extends CI_Controller {
 	}
 
 	public function exportPDF(){
-		$idpreventa = $this->input->get('idpreventa');
+		$idcambio = $this->input->get('idcambio');
 		$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, c.direccion as direccion,
 		c.id_pago as id_pago, suc.direccion as direccion_sucursal, ciu.nombre as ciudad, com.nombre as comuna, cor.nombre as nom_documento, cod.nombre as nom_giro, pag.nombre as nom_pago, ob.rut as rut_observa, ob.nombre as nom_observa, ob.observacion as observacion FROM preventa acc
 		left join correlativos cor on (acc.id_tip_docu = cor.id)
@@ -475,6 +475,8 @@ class Cambios extends CI_Controller {
 
 		$this->Bitacora->logger("I", 'cambios', $numdev);
 		$this->Bitacora->logger("I", 'cambios_detalle', $idcambio);
+		$this->Bitacora->logger("M", 'existencia', $numdev);
+		$this->Bitacora->logger("M", 'existencia_detalle', $idcambio);
         
 
         echo json_encode($resp);

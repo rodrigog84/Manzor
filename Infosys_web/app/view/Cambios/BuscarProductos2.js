@@ -18,7 +18,7 @@ Ext.define('Infosys_web.view.Cambios.BuscarProductos2' ,{
             iconCls: 'icon-grid',
 
             title : 'Productos',
-            store: 'Productosf',
+            store: 'ProductosE',
             autoHeight: true,
             viewConfig: {
                 forceFit: true
@@ -63,6 +63,12 @@ Ext.define('Infosys_web.view.Cambios.BuscarProductos2' ,{
                 xtype: 'textfield',
                 itemId: 'nombreId',
                 fieldLabel: 'Nombre'
+            },{
+                width: 450,
+                xtype: 'textfield',
+                itemId: 'bodegaId',
+                fieldLabel: 'Bodega',
+                hidden: true
             },
             '-',
             {
@@ -82,7 +88,7 @@ Ext.define('Infosys_web.view.Cambios.BuscarProductos2' ,{
         {
             xtype: 'pagingtoolbar',
             dock:'bottom',
-            store: 'Productosf',
+            store: 'ProductosE',
             displayInfo: true
         }];
         

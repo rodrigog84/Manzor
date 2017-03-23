@@ -59,6 +59,7 @@ Ext.define('Infosys_web.view.productos.Ingresar', {
             xtype: 'combo',
             itemId: 'marcaId',
             fieldLabel: 'Marca',
+            itemId: 'marcaId',
             forceSelection : true,
             anchor: '65%',
             editable : false,
@@ -81,7 +82,7 @@ Ext.define('Infosys_web.view.productos.Ingresar', {
             store : 'Bodegas'
         },{
             xtype: 'combo',
-            itemId: 'tipofamiliaId',
+            itemId: 'familiaId',
             fieldLabel: 'Familias',
             forceSelection : true,
             anchor: '65%',
@@ -183,8 +184,9 @@ Ext.define('Infosys_web.view.productos.Ingresar', {
                     xtype: 'numberfield',
                     fieldLabel: 'Venta',
                     name:'p_venta',
+                    itemId: 'pventaId',
                     //anchor: '20%',
-                    readOnly : true
+                    //readOnly : true
                 }
 
                 ]

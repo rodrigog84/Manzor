@@ -8,7 +8,8 @@ Ext.define('Infosys_web.controller.Cambios', {
              'Clientes',
              'Factura2',
              'Notacreditop',
-             'Productosf'],
+             'Productosf',
+             'ProductosE'],
 
     models: ['Cambios',
              'Cambios.Item'],
@@ -167,12 +168,13 @@ Ext.define('Infosys_web.controller.Cambios', {
              success: function(response){
                  var resp = Ext.JSON.decode(response.responseText);
                  var idcambio= resp.idcambio;
-                 view.close();
-                 stCambio.load();
-                 window.open(preurl + 'preventa/exportPDF/?idcambio='+idpcambio);
+                 view.close();                 
+                 //window.open(preurl + 'cambios/exportPDF/?idcambio='+idcambio);
             }
            
         });
+
+        st.load();
 
     },
 
@@ -206,14 +208,19 @@ Ext.define('Infosys_web.controller.Cambios', {
         var tipocambio = view.down('#tipoCambioId').getValue();
 
         if (tipocambio==1){
+
+            /*console.log(totaldevul);
+            console.log(totalorig);*/
             
-            if (totaldevul != totalorig ){
+
+            
+           /* if (totaldevul != totalorig ){
 
                 Ext.Msg.alert('Alerta', 'Valores No Coinciden Con devolucion');
                 return; 
                 
 
-            }
+            }*/
         };
 
         if (secuencia > 21){
@@ -289,9 +296,12 @@ Ext.define('Infosys_web.controller.Cambios', {
 
     buscarp: function(){
         var view = this.getBuscarproductoscambio2();
-        var st = this.getProductosfStore()
-        var nombre = view.down('#nombreId').getValue()
-        st.proxy.extraParams = {nombre : nombre}
+        var st = this.getProductosEStore()
+        var nombre = view.down('#nombreId').getValue();
+        var idbodega = view.down('#bodegaId').getValue()
+        st.proxy.extraParams = {nombre : nombre,
+                                opcion: idbodega,
+                                tipo: "Nombre"}
         st.load();
     },
 
@@ -331,18 +341,30 @@ Ext.define('Infosys_web.controller.Cambios', {
      buscarproductosdevolucion: function(){
         
         var viewIngresa = this.getCambiosinventario();
-        var codigo = viewIngresa.down('#codigodevId').getValue()
-        var cantidaddev = viewIngresa.down('#cantidadId').getValue()
-        if (!codigo){
-            var st = this.getProductosfStore();
-            Ext.create('Infosys_web.view.Cambios.BuscarProductos2').show();
+        var codigo = viewIngresa.down('#codigodevId').getValue();
+        var cantidaddev = viewIngresa.down('#cantidadId').getValue();
+        var idbodega = viewIngresa.down('#tipobodegaId').getValue();
+        var totaldev = viewIngresa.down('#totdevId').getValue();
+        if(!totaldev){
+
+            Ext.Msg.alert('Alerta', 'Selecione Cantidad a Devolver');
+            return false;
+            
+        };
+        if (!codigo){            
+            var st = this.getProductosEStore();
+            st.proxy.extraParams = {opcion : idbodega};
             st.load();
+            var view = Ext.create('Infosys_web.view.Cambios.BuscarProductos2').show();
+            view.down('#bodegaId').setValue(idbodega);
+            view.down("#nombreId").focus();
         }else{
 
             Ext.Ajax.request({
-            url: preurl + 'productos/buscacodigo?codigo='+codigo,
+            url: preurl + 'productos/buscacodigo',
             params: {
-                id: 1
+                codigo: codigo,
+                idBodega: idbodega
             },
             success: function(response){
                 var resp = Ext.JSON.decode(response.responseText);
@@ -372,11 +394,18 @@ Ext.define('Infosys_web.controller.Cambios', {
     buscarproductosfacturas : function(){
 
         var view = this.getCambiosinventario();
+        var numfactId = view.down('#facturaId').getValue();
+        console.log(numfactId);       
+        if(!numfactId){
+            Ext.Msg.alert('Alerta', 'Debe Seleccionar Factura');
+            return false;
+            
+        }else{
         var st = this.getNotacreditopStore()
-        var nombre = view.down('#facturaId').getValue()
-        st.proxy.extraParams = {nombre : nombre}
+        st.proxy.extraParams = {nombre : numfactId}
         st.load();
-        Ext.create('Infosys_web.view.Cambios.BuscarProductos2').show();
+        Ext.create('Infosys_web.view.Cambios.BuscarProductos').show();
+        };
     },
 
     seleccionarproductos: function(){
@@ -441,7 +470,7 @@ Ext.define('Infosys_web.controller.Cambios', {
        
     },
 
-    buscarproductosfacturas : function(){
+    /*buscarproductosfacturas : function(){
 
         var view = this.getCambiosinventario();
         var st = this.getNotacreditopStore()
@@ -449,7 +478,7 @@ Ext.define('Infosys_web.controller.Cambios', {
         st.proxy.extraParams = {nombre : nombre}
         st.load();
         Ext.create('Infosys_web.view.Cambios.BuscarProductos').show();
-    },
+    },*/
 
     seleccionarfactura: function(){
 

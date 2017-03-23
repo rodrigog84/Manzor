@@ -650,9 +650,66 @@ Ext.define('Infosys_web.controller.Productos', {
             form   = win.down('form'),
             record = form.getRecord(),
             values = form.getValues();
-       
-        if(!form.getForm().isValid()){
-            Ext.Msg.alert('Informacion', 'Rellene todo los campos');
+
+        var pcosto = win.down('#pventaId').getValue();
+        
+        var codigo = win.down('#codigoId').getValue();
+        var nombre = win.down('#nombreId').getValue();
+        var marca = win.down('#marcaId').getValue();
+        var bodega = win.down('#tipobodegaId').getValue();
+        var familia = win.down('#familiaId').getValue();
+        var agrupacion = win.down('#tipoagrupacionId').getValue();
+        var sfamilia = win.down('#tiposubfamiliaId').getValue();
+        var ubicacion = win.down('#tipoUbicaId').getValue();
+        var medida = win.down('#tipounimedidaId').getValue();
+        
+        if(!pcosto){
+            Ext.Msg.alert('Informacion', 'Ingrese precio Venta');
+            return false
+        }
+
+        if(!codigo){
+            Ext.Msg.alert('Informacion', 'Ingrese Codigo');
+            return false
+        }
+
+        if(!nombre){
+            Ext.Msg.alert('Informacion', 'Ingrese Nombre');
+            return false
+        }
+
+        if(!marca){
+            Ext.Msg.alert('Informacion', 'Ingrese Marca');
+            return false
+        }
+
+        if(!bodega){
+            Ext.Msg.alert('Informacion', 'Ingrese Bodega');
+            return false
+        }
+
+        if(!familia){
+            Ext.Msg.alert('Informacion', 'Ingrese Familia');
+            return false
+        }
+
+        if(!agrupacion){
+            Ext.Msg.alert('Informacion', 'Ingrese Agrupacion');
+            return false
+        }
+
+        if(!sfamilia){
+            Ext.Msg.alert('Informacion', 'Ingrese Sub Familia');
+            return false
+        }
+
+        if(!ubicacion){
+            Ext.Msg.alert('Informacion', 'Ingrese Ubicacion');
+            return false
+        }
+
+        if(!medida){
+            Ext.Msg.alert('Informacion', 'Ingrese Unidad Medida');
             return false
         }
         
@@ -676,8 +733,65 @@ Ext.define('Infosys_web.controller.Productos', {
             record = form.getRecord(),
             values = form.getValues();
        
-        if(!form.getForm().isValid()){
-            Ext.Msg.alert('Informacion', 'Rellene todo los campos');
+        var pcosto = win.down('#pventaId').getValue();
+        
+        var codigo = win.down('#codigoId').getValue();
+        var nombre = win.down('#nombreId').getValue();
+        var marca = win.down('#marcaId').getValue();
+        var bodega = win.down('#tipobodegaId').getValue();
+        var familia = win.down('#familiaId').getValue();
+        var agrupacion = win.down('#tipoagrupacionId').getValue();
+        var sfamilia = win.down('#tiposubfamiliaId').getValue();
+        var ubicacion = win.down('#tipoUbicaId').getValue();
+        var medida = win.down('#tipounimedidaId').getValue();
+        
+        if(!pcosto){
+            Ext.Msg.alert('Informacion', 'Ingrese precio Venta');
+            return false
+        }
+
+        if(!codigo){
+            Ext.Msg.alert('Informacion', 'Ingrese Codigo');
+            return false
+        }
+
+        if(!nombre){
+            Ext.Msg.alert('Informacion', 'Ingrese Nombre');
+            return false
+        }
+
+        if(!marca){
+            Ext.Msg.alert('Informacion', 'Ingrese Marca');
+            return false
+        }
+
+        if(!bodega){
+            Ext.Msg.alert('Informacion', 'Ingrese Bodega');
+            return false
+        }
+
+        if(!familia){
+            Ext.Msg.alert('Informacion', 'Ingrese Familia');
+            return false
+        }
+
+        if(!agrupacion){
+            Ext.Msg.alert('Informacion', 'Ingrese Agrupacion');
+            return false
+        }
+
+        if(!sfamilia){
+            Ext.Msg.alert('Informacion', 'Ingrese Sub Familia');
+            return false
+        }
+
+        if(!ubicacion){
+            Ext.Msg.alert('Informacion', 'Ingrese Ubicacion');
+            return false
+        }
+
+        if(!medida){
+            Ext.Msg.alert('Informacion', 'Ingrese Unidad Medida');
             return false
         }
 
