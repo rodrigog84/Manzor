@@ -526,7 +526,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         iconCls: '',
                         action: 'mrecauda'
                 },{
-                        text: 'Resportes',
+                        text: 'Reportes',
                         disabled: true,
                         itemId: 'vyf_eds_reportes',
                         iconCls: '',
@@ -534,6 +534,10 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                             text: 'Libro Ventas',
                             iconCls: '',
                             action: 'mejemplo'
+                        },{
+                            text: 'Resumen Ventas',
+                            iconCls: '',
+                            action: 'resumenventas'
                         }]
                 },]
 

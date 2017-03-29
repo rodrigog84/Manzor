@@ -32,6 +32,7 @@ Ext.define('Infosys_web.controller.Facturacion', {
              'ventas.Exportar',
              'ventas.Exportartxt',
              'ventas.Observaciones',
+             'ventas.ResumenVentas',
              'notacredito.Principal',
              'facturaelectronica.CargaCertificadoDigital',
              'facturaelectronica.CargaManualCaf',
@@ -141,6 +142,11 @@ Ext.define('Infosys_web.controller.Facturacion', {
             'topmenus menuitem[action=mejemplo]': {
                 click: this.mejemplo
             },
+
+            'topmenus menuitem[action=resumenventas]': {
+                click: this.resumenventas
+            },
+
 
             'topmenus menuitem[action=mregempresa]': {
                 click: this.mregempresa
@@ -1360,6 +1366,17 @@ cargar_listado_contribuyentes: function(){
         viewport.removeAll();
         viewport.add({xtype: 'facturasprincipal'});
     },
+
+
+
+    resumenventas: function(){
+//
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+        viewport.add({xtype: 'resumenventas'});
+        
+    },  
+    
 
     buscarvendedor: function(){
         Ext.create('Infosys_web.view.vendedores.BuscarVendedor').show();
