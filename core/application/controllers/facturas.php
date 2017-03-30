@@ -5246,8 +5246,26 @@ font-family: Arial, Helvetica, sans-serif;
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito'
         ) as tmp");
 		
+		$neto_productos->result();
+		foreach ($neto_productos->result() as $producto) {
+			
+			 #Facturacion, Boletas, NCredito, (Facturacion+Boletas-NCredito) as totales 
+			$producto->Facturacion = number_format($producto->Facturacion,0,".",".");
+			$producto->Boletas = number_format($producto->Boletas,0,".",".");
+			$producto->NCredito = number_format($producto->NCredito,0,".",".");
+			$producto->totales = number_format($producto->totales,0,".",".");
+
+			if($producto->concepto == '<b>Totales</b>'){
+				$producto->Facturacion = "<b>".$producto->Facturacion."</b>";
+				$producto->Boletas = "<b>".$producto->Boletas."</b>";
+				$producto->NCredito = "<b>".$producto->NCredito."</b>";
+				$producto->totales = "<b>".$producto->totales."</b>";
+			}
+		}
+
 	 	$resp['success'] = true;
 	 	$resp['data'] = $neto_productos->result();
+	 	$resp['periodo'] = "Detalle Resumen de Ventas Mensuales - " .month2string((int)$mes)." de " . $anno;
         echo json_encode($resp);
 	 	
 	 	 
