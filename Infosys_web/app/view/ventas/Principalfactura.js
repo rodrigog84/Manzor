@@ -287,7 +287,7 @@ Ext.define('Infosys_web.view.ventas.Principalfactura' ,{
                 xtype: 'button',
                 iconCls: 'icon-delete',
                 action: 'cerrarfactura',
-                text : 'Cerrar'
+                text : 'Cerrar Reporte'
             }]      
         },{
             xtype: 'pagingtoolbar',

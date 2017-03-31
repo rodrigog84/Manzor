@@ -44,15 +44,23 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
             autoLoad: true
         }); 
 
+         var f = new Date();
+         var mes_actual = f.getMonth() + 1;
+         if(mes_actual < 10){
+            mes_actual = "0" + mes_actual;
+         }
+         
+         var anno_actual = f.getFullYear();
+
 
          var ventasMensuales = Ext.create('Ext.data.Store', {
-            fields: ['concepto', 'Facturacion' , 'Boletas', 'NCredito' , 'totales'],
+            fields: ['concepto', 'Facturacion' , 'Boletas', 'NDebito' , 'NCredito' , 'totales'],
             data : [
-                {"concepto":'<b>Neto Productos</b>', "Facturacion":"0" , "Boletas":"0" , "NCredito":"0" , "totales":"0"},
-                {"concepto":'<b>Neto Afecto</b>', "Facturacion":"0" , "Boletas":"0" , "NCredito":"0" , "totales":"0"},
-                {"concepto":'<b>Neto Exento</b>', "Facturacion":"0" , "Boletas":"0" , "NCredito":"0" , "totales":"0"},
-                {"concepto":'<b>Impuesto IVA</b>', "Facturacion":"0" , "Boletas":"0" , "NCredito":"0" , "totales":"0"},
-                {"concepto":'<b>Totales</b>', "Facturacion":"0" , "Boletas":"0" , "NCredito":"0" , "totales":"0"},
+                {"concepto":'<b>Neto Productos</b>', "Facturacion":"0" , "Boletas":"0" , "NDebito":"0" , "NCredito":"0" , "totales":"0"},
+                {"concepto":'<b>Neto Afecto</b>', "Facturacion":"0" , "Boletas":"0" , "NDebito":"0" , "NCredito":"0" , "totales":"0"},
+                {"concepto":'<b>Neto Exento</b>', "Facturacion":"0" , "Boletas":"0" , "NDebito":"0" , "NCredito":"0" , "totales":"0"},
+                {"concepto":'<b>Impuesto IVA</b>', "Facturacion":"0" , "Boletas":"0" , "NDebito":"0" , "NCredito":"0" , "totales":"0"},
+                {"concepto":'<b>Totales</b>', "Facturacion":"0" , "Boletas":"0" , "NDebito":"0" , "NCredito":"0" , "totales":"0"},
             ]
         });
      
@@ -79,7 +87,8 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                             forceSelection: true, 
                             allowBlank : false,
                             displayField : 'nombre',
-                            valueField : 'value'                            
+                            valueField : 'value',
+                            //value : mes_actual                           
 
                     },{
                             xtype: 'combobox',
@@ -95,7 +104,8 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                             forceSelection: true, 
                             allowBlank : false,
                             displayField : 'anno',
-                            valueField : 'anno'                            
+                            valueField : 'anno',
+                           // value : 2016                            
 
                     },{
                         xtype: 'toolbar',
@@ -107,30 +117,82 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                                 var form = this.up('form').getForm();
                                 if(form.isValid()){
                                     form.submit({
-                                        url: preurl + 'facturas/reporte_mensual_ventas',
+                                        url: preurl + 'reportes/reporte_mensual_ventas',
                                         //standardSubmit: true,//true, <---------
                                         waitMsg: 'Generando Reporte Ventas...',
                                         success: function(fp, o) {
                                         	//me.down('#itemsgridId').store.reload();
-                                            console.log(fp)
-                                            console.log(o)
-                                            Ext.Msg.alert('Atención', o.result.message);
-                                            ventasMensuales.clear();
-
-
-                                            /*if(o.result.valido){
-                                                // muestra archivo generado
-                                                window.open(gbl_site + 'core/facturacion_electronica/libros/' + o.result.nombre_archivo,'_blank');
-                                            }*/
-                                            // borra archivo generado
-                                            /*Ext.Ajax.request({
-                                            async: false,
-                                            url: preurl + 'facturas/unlink_fe/tmp/'+o.result.nombre_archivo});*/
-
+                                            //Ext.Msg.alert('Atención', 'o.result.message');
+                                            //ventasMensuales.clear();
+                                            ventasMensuales.removeAll();
+                                            ventasMensuales.insert(0,o.result.data[0]);
+                                            ventasMensuales.insert(1,o.result.data[1]);
+                                            ventasMensuales.insert(2,o.result.data[2]);
+                                            ventasMensuales.insert(3,o.result.data[3]);
+                                            ventasMensuales.insert(4,o.result.data[4]);
+                                            me.down('#itemsgridId').setTitle(o.result.periodo);
                                         }
                                     }); 
                                 }
                             }                            
+                        },{
+                            xtype: 'button',
+                            iconCls : 'icon-pdf',
+                            text: 'Exportar PDF',
+                            handler: function() {
+                                var form = this.up('form').getForm();
+                                if(form.isValid()){
+                                    form.submit({
+                                        url: preurl + 'facturas/reporte_mensual_ventas',
+                                        //standardSubmit: true,//true, <---------
+                                        waitMsg: 'Generando Reporte Ventas...',
+                                        success: function(fp, o) {
+
+                                            ventasMensuales.removeAll();
+                                            ventasMensuales.insert(0,o.result.data[0]);
+                                            ventasMensuales.insert(1,o.result.data[1]);
+                                            ventasMensuales.insert(2,o.result.data[2]);
+                                            ventasMensuales.insert(3,o.result.data[3]);
+                                            ventasMensuales.insert(4,o.result.data[4]);
+                                            me.down('#itemsgridId').setTitle(o.result.periodo);
+
+                                        }
+                                    }); 
+                                }
+                            } 
+
+
+                        },{                
+                            xtype: 'button',
+                            iconCls : 'icon-exel',
+                            text: 'Exportar EXCEL',
+                            handler: function() {
+                                var form = this.up('form').getForm();
+                                if(form.isValid()){
+                                    form.submit({
+                                        url: preurl + 'facturas/reporte_mensual_ventas',
+                                        //standardSubmit: true,//true, <---------
+                                        waitMsg: 'Generando Reporte Ventas...',
+                                        success: function(fp, o) {
+
+                                            ventasMensuales.removeAll();
+                                            console.log(o.result.data[0])
+                                            ventasMensuales.insert(0,o.result.data[0]);
+                                            ventasMensuales.insert(1,o.result.data[1]);
+                                            ventasMensuales.insert(2,o.result.data[2]);
+                                            ventasMensuales.insert(3,o.result.data[3]);
+                                            ventasMensuales.insert(4,o.result.data[4]);
+                                            me.down('#itemsgridId').setTitle(o.result.periodo);
+
+                                        }
+                                    }); 
+                                }
+                            } 
+                        },{
+                            xtype: 'button',
+                            iconCls: 'icon-delete',
+                            action: 'cerrarfactura',
+                            text : 'Cerrar'
                         }]
                     },
                     ]
@@ -146,21 +208,25 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
 
                             xtype: 'grid',
                             itemId: 'itemsgridId',
-                            title: 'Detalle Resumen de Ventas Mensuales',
                             store : ventasMensuales,
                             labelWidth: 50,
+                            title: 'Detalle Resumen de Ventas Mensuales',
                             height: 210,
                             columns: [
                                 { text: 'Conceptos',  dataIndex: 'concepto', flex: 1},
                                 { text: 'Facturaci&oacute;n',  dataIndex: 'Facturacion', flex: 1  },
                                 { text: 'Boletas',  dataIndex: 'Boletas', flex: 1, align: 'left'},
+                                { text: 'N/D&eacute;bito',  dataIndex: 'NDebito', flex: 1 },
                                 { text: 'N/Cr&eacute;dito',  dataIndex: 'NCredito', flex: 1 },
                                 { text: 'Totales',  dataIndex: 'totales', flex: 1},
                                 ]
 
                 }    
                 ]    
-               }    
+               },
+
+
+
         ];
         
         this.callParent(arguments);
