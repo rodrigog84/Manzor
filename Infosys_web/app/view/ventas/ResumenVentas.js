@@ -44,14 +44,6 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
             autoLoad: true
         }); 
 
-         var f = new Date();
-         var mes_actual = f.getMonth() + 1;
-         if(mes_actual < 10){
-            mes_actual = "0" + mes_actual;
-         }
-         
-         var anno_actual = f.getFullYear();
-
 
          var ventasMensuales = Ext.create('Ext.data.Store', {
             fields: ['concepto', 'Facturacion' , 'Boletas', 'NCredito' , 'totales'],
@@ -87,8 +79,7 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                             forceSelection: true, 
                             allowBlank : false,
                             displayField : 'nombre',
-                            valueField : 'value',
-                            //value : mes_actual                           
+                            valueField : 'value'                            
 
                     },{
                             xtype: 'combobox',
@@ -104,8 +95,7 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                             forceSelection: true, 
                             allowBlank : false,
                             displayField : 'anno',
-                            valueField : 'anno',
-                           // value : 2016                            
+                            valueField : 'anno'                            
 
                     },{
                         xtype: 'toolbar',
@@ -124,16 +114,8 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                                         	//me.down('#itemsgridId').store.reload();
                                             console.log(fp)
                                             console.log(o)
-                                            //Ext.Msg.alert('Atención', 'o.result.message');
-                                            //ventasMensuales.clear();
-                                            ventasMensuales.removeAll();
-                                            console.log(o.result.data[0])
-                                            ventasMensuales.insert(0,o.result.data[0]);
-                                            ventasMensuales.insert(1,o.result.data[1]);
-                                            ventasMensuales.insert(2,o.result.data[2]);
-                                            ventasMensuales.insert(3,o.result.data[3]);
-                                            ventasMensuales.insert(4,o.result.data[4]);
-                                            me.down('#itemsgridId').setTitle(o.result.periodo);
+                                            Ext.Msg.alert('Atención', o.result.message);
+                                            ventasMensuales.clear();
 
 
                                             /*if(o.result.valido){
@@ -164,9 +146,9 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
 
                             xtype: 'grid',
                             itemId: 'itemsgridId',
+                            title: 'Detalle Resumen de Ventas Mensuales',
                             store : ventasMensuales,
                             labelWidth: 50,
-                            title: 'Detalle Resumen de Ventas Mensuales',
                             height: 210,
                             columns: [
                                 { text: 'Conceptos',  dataIndex: 'concepto', flex: 1},
