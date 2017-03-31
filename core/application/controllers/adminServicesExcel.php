@@ -2,6 +2,63 @@
 
 class AdminServicesExcel extends CI_Controller {
 
+public function __construct()
+  {
+    parent::__construct();
+    $this->load->helper('format');
+    $this->load->database();
+  }
+
+ public function reporte_mensual_ventas($mes,$anno)
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=reporte_mensual_ventas.xls"); 
+            
+
+
+            $this->load->model('reporte');
+            $neto_productos = $this->reporte->mensual_ventas($mes,$anno);            
+
+            
+            echo '<table>';
+            echo "<tr><td colspan='6'><b>Detalle Resumen de Ventas Mensuales - " . month2string((int)$mes)." de " . $anno . "</b></td></tr>";
+            echo "<tr>";
+            echo "<td><b>Conceptos</b></td>";
+            echo "<td><b>Facturaci&oacute;n</b></td>";
+            echo "<td><b>Boletas</b></td>";
+            echo "<td><b>N/D&eacute;bito</b></td>";
+            echo "<td><b>N/Cr&eacute;dito</b></td>";
+            echo "<td><b>Totales</b></td>";
+            echo "</tr>";
+              
+              foreach($neto_productos as $producto){
+                if($producto->concepto == '<b>Totales</b>'){
+                 echo "<tr>";
+                 echo "<td><b>".$producto->concepto."</b></td>";
+                 echo "<td><b>".$producto->Facturacion."</b></td>";
+                 echo "<td><b>".$producto->Boletas."</b></td>";
+                 echo "<td><b>".$producto->NDebito."</b></td>";
+                 echo "<td><b>".$producto->NCredito."</b></td>";
+                 echo "<td><b>".$producto->totales."</b></td>";
+                 echo "</tr>";
+                }else{
+
+                 echo "<tr>";
+                 echo "<td>".$producto->concepto."</td>";
+                 echo "<td>".$producto->Facturacion."</td>";
+                 echo "<td>".$producto->Boletas."</td>";
+                 echo "<td>".$producto->NDebito."</td>";
+                 echo "<td>".$producto->NCredito."</td>";
+                 echo "<td>".$producto->totales."</td>";
+                 echo "</tr>";
+                }
+
+                 
+            }
+            echo '</table>';
+        }
+
+
 
       public function exportarExcellistaProductos()
          {

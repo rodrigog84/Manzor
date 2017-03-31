@@ -44,13 +44,16 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
             autoLoad: true
         }); 
 
-         var f = new Date();
+        /* var f = new Date();
          var mes_actual = f.getMonth() + 1;
          if(mes_actual < 10){
             mes_actual = "0" + mes_actual;
          }
          
-         var anno_actual = f.getFullYear();
+         var anno_actual = f.getFullYear();*/
+
+         var mes_actual = 0;
+         var anno_actual = 0;
 
 
          var ventasMensuales = Ext.create('Ext.data.Store', {
@@ -131,6 +134,9 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                                             ventasMensuales.insert(3,o.result.data[3]);
                                             ventasMensuales.insert(4,o.result.data[4]);
                                             me.down('#itemsgridId').setTitle(o.result.periodo);
+
+                                            mes_actual = o.result.mes;
+                                            anno_actual = o.result.anno;
                                         }
                                     }); 
                                 }
@@ -140,25 +146,11 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                             iconCls : 'icon-pdf',
                             text: 'Exportar PDF',
                             handler: function() {
-                                var form = this.up('form').getForm();
-                                if(form.isValid()){
-                                    form.submit({
-                                        url: preurl + 'facturas/reporte_mensual_ventas',
-                                        //standardSubmit: true,//true, <---------
-                                        waitMsg: 'Generando Reporte Ventas...',
-                                        success: function(fp, o) {
-
-                                            ventasMensuales.removeAll();
-                                            ventasMensuales.insert(0,o.result.data[0]);
-                                            ventasMensuales.insert(1,o.result.data[1]);
-                                            ventasMensuales.insert(2,o.result.data[2]);
-                                            ventasMensuales.insert(3,o.result.data[3]);
-                                            ventasMensuales.insert(4,o.result.data[4]);
-                                            me.down('#itemsgridId').setTitle(o.result.periodo);
-
-                                        }
-                                    }); 
+                                if(mes_actual != 0 && anno_actual != 0){
+                                    window.open(preurl +'adminServicesPdf/reporte_mensual_ventas/' + mes_actual + '/' + anno_actual)    
                                 }
+                                
+
                             } 
 
 
@@ -167,27 +159,12 @@ Ext.define('Infosys_web.view.ventas.ResumenVentas' ,{
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',
                             handler: function() {
-                                var form = this.up('form').getForm();
-                                if(form.isValid()){
-                                    form.submit({
-                                        url: preurl + 'facturas/reporte_mensual_ventas',
-                                        //standardSubmit: true,//true, <---------
-                                        waitMsg: 'Generando Reporte Ventas...',
-                                        success: function(fp, o) {
-
-                                            ventasMensuales.removeAll();
-                                            console.log(o.result.data[0])
-                                            ventasMensuales.insert(0,o.result.data[0]);
-                                            ventasMensuales.insert(1,o.result.data[1]);
-                                            ventasMensuales.insert(2,o.result.data[2]);
-                                            ventasMensuales.insert(3,o.result.data[3]);
-                                            ventasMensuales.insert(4,o.result.data[4]);
-                                            me.down('#itemsgridId').setTitle(o.result.periodo);
-
-                                        }
-                                    }); 
+                                if(mes_actual != 0 && anno_actual != 0){
+                                    window.open(preurl +'adminServicesExcel/reporte_mensual_ventas/' + mes_actual + '/' + anno_actual)    
                                 }
-                            } 
+                                
+
+                            }
                         },{
                             xtype: 'button',
                             iconCls: 'icon-delete',
