@@ -38,6 +38,8 @@ class Reportes extends CI_Controller {
 	 	$resp['success'] = true;
 	 	$resp['data'] = $neto_productos;
 	 	$resp['periodo'] = "Detalle Resumen de Ventas Mensuales - " .month2string((int)$mes)." de " . $anno;
+	 	$resp['mes'] = $mes;
+	 	$resp['anno'] = $anno;
         echo json_encode($resp);
 	 	
 	 	 
