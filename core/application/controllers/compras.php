@@ -1776,7 +1776,7 @@ class Compras extends CI_Controller {
 
 		foreach($items as $v){
 			$factura_compras_item = array(
-		        'id_producto' => $v->id,
+		        'id_producto' => $v->id_producto,
 		        'id_factura' => $idfactura,
 		        'num_factura' => $numfactura,
 		        'precio' => $v->precio,
@@ -1788,7 +1788,43 @@ class Compras extends CI_Controller {
 		        'fecha' => $fechafactura
 			);
 
-		$producto = $v->id;
+		$producto = $v->id_producto;
+	    $puc = ($v->precio / 1.19);
+	    $cero=0;
+		
+		   $query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
+		   if($query->num_rows()>0){
+			 $row = $query->first_row();
+			 $query2 = $this->db->query('SELECT * FROM existencia_detalle WHERE id_producto='.$producto.' and cantidad_entrada > '.$cero.'');	    	 
+	    	 $ppm=0;
+	    	 $cal = 1;
+			 if ($query2->num_rows()>0){
+			 	foreach ($query2->result() as $r){			 	
+				 	$ppm = $ppm + ($v->precio);
+				 	$cal = $cal +1;
+			    };
+			    $ppm = $ppm + $puc;
+                $ppm = ($ppm / $cal);
+			 	$saldo = ($row->stock)+($v->stock);
+			 	$pmc = ($row->p_may_compra);
+			 	if ($pmc < $puc){			 		
+			 		$pmc = $puc;
+			 	};			 
+			};                
+		   };
+		   $prod = array(
+	         'stock' => $saldo,
+	         'p_ult_compra' => $puc,
+	         'p_may_compra' => $pmc,
+	         'p_promedio' => $ppm,
+	         'fecha_ult_compra' => $fechafactura
+	         
+	    	);
+
+	    	$this->db->where('id', $producto);
+
+	    	$this->db->update('productos', $prod);
+
 
 		$this->db->insert('detalle_factura_compra', $factura_compras_item);
 
