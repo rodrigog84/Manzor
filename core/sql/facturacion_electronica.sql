@@ -345,3 +345,9 @@ ALTER TABLE `empresa`
 
 ALTER TABLE `productos`
 	ADD COLUMN `imagen` VARCHAR(50) NOT NULL AFTER `foto`;
+
+/******************************************************************************************/
+
+
+ALTER TABLE `existencia`
+	ADD INDEX `id_producto` (`id_producto`);	
