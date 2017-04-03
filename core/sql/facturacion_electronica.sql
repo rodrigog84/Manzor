@@ -351,3 +351,6 @@ ALTER TABLE `productos`
 
 ALTER TABLE `existencia`
 	ADD INDEX `id_producto` (`id_producto`);	
+ALTER TABLE `productos`
+	ADD COLUMN `fecha_ult_compra` DATE NOT NULL AFTER `p_may_compra`;
+	

@@ -538,6 +538,10 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                             text: 'Resumen Ventas',
                             iconCls: '',
                             action: 'resumenventas'
+                        },{
+                            text: 'Informe Stock',
+                            iconCls: '',
+                            action: 'informestock'
                         }]
                 },]
 

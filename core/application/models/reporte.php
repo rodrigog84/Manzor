@@ -116,4 +116,110 @@ class Reporte extends CI_Model
 
 	}
 
+
+
+	public function reporte_stock($start,$limit,$familia = '',$subfamilia = '',$agrupacion = '',$marca = ''){
+
+
+		$data_stock = $this->db->select('count(p.id) as cantidad ')
+		  ->from('productos p')
+		  ->join('existencia e','e.id_producto = p.id and e.id_bodega = 1','left')
+		  ->join('existencia e2','e2.id_producto = p.id and e2.id_bodega = 2','left')
+		  ->join('existencia e3','e3.id_producto = p.id and e3.id_bodega = 3','left')
+		  ->join('existencia e4','e4.id_producto = p.id and e4.id_bodega = 4','left');
+		
+		$data_stock = $familia != '' ? $data_stock->where('p.id_familia',$familia) : $data_stock;
+		$data_stock = $subfamilia != '' ? $data_stock->where('p.id_subfamilia',$subfamilia) : $data_stock;
+		$data_stock = $agrupacion != '' ? $data_stock->where('p.id_agrupacion',$agrupacion) : $data_stock;
+		$data_stock = $marca != '' ? $data_stock->where('p.id_marca',$marca) : $data_stock;
+
+		$query = $this->db->get();                            
+        $result_cantidad = $query->row()->cantidad; 
+
+
+		$data_stock = $this->db->select('p.id as num, codigo, nombre as descripcion, fecha_ult_compra, p_costo, p_venta, e.stock as stock1, e2.stock as stock2, e3.stock as stock3, e4.stock as stock4 ')
+		  ->from('productos p')
+		  ->join('existencia e','e.id_producto = p.id and e.id_bodega = 1','left')
+		  ->join('existencia e2','e2.id_producto = p.id and e2.id_bodega = 2','left')
+		  ->join('existencia e3','e3.id_producto = p.id and e3.id_bodega = 3','left')
+		  ->join('existencia e4','e4.id_producto = p.id and e4.id_bodega = 4','left')
+		  ->limit($limit,$start);
+
+
+		$data_stock = $familia != '' ? $data_stock->where('p.id_familia',$familia) : $data_stock;
+		$data_stock = $subfamilia != '' ? $data_stock->where('p.id_subfamilia',$subfamilia) : $data_stock;
+		$data_stock = $agrupacion != '' ? $data_stock->where('p.id_agrupacion',$agrupacion) : $data_stock;
+		$data_stock = $marca != '' ? $data_stock->where('p.id_marca',$marca) : $data_stock;
+
+
+		$query = $this->db->get();
+		$result = $query->result();
+		 return array('cantidad' => $result_cantidad,'data' => $result);
+	}
+
+
+
+	public function get_familias(){
+
+
+		$data_stock = $this->db->select('id, codigo, nombre ')
+		  ->from('familias f')
+		  ->where('codigo <> ""')
+		  ->where('nombre <> ""');
+		
+		$query = $this->db->get();                            
+        return $query->result(); 
+
+	}
+
+
+	public function get_subfamilias($id_familia = ''){
+
+
+		$data_subfamilia = $this->db->select('id, codigo, nombre ')
+		  ->from('subfamilias sf')
+		  ->where('codigo <> ""')
+		  ->where('nombre <> ""');
+
+		$data_subfamilia = $id_familia != '' ? $data_subfamilia->where('sf.id_familias',$id_familia) : $data_subfamilia;		  
+		
+		$query = $this->db->get();                            
+        return $query->result(); 
+
+	}
+
+
+
+	public function get_agrupaciones($id_familia = '',$id_subfamilia = ''){
+
+
+		$data_agrupacion = $this->db->select('id, codigo, nombre ')
+		  ->from('agrupacion a')
+		  ->where('codigo <> ""')
+		  ->where('nombre <> ""');
+
+		$data_agrupacion = $id_familia != '' ? $data_agrupacion->where('a.id_familia',$id_familia) : $data_agrupacion;		  
+		$data_agrupacion = $id_subfamilia != '' ? $data_agrupacion->where('a.id_subfamilia',$id_subfamilia) : $data_agrupacion;		  
+		
+		$query = $this->db->get();                            
+        return $query->result(); 
+
+	}
+
+
+
+	public function get_marcas(){
+
+
+		$data_stock = $this->db->select('id, codigo, nombre ')
+		  ->from('marcas')
+		  ->where('codigo <> ""')
+		  ->where('nombre <> ""');
+		
+		$query = $this->db->get();                            
+        return $query->result(); 
+
+	}
+
+
 }
