@@ -142,10 +142,9 @@ class Reporte extends CI_Model
 		  ->join('existencia e','e.id_producto = p.id and e.id_bodega = 1','left')
 		  ->join('existencia e2','e2.id_producto = p.id and e2.id_bodega = 2','left')
 		  ->join('existencia e3','e3.id_producto = p.id and e3.id_bodega = 3','left')
-		  ->join('existencia e4','e4.id_producto = p.id and e4.id_bodega = 4','left')
-		  ->limit($limit,$start);
+		  ->join('existencia e4','e4.id_producto = p.id and e4.id_bodega = 4','left');
 
-
+		$data_stock = is_null($limit) ? $data_stock : $data_stock->limit($limit,$start);
 		$data_stock = $familia != '' ? $data_stock->where('p.id_familia',$familia) : $data_stock;
 		$data_stock = $subfamilia != '' ? $data_stock->where('p.id_subfamilia',$subfamilia) : $data_stock;
 		$data_stock = $agrupacion != '' ? $data_stock->where('p.id_agrupacion',$agrupacion) : $data_stock;

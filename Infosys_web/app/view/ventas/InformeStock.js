@@ -95,8 +95,10 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
          
          var anno_actual = f.getFullYear();*/
 
-         var mes_actual = 0;
-         var anno_actual = 0;
+         var id_familia = 0;
+         var id_subfamilia = 0;
+         var id_agrupacion = 0;
+         var id_marca = 0;
 
 
          /*var stockProductos = Ext.create('Ext.data.Store', {
@@ -230,14 +232,14 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             iconCls: 'icon-sheet',
                             text: 'Generar Reporte Stock',
                             handler: function() {
-                                var familia = me.down('#familia').getValue() == 'Seleccionar' ? '' : me.down('#familia').getValue();
-                                var subfamilia = me.down('#subfamilia').getValue() == 'Seleccionar' ? '' : me.down('#subfamilia').getValue();
-                                var agrupacion = me.down('#agrupacion').getValue() == 'Seleccionar' ? '' : me.down('#agrupacion').getValue();
-                                var marca = me.down('#marca').getValue() == 'Seleccionar' ? '' : me.down('#marca').getValue();
-                                stockProductos.proxy.extraParams = {familia : familia,
-                                                                    subfamilia : subfamilia,
-                                                                    agrupacion : agrupacion,
-                                                                    marca : marca}
+                                var id_familia = me.down('#familia').getValue() == 'Seleccionar' ? '' : me.down('#familia').getValue();
+                                var id_subfamilia = me.down('#subfamilia').getValue() == 'Seleccionar' ? '' : me.down('#subfamilia').getValue();
+                                var id_agrupacion = me.down('#agrupacion').getValue() == 'Seleccionar' ? '' : me.down('#agrupacion').getValue();
+                                var id_marca = me.down('#marca').getValue() == 'Seleccionar' ? '' : me.down('#marca').getValue();
+                                stockProductos.proxy.extraParams = {familia : id_familia,
+                                                                    subfamilia : id_subfamilia,
+                                                                    agrupacion : id_agrupacion,
+                                                                    marca : id_marca}
                                 stockProductos.load();
                             }                            
                         },{
@@ -245,11 +247,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             iconCls : 'icon-pdf',
                             text: 'Exportar PDF',
                             handler: function() {
-                                if(mes_actual != 0 && anno_actual != 0){
-                                    window.open(preurl +'adminServicesPdf/reporte_mensual_ventas/' + mes_actual + '/' + anno_actual)    
-                                }
-                                
-
+                                    window.open(preurl +'adminServicesPdf/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca)    
                             } 
 
 
@@ -258,9 +256,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',
                             handler: function() {
-                                if(mes_actual != 0 && anno_actual != 0){
-                                    window.open(preurl +'adminServicesExcel/reporte_mensual_ventas/' + mes_actual + '/' + anno_actual)    
-                                }
+                                    window.open(preurl +'adminServicesExcel/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca)    
                                 
 
                             }

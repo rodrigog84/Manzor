@@ -9,6 +9,58 @@ public function __construct()
     $this->load->database();
   }
 
+
+
+public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=reporte_stock.xls"); 
+            
+
+
+            $familia = $familia == 0 ? '' : $familia;
+            $subfamilia = $subfamilia == 0 ? '' : $subfamilia;
+            $agrupacion = $agrupacion == 0 ? '' : $agrupacion;
+            $marca = $marca == 0 ? '' : $marca;
+
+            $this->load->model('reporte');
+            $datos_stock = $this->reporte->reporte_stock(null,null,$familia,$subfamilia,$agrupacion,$marca);       
+
+            
+            echo '<table>';
+            echo "<tr><td colspan='6'><b>Informe Stock</b></td></tr>";
+            echo "<tr>";
+            echo "<td><b>#</b></td>";
+            echo "<td><b>C&oacute;digo</b></td>";
+            echo "<td><b>Descripci&oacute;n</b></td>";
+            echo "<td><b>Fecha &Uacute;ltima Compra</b></td>";
+            echo "<td><b>Precio Costo</b></td>";
+            echo "<td><b>Precio Venta</b></td>";
+            echo "<td><b>Stock 1</b></td>";
+            echo "<td><b>Stock 2</b></td>";
+            echo "<td><b>Stock 3</b></td>";
+            echo "<td><b>Stock 4</b></td>";
+            echo "</tr>";
+              
+              foreach($datos_stock['data'] as $stock){
+                 echo "<tr>";
+                 echo "<td>".$stock->num."</td>";
+                 echo "<td>".$stock->codigo."</td>";
+                 echo "<td>".$stock->descripcion."</td>";
+                 echo "<td>".$stock->fecha_ult_compra."</td>";
+                 echo "<td>".$stock->p_costo."</td>";
+                 echo "<td>".$stock->p_venta."</td>";
+                 echo "<td>".$stock->stock1."</td>";
+                 echo "<td>".$stock->stock2."</td>";
+                 echo "<td>".$stock->stock3."</td>";
+                 echo "<td>".$stock->stock4."</td>";
+                 echo "</tr>";
+                 
+            }
+            echo '</table>';
+        }
+
+
  public function reporte_mensual_ventas($mes,$anno)
          {
             header("Content-type: application/vnd.ms-excel"); 
