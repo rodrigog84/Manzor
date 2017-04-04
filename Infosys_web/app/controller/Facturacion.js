@@ -210,6 +210,11 @@ Ext.define('Infosys_web.controller.Facturacion', {
                 click: this.cerrarfactura
             },
 
+            'informestock button[action=cerrarfactura]': {
+                click: this.cerrarfactura
+            },
+            
+
                         
             'facturasprincipal button[action=generarfacturapdf]': {
                 click: this.generarfacturapdf

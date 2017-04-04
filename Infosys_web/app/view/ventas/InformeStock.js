@@ -242,7 +242,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                                                     marca : id_marca}
                                 stockProductos.load();
                             }                            
-                        },{
+                        },/*{
                             xtype: 'button',
                             iconCls : 'icon-pdf',
                             text: 'Exportar PDF',
@@ -251,7 +251,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             } 
 
 
-                        },{                
+                        },*/{                
                             xtype: 'button',
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',
