@@ -1,15 +1,27 @@
-Ext.define('Infosys_web.view.ventas.InformeStock' ,{
-    extend: 'Ext.form.Panel',
-    alias : 'widget.informestock',
+Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
+    extend: 'Ext.window.Window',
+   // extend: 'Ext.form.Panel',
+    alias : 'widget.verdetalleproductostock',
     
     requires: ['Ext.form.Panel','Ext.toolbar.Paging'],
-    title : 'Informe Stock',
+
+    title : 'Detalle Producto',
     autoHeight: false,
 
     autoShow: true,
-    width: 700,
-    height: 200,
+    width: 1200,
+    height: 480,
 
+
+
+    /*title : 'Detalle Producto',
+    layout: 'fit',
+    autoShow: true,
+    width: 1200,
+    height: 450,
+    modal: true,
+    iconCls: 'icon-sheet',
+    y: 10,*/
     initComponent: function() {
         me = this;
          var meses = Ext.create('Ext.data.Store', {
@@ -31,11 +43,11 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
         });
 
 
-         var familia = Ext.create('Ext.data.Store', {
-            fields: ['id','nombre'],
+         var annos = Ext.create('Ext.data.Store', {
+            fields: ['anno'],
             proxy: {
               type: 'ajax',
-                url : preurl +'reportes/get_familias',
+                url : preurl +'facturas/get_annos',
                 reader: {
                     type: 'json',
                     root: 'data'
@@ -43,49 +55,6 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
             },
             autoLoad: true
         }); 
-
-
-         var subfamilia = Ext.create('Ext.data.Store', {
-            fields: ['id','nombre'],
-            proxy: {
-              type: 'ajax',
-                url : preurl +'reportes/get_subfamilias',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            },
-            autoLoad: true
-        }); 
-
-
-
-         var agrupacion = Ext.create('Ext.data.Store', {
-            fields: ['id','nombre'],
-            proxy: {
-              type: 'ajax',
-                url : preurl +'reportes/get_agrupaciones',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            },
-            autoLoad: true
-        }); 
-
-
-         var marcas = Ext.create('Ext.data.Store', {
-            fields: ['id','nombre'],
-            proxy: {
-              type: 'ajax',
-                url : preurl +'reportes/get_marcas',
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            },
-            autoLoad: true
-        });          
 
         /* var f = new Date();
          var mes_actual = f.getMonth() + 1;
@@ -95,18 +64,9 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
          
          var anno_actual = f.getFullYear();*/
 
-         var id_familia = 0;
-         var id_subfamilia = 0;
-         var id_agrupacion = 0;
-         var id_marca = 0;
+         var mes_actual = 0;
+         var anno_actual = 0;
 
-
-         /*var stockProductos = Ext.create('Ext.data.Store', {
-            fields: ['codigo', 'descripcion' , 'fec_ult_compra', 'costo' , 'precio_venta' , 'stock1', 'stock2', 'stock3', 'stock4'],
-            data : [
-                {"codigo":'', "descripcion":"" , "fec_ult_compra":"" , "costo":"" , "precio_venta":"" , "stock1":"", "stock2":"", "stock3":"", "stock4":""},
-            ]
-        });*/
 
         var stockProductos = Ext.create('Ext.data.Store', {
             fields: ['id','num','codigo', 'descripcion' , 'fecha_ult_compra', 'p_costo' , 'p_venta' , 'stock1', 'stock2', 'stock3', 'stock4'],
@@ -124,6 +84,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
         }); 
      
 
+
         this.items = [
             {
                 xtype: 'form',
@@ -135,95 +96,36 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                   {
                             xtype: 'combobox',
                             width: 500,
-                            store : familia,
-                            fieldLabel: 'Familia',
+                            store : meses,
+                            fieldLabel: 'Mes',
                             labelStyle: ' font-weight:bold',
                             labelWidth: 200,
-                            editable: false,
-                            itemId : 'familia' ,
-                            name : 'familia' ,
                             emptyText : 'Seleccionar',
-                            //forceSelection: true, 
+                            editable: false,
+                            itemId : 'mes' ,
+                            name : 'mes' ,
+                            forceSelection: true, 
                             allowBlank : false,
                             displayField : 'nombre',
-                            valueField : 'id',
-                            listeners: {
-                                change: function() {
-                                    var id_familia = me.down('#familia').getValue() == 'Seleccionar' ? '' : me.down('#familia').getValue();
-                                    subfamilia.proxy.extraParams = {id_familia : id_familia}
-                                    subfamilia.load();    
-
-                                    agrupacion.proxy.extraParams = {id_familia : id_familia}
-                                    agrupacion.load(); 
-
-                                    me.down('#subfamilia').setValue("");
-                                    me.down('#agrupacion').setValue("");
-                                }
-                            }                      
+                            valueField : 'value',
+                            //value : mes_actual                           
 
                     },{
                             xtype: 'combobox',
                             width: 500,
-                            store : subfamilia,
-                            fieldLabel: 'Subfamilia',
+                            store : annos,
+                            fieldLabel: 'A&ntilde;o',
                             labelStyle: ' font-weight:bold',
                             labelWidth: 200,
                             emptyText : 'Seleccionar',
                             editable: false,
-                            itemId : 'subfamilia' ,
-                            name : 'subfamilia' ,
-                            submitEmptyText : false,
-                            //forceSelection: true, 
-                            //allowBlank : false,
-                            displayField : 'nombre',
-                            valueField : 'id',
-                            listeners: {
-                                change: function() {
-                                    var id_familia = me.down('#familia').getValue() == 'Seleccionar' ? '' : me.down('#familia').getValue();
-                                    var id_subfamilia = me.down('#subfamilia').getValue() == 'Seleccionar' ? '' : me.down('#subfamilia').getValue();
-                                    agrupacion.proxy.extraParams = {id_familia : id_familia,
-                                                                    id_subfamilia : id_subfamilia}
-                                    agrupacion.load();                                    
-                                    me.down('#agrupacion').setValue("");
-                                }
-                            }                              
-                                             
-
-                    },{
-                            xtype: 'combobox',
-                            width: 500,
-                            store : agrupacion,
-                            fieldLabel: 'Agrupaci&oacute;n',
-                            labelStyle: ' font-weight:bold',
-                            labelWidth: 200,
-                            emptyText : 'Seleccionar',
-                            editable: false,
-                            itemId : 'agrupacion' ,
-                            name : 'agrupacion' ,
-                            submitEmptyText : false,
-                            //forceSelection: true, 
-                            //allowBlank : false,
-                            displayField : 'nombre',
-                            valueField : 'id',
-                                         
-
-                    },{
-                            xtype: 'combobox',
-                            width: 500,
-                            store : marcas,
-                            fieldLabel: 'Marca',
-                            labelStyle: ' font-weight:bold',
-                            labelWidth: 200,
-                            emptyText : 'Seleccionar',
-                            editable: false,
-                            itemId : 'marca' ,
-                            name : 'marca' ,
-                            submitEmptyText : false,
-                            //forceSelection: true, 
-                            //allowBlank : false,
-                           displayField : 'nombre',
-                            valueField : 'id',
-                                         
+                            itemId : 'anno' ,
+                            name : 'anno' ,
+                            forceSelection: true, 
+                            allowBlank : false,
+                            displayField : 'anno',
+                            valueField : 'anno',
+                           // value : 2016                            
 
                     },{
                         xtype: 'toolbar',
@@ -242,7 +144,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                                                     marca : id_marca}
                                 stockProductos.load();
                             }                            
-                        },/*{
+                        },{
                             xtype: 'button',
                             iconCls : 'icon-pdf',
                             text: 'Exportar PDF',
@@ -251,7 +153,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             } 
 
 
-                        },*/{                
+                        },{                
                             xtype: 'button',
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',

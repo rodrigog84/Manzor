@@ -137,7 +137,7 @@ class Reporte extends CI_Model
         $result_cantidad = $query->row()->cantidad; 
 
 
-		$data_stock = $this->db->select('p.id as num, codigo, nombre as descripcion, fecha_ult_compra, p_costo, p_venta, e.stock as stock1, e2.stock as stock2, e3.stock as stock3, e4.stock as stock4 ')
+		$data_stock = $this->db->select('p.id, p.id as num, codigo, nombre as descripcion, fecha_ult_compra, p_costo, p_venta, e.stock as stock1, e2.stock as stock2, e3.stock as stock3, e4.stock as stock4 ')
 		  ->from('productos p')
 		  ->join('existencia e','e.id_producto = p.id and e.id_bodega = 1','left')
 		  ->join('existencia e2','e2.id_producto = p.id and e2.id_bodega = 2','left')
