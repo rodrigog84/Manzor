@@ -158,6 +158,36 @@ class Reporte extends CI_Model
 
 
 
+
+	public function reporte_detalle_productos_stock($start,$limit,$mes = '',$anno = '',$idproducto = ''){
+
+
+		$data_detalle = $this->db->select('count(m.id) as cantidad ')
+		  ->from('movimientodiario_detalle m');
+		
+		$data_detalle = $mes != '' ? $data_detalle->where('month(m.fecha)',$mes) : $data_detalle;
+		$data_detalle = $anno != '' ? $data_detalle->where('year(m.fecha)',$anno) : $data_detalle;
+		$data_detalle = $idproducto != '' ? $data_detalle->where('m.id_producto',$idproducto) : $data_detalle;
+
+		$query = $this->db->get();                            
+        $result_cantidad = $query->row()->cantidad; 
+
+
+		$data_stock = $this->db->select("m.id as num, '' as tipodocto, '' as numdocto, fecha, '' as precio, '' as cant_entradas, '' as cant_salidas, '' as stock, '' as detalle",false)
+		  ->from('movimientodiario_detalle m');
+
+		$data_detalle = is_null($limit) ? $data_detalle : $data_detalle->limit($limit,$start);
+		$data_detalle = $mes != '' ? $data_detalle->where('month(m.fecha)',$mes) : $data_detalle;
+		$data_detalle = $anno != '' ? $data_detalle->where('year(m.fecha)',$anno) : $data_detalle;
+		$data_detalle = $idproducto != '' ? $data_detalle->where('m.id_producto',$idproducto) : $data_detalle;
+
+
+		$query = $this->db->get();
+		$result = $query->result();
+		 return array('cantidad' => $result_cantidad,'data' => $result);
+	}
+
+
 	public function get_familias(){
 
 

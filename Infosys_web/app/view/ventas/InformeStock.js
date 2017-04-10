@@ -306,8 +306,6 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                         tooltip: 'Ver Detalle Producto',
                                         handler: function(grid, rowIndex, colIndex) {
                                             var rec = grid.getStore().getAt(rowIndex);
-                                            console.log(rec);
-                                            //salert("Edit " + rec.get('firstname'));
                                             var vista = this.up('informestock');
                                             vista.fireEvent('verDetalleProductoStock',rec)
                                         }

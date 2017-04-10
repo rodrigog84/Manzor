@@ -1463,34 +1463,7 @@ cargar_listado_contribuyentes: function(){
 
 
     verDetalleProductoStock: function(r){
-          var total_debe = 0;
-          var total_haber = 0;
-        Ext.Ajax.request({
-           //url: preurl + 'cuentacorriente/getCuentaCorriente/' + record.get('cuenta') + '/' + editor.value ,
-           url: preurl + 'cuentacorriente/getTotalCartola?idcuentacorriente='+r.data.id,
-           success: function(response, opts) {                         
-                console.log(response)
-              var obj = Ext.decode(response.responseText);
-              total_debe = obj.data.debe;
-              total_haber = obj.data.haber;
-              saldo_cta_cte = obj.data.saldo;
-              
-              //edit.down('#numeroId').setValue(obj.data[0].correlativo);
-                         // editor.record.set({saldo: obj.data[0].saldo});  
-              console.log(total_debe)
-
-              Ext.create('Infosys_web.view.ventas.VerDetalleProductoStock', {ctacte: r.data.id, 
-                                                                            cliente: r.data.cliente,
-                                                                            rut : r.data.rut,
-                                                                            saldo_cta_cte: saldo_cta_cte,
-                                                                            total_debe: total_debe,
-                                                                            total_haber: total_haber});
-
-           },
-           failure: function(response, opts) {
-              console.log('server-side failure with status code ' + response.status);
-           }
-        });          
+          Ext.create('Infosys_web.view.ventas.VerDetalleProductoStock', {id_producto: r.data.id});            
 
     },    
   

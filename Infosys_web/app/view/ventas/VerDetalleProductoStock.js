@@ -24,6 +24,8 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
     y: 10,*/
     initComponent: function() {
         me = this;
+        idproducto = me.id_producto;
+
          var meses = Ext.create('Ext.data.Store', {
             fields: ['value', 'nombre'],
             data : [
@@ -68,13 +70,13 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
          var anno_actual = 0;
 
 
-        var stockProductos = Ext.create('Ext.data.Store', {
-            fields: ['id','num','codigo', 'descripcion' , 'fecha_ult_compra', 'p_costo' , 'p_venta' , 'stock1', 'stock2', 'stock3', 'stock4'],
+        var detalleProductos = Ext.create('Ext.data.Store', {
+            fields: ['num','tipodocto','numdocto','fecha', 'precio' , 'cant_entradas', 'cant_salidas' , 'stock' , 'detalle'],
             pageSize: 8,
             autoLoad: true,
             proxy: {
               type: 'ajax',
-                url : preurl +'reportes/reporte_stock',
+                url : preurl +'reportes/reporte_detalle_productos_stock',
                 reader: {
                     type: 'json',
                     root: 'data'
@@ -132,17 +134,21 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
                         dock: 'bottom',
                         items: [{
                             iconCls: 'icon-sheet',
-                            text: 'Generar Reporte Stock',
+                            text: 'Generar Kardex Existencia',
                             handler: function() {
-                                var id_familia = me.down('#familia').getValue() == 'Seleccionar' ? '' : me.down('#familia').getValue();
-                                var id_subfamilia = me.down('#subfamilia').getValue() == 'Seleccionar' ? '' : me.down('#subfamilia').getValue();
-                                var id_agrupacion = me.down('#agrupacion').getValue() == 'Seleccionar' ? '' : me.down('#agrupacion').getValue();
-                                var id_marca = me.down('#marca').getValue() == 'Seleccionar' ? '' : me.down('#marca').getValue();
-                                stockProductos.proxy.extraParams = {familia : id_familia,
-                                                                    subfamilia : id_subfamilia,
-                                                                    agrupacion : id_agrupacion,
-                                                                    marca : id_marca}
-                                stockProductos.load();
+
+                                var form = this.up('form').getForm();
+                                if(form.isValid()){
+                                    var mes = me.down('#mes').getValue();
+                                    var anno = me.down('#anno').getValue();
+                                    detalleProductos.proxy.extraParams = {mes : mes,
+                                                                        anno : anno,
+                                                                        idproducto : idproducto}
+                                    detalleProductos.load();
+
+                                }
+
+
                             }                            
                         },{
                             xtype: 'button',
@@ -162,11 +168,6 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
                                 
 
                             }
-                        },{
-                            xtype: 'button',
-                            iconCls: 'icon-delete',
-                            action: 'cerrarfactura',
-                            text : 'Cerrar'
                         }]
                     },
                     ]
@@ -182,39 +183,20 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
 
                             xtype: 'grid',
                             itemId: 'itemsgridId',
-                            store : stockProductos,
+                            store : detalleProductos,
                             labelWidth: 50,
                             title: 'Detalle Productos',
                             height: 280,
                             columns: [
-                                { text: 'id',  dataIndex: 'id', hidden: true, flex: 1},
                                 { text: '#',  dataIndex: 'num', flex: 1},
-                                { text: 'C&oacute;digo',  dataIndex: 'codigo', flex: 1},
-                                { text: 'Descripci&oacute;n',  dataIndex: 'descripcion', flex: 1  },
-                                { text: 'Fecha &Uacute;ltima Compra',  dataIndex: 'fecha_ult_compra', flex: 1, align: 'left'},
-                                { text: 'Precio Costo',  dataIndex: 'p_costo', flex: 1 },
-                                { text: 'Precio Venta',  dataIndex: 'p_venta', flex: 1 },
-                                { text: 'Stock 1',  dataIndex: 'stock1', flex: 1},
-                                { text: 'Stock 2',  dataIndex: 'stock2', flex: 1},
-                                { text: 'Stock 3',  dataIndex: 'stock3', flex: 1},
-                                { text: 'Stock 4',  dataIndex: 'stock4', flex: 1},
-                                {
-                                    header: "Detalle",
-                                    xtype:'actioncolumn',
-                                    width:80,
-                                    align: 'center',
-                                    items: [{
-                                        icon: 'images/search_page.png',  // Use a URL in the icon config
-                                        tooltip: 'Ver Detalle Producto',
-                                        handler: function(grid, rowIndex, colIndex) {
-                                            var rec = grid.getStore().getAt(rowIndex);
-                                            console.log(rec);
-                                            //salert("Edit " + rec.get('firstname'));
-                                            var vista = this.up('informestock');
-                                            vista.fireEvent('verDetalleProductoStock',rec)
-                                        }
-                                    }]
-                                    }
+                                { text: 'Tipo Documento',  dataIndex: 'tipodocto', flex: 1},
+                                { text: 'N&uacute;mero Docto',  dataIndex: 'numdocto', flex: 1  },
+                                { text: 'Fecha Docto',  dataIndex: 'fecha', flex: 1, align: 'left'},
+                                { text: 'Precio Costo',  dataIndex: 'precio', flex: 1 },
+                                { text: 'Cantidad Entredas',  dataIndex: 'cant_entradas', flex: 1 },
+                                { text: 'Cantidad Salidas',  dataIndex: 'cant_salidas', flex: 1},
+                                { text: 'Stock',  dataIndex: 'stock', flex: 1},
+                                { text: 'Detalle',  dataIndex: 'detalle', flex: 1}
                                 ]
 
                 }    
@@ -223,7 +205,7 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
         {
             xtype: 'pagingtoolbar',
             dock:'bottom',
-            store: stockProductos,
+            store: detalleProductos,
             displayInfo: true
         }               
 
