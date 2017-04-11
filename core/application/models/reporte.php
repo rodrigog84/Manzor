@@ -162,25 +162,36 @@ class Reporte extends CI_Model
 	public function reporte_detalle_productos_stock($start,$limit,$mes = '',$anno = '',$idproducto = ''){
 
 
-		$data_detalle = $this->db->select('count(m.id) as cantidad ')
-		  ->from('movimientodiario_detalle m');
-		
-		$data_detalle = $mes != '' ? $data_detalle->where('month(m.fecha)',$mes) : $data_detalle;
-		$data_detalle = $anno != '' ? $data_detalle->where('year(m.fecha)',$anno) : $data_detalle;
-		$data_detalle = $idproducto != '' ? $data_detalle->where('m.id_producto',$idproducto) : $data_detalle;
+		$data_detalle = $this->db->select("count(acc.id) as cantidad",false)
+		  ->from('existencia_detalle acc')
+		  ->join('productos c','acc.id_producto = c.id','left')
+		  ->join('correlativos cor','acc.id_tipo_movimiento = cor.id','left')
+		  ->join('factura_clientes f','acc.id_tipo_movimiento = f.tipo_documento and acc.num_movimiento = f.num_factura','left')
+		  ->join('clientes cli','f.id_cliente = cli.id','left');
+
+
+		$data_detalle = $mes != '' ? $data_detalle->where('if(f.fecha_factura is null,month(acc.fecha_movimiento),month(f.fecha_factura)) = ' .$mes) : $data_detalle;
+		$data_detalle = $anno != '' ? $data_detalle->where('if(f.fecha_factura is null,year(acc.fecha_movimiento),year(f.fecha_factura)) = ' . $anno) : $data_detalle;
+		$data_detalle = $idproducto != '' ? $data_detalle->where('acc.id_producto',$idproducto) : $data_detalle;
 
 		$query = $this->db->get();                            
         $result_cantidad = $query->row()->cantidad; 
 
 
-		$data_stock = $this->db->select("m.id as num, '' as tipodocto, '' as numdocto, fecha, '' as precio, '' as cant_entradas, '' as cant_salidas, '' as stock, '' as detalle",false)
-		  ->from('movimientodiario_detalle m');
+		/*$data_stock = $this->db->select("m.id as num, '' as tipodocto, '' as numdocto, fecha, '' as precio, '' as cant_entradas, '' as cant_salidas, '' as stock, '' as detalle",false)
+		  ->from('movimientodiario_detalle m');*/
+
+		$data_detalle = $this->db->select("acc.id as num, cor.nombre as tipodocto, acc.num_movimiento as numdocto, if(f.fecha_factura is null, acc.fecha_movimiento,f.fecha_factura) as fecha, acc.valor_producto as precio, acc.cantidad_entrada as cant_entradas, acc.cantidad_salida as cant_salidas, 0 as stock, cli.nombres as detalle",false)
+		  ->from('existencia_detalle acc')
+		  ->join('productos c','acc.id_producto = c.id','left')
+		  ->join('correlativos cor','acc.id_tipo_movimiento = cor.id','left')
+		  ->join('factura_clientes f','acc.id_tipo_movimiento = f.tipo_documento and acc.num_movimiento = f.num_factura','left')
+		  ->join('clientes cli','f.id_cliente = cli.id','left');
 
 		$data_detalle = is_null($limit) ? $data_detalle : $data_detalle->limit($limit,$start);
-		$data_detalle = $mes != '' ? $data_detalle->where('month(m.fecha)',$mes) : $data_detalle;
-		$data_detalle = $anno != '' ? $data_detalle->where('year(m.fecha)',$anno) : $data_detalle;
-		$data_detalle = $idproducto != '' ? $data_detalle->where('m.id_producto',$idproducto) : $data_detalle;
-
+		$data_detalle = $mes != '' ? $data_detalle->where('if(f.fecha_factura is null,month(acc.fecha_movimiento),month(f.fecha_factura)) = ' .$mes) : $data_detalle;
+		$data_detalle = $anno != '' ? $data_detalle->where('if(f.fecha_factura is null,year(acc.fecha_movimiento),year(f.fecha_factura)) = ' . $anno) : $data_detalle;
+		$data_detalle = $idproducto != '' ? $data_detalle->where('acc.id_producto',$idproducto) : $data_detalle;
 
 		$query = $this->db->get();
 		$result = $query->result();
@@ -217,6 +228,15 @@ class Reporte extends CI_Model
 
 	}
 
+	/*public function get_existencia($idproducto){
+
+		$data_subfamilia = $this->db->select('stock ')
+		  ->from('existencia')
+		  ->where('id_producto',$idproducto)
+		$query = $this->db->get();                            
+        return $query->row(); 
+
+	}*/
 
 
 	public function get_agrupaciones($id_familia = '',$id_subfamilia = ''){

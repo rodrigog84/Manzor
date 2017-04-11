@@ -170,22 +170,38 @@ class Reportes extends CI_Controller {
         $idproducto = $this->input->get('idproducto');
 
 
-		$this->load->model('reporte');
-		$detalle_productos_stock = $this->reporte->reporte_detalle_productos_stock($start,$limit,$mes,$anno,$idproducto);
- 		$i = $start + 1;
+        if($mes != '' && $anno != '' && $idproducto != ''){
+			$this->load->model('reporte');
+			$detalle_productos_stock = $this->reporte->reporte_detalle_productos_stock($start,$limit,$mes,$anno,$idproducto);
+			//$stock = $this->reporte->get_existencia($idproducto);
+	 		$i = $start + 1;
 
-		foreach ($detalle_productos_stock['data'] as $detalle_producto) {
-			
-			$detalle_producto->num = $i;
-			$i++;
-		}
+			foreach ($detalle_productos_stock['data'] as $detalle_producto) {
+				
+				$detalle_producto->num = $i;
+				$i++;
+			}
 
-	 	$resp['success'] = true;
-	 	$resp['data'] = $detalle_productos_stock;
-	 	$resp['periodo'] = "Detalle Productos  - " .month2string((int)$mes)." de " . $anno;
-	 	$resp['mes'] = $mes;
-	 	$resp['anno'] = $anno;
-        echo json_encode($resp);
+		 	$resp['success'] = true;
+		 	$resp['periodo'] = "Detalle Productos  - " .month2string((int)$mes)." de " . $anno;
+		 	$resp['mes'] = $mes;
+		 	$resp['anno'] = $anno;
+		 	$resp['data'] = $detalle_productos_stock['data'];
+		 	$resp['total'] = $detalle_productos_stock['cantidad'];
+	        echo json_encode($resp);
+
+        }else{
+
+
+		 	$resp['success'] = true;
+		 	$resp['periodo'] = "Detalle Productos  - " .month2string((int)$mes)." de " . $anno;
+		 	$resp['data'] = array();
+		 	$resp['total'] = 0;
+	        echo json_encode($resp);        	
+        }
+
+
+
 	 	
 	 	 
 		
