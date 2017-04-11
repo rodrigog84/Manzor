@@ -193,7 +193,7 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
                                 { text: 'N&uacute;mero Docto',  dataIndex: 'numdocto', flex: 1  },
                                 { text: 'Fecha Docto',  dataIndex: 'fecha', flex: 1, align: 'left'},
                                 { text: 'Precio Costo',  dataIndex: 'precio', flex: 1 },
-                                { text: 'Cantidad Entredas',  dataIndex: 'cant_entradas', flex: 1 },
+                                { text: 'Cantidad Entradas',  dataIndex: 'cant_entradas', flex: 1 },
                                 { text: 'Cantidad Salidas',  dataIndex: 'cant_salidas', flex: 1},
                                 { text: 'Stock',  dataIndex: 'stock', flex: 1},
                                 { text: 'Detalle',  dataIndex: 'detalle', flex: 1}
