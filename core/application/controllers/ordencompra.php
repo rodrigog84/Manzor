@@ -1337,7 +1337,7 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
 		    <p>RUT:3.992.565-6</p>
@@ -1609,7 +1609,7 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		    <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		    <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
 		    <p>RUT:3.992.565-6</p>
@@ -1905,7 +1905,7 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
 		    <p>RUT:3.992.565-6</p>
@@ -2160,7 +2160,7 @@ class Ordencompra extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
 		    <p>RUT:3.992.565-6</p>

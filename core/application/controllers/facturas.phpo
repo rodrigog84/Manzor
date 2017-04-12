@@ -4379,7 +4379,7 @@ font-family: Arial, Helvetica, sans-serif;
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://localhost/manzor/Infosys_web/resources/images/logo_empresa.jpg" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
 		    <p>RUT:3.992.565-6</p>
@@ -4621,7 +4621,7 @@ font-family: Arial, Helvetica, sans-serif;
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://localhost/Infosys_web/Infosys_web/resources/images/logo.jpg" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/Infosys_web/Infosys_web/resources/images/logo.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>AGRICOLA Y COMERCIAL LIRCAY S.A.</p>
 		    <p>RUT:96.516.320-4</p>
