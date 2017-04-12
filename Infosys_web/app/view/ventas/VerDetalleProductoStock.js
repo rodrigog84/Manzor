@@ -146,6 +146,9 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
                                                                         idproducto : idproducto}
                                     detalleProductos.load();
 
+                                    mes_actual = mes;
+                                    anno_actual = anno;
+
                                 }
 
 
@@ -155,7 +158,9 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
                             iconCls : 'icon-pdf',
                             text: 'Exportar PDF',
                             handler: function() {
-                                    window.open(preurl +'adminServicesPdf/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca)    
+                                if(mes_actual != 0 && anno_actual != 0){
+                                    window.open(preurl +'adminServicesPdf/reporte_detalle_productos_stock/' + idproducto +'/' +mes_actual + '/' + anno_actual)    
+                                }                                
                             } 
 
 
@@ -164,8 +169,9 @@ Ext.define('Infosys_web.view.ventas.VerDetalleProductoStock' ,{
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',
                             handler: function() {
-                                    window.open(preurl +'adminServicesExcel/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca)    
-                                
+                                if(mes_actual != 0 && anno_actual != 0){
+                                    window.open(preurl +'adminServicesExcel/reporte_detalle_productos_stock/' + idproducto +'/' +mes_actual + '/' + anno_actual)    
+                                }
 
                             }
                         }]

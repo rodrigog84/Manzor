@@ -228,16 +228,26 @@ class Reporte extends CI_Model
 
 	}
 
-	/*public function get_existencia($idproducto){
+	public function get_existencia($idproducto){
 
 		$data_subfamilia = $this->db->select('stock ')
 		  ->from('existencia')
-		  ->where('id_producto',$idproducto)
+		  ->where('id_producto',$idproducto);
 		$query = $this->db->get();                            
         return $query->row(); 
 
-	}*/
+	}
 
+
+public function get_producto($idproducto){
+
+		$data_subfamilia = $this->db->select('nombre ')
+		  ->from('productos')
+		  ->where('id',$idproducto);
+		$query = $this->db->get();                            
+        return $query->row(); 
+
+	}
 
 	public function get_agrupaciones($id_familia = '',$id_subfamilia = ''){
 

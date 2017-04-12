@@ -112,6 +112,59 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
 
 
 
+
+    public function reporte_detalle_productos_stock($idproducto,$mes,$anno)
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=reporte_detalle_productos_stock.xls"); 
+            
+
+
+            $this->load->model('reporte');
+            $neto_productos = $this->reporte->mensual_ventas($mes,$anno);     
+
+
+            $idproducto = $idproducto == 0 ? '' : $idproducto;
+            $mes = $mes == 0 ? '' : $mes;
+            $anno = $anno == 0 ? '' : $anno;
+
+            $this->load->model('reporte');
+            $detalle_productos_stock = $this->reporte->reporte_detalle_productos_stock(null,null,$mes,$anno,$idproducto);                    
+            $producto = $this->reporte->get_producto($idproducto);
+            
+            echo '<table>';
+            echo "<tr><td colspan='9'><b>Reporte Detalle Stock - " . $producto->nombre . "</b></td></tr>";
+            echo "<tr>";
+            echo "<td><b>#</b></td>";
+            echo "<td><b>Tipo Documento</b></td>";
+            echo "<td><b>Num. Documento</b></td>";
+            echo "<td><b>Fec. Documento</b></td>";
+            echo "<td><b>Precio Costo</b></td>";
+            echo "<td><b>Cantidad Entradas</b></td>";
+            echo "<td><b>Cantidad Salidas</b></td>";
+            echo "<td><b>Stock</b></td>";
+            echo "<td><b>Detalle</b></td>";
+            echo "</tr>";
+              $i = 1;              
+              foreach($detalle_productos_stock['data'] as $detalle_productos){
+                 echo "<tr>";
+                 echo "<td>".$i."</td>";
+                 echo "<td>".$detalle_productos->tipodocto."</td>";
+                 echo "<td>".$detalle_productos->numdocto."</td>";
+                 echo "<td>".$detalle_productos->fecha."</td>";
+                 echo "<td>".number_format($detalle_productos->precio,0,".",".")."</td>";
+                 echo "<td>".$detalle_productos->cant_entradas."</td>";
+                 echo "<td>".$detalle_productos->cant_salidas."</td>";
+                 echo "<td>".$detalle_productos->stock."</td>";
+                 echo "<td>".$detalle_productos->detalle."</td>";
+                 echo "</tr>";
+
+                  $i++;
+            }
+            echo '</table>';
+        }
+
+
       public function exportarExcellistaProductos()
          {
             header("Content-type: application/vnd.ms-excel"); 

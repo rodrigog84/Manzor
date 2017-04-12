@@ -174,6 +174,7 @@ class Reportes extends CI_Controller {
 			$this->load->model('reporte');
 			$detalle_productos_stock = $this->reporte->reporte_detalle_productos_stock($start,$limit,$mes,$anno,$idproducto);
 			//$stock = $this->reporte->get_existencia($idproducto);
+			//1print_r($stock->stock);
 	 		$i = $start + 1;
 
 			foreach ($detalle_productos_stock['data'] as $detalle_producto) {
