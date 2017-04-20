@@ -119,11 +119,6 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             header("Content-disposition: attachment; filename=reporte_detalle_productos_stock.xls"); 
             
 
-
-            $this->load->model('reporte');
-            $neto_productos = $this->reporte->mensual_ventas($mes,$anno);     
-
-
             $idproducto = $idproducto == 0 ? '' : $idproducto;
             $mes = $mes == 0 ? '' : $mes;
             $anno = $anno == 0 ? '' : $anno;
@@ -164,6 +159,51 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             echo '</table>';
         }
 
+
+
+        public function reporte_estadisticas_ventas($mes,$anno)
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=reporte_estadisticas_ventas.xls"); 
+            
+
+
+            $mes = $mes == 0 ? '' : $mes;
+            $anno = $anno == 0 ? '' : $anno;
+
+            $this->load->model('reporte');
+            $detalle_estadistica_venta = $this->reporte->reporte_estadisticas_ventas(null,null,$mes,$anno);
+                    
+            
+            echo '<table>';
+            echo "<tr><td colspan='8'><b>Detalle Estadisticas Ventas - " . month2string((int)$mes)." de " . $anno . "</b></td></tr>";
+            echo "<tr>";
+            echo "<td><b>#</b></td>";
+            echo "<td><b>Cod. Productos</b></td>";
+            echo "<td><b>Desc. Producto</b></td>";
+            echo "<td><b>Unidades</b></td>";
+            echo "<td><b>Venta Neta</b></td>";
+            echo "<td><b>Costo Venta</b></td>";
+            echo "<td><b>Margen Neto</b></td>";
+            echo "<td><b>% Margen</b></td>";
+            echo "</tr>";
+              $i = 1;              
+              foreach($detalle_estadistica_venta['data'] as $detalle_estadistica){
+                 echo "<tr>";
+                 echo "<td>".$i."</td>";
+                 echo "<td>".$detalle_estadistica->codigo."</td>";
+                 echo "<td>".$detalle_estadistica->nombre."</td>";
+                 echo "<td>".$detalle_estadistica->unidades."</td>";
+                 echo "<td>".number_format($detalle_estadistica->ventaneta,0,".",".")."</td>";
+                 echo "<td>".number_format($detalle_estadistica->costo,0,".",".")."</td>";
+                 echo "<td>".$detalle_estadistica->margen."</td>";
+                 echo "<td>".$detalle_estadistica->porcmargen."</td>";
+                 echo "</tr>";
+
+                  $i++;
+            }
+            echo '</table>';
+        }
 
       public function exportarExcellistaProductos()
          {
