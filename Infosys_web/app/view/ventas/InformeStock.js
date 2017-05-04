@@ -288,7 +288,6 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                     var id_marca = id_marca == '' ? 0 : id_marca;
                                     var producto = producto.replace(" ","%20");
 
-                                    console.log(preurl +'adminServicesExcel/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca + '/' + producto);
                                     window.open(preurl +'adminServicesExcel/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca + '/' + producto)    
                                 
 

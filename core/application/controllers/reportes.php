@@ -20,11 +20,11 @@ class Reportes extends CI_Controller {
 		foreach ($neto_productos as $producto) {
 			
 			 #Facturacion, Boletas, NCredito, (Facturacion+Boletas-NCredito) as totales 
-			$producto->Facturacion = number_format($producto->Facturacion,0,".",".");
-			$producto->Boletas = number_format($producto->Boletas,0,".",".");
-			$producto->NDebito = number_format($producto->NDebito,0,".",".");
-			$producto->NCredito = number_format($producto->NCredito,0,".",".");
-			$producto->totales = number_format($producto->totales,0,".",".");
+			$producto->Facturacion = "<b>(" . str_pad($producto->Facturacion_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .  number_format($producto->Facturacion,0,".",".");
+			$producto->Boletas = "<b>(" . str_pad($producto->Boletas_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->Boletas,0,".",".");
+			$producto->NDebito = "<b>(" . str_pad($producto->NDebito_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->NDebito,0,".",".");
+			$producto->NCredito = "<b>(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->NCredito,0,".",".");
+			$producto->totales = "<b>(" . str_pad($producto->totales_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->totales,0,".",".");
 
 			if($producto->concepto == '<b>Totales</b>'){
 				$producto->Facturacion = "<b>".$producto->Facturacion."</b>";

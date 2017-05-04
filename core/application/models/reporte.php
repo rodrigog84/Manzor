@@ -40,78 +40,138 @@ class Reporte extends CI_Model
 
 	public function mensual_ventas($mes,$anno){
 
-       	$neto_productos = $this->db->query("select concepto, Facturacion, Boletas, NDebito, NCredito, (Facturacion+Boletas+NDebito-NCredito) as totales from
+       	$neto_productos = $this->db->query("select concepto, Facturacion, Facturacion_doctos, Boletas, Boletas_doctos, NDebito, NDebito_doctos, NCredito, NCredito_doctos, (Facturacion+Boletas+NDebito-NCredito) as totales, (Facturacion_doctos+Boletas_doctos+NDebito_doctos-NCredito_doctos) as totales_doctos from
         		(select '<b>Neto Productos</b>' as concepto,
 				(select 
 				COALESCE(SUM(neto),0)  as facturacion
 				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in (1,19,101,103) ) as 'Facturacion',
 				(select 
+				count(id)  as facturacion
+				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in (1,19,101,103) ) as 'Facturacion_doctos',				 
+				(select 
 				COALESCE(SUM(neto),0)  as boletas
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106) )  as 'Boletas', 
+				(select 
+				count(id)  as boletas
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106) )  as 'Boletas_doctos', 
 				(select 
 				COALESCE(SUM(neto),0)  as boletas
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104) )  as 'NDebito', 
 				(select 
+				count(id)  as boletas
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104) )  as 'NDebito_doctos', 
+				(select 
 				COALESCE(SUM(neto),0)  as ncredito
-				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito'
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito',
+				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito_doctos'
 				union all
 					select '<b>Neto Afecto</b>' as concepto,
 				(select 
 				COALESCE(SUM(neto),0)  as facturacion
 				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in (1,101) ) as 'Facturacion',
+				 (select 
+				count(id)  as facturacion
+				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in (1,101) ) as 'Facturacion_doctos',
 				(select 
 				COALESCE(SUM(neto),0)  as boletas
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106)  and iva > 0 )  as 'Boletas', 
 				(select 
+				count(id)  as boletas
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106)  and iva > 0 )  as 'Boletas_doctos', 
+				(select 
 				COALESCE(SUM(neto),0)  as ncredito
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104)  and iva > 0 )  as 'NDebito',
 				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104)  and iva > 0 )  as 'NDebito_doctos',
+				(select 
 				COALESCE(SUM(neto),0)  as ncredito
-				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102)  and iva > 0 )  as 'NCredito'
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102)  and iva > 0 )  as 'NCredito',
+				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102)  and iva > 0 )  as 'NCredito_doctos'
 				union all
 					select '<b>Neto Exento</b>' as concepto,
 				(select 
 				COALESCE(SUM(neto),0)  as facturacion
 				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in (19,103) ) as 'Facturacion',
 				(select 
+				count(id) as facturacion
+				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in (19,103) ) as 'Facturacion_doctos',
+				(select 
 				COALESCE(SUM(neto),0)  as boletas
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106)  and iva = 0 )  as 'Boletas', 				
+				(select 
+				count(id)  as boletas
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106)  and iva = 0 )  as 'Boletas_doctos', 		
 				(select 
 				COALESCE(SUM(neto),0)  as ncredito
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104)   and iva = 0)  as 'NDebito',
 				(select 
+				count(id) as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104)   and iva = 0)  as 'NDebito_doctos',
+				(select 
 				COALESCE(SUM(neto),0)  as ncredito
-				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102)   and iva = 0)  as 'NCredito'
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102)   and iva = 0)  as 'NCredito',
+				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102)   and iva = 0)  as 'NCredito_doctos'
 				union all
 				select '<b>Impuesto IVA</b>' as concepto,
 				(select 
 				COALESCE(SUM(iva),0)  as facturacion
 				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in  (1,19,101,103) ) as 'Facturacion',
 				(select 
+				count(id)  as facturacion
+				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in  (1,19,101,103) ) as 'Facturacion_doctos',
+				(select 
 				COALESCE(SUM(iva),0)  as boletas
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106) )  as 'Boletas', 				
+				(select 
+				count(id)  as boletas
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106) )  as 'Boletas_doctos', 	
 				(select 
 				COALESCE(SUM(iva),0)  as ncredito
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104))  as 'NDebito',
 				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104))  as 'NDebito_doctos',
+				(select 
 				COALESCE(SUM(iva),0)  as ncredito
-				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito'
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito',
+				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito_doctos'
 				union all
 				select '<b>Totales</b>' as concepto,
 				(select 
 				COALESCE(SUM(totalfactura),0)  as facturacion
 				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in  (1,19,101,103) ) as 'Facturacion',
 				(select 
+				count(id)  as facturacion
+				 from factura_clientes where month(fecha_factura) = " . $mes . " and year(fecha_factura) = " . $anno . " and tipo_documento in  (1,19,101,103) ) as 'Facturacion_doctos',
+				(select 
 				COALESCE(SUM(totalfactura),0)  as boletas
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106) )  as 'Boletas', 				
+				(select 
+				count(id)  as boletas
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (2,106) )  as 'Boletas_doctos',
 				(select 
 				COALESCE(SUM(totalfactura),0)  as ncredito
 				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104))  as 'NDebito',
 				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (16,104))  as 'NDebito_doctos',
+				(select 
 				COALESCE(SUM(totalfactura),0)  as ncredito
-				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito'
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito',
+				(select 
+				count(id)  as ncredito
+				 from factura_clientes where month(fecha_factura) = " . $mes . "  and year(fecha_factura) = " . $anno . "  and tipo_documento in (11,102))  as 'NCredito_doctos'
         ) as tmp");
-		
+		//echo $this->db->last_query();
 		return $neto_productos->result();
 
 	}
