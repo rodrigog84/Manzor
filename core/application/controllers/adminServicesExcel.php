@@ -11,20 +11,22 @@ public function __construct()
 
 
 
-public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
+public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
          {
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=reporte_stock.xls"); 
             
 
+            $familia = $familia == '0' ? '' : $familia;
+            $subfamilia = $subfamilia == '0' ? '' : $subfamilia;
+            $agrupacion = $agrupacion == '0' ? '' : $agrupacion;
+            $marca = $marca == '0' ? '' : $marca;
+            //$producto = $producto == '0' ? '' : base64_decode($producto);
+            $producto = $producto == '0' ? '' : str_replace("%20"," ",$producto);
 
-            $familia = $familia == 0 ? '' : $familia;
-            $subfamilia = $subfamilia == 0 ? '' : $subfamilia;
-            $agrupacion = $agrupacion == 0 ? '' : $agrupacion;
-            $marca = $marca == 0 ? '' : $marca;
 
             $this->load->model('reporte');
-            $datos_stock = $this->reporte->reporte_stock(null,null,$familia,$subfamilia,$agrupacion,$marca);       
+            $datos_stock = $this->reporte->reporte_stock(null,null,$familia,$subfamilia,$agrupacion,$marca,$producto);       
 
             
             echo '<table>';
@@ -41,10 +43,10 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             echo "<td><b>Stock 3</b></td>";
             echo "<td><b>Stock 4</b></td>";
             echo "</tr>";
-              
+              $i = 1;
               foreach($datos_stock['data'] as $stock){
                  echo "<tr>";
-                 echo "<td>".$stock->num."</td>";
+                 echo "<td>".$i."</td>";
                  echo "<td>".$stock->codigo."</td>";
                  echo "<td>".$stock->descripcion."</td>";
                  echo "<td>".$stock->fecha_ult_compra."</td>";
@@ -55,7 +57,7 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
                  echo "<td>".$stock->stock3."</td>";
                  echo "<td>".$stock->stock4."</td>";
                  echo "</tr>";
-                 
+                $i++;
             }
             echo '</table>';
         }

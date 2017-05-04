@@ -118,7 +118,7 @@ class Reporte extends CI_Model
 
 
 
-	public function reporte_stock($start,$limit,$familia = '',$subfamilia = '',$agrupacion = '',$marca = ''){
+	public function reporte_stock($start,$limit,$familia = '',$subfamilia = '',$agrupacion = '',$marca = '',$producto = ''){
 
 
 		$data_stock = $this->db->select('count(p.id) as cantidad ')
@@ -132,8 +132,10 @@ class Reporte extends CI_Model
 		$data_stock = $subfamilia != '' ? $data_stock->where('p.id_subfamilia',$subfamilia) : $data_stock;
 		$data_stock = $agrupacion != '' ? $data_stock->where('p.id_agrupacion',$agrupacion) : $data_stock;
 		$data_stock = $marca != '' ? $data_stock->where('p.id_marca',$marca) : $data_stock;
+		$data_stock = $producto != '' ? $data_stock->like('p.nombre',$producto) : $data_stock;
 
-		$query = $this->db->get();                            
+		$query = $this->db->get();   
+
         $result_cantidad = $query->row()->cantidad; 
 
 
@@ -149,6 +151,7 @@ class Reporte extends CI_Model
 		$data_stock = $subfamilia != '' ? $data_stock->where('p.id_subfamilia',$subfamilia) : $data_stock;
 		$data_stock = $agrupacion != '' ? $data_stock->where('p.id_agrupacion',$agrupacion) : $data_stock;
 		$data_stock = $marca != '' ? $data_stock->where('p.id_marca',$marca) : $data_stock;
+		$data_stock = $producto != '' ? $data_stock->like('p.nombre',$producto) : $data_stock;
 
 
 		$query = $this->db->get();

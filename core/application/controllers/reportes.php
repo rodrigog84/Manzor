@@ -59,13 +59,14 @@ class Reportes extends CI_Controller {
         $subfamilia = $this->input->get('subfamilia');
         $agrupacion = $this->input->get('agrupacion');
         $marca = $this->input->get('marca');
+        $producto = $this->input->get('producto');
 
 
         //print_r($this->input->post(NULL,true)); exit;
 
 
 		$this->load->model('reporte');
-		$datos_stock = $this->reporte->reporte_stock($start,$limit,$familia,$subfamilia,$agrupacion,$marca);
+		$datos_stock = $this->reporte->reporte_stock($start,$limit,$familia,$subfamilia,$agrupacion,$marca,$producto);
  		//var_dump($datos_stock);
  		$i = $start + 1;
 		foreach ($datos_stock['data'] as $stock) {
