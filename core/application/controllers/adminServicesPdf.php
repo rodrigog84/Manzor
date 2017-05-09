@@ -84,8 +84,7 @@ class AdminServicesPdf extends CI_Controller {
             <td width="87px"   style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" ><b>N/D&eacute;bito</b></td>
             <td width="50px"   style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" ><b>-</b></td>
             <td width="87px"   style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" ><b>N/Cr&eacute;dito</b></td>
-            <td width="50px"   style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" ><b>-</b></td>
-            <td width="89px"   style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" ><b>Totales</b></td>
+            <td width="139px"   style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ><b>Totales</b></td>
           </tr>';
     //$descripciones = '';
    // $i = 0;
@@ -98,13 +97,12 @@ class AdminServicesPdf extends CI_Controller {
         <td style="text-align:right"><b>(' . str_pad($producto->Facturacion_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>   
         <td style="text-align:right"><b>'.number_format($producto->Facturacion,0,".",".").'</b></td>      
         <td style="text-align:right"><b>(' . str_pad($producto->Boletas_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>
-        <td style="text-align:right"><b>'.number_format($producto->Boletas, 0, '.', ',').'</b></td>
+        <td style="text-align:right"><b>'.number_format($producto->Boletas, 0, '.', '.').'</b></td>
         <td style="text-align:right"><b>(' . str_pad($producto->NDebito_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>
-        <td style="text-align:right"><b>'.number_format($producto->NDebito, 0, '.', ',').'</b></td>
+        <td style="text-align:right"><b>'.number_format($producto->NDebito, 0, '.', '.').'</b></td>
         <td style="text-align:right"><b>(' . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>
-        <td style="text-align:right"><b>'.number_format($producto->NCredito, 0, '.', ',').'</b></td>      
-        <td style="text-align:right"><b>(' . str_pad($producto->totales_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>
-        <td style="text-align:right"><b>'.number_format($producto->totales, 0, '.', ',').'</b></td>        
+        <td style="text-align:right"><b>'.number_format($producto->NCredito, 0, '.', '.').'</b></td>      
+        <td style="text-align:right"><b>'.number_format($producto->totales, 0, '.', '.').'</b></td>        
         </tr>';
         
 
@@ -120,7 +118,6 @@ class AdminServicesPdf extends CI_Controller {
         <td style="text-align:right">'.number_format($producto->NDebito, 0, '.', '.').'</td>
         <td style="text-align:right"><b>(' . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>
         <td style="text-align:right">'.number_format($producto->NCredito, 0, '.', '.').'</td>
-        <td style="text-align:right"><b>(' . str_pad($producto->totales_doctos,5," ",STR_PAD_LEFT).')&nbsp;&nbsp;</b></td>
         <td style="text-align:right">'.number_format($producto->totales, 0, '.', '.').'</td>
         </tr>';
         

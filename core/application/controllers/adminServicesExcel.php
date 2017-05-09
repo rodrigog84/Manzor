@@ -86,7 +86,6 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
             echo "<td><b>N/D&eacute;bito</b></td>";
             echo "<td><b>-</b></td>";
             echo "<td><b>N/Cr&eacute;dito</b></td>";
-            echo "<td><b>-</b></td>";
             echo "<td><b>Totales</b></td>";
             echo "</tr>";
               
@@ -102,7 +101,6 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
                  echo "<td><b>".$producto->NDebito."</b></td>";
                  echo "<td><b>'(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td><b>".$producto->NCredito."</b></td>";
-                 echo "<td><b>'(" . str_pad($producto->totales_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td><b>".$producto->totales."</b></td>";
                  echo "</tr>";
                 }else{
@@ -117,7 +115,6 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
                  echo "<td>".$producto->NDebito."</td>";
                  echo "<td><b>'(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td>".$producto->NCredito."</td>";
-                 echo "<td><b>'(" . str_pad($producto->totales_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td>".$producto->totales."</td>";
                  echo "</tr>";
                 }

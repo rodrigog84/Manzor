@@ -24,7 +24,7 @@ class Reportes extends CI_Controller {
 			$producto->Boletas = "<b>(" . str_pad($producto->Boletas_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->Boletas,0,".",".");
 			$producto->NDebito = "<b>(" . str_pad($producto->NDebito_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->NDebito,0,".",".");
 			$producto->NCredito = "<b>(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->NCredito,0,".",".");
-			$producto->totales = "<b>(" . str_pad($producto->totales_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->totales,0,".",".");
+			$producto->totales = number_format($producto->totales,0,".",".");
 
 			if($producto->concepto == '<b>Totales</b>'){
 				$producto->Facturacion = "<b>".$producto->Facturacion."</b>";
