@@ -228,7 +228,12 @@ Ext.define('Infosys_web.controller.Facturacion', {
 
             'informestock': {
                 verDetalleProductoStock: this.verDetalleProductoStock
-            },      
+            },     
+
+
+            'librocompraventa': {
+                verEstadoDte: this.verEstadoDte
+            },               
                         
             'facturasprincipal button[action=generarfacturapdf]': {
                 click: this.generarfacturapdf
