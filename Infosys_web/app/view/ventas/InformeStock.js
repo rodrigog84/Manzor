@@ -99,6 +99,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
          var id_subfamilia = 0;
          var id_agrupacion = 0;
          var id_marca = 0;
+         var producto = 0;
 
 
          /*var stockProductos = Ext.create('Ext.data.Store', {
@@ -110,7 +111,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
 
         var stockProductos = Ext.create('Ext.data.Store', {
             fields: ['id','num','codigo', 'descripcion' , 'fecha_ult_compra', 'p_costo' , 'p_venta' , 'stock1', 'stock2', 'stock3', 'stock4'],
-            pageSize: 8,
+            pageSize: 7,
             autoLoad: true,
             proxy: {
               type: 'ajax',
@@ -226,6 +227,23 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                          
 
                     },{
+                            xtype: 'textfield',
+                            width: 500,
+                            store : marcas,
+                            fieldLabel: 'Producto',
+                            labelStyle: ' font-weight:bold',
+                            labelWidth: 200,
+                            emptyText : 'Ingrese Nombre Producto',
+                            itemId : 'producto' ,
+                            name : 'producto',
+                            submitEmptyText : false,
+                            //forceSelection: true, 
+                            //allowBlank : false,
+                           displayField : 'nombre',
+                            valueField : 'id',
+                                         
+
+                    },{
                         xtype: 'toolbar',
                         dock: 'bottom',
                         items: [{
@@ -236,10 +254,12 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                 var id_subfamilia = me.down('#subfamilia').getValue() == 'Seleccionar' ? '' : me.down('#subfamilia').getValue();
                                 var id_agrupacion = me.down('#agrupacion').getValue() == 'Seleccionar' ? '' : me.down('#agrupacion').getValue();
                                 var id_marca = me.down('#marca').getValue() == 'Seleccionar' ? '' : me.down('#marca').getValue();
+                                var producto = me.down('#producto').getValue() == '' ? '' : me.down('#producto').getValue();
                                 stockProductos.proxy.extraParams = {familia : id_familia,
                                                                     subfamilia : id_subfamilia,
                                                                     agrupacion : id_agrupacion,
-                                                                    marca : id_marca}
+                                                                    marca : id_marca,
+                                                                    producto : producto}
                                 stockProductos.load();
                             }                            
                         },/*{
@@ -256,7 +276,19 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',
                             handler: function() {
-                                    window.open(preurl +'adminServicesExcel/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca)    
+                                    console.log(me.down('#marca').getValue());
+                                    var id_familia = me.down('#familia').getValue() == null ? 0 : me.down('#familia').getValue();
+                                    var id_subfamilia = me.down('#subfamilia').getValue() == null ? 0 : me.down('#subfamilia').getValue();
+                                    var id_agrupacion = me.down('#agrupacion').getValue() == null ? 0 : me.down('#agrupacion').getValue();
+                                    var id_marca = me.down('#marca').getValue() == null ? 0: me.down('#marca').getValue();
+                                    var producto = me.down('#producto').getValue() == '' ? 0 : me.down('#producto').getValue();
+                                    var id_familia = id_familia == '' ? 0 : id_familia;
+                                    var id_subfamilia = id_subfamilia == '' ? 0 : id_subfamilia;
+                                    var id_agrupacion = id_agrupacion == '' ? 0 : id_agrupacion;
+                                    var id_marca = id_marca == '' ? 0 : id_marca;
+                                    var producto = producto.replace(" ","%20");
+
+                                    window.open(preurl +'adminServicesExcel/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca + '/' + producto)    
                                 
 
                             }
@@ -283,7 +315,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                             store : stockProductos,
                             labelWidth: 50,
                             title: 'Detalle Productos',
-                            height: 280,
+                            height: 250,
                             columns: [
                                 { text: 'id',  dataIndex: 'id', hidden: true, flex: 1},
                                 { text: '#',  dataIndex: 'num', flex: 1},

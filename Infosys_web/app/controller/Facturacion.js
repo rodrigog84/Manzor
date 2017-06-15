@@ -33,6 +33,7 @@ Ext.define('Infosys_web.controller.Facturacion', {
              'ventas.Exportartxt',
              'ventas.Observaciones',
              'ventas.ResumenVentas',
+             'ventas.EstadisticasVentas',
              'ventas.InformeStock',
              'ventas.VerDetalleProductoStock',
              'notacredito.Principal',
@@ -149,6 +150,10 @@ Ext.define('Infosys_web.controller.Facturacion', {
                 click: this.resumenventas
             },
 
+            'topmenus menuitem[action=estadisticasventas]': {
+                click: this.estadisticasventas
+            },
+
             'topmenus menuitem[action=informestock]': {
                 click: this.informestock
             },
@@ -215,9 +220,20 @@ Ext.define('Infosys_web.controller.Facturacion', {
                 click: this.cerrarfactura
             },
 
+
+            'estadisticasventas button[action=cerrarfactura]': {
+                click: this.cerrarfactura
+            },
+
+
             'informestock': {
                 verDetalleProductoStock: this.verDetalleProductoStock
-            },      
+            },     
+
+
+            'librocompraventa': {
+                verEstadoDte: this.verEstadoDte
+            },               
                         
             'facturasprincipal button[action=generarfacturapdf]': {
                 click: this.generarfacturapdf
@@ -1402,6 +1418,15 @@ cargar_listado_contribuyentes: function(){
         viewport.add({xtype: 'informestock'});
         
     },  
+
+
+    estadisticasventas: function(){
+//
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+        viewport.add({xtype: 'estadisticasventas'});
+        
+    }, 
 
 
     buscarvendedor: function(){

@@ -344,7 +344,16 @@ class Facturas extends CI_Controller {
 
 	public function genera_libro(){
 		// respuesta en texto plano
+
+		set_time_limit(0);
 		header('Content-type: text/plain; charset=ISO-8859-1');
+
+
+		if(!file_exists('./facturacion_electronica/tmp/')){
+			mkdir('./facturacion_electronica/tmp/',0777,true);
+		}	
+
+		$tipocarga = $this->input->post('tipocarga');
 		$tipo_libro = $this->input->post('tipo_libro') == 'compras' ? 'COMPRA' : 'VENTA';
 		$mes = $this->input->post('mes');
 		$anno = $this->input->post('anno');
@@ -352,6 +361,8 @@ class Facturas extends CI_Controller {
 		$this->load->model('facturaelectronica');
 
 		$existe = $this->facturaelectronica->valida_existe_libro($mes,$anno,$tipo_libro);
+
+
 
 		// LIBRO YA FUE EMITIDO
 		if($existe){
@@ -364,22 +375,128 @@ class Facturas extends CI_Controller {
 		}
 
 
-		if($tipo_libro == 'VENTA'){
-			$lista_facturas = $this->facturaelectronica->datos_dte_periodo($mes,$anno);
-		}else{ // COMPRAS
-			$lista_facturas = $this->facturaelectronica->datos_dte_proveedores_periodo($mes,$anno);
+		$nombre_archivo_csv = "LIBRO_".$tipo_libro."_".$anno.$mes.".csv";
+
+		if($tipocarga == 'sis'){
+				if($tipo_libro == 'VENTA'){
+					$lista_facturas = $this->facturaelectronica->datos_dte_periodo($mes,$anno);
+				}else{ // COMPRAS
+
+					$result['success'] = true;
+					$result['valido'] = false;
+					$result['message'] = "Esta opción no está habilitada aún.  Libro de compras debe generarse mediante carga de csv";
+					echo json_encode($result);
+					exit;					
+					//$lista_facturas = $this->facturaelectronica->datos_dte_proveedores_periodo($mes,$anno);
+				}
+
+				//NO TIENE MOVIMIENTOS
+				if(count($lista_facturas) == 0){
+
+					$result['success'] = true;
+					$result['valido'] = false;
+					$result['message'] = "No existen movimientos";
+					echo json_encode($result);
+					exit;
+				}
+
+
+
+				$lineas_archivo = array();
+
+				
+				$array_titulos = array('TpoDoc','NroDoc','TasaImp','FchDoc','CdgSIISucur','RUTDoc','RznSoc','MntExe','MntNeto','MntIVA','CodImp','TasaImp','MntImp','MntTotal');
+
+
+				$fp = fopen('./facturacion_electronica/tmp/' . $nombre_archivo_csv, 'w');
+				fputcsv($fp, $array_titulos,";");
+
+
+				// generar cada DTE y agregar su resumen al detalle del libro
+				foreach ($lista_facturas as $factura) {
+					$lineas_archivo = array(
+											$factura->tipo_caf,
+											$factura->folio,
+											$factura->tipo_caf == 34 ? 0 : 19,
+											$factura->fecha_factura,
+											'',
+											$factura->rut,
+											substr(str_replace(",","",permite_alfanumerico($factura->nombres)),0,45),
+											$factura->tipo_caf == 34 ? $factura->neto : '',
+											$factura->tipo_caf == 34 ? '' : $factura->neto,
+											$factura->tipo_caf == 34 ? '' : $factura->iva,
+											'',
+											'',
+											'',
+											$factura->totalfactura
+										);
+					fputcsv($fp, $lineas_archivo,";");
+
+				}
+				fclose($fp);
+
+		}else if($tipocarga == 'csv'){
+
+		        $config['upload_path'] = "./facturacion_electronica/tmp/"	;
+		        $config['file_name'] = $nombre_archivo_csv;
+		        $config['allowed_types'] = "*";
+		        $config['max_size'] = "10240";
+		        $config['overwrite'] = TRUE;
+
+		        //$config['max_width'] = "2000";
+		        //$config['max_height'] = "2000";
+		        $this->load->library('upload', $config);
+		       // $this->upload->do_upload("certificado");
+
+		        $error = false;
+		        $carga = false;
+		        if (!$this->upload->do_upload("csv")) {
+					$result['success'] = true;
+					$result['valido'] = false;
+					$result['message'] = "Error en subir archivo.  Intente nuevamente";
+					echo json_encode($result);
+					exit;
+
+
+		        }else{
+
+		        	$data_file_upload = $this->upload->data();
+		        	if(substr($data_file_upload['client_name'],-3) != 'csv'){
+						$result['success'] = true;
+						$result['valido'] = false;
+						$result['message'] = "Error en subir archivo.  Archivo no es csv";
+						echo json_encode($result);
+						exit;
+
+		        	}
+
+		        	$gestor = fopen("./facturacion_electronica/tmp/" . $nombre_archivo_csv, "r");
+		        	$num_fila = 0;
+
+		        	$columnas_esperadas = $tipo_libro == 'VENTA' ? 14 : 30;
+
+				    while (($datos = fgetcsv($gestor, 1000, ";")) !== FALSE) {
+
+				    	if($num_fila == 2){ // se asume que si vamos para la tercera fila, entonces tiene info
+				    		break;
+				    	}
+
+				        $num_columnas = count($datos);
+				        if($num_columnas <> $columnas_esperadas){
+
+							$result['success'] = true;
+							$result['valido'] = false;
+							$result['message'] = "Error en archivo.  Número de columnas incorrectas";
+							echo json_encode($result);
+							exit;
+				        }
+
+				        $num_fila++;
+				    }
+
+		        }
+
 		}
-
-		//NO TIENE MOVIMIENTOS
-		if(count($lista_facturas) == 0){
-
-			$result['success'] = true;
-			$result['valido'] = false;
-			$result['message'] = "No existen movimientos";
-			echo json_encode($result);
-			exit;
-		}
-
 		//$datos_dte = $this->datos_dte($idfactura);
 		$config = $this->facturaelectronica->genera_config();
 		include $this->facturaelectronica->ruta_libredte();		
@@ -408,42 +525,30 @@ class Facturas extends CI_Controller {
 		    //'FolioNotificacion' => 102006,
 		];
 
-		// datos del emisor
-		$Emisor = [
-		    'RUTEmisor' => $empresa->rut.'-'.$empresa->dv,
-		    'RznSoc' => $empresa->razon_social,
-		    'GiroEmis' => $empresa->giro,
-		    'Acteco' => $empresa->cod_actividad,
-		    'DirOrigen' => $empresa->dir_origen,
-		    'CmnaOrigen' => $empresa->comuna_origen,
-		];
 
+		$LibroCompraVenta->agregarVentasCSV('./facturacion_electronica/tmp/' . $nombre_archivo_csv);
 
-		// generar cada DTE y agregar su resumen al detalle del libro
-		foreach ($lista_facturas as $factura) {
-			$EnvioDte = new \sasco\LibreDTE\Sii\EnvioDte();
-			$EnvioDte->loadXML($factura->dte);
-			$Documentos = $EnvioDte->getDocumentos();
-			$Documento = $Documentos[0];
-		    $LibroCompraVenta->agregar($Documento->getResumen(), false); // agregar detalle sin normalizar
-		}
-
-		// enviar libro de ventas y mostrar resultado del envío: track id o bien =false si hubo error
+		// enviar libro de compras y mostrar resultado del envío: track id o bien =false si hubo error
 		$LibroCompraVenta->setCaratula($caratula);
-		$LibroCompraVenta->setFirma($Firma);
-		$xml_libro = $LibroCompraVenta->generar(); 
+		$LibroCompraVenta->setFirma($Firma);		
+		$xml_libro = $LibroCompraVenta->generar(); // generar XML sin firma y sin detalle
 
+		$tipo_envio = $this->facturaelectronica->busca_parametro_fe('envio_sii'); //ver si está configurado para envío manual o automático	
 
-		if(!file_exists('./facturacion_electronica/tmp/')){
-			mkdir('./facturacion_electronica/tmp/',0777,true);
-		}		
+	    if($tipo_envio == 'automatico'){
+		    $track_id = $LibroCompraVenta->enviar();
+	    }		
+
+	    //unlink('./facturacion_electronica/tmp/libro.csv');  
+	
 		
 		$nombre_archivo = "LIBRO_".$tipo_libro."_".$anno.$mes.".xml";
 		$f_nombre_archivo = fopen('./facturacion_electronica/libros/'.$nombre_archivo,'w');
 		fwrite($f_nombre_archivo,$xml_libro);
 		fclose($f_nombre_archivo);
 
-		$existe = $this->facturaelectronica->put_log_libros($mes,$anno,$tipo_libro,$nombre_archivo);
+		$id_libro = $this->facturaelectronica->put_log_libros($mes,$anno,$tipo_libro,$nombre_archivo);
+		$existe = $this->facturaelectronica->genera_libro($id_libro,$tipo_libro,$nombre_archivo,$xml_libro);
 
 		$result['success'] = true;
 		$result['valido'] = true;
@@ -724,6 +829,63 @@ class Facturas extends CI_Controller {
 	}		
 
 
+	public function datos_libro_json($idlibro){
+		$this->load->model('facturaelectronica');
+		$data = array();
+		$datos = $this->facturaelectronica->get_libro_by_id($idlibro);
+		$datos->mes = month2string($datos->mes);
+		echo json_encode($datos);
+	}
+
+
+public function estado_envio_libro($idlibro){
+		$this->load->model('facturaelectronica');
+		$libro = $this->facturaelectronica->get_libro_by_id($idlibro);
+
+		$config = $this->facturaelectronica->genera_config();
+		include $this->facturaelectronica->ruta_libredte();
+		$empresa = $this->facturaelectronica->get_empresa();
+
+		$result = array();
+		$result['error'] = false;
+		$result['codigo'] = "";
+		$result['glosa'] = "";
+
+		$token = \sasco\LibreDTE\Sii\Autenticacion::getToken($config['firma']);
+		if (!$token) {
+		    foreach (\sasco\LibreDTE\Log::readAll() as $error){
+		    	$result['error'] = true;
+
+		    }
+		    $result['message'] = "Error de conexión con SII";		   
+		   	echo json_encode($result);
+		    exit;
+		}
+
+		// consultar estado enviado
+		$rut = $empresa->rut;
+		$dv = $empresa->dv;
+		$trackID = $libro->trackid; // se obtiene al enviar un dte  $track_id = $EnvioDTE->enviar();
+		$estado = \sasco\LibreDTE\Sii::request('QueryEstUp', 'getEstUp', [$rut, $dv, $trackID, $token]);
+		// si el estado se pudo recuperar se muestra estado y glosa
+		if ($estado!==false) {
+	    	$result['error'] = false;
+	    	$result['codigo'] = (string)$estado->xpath('/SII:RESPUESTA/SII:RESP_HDR/ESTADO')[0];			
+	    	$result['glosa'] = (string)$estado->xpath('/SII:RESPUESTA/SII:RESP_HDR/ESTADO')[0] != -11 ? (string)$estado->xpath('/SII:RESPUESTA/SII:RESP_HDR/GLOSA')[0] : "Trackid Err&oacute;neo";			
+	    	echo json_encode($result);
+	    	exit;
+		}
+
+		// mostrar error si hubo
+		foreach (\sasco\LibreDTE\Log::readAll() as $error){
+	    	$result['error'] = true;
+	    	$result['message'] = "Error de conexión con SII";
+		}
+		echo json_encode($result);
+		exit;
+	}	
+
+	
 	public function busca_parametro_fe($parametro){
 
 		$this->load->model('facturaelectronica');

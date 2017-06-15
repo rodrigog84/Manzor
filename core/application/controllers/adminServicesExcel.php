@@ -11,20 +11,22 @@ public function __construct()
 
 
 
-public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
+public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
          {
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=reporte_stock.xls"); 
             
 
+            $familia = $familia == '0' ? '' : $familia;
+            $subfamilia = $subfamilia == '0' ? '' : $subfamilia;
+            $agrupacion = $agrupacion == '0' ? '' : $agrupacion;
+            $marca = $marca == '0' ? '' : $marca;
+            //$producto = $producto == '0' ? '' : base64_decode($producto);
+            $producto = $producto == '0' ? '' : str_replace("%20"," ",$producto);
 
-            $familia = $familia == 0 ? '' : $familia;
-            $subfamilia = $subfamilia == 0 ? '' : $subfamilia;
-            $agrupacion = $agrupacion == 0 ? '' : $agrupacion;
-            $marca = $marca == 0 ? '' : $marca;
 
             $this->load->model('reporte');
-            $datos_stock = $this->reporte->reporte_stock(null,null,$familia,$subfamilia,$agrupacion,$marca);       
+            $datos_stock = $this->reporte->reporte_stock(null,null,$familia,$subfamilia,$agrupacion,$marca,$producto);       
 
             
             echo '<table>';
@@ -41,10 +43,10 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             echo "<td><b>Stock 3</b></td>";
             echo "<td><b>Stock 4</b></td>";
             echo "</tr>";
-              
+              $i = 1;
               foreach($datos_stock['data'] as $stock){
                  echo "<tr>";
-                 echo "<td>".$stock->num."</td>";
+                 echo "<td>".$i."</td>";
                  echo "<td>".$stock->codigo."</td>";
                  echo "<td>".$stock->descripcion."</td>";
                  echo "<td>".$stock->fecha_ult_compra."</td>";
@@ -55,7 +57,7 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
                  echo "<td>".$stock->stock3."</td>";
                  echo "<td>".$stock->stock4."</td>";
                  echo "</tr>";
-                 
+                $i++;
             }
             echo '</table>';
         }
@@ -76,9 +78,13 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             echo "<tr><td colspan='6'><b>Detalle Resumen de Ventas Mensuales - " . month2string((int)$mes)." de " . $anno . "</b></td></tr>";
             echo "<tr>";
             echo "<td><b>Conceptos</b></td>";
+            echo "<td><b>-</b></td>";
             echo "<td><b>Facturaci&oacute;n</b></td>";
+            echo "<td><b>-</b></td>";
             echo "<td><b>Boletas</b></td>";
+            echo "<td><b>-</b></td>";
             echo "<td><b>N/D&eacute;bito</b></td>";
+            echo "<td><b>-</b></td>";
             echo "<td><b>N/Cr&eacute;dito</b></td>";
             echo "<td><b>Totales</b></td>";
             echo "</tr>";
@@ -87,9 +93,13 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
                 if($producto->concepto == '<b>Totales</b>'){
                  echo "<tr>";
                  echo "<td><b>".$producto->concepto."</b></td>";
+                 echo "<td><b>'(" . str_pad($producto->Facturacion_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td><b>".$producto->Facturacion."</b></td>";
+                 echo "<td><b>'(" . str_pad($producto->Boletas_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td><b>".$producto->Boletas."</b></td>";
+                 echo "<td><b>'(" . str_pad($producto->NDebito_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td><b>".$producto->NDebito."</b></td>";
+                 echo "<td><b>'(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td><b>".$producto->NCredito."</b></td>";
                  echo "<td><b>".$producto->totales."</b></td>";
                  echo "</tr>";
@@ -97,9 +107,13 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
 
                  echo "<tr>";
                  echo "<td>".$producto->concepto."</td>";
+                 echo "<td><b>'(" . str_pad($producto->Facturacion_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td>".$producto->Facturacion."</td>";
+                 echo "<td><b>'(" . str_pad($producto->Boletas_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td>".$producto->Boletas."</td>";
+                 echo "<td><b>'(" . str_pad($producto->NDebito_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td>".$producto->NDebito."</td>";
+                 echo "<td><b>'(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")</b></td>";
                  echo "<td>".$producto->NCredito."</td>";
                  echo "<td>".$producto->totales."</td>";
                  echo "</tr>";
@@ -118,11 +132,6 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             header("Content-type: application/vnd.ms-excel"); 
             header("Content-disposition: attachment; filename=reporte_detalle_productos_stock.xls"); 
             
-
-
-            $this->load->model('reporte');
-            $neto_productos = $this->reporte->mensual_ventas($mes,$anno);     
-
 
             $idproducto = $idproducto == 0 ? '' : $idproducto;
             $mes = $mes == 0 ? '' : $mes;
@@ -164,6 +173,51 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca)
             echo '</table>';
         }
 
+
+
+        public function reporte_estadisticas_ventas($mes,$anno)
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=reporte_estadisticas_ventas.xls"); 
+            
+
+
+            $mes = $mes == 0 ? '' : $mes;
+            $anno = $anno == 0 ? '' : $anno;
+
+            $this->load->model('reporte');
+            $detalle_estadistica_venta = $this->reporte->reporte_estadisticas_ventas(null,null,$mes,$anno);
+                    
+            
+            echo '<table>';
+            echo "<tr><td colspan='8'><b>Detalle Estadisticas Ventas - " . month2string((int)$mes)." de " . $anno . "</b></td></tr>";
+            echo "<tr>";
+            echo "<td><b>#</b></td>";
+            echo "<td><b>Cod. Productos</b></td>";
+            echo "<td><b>Desc. Producto</b></td>";
+            echo "<td><b>Unidades</b></td>";
+            echo "<td><b>Venta Neta</b></td>";
+            echo "<td><b>Costo Venta</b></td>";
+            echo "<td><b>Margen Neto</b></td>";
+            echo "<td><b>% Margen</b></td>";
+            echo "</tr>";
+              $i = 1;              
+              foreach($detalle_estadistica_venta['data'] as $detalle_estadistica){
+                 echo "<tr>";
+                 echo "<td>".$i."</td>";
+                 echo "<td>".$detalle_estadistica->codigo."</td>";
+                 echo "<td>".$detalle_estadistica->nombre."</td>";
+                 echo "<td>".$detalle_estadistica->unidades."</td>";
+                 echo "<td>".number_format($detalle_estadistica->ventaneta,0,".",".")."</td>";
+                 echo "<td>".number_format($detalle_estadistica->costo,0,".",".")."</td>";
+                 echo "<td>".$detalle_estadistica->margen."</td>";
+                 echo "<td>".$detalle_estadistica->porcmargen."</td>";
+                 echo "</tr>";
+
+                  $i++;
+            }
+            echo '</table>';
+        }
 
       public function exportarExcellistaProductos()
          {

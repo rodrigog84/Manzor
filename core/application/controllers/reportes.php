@@ -20,10 +20,10 @@ class Reportes extends CI_Controller {
 		foreach ($neto_productos as $producto) {
 			
 			 #Facturacion, Boletas, NCredito, (Facturacion+Boletas-NCredito) as totales 
-			$producto->Facturacion = number_format($producto->Facturacion,0,".",".");
-			$producto->Boletas = number_format($producto->Boletas,0,".",".");
-			$producto->NDebito = number_format($producto->NDebito,0,".",".");
-			$producto->NCredito = number_format($producto->NCredito,0,".",".");
+			$producto->Facturacion = "<b>(" . str_pad($producto->Facturacion_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .  number_format($producto->Facturacion,0,".",".");
+			$producto->Boletas = "<b>(" . str_pad($producto->Boletas_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->Boletas,0,".",".");
+			$producto->NDebito = "<b>(" . str_pad($producto->NDebito_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->NDebito,0,".",".");
+			$producto->NCredito = "<b>(" . str_pad($producto->NCredito_doctos,5," ",STR_PAD_LEFT).")&nbsp;&nbsp;</b>" .number_format($producto->NCredito,0,".",".");
 			$producto->totales = number_format($producto->totales,0,".",".");
 
 			if($producto->concepto == '<b>Totales</b>'){
@@ -59,13 +59,14 @@ class Reportes extends CI_Controller {
         $subfamilia = $this->input->get('subfamilia');
         $agrupacion = $this->input->get('agrupacion');
         $marca = $this->input->get('marca');
+        $producto = $this->input->get('producto');
 
 
         //print_r($this->input->post(NULL,true)); exit;
 
 
 		$this->load->model('reporte');
-		$datos_stock = $this->reporte->reporte_stock($start,$limit,$familia,$subfamilia,$agrupacion,$marca);
+		$datos_stock = $this->reporte->reporte_stock($start,$limit,$familia,$subfamilia,$agrupacion,$marca,$producto);
  		//var_dump($datos_stock);
  		$i = $start + 1;
 		foreach ($datos_stock['data'] as $stock) {
@@ -209,6 +210,59 @@ class Reportes extends CI_Controller {
 
 	}
 
+
+
+	public function reporte_estadisticas_ventas(){
+
+		$start = $this->input->get('start');
+        $limit = $this->input->get('limit');
+        $mes = $this->input->get('mes');
+        $anno = $this->input->get('anno');
+
+
+        if($mes != '' && $anno != ''){
+			$this->load->model('reporte');
+			$detalle_estadistica_venta = $this->reporte->reporte_estadisticas_ventas($start,$limit,$mes,$anno);
+			//$stock = $this->reporte->get_existencia($idproducto);
+			//1print_r($stock->stock);
+	 		$i = $start + 1;
+
+			foreach ($detalle_estadistica_venta['data'] as $detalle_estadistica) {
+				
+				$detalle_estadistica->num = $i;
+
+				$detalle_estadistica->ventaneta = number_format($detalle_estadistica->ventaneta,0,".",".");
+				$detalle_estadistica->costo = number_format($detalle_estadistica->costo,0,".",".");
+
+
+				$i++;
+			}
+
+		 	$resp['success'] = true;
+		 	$resp['periodo'] = "Estad&iacute;sticas Ventas  - " .month2string((int)$mes)." de " . $anno;
+		 	$resp['mes'] = $mes;
+		 	$resp['anno'] = $anno;
+		 	$resp['data'] = $detalle_estadistica_venta['data'];
+		 	$resp['total'] = $detalle_estadistica_venta['cantidad'];
+	        echo json_encode($resp);
+
+        }else{
+
+
+		 	$resp['success'] = true;
+		 	$resp['periodo'] = "Estad&iacute;sticas Ventas  - " .month2string((int)$mes)." de " . $anno;
+		 	$resp['data'] = array();
+		 	$resp['total'] = 0;
+	        echo json_encode($resp);        	
+        }
+
+
+
+	 	
+	 	 
+		
+
+	}
 
 }
 

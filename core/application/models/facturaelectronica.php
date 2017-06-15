@@ -172,7 +172,7 @@ class Facturaelectronica extends CI_Model
 						);
 
 		$this->db->insert('log_libros',$array_insert); 
-		return true;
+		return $this->db->insert_id();
 	}
 
 
@@ -248,12 +248,12 @@ class Facturaelectronica extends CI_Model
 
 
 	public function get_libro_by_id($idlibro){
-		$this->db->select('id, mes, anno, tipo_libro, archivo, created_at ')
+		$this->db->select('id, mes, anno, tipo_libro, archivo, date_format(fecha_solicita,"%d/%m/%Y %H:%i:%s") as fecha_solicita, date_format(fecha_procesa,"%d/%m/%Y %H:%i:%s") as fecha_creacion, estado, trackid, xml_libro, created_at',false)
 		  ->from('log_libros')
 		  ->where('id',$idlibro);
 		$query = $this->db->get();
 		return $query->row();
-	}	
+	}		
 
 	public function datos_dte_by_trackid($trackid){
 		$this->db->select('f.id, f.folio, f.path_dte, f.archivo_dte, f.dte, f.pdf, f.pdf_cedible, f.trackid, c.tipo_caf, tc.nombre as tipo_doc, cae.nombre as giro, cp.nombre as cond_pago, v.nombre as vendedor    ')
