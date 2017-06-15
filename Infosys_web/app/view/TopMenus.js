@@ -295,6 +295,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         iconCls: '',
                         action: '',
                         hidden: true
+                        
                     }]
                 },{
                         text: 'Cambios Productos',
