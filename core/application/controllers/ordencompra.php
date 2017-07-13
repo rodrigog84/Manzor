@@ -1212,7 +1212,8 @@ class Ordencompra extends CI_Controller {
 			'emitida' => $emitida,
 			'semicumplida' => $semi,
 			'cumplida' => $semi,
-			'incumplida' => $semi
+			'incumplida' => $semi,
+			'id_bodega' =>1
 		);
 
 
@@ -1232,7 +1233,8 @@ class Ordencompra extends CI_Controller {
 	        'total' => $total,
 			'fecha' => $fecha,
 			'fecha_recepcion' => $fecharecepcion,
-			'emitida' => $emitida			
+			'emitida' => $emitida,
+			'id_bodega' =>1			
 		);
 
 		$this->db->insert('ordencompra_original', $orden_compra2); 
@@ -1255,7 +1257,8 @@ class Ordencompra extends CI_Controller {
 		        'total' => $v->total,
 		        'neto' => $v->neto,
 		        'iva' => $v->iva,
-		        'valor_prom' => $v->precio
+		        'valor_prom' => $v->precio,
+		        'id_bodega' =>1
 
 			);
 

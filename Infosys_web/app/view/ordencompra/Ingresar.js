@@ -8,7 +8,7 @@ Ext.define('Infosys_web.view.ordencompra.Ingresar', {
     title : 'Crear Orden de Compra',
     layout: 'fit',
     autoShow: true,
-    height: 660,
+    height: 620,
     width: 1300,
     modal: true,
     iconCls: 'icon-sheet',
@@ -355,7 +355,7 @@ Ext.define('Infosys_web.view.ordencompra.Ingresar', {
                         action: 'editaritem'
                     }
                     ],
-                    height: 250,
+                    height: 220,
                     columns: [
                             {text: 'Id producto',  dataIndex: 'id_producto', width: 250, hidden : true },
                             { text: 'Id descuento',  dataIndex: 'id_descuento', width: 250, hidden : true },

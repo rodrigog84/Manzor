@@ -7,7 +7,7 @@ Ext.define('Infosys_web.view.ordencompra.BuscarProductos' ,{
     layout: 'fit',
     autoShow: true,
     width: 1080,
-    height: 480,
+    height: 500,
     modal: true,
     iconCls: 'icon-sheet',
     y: 10,
