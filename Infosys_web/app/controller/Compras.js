@@ -398,7 +398,7 @@ Ext.define('Infosys_web.controller.Compras', {
         
         var neto = ((cantidad * precio) - descuento);
         var tot = ((cantidad * precio) - descuento);
-        var neto = (Math.round(neto / 1.19));
+        var tot = (parseInt(neto * 1.19));
         var exists = 0;
         var iva = (tot - neto );
         var total = ((neto + iva ));
