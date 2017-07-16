@@ -570,10 +570,10 @@ Ext.define('Infosys_web.controller.Vale', {
                  return;
         };        
         
-        if (!rut){
+        /*if (!rut){
              Ext.Msg.alert('Alerta', 'Debe Ingresar Rut');
                  return;
-        };
+        };*/
         if (!nombre){
              Ext.Msg.alert('Alerta', 'Debe Ingresar Nombre');
                  return;
