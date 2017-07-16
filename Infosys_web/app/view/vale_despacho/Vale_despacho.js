@@ -208,7 +208,7 @@ Ext.define('Infosys_web.view.vale_despacho.Vale_despacho', {
                                 text: 'Buscar Producto',
                                 maxHeight: 25,
                                 width: 120,
-                                allowBlank: true,
+                                //allowBlank: true,
                                 action: 'buscarproductos',
                                 itemId: 'buscarproc'
                             },
@@ -219,8 +219,8 @@ Ext.define('Infosys_web.view.vale_despacho.Vale_despacho', {
                                 labelWidth: 40,
                                 fieldLabel: 'Precio',
                                 itemId: 'precioId',
-                                style: 'font-weight: bold;',
-                                disabled : true
+                                style: 'font-weight: bold;'
+                                //disabled : true
 
                             },{
                                 xtype: 'numberfield',
@@ -236,7 +236,7 @@ Ext.define('Infosys_web.view.vale_despacho.Vale_despacho', {
                                 text: 'Seleccionar',
                                 maxHeight: 25,
                                 width: 120,
-                                allowBlank: true,
+                                //allowBlank: true,
                                 action: 'buscarprecios',
                                 itemId: 'buscarprec'
                             },{xtype: 'splitter'},
