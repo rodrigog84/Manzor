@@ -595,6 +595,18 @@ class Vale extends CI_Controller {
 			<td width="100px">'.$bodegasalida.'</td>
 			<td width="150px">Bodega Entrada</td>
 			<td width="150px">'.$bodegaentrada.'</td>
+			</tr>
+			<tr>
+		    <td width="150px"></td>
+			<td width="100px"></td>
+			<td width="150px"></td>
+			<td width="150px"></td>
+			</tr>
+			<tr>
+		    <td width="150px">Nombre Retira</td>
+			<td width="100px">______________________________________________</td>
+			<td width="150px">Nombre Recibe</td>
+			<td width="150px">______________________________________________</td>
 			</tr>		    	
 		    	</table>
 			</td>
