@@ -52,7 +52,7 @@ class Genera_pagos extends CI_Controller {
 		$cajero = $this->input->post('cajero');
 		$fecha = $this->input->post('fecha');
 		$efectivo = $this->input->post('efectivo');
-		$efectivo = $this->input->post('efectivoinicio');
+		$efectivoinicio = $this->input->post('efectivoinicio');
 		$cheques = $this->input->post('cheques');
 		$otros = $this->input->post('otros');
 		$fecha="2017-07-16";		
