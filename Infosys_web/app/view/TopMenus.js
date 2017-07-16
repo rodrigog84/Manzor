@@ -249,7 +249,7 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             menu: [{
                     text: 'Caja',
                     iconCls: '',
-                    action: 'mpagocaja'
+                    action: 'mpreventa'
                 },{
                     text: 'Vale',
                     iconCls: '',
