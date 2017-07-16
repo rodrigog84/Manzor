@@ -2207,6 +2207,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         var view = this.getAperturacaja();
         var cajero = view.down('#cajeroId');        
         var efectivo = view.down('#efectuvoId').getValue();
+        var efectivoinicio = view.down('#efectuvoinicialId').getValue();
         var cheques = view.down('#totchequesId').getValue();
         var otros = view.down('#otrosmontosId').getValue();
         var fecha = view.down('#fechaaperturaId').getValue();
@@ -2241,8 +2242,9 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         viewedit.down("#cajaId").setValue(idcaja.id);
         viewedit.down('#nomcajeroId').setValue(idcajero.nombre);                
         viewedit.down("#cajeroId").setValue(idcajero.id);
-        viewedit.down('#efectivonId').setValue(efectivo);
-        viewedit.down('#efectivoId').setValue(Ext.util.Format.number(efectivo, '0,00'));        
+        viewedit.down('#efectivoinicioId').setValue(efectivoinicio);
+        viewedit.down('#efectivonId').setValue(efectivoinicio);
+        viewedit.down('#efectivoId').setValue(Ext.util.Format.number(efectivoinicio, '0,00'));        
         viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
         viewedit.down('#totchequesnId').setValue(cheques);
         viewedit.down('#otrosmontosnId').setValue(otros);
@@ -2261,7 +2263,8 @@ Ext.define('Infosys_web.controller.Pago_caja', {
                 cajero: caje,
                 caja: caj,
                 fecha: fecha,
-                efectivo: efectivo,
+                efectivoinicio: efectivoinicio,
+                efectivo: efectivoinicio,
                 cheques: cheques,
                 otros: otros 
             },

@@ -156,6 +156,11 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
                 text : 'Eliminar',
                 hidden: true
             },'->',{
+                xtype: 'button',
+                iconCls: 'icon-money',
+                action: 'gastoscaja',
+                text : 'Gastos Caja'
+            },{
                 width: 80,
                 labelWidth: 20,
                 xtype: 'textfield',
@@ -194,6 +199,12 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
                 labelAlign: 'top',
                 fieldLabel: 'Cajero',
                 readOnly: true
+            },{
+                width: 110,
+                xtype: 'numberfield',
+                itemId: 'efectivoinicioId',
+                fieldLabel: 'Efectivo',
+                hidden: true
             },{
                 width: 110,
                 xtype: 'numberfield',

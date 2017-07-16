@@ -8,6 +8,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventa.Items2',
             'preventa.Editar',
             'Productosf',
+            'Gastos',
             'ProductosE',
             'Preventaeditar',
             'Correlativos',
@@ -21,7 +22,9 @@ Ext.define('Infosys_web.controller.Preventa', {
 
     models: ['Preventa',
              'preventa.Item',
-             'Preciosdescuentos'],
+             'Preciosdescuentos',
+             'Preciosdescuentos',
+             'gastos.Item'],
 
     views: ['Preventa.Preventa',
             'Preventa.Principal',
@@ -40,7 +43,8 @@ Ext.define('Infosys_web.controller.Preventa', {
             'Preventa.Autoriza3',
             'Preventa.Autoriza2',
             'Preventa.IngresarClientes',
-            'Preventa.EditarPreventa'
+            'Preventa.EditarPreventa',
+            'Preventa.IngresoGastos'
             ],
 
     //referencias, es un alias interno para el controller
@@ -107,7 +111,13 @@ Ext.define('Infosys_web.controller.Preventa', {
     },{
         ref: 'eliminarpreventa',
         selector: 'eliminarpreventa'
+    },{
+        ref: 'ingresogastos',
+        selector: 'ingresogastos'
     }
+
+
+
   
     ],
     
@@ -315,9 +325,80 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventaprincipal #bodegaId': {
                 select: this.seleccionbodega
             },
+            'preventaprincipal button[action=gastoscaja]': {
+                click: this.gastoscaja
+            },
+            'ingresogastos button[action=agregargastos]': {
+                click: this.agregargastos
+            },
+            'ingresogastos button[action=generagastos]': {
+                click: this.generagastos
+            },
+
+
+            
+
+
 
         });
     },
+
+    gastoscaja: function(){
+
+        var viewIngresa = this.getPreventaprincipal();
+        var idcajero = viewIngresa.down('#cajeroId').getValue();
+        var idcaja = viewIngresa.down('#cajaId').getValue();
+        var idbodega = viewIngresa.down('#bodegaId').getValue();
+        var contado = viewIngresa.down('#efectivonId').getValue();
+        var cheques = viewIngresa.down('#totchequesnId').getValue();
+        var otros = viewIngresa.down('#otrosmontosnId').getValue();
+        var fecha = viewIngresa.down('#fechaaperturaId').getValue();
+
+        var st = this.getGastosStore()
+        st.proxy.extraParams = {caja : idcaja,
+                                cajero : idcajero,
+                                fecha : fecha }
+        st.load();
+         
+         var rut ="19";
+         var nombre =idbodega;
+         var tipo = "2";
+
+         if(!idbodega){
+            Ext.Msg.alert('Alerta', 'Debe Elegir Bodega');
+            return;    
+         }else{
+                Ext.Ajax.request({
+                url: preurl + 'correlativos/generaventa?valida='+nombre,
+                params: {
+                    id: 1
+                },
+                success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+
+                if (resp.success == true) {
+                    var view = Ext.create('Infosys_web.view.Preventa.IngresoGastos').show();                   
+                    var correlativo = resp.cliente;
+                    var correlanue = correlativo.num_gastos;
+                    var correlanue = (parseInt(correlanue) +1);
+                    view.down("#numerogastolId").setValue(correlanue);
+                    view.down("#efectivoId").setValue(contado);
+                    view.down("#efectivonId").setValue(contado);
+                    view.down("#valorgastoId").focus();
+
+                    
+                }else{
+                    Ext.Msg.alert('Correlativo YA Existe');
+                    return;
+                }
+                }            
+                });     
+             
+         }   
+       
+        
+    },
+
 
     seleccionbodega: function(){
 
@@ -360,18 +441,21 @@ Ext.define('Infosys_web.controller.Preventa', {
                 var resp = Ext.JSON.decode(response.responseText);
                 var caja= resp.caja;
                 if (resp.success == true) {
+                    view.down('#efectuvoinicialId').setValue(caja.efectivoinicio);
                     view.down('#efectuvoId').setValue(caja.efectivo);
                     view.down('#totchequesId').setValue(caja.cheques);
                     view.down('#otrosmontosId').setValue(caja.otros);
                     view.down('#recaudaId').setValue(caja.id);
                     view.down('#cajaId').setValue(caja.id_caja);
                     view.down('#cajeroId').setValue(caja.id_cajero);
+                    var bolDisabled = true;
+                    view.down('#efectuvoinicialId').setDisabled(bolDisabled);
                     view.down('#efectuvoId').focus();                 
                     
                 }else{
 
                 
-                 view.down('#efectuvoId').focus();
+                 view.down('#efectuvoinicialId').focus();
                  view.down('#cajaId').setValue(caja);   
                  view.down('#cajeroId').setValue(cajero);   
                 }
@@ -1961,6 +2045,80 @@ Ext.define('Infosys_web.controller.Preventa', {
         view.down('#descuentovalorId').setValue(Ext.util.Format.number(pretotalfinal, '0'));
     },
 
+    generagastos: function() {
+
+         var view = this.getIngresogastos();
+         view.close();
+
+        
+    },
+
+    agregargastos: function() {
+
+        var view = this.getIngresogastos();
+        var edit = this.getPreventaprincipal();
+        var caja = edit.down('#cajaId').getValue();
+        var cajero = edit.down('#cajeroId').getValue();
+        var idcaja = edit.down('#recaudaId').getValue();        
+        var numero = view.down('#numerogastolId').getValue();
+        var numdoc = view.down('#numdocId').getValue();
+        var detalle = view.down('#detalleId').getValue();
+        var monto = view.down('#valorgastoId').getValue();
+        var efectivo = view.down('#efectivonId').getValue();
+        var fecha = view.down('#fechagastoId').getValue();
+        var saldo = (efectivo - monto);
+
+        if (!detalle){
+              Ext.Msg.alert('Alerta', 'Debe Agregar Detalle');
+              return;            
+        };
+
+        if (!monto){
+              Ext.Msg.alert('Alerta', 'Debe Agregar Monto');
+              return;            
+        };
+       
+        if (monto > efectivo){
+              Ext.Msg.alert('Alerta', 'Monto es Mayor que Saldo en Caja');            
+        };
+
+         Ext.Ajax.request({
+            url: preurl + 'gastos/save',
+            params: {
+                numero: numero,
+                detalle: detalle,
+                numdoc: numdoc,
+                monto: monto,
+                fecha: fecha,
+                idcaja: caja,
+                idcajero: cajero,
+                saldo: saldo,
+                idcontrol: idcaja
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                var cero="";
+                if (resp.success == true) {
+                edit.down('#efectivonId').setValue(saldo);
+                edit.down('#efectivoId').setValue(saldo);
+                view.down('#efectivonId').setValue(saldo);
+                view.down('#efectivoId').setValue(saldo);
+                view.down('#valorgastoId').setValue(cero);
+                view.down('#detalleId').setValue(cero);
+                view.down('#numdocId').setValue(cero);
+                view.down("#valorgastoId").focus();
+                                    
+                }
+            }
+
+        });
+        var st = this.getGastosStore()
+        st.proxy.extraParams = {caja : caja,
+                                cajero : cajero,
+                                fecha : fecha }
+        st.load();     
+    },
+
 
     agregarItem: function() {
 
@@ -2571,39 +2729,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             view.close();
             viewIngresa.down("#tipoVendedorId").focus();
             var bolEnable = true;
-            /*if (cliente.id_pago == 1){
-                view.down('#DescuentoproId').setDisabled(bolEnable);
-                view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                view.down('#descuentovalorId').setDisabled(bolEnable);
-                    
-            };
-            if (cliente.id_pago == 2){
-                view.down('#DescuentoproId').setDisabled(bolEnable);
-                view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                view.down('#descuentovalorId').setDisabled(bolEnable);
-                    
-            };
-            if (cliente.id_pago == 4){
-                view.down('#DescuentoproId').setDisabled(bolEnable);
-                view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                view.down('#descuentovalorId').setDisabled(bolEnable);
-                    
-            };
-            if (cliente.id_pago == 6){
-
-                 view.down('#DescuentoproId').setDisabled(bolEnable);
-                 view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                 view.down('#descuentovalorId').setDisabled(bolEnable);
-                
-            };
-            if (cliente.id_pago == 7){
-
-                 view.down('#DescuentoproId').setDisabled(bolEnable);
-                 view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                 view.down('#descuentovalorId').setDisabled(bolEnable);
-                
-            };*/
-    
+           
             };
            
         }else{

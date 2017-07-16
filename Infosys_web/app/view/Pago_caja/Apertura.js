@@ -9,7 +9,7 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
     layout: 'fit',
     autoShow: true,
     width: 280,
-    height: 260,
+    height: 300,
     modal: true,
     iconCls: 'icon-sheet',
 
@@ -76,6 +76,18 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                         maxHeight: 25,
                         labelWidth: 105,
                         width: 120,
+                        name: 'efectivoinicio',
+                        //readOnly: true,
+                        itemId: 'efectuvoinicialId',
+                        disabled : false,
+                        fieldLabel: '<b>EFECTIVO Inicial</b>'
+
+                    },{
+                        xtype: 'numberfield',
+                        fieldCls: 'required',
+                        maxHeight: 25,
+                        labelWidth: 105,
+                        width: 120,
                         //allowBlank: false,
                         name: 'efectivo',
                         //readOnly: true,
@@ -114,7 +126,7 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                         width: 120,
                         //allowBlank: false,
                         name: 'otrosmontos',
-                        //readOnly: true,
+                        readOnly: true,
                         itemId: 'recaudaId',
                         hidden: true
 

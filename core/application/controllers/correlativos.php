@@ -9,6 +9,41 @@ class Correlativos extends CI_Controller {
 		$this->load->database();
 	}
 
+	public function generagastos(){
+
+		$resp = array();
+		$factura = $this->input->get('valida');
+		$boleta = 2;
+		$query = $this->db->query('SELECT * FROM bodegas WHERE id like "'.$factura.'"');
+        $rut1="19";
+		if($query->num_rows()>0){
+	   		$row = $query->first_row();
+	   		$resp['cliente'] = $row;
+	   		$corr = (($row->num_gasto)+1); 
+	   		$id = ($row->id);
+
+	   		$data3 = array(
+	         'num_gasto' => $corr
+		    );
+
+		    $this->db->where('id', $id);
+		  
+		    $this->db->update('bodegas', $data3);
+
+		    $this->Bitacora->logger("M", 'bodegas', $id);
+
+		    $resp['success'] = true;
+
+	   }else{
+	   	    $resp['success'] = false;
+	   }
+	   
+	  
+	   		echo json_encode($resp);
+		
+
+	}
+
 	public function save(){
 		$resp = array();
 

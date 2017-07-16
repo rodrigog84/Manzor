@@ -8,6 +8,7 @@ Ext.define('Infosys_web.model.control_caja', {
     	{name: 'id_cajero'},
     	{name: 'nom_cajero'},
     	{name: 'efectivo'},
+        {name: 'efectivoinicio'},
         {name: 'cheques'},
         {name: 'otros'},
         {name: 'fecha' , type:'date',dateFormat:"Y-m-d"}
