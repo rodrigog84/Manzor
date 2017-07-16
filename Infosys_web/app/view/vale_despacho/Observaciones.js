@@ -5,7 +5,7 @@ Ext.define('Infosys_web.view.vale_despacho.Observaciones', {
     requires: ['Ext.form.Panel',
                'Ext.form.field.Text'],
 
-    title : 'Observaciones Orden de Trabajo',
+    title : 'Observaciones Vele Despacho',
     layout: 'fit',
     autoShow: true,
     width: 380,

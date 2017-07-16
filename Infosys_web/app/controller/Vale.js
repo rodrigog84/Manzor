@@ -474,14 +474,13 @@ Ext.define('Infosys_web.controller.Vale', {
         
         var permite = "SI"
 
-        if (valida == "NO"){
+        /*if (valida == "NO"){
              Ext.Msg.alert('Alerta', 'Debe Validar Rut');
                  return;
-        };        
+        }; */       
         
         if (!rut){
-             Ext.Msg.alert('Alerta', 'Debe Ingresar Rut');
-                 return;
+             rut=19;
         };
         if (!nombre){
              Ext.Msg.alert('Alerta', 'Debe Ingresar Nombre');
@@ -565,15 +564,14 @@ Ext.define('Infosys_web.controller.Vale', {
         
         var permite = "SI"
 
-        if (valida == "NO"){
+        /*if (valida == "NO"){
              Ext.Msg.alert('Alerta', 'Debe Validar Rut');
                  return;
-        };        
+        };  */      
         
-        /*if (!rut){
-             Ext.Msg.alert('Alerta', 'Debe Ingresar Rut');
-                 return;
-        };*/
+        if (!rut){
+             rut = 19;
+        };
         if (!nombre){
              Ext.Msg.alert('Alerta', 'Debe Ingresar Nombre');
                  return;
@@ -1435,7 +1433,9 @@ Ext.define('Infosys_web.controller.Vale', {
 
         var view = this.getBuscarproductosvaledespacho();
         var viewIngresa = this.getValedespachoingresar();
-        var estado = viewIngresa.down('#estadoId').getValue();        
+        var estado = viewIngresa.down('#estadoId').getValue();
+        var bodegaId = viewIngresa.down('#bodegaId').getValue();
+        console.log(bodegaId);        
         var cero = 0;
         var cero2 = "";
         var cero1 = "";
@@ -1446,6 +1446,12 @@ Ext.define('Infosys_web.controller.Vale', {
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
             var precioventa = (row.data.p_venta);
+            if (row.data.id_bodega != bodegaId){
+
+                Ext.Msg.alert('Alerta', 'Stock Seleccionado No Corresponde a Bodega Despacho');
+                return;
+                
+            }else{
             if (row.data.stock < 0){
                         view.close();
                         Ext.Msg.alert('Alerta', 'Producto Sin Stock');
@@ -1481,6 +1487,7 @@ Ext.define('Infosys_web.controller.Vale', {
                     viewIngresa.down("#cantidadId").focus();
                 }
             }
+        }
         }  
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');

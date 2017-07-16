@@ -209,7 +209,7 @@ class Vale extends CI_Controller {
 		$observa = array(
 			'rut' => $rut,
 			'nombre' => $nombre,
-	        'id_documento' => $numero,
+	        'id_vale' => $numero,
 	        'fono' => $fono,
 	        'pat_camion' => $camion,
 	        'pat_carro' => $carro,
@@ -224,7 +224,7 @@ class Vale extends CI_Controller {
 	    	$observa = array(
 			'rut' => $rut,
 			'nombre' => $nombre,
-	        'id_documento' => $numero,
+	        'id_vale' => $numero,
 	        'fono' => $fono,
 	        'pat_camion' => $camion,
 	        'pat_carro' => $carro,

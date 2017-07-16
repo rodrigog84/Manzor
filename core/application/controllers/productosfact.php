@@ -424,7 +424,7 @@ class Productosfact extends CI_Controller {
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)
-			WHERE acc.id_bodega = "'.$opcion.'" AND ' . $sql_nombre . ' 1 = 1 ');
+			WHERE ' . $sql_nombre . ' 1 = 1 ');
 			
 			$total = 0;
 
@@ -442,7 +442,8 @@ class Productosfact extends CI_Controller {
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)
-			WHERE acc.id_bodega = "'.$opcion.'" AND ' . $sql_nombre . ' 1 = 1 
+			WHERE ' . $sql_nombre . ' 1 = 1
+			order by acc.id_producto desc 
 			limit '.$start.', '.$limit.'');
 
 			foreach ($query->result() as $row)
@@ -460,7 +461,7 @@ class Productosfact extends CI_Controller {
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)
-			WHERE acc.id_bodega = "'.$opcion.'"');
+			order by acc.id_producto desc');
 			
 			$total = 0;
 
@@ -477,8 +478,8 @@ class Productosfact extends CI_Controller {
         	FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
-			left join mae_medida m on (c.id_uni_medida = m.id)
-			WHERE acc.id_bodega = "'.$opcion.'"
+			left join mae_medida m on (c.id_uni_medida = m.id)			
+			order by acc.id_producto desc
 			limit '.$start.', '.$limit.'');
 
 			foreach ($query->result() as $row)

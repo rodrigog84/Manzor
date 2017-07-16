@@ -39,13 +39,21 @@ Ext.define('Infosys_web.view.vale_despacho.BuscarProductos' ,{
                 hidden: true
             },{
                 header: "Nombres",
-                width: 750,
+                width: 450,
                 dataIndex: 'nombre'
             },{
-                header: "Ubicacion Fisica",
-                 width: 100,
-                dataIndex: 'nom_bodega',
+                header: "Bodega",
+                 width: 250,
+                dataIndex: 'nom_bodega'
+            },{
+                header: "Bodega",
+                 width: 250,
+                dataIndex: 'id_bodega',
                 hidden: true
+            },{
+                header: "Stock",
+                 width: 100,
+                dataIndex: 'stock'
             },{
                 header: "Precio Venta",
                 width: 100,
@@ -59,11 +67,6 @@ Ext.define('Infosys_web.view.vale_despacho.BuscarProductos' ,{
                 align: 'right',
                 renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00")},
                 hidden: true
-            },{
-                header: "Stock",
-                width: 100,
-                align: 'right',
-                dataIndex: 'stock'
             }],
         };
         this.dockedItems = [{
@@ -71,12 +74,6 @@ Ext.define('Infosys_web.view.vale_despacho.BuscarProductos' ,{
             dock: 'top',
             items: [
             {
-                width: 450,
-                xtype: 'textfield',
-                itemId: 'bodegaId',
-                fieldLabel: 'Bodega',
-                hidden: true
-            },{
                 width: 450,
                 xtype: 'textfield',
                 itemId: 'nombreId',
@@ -88,6 +85,21 @@ Ext.define('Infosys_web.view.vale_despacho.BuscarProductos' ,{
                 iconCls: 'icon-search',
                 action: 'buscar',
                 text : 'Buscar'
+            },'->',{
+                xtype: 'combo',
+                itemId: 'bodegaId',
+                labelWidth: 60,
+                width: 205,
+                fieldCls: 'required',
+                maxHeight: 25,
+                fieldLabel: '<b>BODEGA</b>',
+                forceSelection : true,
+                name : 'id_bodega',
+                valueField : 'id',
+                displayField : 'nombre',
+                emptyText : "Seleccione",
+                store : 'Bodegas',
+                readOnly: true
             }
             ]      
         },{
