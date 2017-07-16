@@ -254,6 +254,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventaingresar button[action=editaritem]': {
                 click: this.editaritem
             },
+            
              'preventaeditar button[action=editaritem2]': {
                 click: this.editaritem2
             },
@@ -435,7 +436,7 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down('#efectivonId').setValue(contado); 
                     view.down('#totchequesnId').setValue(cheques); 
                     view.down('#otrosmontosnId').setValue(otros);
-                    view.down("#codigoId").focus();   
+                    view.down("#otrabajoId").focus();   
                     
                 }else{
                     Ext.Msg.alert('Correlativo YA Existe');
@@ -1559,9 +1560,7 @@ Ext.define('Infosys_web.controller.Preventa', {
         var cero = "";
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            var id_producto = row.data.id_producto;
-
-            
+            var id_producto = row.data.id_producto;            
             Ext.Ajax.request({
             url: preurl + 'productos/buscarp?nombre='+id_producto,
             params: {
@@ -1593,6 +1592,7 @@ Ext.define('Infosys_web.controller.Preventa', {
        
     },
 
+    
     editaritem2: function() {
         var view = this.getPreventaeditar();
         var total = view.down('#finaltotalpostId').getValue();

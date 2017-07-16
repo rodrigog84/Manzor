@@ -522,6 +522,7 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                 { text: 'Bodega',  dataIndex: 'id_bodega', width: 250, hidden:true},
                                 { text: 'Precio Unitario',  dataIndex: 'precio', align: 'right',flex:1, decimalPrecision:3},
                                 { text: 'Cantidad',  dataIndex: 'cantidad', align: 'right',width: 150, decimalPrecision:3},
+                                { text: 'Cantidad',  dataIndex: 'stock', align: 'right',width: 150, decimalPrecision:3, hidden: true},
                                 { text: 'Descuento',  dataIndex: 'dcto', align: 'right',width: 100, renderer: function(valor){return Ext.util.Format.number((valor),"0,000")} },
                                 { text: 'Neto',  dataIndex: 'neto', align: 'right',flex:1,renderer: function(valor){return Ext.util.Format.number((valor),"0,000")}, hidden: true },
                                 { text: 'Iva',  dataIndex: 'iva', align: 'right',flex:1,renderer: function(valor){return Ext.util.Format.number((valor),"0,000")}, hidden: true },

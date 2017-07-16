@@ -1105,9 +1105,7 @@ Ext.define('Infosys_web.controller.Vale', {
         var cero = "";
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            var id_producto = row.data.id_producto;
-
-            
+            var id_producto = row.data.id_producto;            
             Ext.Ajax.request({
             url: preurl + 'productos/buscarp?nombre='+id_producto,
             params: {

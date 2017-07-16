@@ -147,8 +147,60 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 specialkey: this.special,
                 blur: this.selectItemcancela                    
             },
+            'documentosingresar button[action=editaritem]': {
+                click: this.editaritemvale
+            },
         });
     },
+
+    editaritemvale: function() {
+
+        var view = this.getDocumentosingresar();
+        var grid  = view.down('#itemsgridId');
+        var cero = "";
+        if (grid.getSelectionModel().hasSelection()) {
+            var row = grid.getSelectionModel().getSelection()[0];
+            var id_producto = row.data.id_producto;
+            var codigo = row.data.codigo;      
+            var precio = row.data.precio;
+            var nombrepro = row.data.nombre;    
+            var cantidad = row.data.cantidad;      
+            var stock = row.data.stock;    
+            var id_descuento = row.data.id_descuento;      
+            Ext.Ajax.request({
+            url: preurl + 'productos/buscarp?nombre='+id_producto,
+            params: {
+                id: 1
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) { 
+                    if(resp.cliente){
+                        var cliente = resp.cliente;
+                        view.down('#precioId').setValue(precio);
+                        view.down('#productoId').setValue(id_producto);
+                        view.down('#nombreproductoId').setValue(nombrepro);
+                        view.down('#codigoId').setValue(codigo);
+                        view.down('#cantidadOriginalId').setValue(stock);
+                        view.down('#cantidadId').setValue(cantidad);
+                        view.down('#DescuentoproId').setValue(id_descuento);
+                                                     
+                    }
+                }
+            }
+
+        });
+        grid.getStore().remove(row);
+        this.recalcularFinal();
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+       
+    },
+
+
+
 
     eliminaritem2: function() {
         var view = this.getGenerapagocheque();
@@ -782,7 +834,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             neto: neto,
             total: total,
             iva: iva,
-            dcto: descuento
+            dcto: descuento,
+            stock: cantidadori
         }));
         this.recalcularFinal();
 
@@ -1122,9 +1175,23 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
     
     eliminaritem: function() {
         var view = this.getDocumentosingresar();
+        var total = view.down('#finaltotalpostId').getValue();
+        var neto = view.down('#finaltotalnetoId').getValue();
+        var iva = view.down('#finaltotalivaId').getValue();
+        var grid  = view.down('#itemsgridId');
         var grid  = view.down('#itemsgridId');
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
+            var total = ((total) - (row.data.total));
+            var neto = ((neto) - (row.data.neto));
+            var iva = ((iva) - (row.data.iva));
+            var afecto = neto;
+            view.down('#finaltotalId').setValue(Ext.util.Format.number(total, '0,000'));
+            view.down('#finaltotalpostId').setValue(Ext.util.Format.number(total, '0'));
+            view.down('#finaltotalnetoId').setValue(Ext.util.Format.number(neto, '0'));
+            view.down('#finaltotalivaId').setValue(Ext.util.Format.number(iva, '0'));
+            view.down('#finalafectoId').setValue(Ext.util.Format.number(afecto, '0'));
+  
             grid.getStore().remove(row);
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
