@@ -338,7 +338,7 @@ Ext.define('Infosys_web.controller.Cambios', {
        
     },
 
-     buscarproductosdevolucion: function(){
+    buscarproductosdevolucion: function(){
         
         var viewIngresa = this.getCambiosinventario();
         var codigo = viewIngresa.down('#codigodevId').getValue();
@@ -618,7 +618,7 @@ Ext.define('Infosys_web.controller.Cambios', {
 
          Ext.Ajax.request({
 
-            url: preurl + 'correlativos/genera?valida='+nombre,
+            url: preurl + 'correlativos/generacambio?valida='+nombre,
             params: {
                 id: 1
             },
