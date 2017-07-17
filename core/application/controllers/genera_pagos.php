@@ -17,7 +17,7 @@ class Genera_pagos extends CI_Controller {
 		$fecha = $this->input->post('fecha');
 
 		if ($fecha == 0){
-		$fecha = "2017-07-16";//date("Y-m-d");
+		$fecha = date("Y-m-d");
 	    };
 		
                      
