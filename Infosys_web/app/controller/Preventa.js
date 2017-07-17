@@ -334,6 +334,9 @@ Ext.define('Infosys_web.controller.Preventa', {
             'ingresogastos button[action=generagastos]': {
                 click: this.generagastos
             },
+            'ingresogastos button[action=eliminaritem]': {
+                click: this.eliminaritemgasto
+            },
 
 
             
@@ -341,6 +344,56 @@ Ext.define('Infosys_web.controller.Preventa', {
 
 
         });
+    },
+
+    eliminaritemgasto: function(){
+       
+        var view = this.getIngresogastos();
+        var viewIngresa = this.getPreventaprincipal();
+        var fecha = viewIngresa.down('#fechaaperturaId').getValue();
+        var idcajero = viewIngresa.down('#cajeroId').getValue();
+        var idcaja = viewIngresa.down('#cajaId').getValue();
+        var contado = viewIngresa.down('#efectivonId').getValue();
+        var efectivo = view.down('#efectivonId').getValue();
+        var st = this.getGastosStore()
+        st.proxy.extraParams = {caja : idcaja,
+                                cajero : idcajero,
+                                fecha : fecha }
+        st.load();
+       
+        var grid  = view.down('#gastosId');
+        if (grid.getSelectionModel().hasSelection()) {
+            var row = grid.getSelectionModel().getSelection()[0];                   
+            var id = row.data.id;
+            var monto = (parseInt(row.data.monto));
+            var saldo = (monto + efectivo);
+            grid.getStore().remove(row);
+            Ext.Ajax.request({
+            url: preurl + 'gastos/elimina',
+            params: {
+                id: id,
+                fecha : fecha,
+                caja : idcaja,
+                cajero : idcajero
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) { 
+                    view.down('#efectivonId').setValue(saldo);
+                    view.down('#efectivoId').setValue(saldo);
+                    viewIngresa.down('#efectivonId').setValue(saldo);
+                    viewIngresa.down('#efectivoId').setValue(saldo);
+                    view.down("#valorgastoId").focus();
+                    st.load();
+                }
+            }
+
+        });
+        
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        };
     },
 
     gastoscaja: function(){
@@ -2079,7 +2132,8 @@ Ext.define('Infosys_web.controller.Preventa', {
         };
        
         if (monto > efectivo){
-              Ext.Msg.alert('Alerta', 'Monto es Mayor que Saldo en Caja');            
+              Ext.Msg.alert('Alerta', 'Monto es Mayor que Saldo en Caja'); 
+              return;              
         };
 
          Ext.Ajax.request({

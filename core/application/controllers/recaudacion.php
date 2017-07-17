@@ -1232,6 +1232,8 @@ class Recaudacion extends CI_Controller {
 			);
 
 		$producto = $v->id;
+        $saldo = 0;
+
 
 		$this->db->insert('detalle_factura_cliente', $factura_clientes_item);
 		

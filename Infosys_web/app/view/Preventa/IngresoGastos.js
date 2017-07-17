@@ -138,8 +138,11 @@ Ext.define('Infosys_web.view.Preventa.IngresoGastos', {
                   height: 260,
                   items: [{
                           xtype: 'grid',
+                          itemId: 'gastosId',
+                          title: 'Gastos',
+                          store: 'Gastos',
+                          height: 200,
                           tbar: [
-
                             {
                                 xtype: 'button',
                                 text: 'Eliminar',
@@ -148,11 +151,9 @@ Ext.define('Infosys_web.view.Preventa.IngresoGastos', {
                                 action: 'eliminaritem'
                             }
                             ],
-                          itemId: 'gastosId',
-                          title: 'Gastos',
-                          store: 'Gastos',
-                          height: 200,
+                         
                           columns: [
+                              { text: 'id',  dataIndex: 'id', width: 250, hidden: true},
                               { text: 'Numero',  dataIndex: 'numero', width: 250 },
                               { text: 'Detalle',  dataIndex: 'detalle', width: 650},
                               { text: 'id_caja',  dataIndex: 'id_caja', width: 100, hidden: true},

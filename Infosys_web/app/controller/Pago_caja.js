@@ -2243,8 +2243,8 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         viewedit.down('#nomcajeroId').setValue(idcajero.nombre);                
         viewedit.down("#cajeroId").setValue(idcajero.id);
         viewedit.down('#efectivoinicioId').setValue(efectivoinicio);
-        viewedit.down('#efectivonId').setValue(efectivoinicio);
-        viewedit.down('#efectivoId').setValue(Ext.util.Format.number(efectivoinicio, '0,00'));        
+        viewedit.down('#efectivonId').setValue(efectivo);
+        viewedit.down('#efectivoId').setValue(Ext.util.Format.number(efectivo, '0,00'));        
         viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
         viewedit.down('#totchequesnId').setValue(cheques);
         viewedit.down('#otrosmontosnId').setValue(otros);
@@ -2264,7 +2264,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
                 caja: caj,
                 fecha: fecha,
                 efectivoinicio: efectivoinicio,
-                efectivo: efectivoinicio,
+                efectivo: efectivo,
                 cheques: cheques,
                 otros: otros 
             },

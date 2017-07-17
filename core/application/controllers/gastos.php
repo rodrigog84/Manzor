@@ -9,6 +9,59 @@ class Gastos extends CI_Controller {
 		$this->load->database();
 	}
 
+	public function elimina(){
+
+		$resp = array();
+
+		$id = $this->input->post('id');
+		$caja = $this->input->post('caja');
+		$cajero = $this->input->post('cajero');
+		$fecha = $this->input->post('fecha');
+
+		$query = $this->db->query('SELECT * FROM control_caja_gastos WHERE id = "'.$id.'" ');
+
+	   	if($query->num_rows()>0){
+
+			$row = $query->first_row();
+			$monto = $row->monto;
+
+			$query = $this->db->query('SELECT * FROM control_caja 
+			WHERE id_caja = "'.$caja.'" and id_cajero = "'.$cajero.'" and fecha = "'.$fecha.'"');
+
+			if($query->num_rows()>0){
+
+				$row = $query->first_row();
+				$idcaja = $row->id;
+				$efectivo = $row->efectivo;
+
+				$saldo = ($efectivo + $monto);
+
+				$cajas = array(
+		         'efectivo' => $saldo
+			    );
+
+			    $this->db->where('id', $idcaja);
+			  
+			    $this->db->update('control_caja', $cajas);
+
+			};
+ 
+
+	   	 	$query = $this->db->query('DELETE FROM control_caja_gastos WHERE id = "'.$id.'"');
+	    	$resp['success'] = true;
+
+	   	 }else{
+
+	   	 	$resp['success'] = false;
+	   	 	
+
+	   	 };	  
+	   
+	    
+	    echo json_encode($resp);	   
+		
+	}
+
 	public function save(){
 		$resp = array();
 
