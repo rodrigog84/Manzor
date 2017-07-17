@@ -55,6 +55,7 @@ class Genera_pagos extends CI_Controller {
 		$efectivoinicio = $this->input->post('efectivoinicio');
 		$cheques = $this->input->post('cheques');
 		$otros = $this->input->post('otros');
+		
 		//$fecha="2017-07-16";		
 		
 	    $query = $this->db->query('SELECT * FROM control_caja 
@@ -83,7 +84,7 @@ class Genera_pagos extends CI_Controller {
 	    	 'id_caja' => $caja,
 	    	 'id_cajero' => $cajero,
 	    	 'fecha' => $fecha,
-	         'efectivo' => $efectivo,
+	         'efectivo' => $efectivoinicio,
 	         'efectivoinicio' => $efectivoinicio,
 	         'cheques' => $cheques,
 	         'otros' => $otros
