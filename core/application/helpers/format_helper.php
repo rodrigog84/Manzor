@@ -426,7 +426,7 @@ if (!function_exists('permite_alfanumerico'))
   {
 
 
-    $conservar = '0-9a-z '; // juego de caracteres a conservar
+    $conservar = '0-9a-z#, '; // juego de caracteres a conservar
     $regex = sprintf('~[^%s]++~i', $conservar); // case insensitive
     $string = preg_replace($regex, '', $string);
  

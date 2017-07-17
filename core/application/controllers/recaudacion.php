@@ -5,7 +5,7 @@ class Recaudacion extends CI_Controller {
 	public function __construct()
 	{
 		parent::__construct();
-		
+		$this->load->helper('format');
 		$this->load->database();
 	}
 
@@ -905,6 +905,7 @@ class Recaudacion extends CI_Controller {
 
 	public function save(){
 		$resp = array();
+
 		$fechaboleta = json_decode($this->input->post('fecha'));
 		$fechapago = json_decode($this->input->post('fechapago'));
 		$numdocum = json_decode($this->input->post('numboleta'));
@@ -1418,7 +1419,12 @@ class Recaudacion extends CI_Controller {
 				$i++;
 			}
 
+
 			$rutCliente = substr($datos_empresa_factura->rut_cliente,0,strlen($datos_empresa_factura->rut_cliente) - 1)."-".substr($datos_empresa_factura->rut_cliente,-1);
+
+			$dir_cliente = permite_alfanumerico($datos_empresa_factura->direccion);
+
+
 			// datos
 			$factura = [
 			    'Encabezado' => [
@@ -1436,10 +1442,10 @@ class Recaudacion extends CI_Controller {
 			            'CmnaOrigen' => substr($empresa->comuna_origen,0,20), //LARGO DE COMUNA DE ORIGEN NO PUEDE SER SUPERIOR A 20 CARACTERES
 			        ],
 			        'Receptor' => [
-			            'RUTRecep' =>  $rutCliente,
-			            'RznSocRecep' => substr($datos_empresa_factura->nombre_cliente,0,100), //LARGO DE RAZON SOCIAL NO PUEDE SER SUPERIOR A 100 CARACTERES
-			            'GiroRecep' => substr($datos_empresa_factura->giro,0,35),  //LARGO DEL GIRO NO PUEDE SER SUPERIOR A 40 CARACTERES
-			            'DirRecep' => substr($datos_empresa_factura->direccion,0,70), //LARGO DE DIRECCION NO PUEDE SER SUPERIOR A 70 CARACTERES
+			            'RUTRecep' => $rutCliente,
+			            'RznSocRecep' => substr(permite_alfanumerico($datos_empresa_factura->nombre_cliente),0,100), //LARGO DE RAZON SOCIAL NO PUEDE SER SUPERIOR A 100 CARACTERES
+			            'GiroRecep' => substr(permite_alfanumerico($datos_empresa_factura->giro),0,40),  //LARGO DEL GIRO NO PUEDE SER SUPERIOR A 40 CARACTERES
+			            'DirRecep' => substr($dir_cliente,0,70), //LARGO DE DIRECCION NO PUEDE SER SUPERIOR A 70 CARACTERES
 			            'CmnaRecep' => substr($datos_empresa_factura->nombre_comuna,0,20), //LARGO DE COMUNA NO PUEDE SER SUPERIOR A 20 CARACTERES
 			        ],
 		            'Totales' => [
@@ -1470,7 +1476,7 @@ class Recaudacion extends CI_Controller {
 			    'FchResol' => $empresa->fec_resolucion,
 			    'NroResol' => $empresa->nro_resolucion
 			];
-
+			
 			//exit;
 			// Objetos de Firma y Folios
 			$Firma = new sasco\LibreDTE\FirmaElectronica($config['firma']); //lectura de certificado digital		

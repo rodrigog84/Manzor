@@ -836,6 +836,7 @@ class Preventa extends CI_Controller {
 
 		$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
 		 
+		$saldo = 0;
 		if($query->num_rows()>0){
 
 		$row = $query->first_row();

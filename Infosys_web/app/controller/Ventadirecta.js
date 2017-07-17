@@ -1235,45 +1235,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var idbodega = viewIngresa.down('#bodegaId').getValue();
         var recauda =  viewIngresa.down('#recaudaId').getValue();
 
-        if(idtipo == 101 || idtipo == 105){
+        
+        var numdoc = viewIngresa.down('#ticketId').getValue();
 
-
-            // se valida que exista certificado
-            response_certificado = Ext.Ajax.request({
-            async: false,
-            url: preurl + 'facturas/existe_certificado/'});
-
-            var obj_certificado = Ext.decode(response_certificado.responseText);
-
-            if(obj_certificado.existe == true){
-
-                //buscar folio factura electronica
-                // se buscan folios pendientes, o ocupados hace más de 4 horas
-
-                response_folio = Ext.Ajax.request({
-                async: false,
-                url: preurl + 'facturas/folio_documento_electronico/'+idtipo});  
-                var obj_folio = Ext.decode(response_folio.responseText);
-                nuevo_folio = obj_folio.folio;
-                if(nuevo_folio != 0){
-                    numdoc = nuevo_folio;
-                    habilita = true;
-                }else{
-                    Ext.Msg.alert('Atención','No existen folios disponibles');
-                    return;
-
-                    //return
-                }
-
-            }else{
-                    Ext.Msg.alert('Atención','No se ha cargado certificado');
-                    return;
-            }
-
-        }else{
-            var numdoc = viewIngresa.down('#numboleta2Id').getValue();
-
-        };
         
         var viewedit = this.getPreventaprincipal();
         var recauda =  viewedit.down('#recaudaId').getValue();
@@ -1335,6 +1299,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 viewedit.down('#totchequesnId').setValue(cheques);
                 viewedit.down('#otrosmontosnId').setValue(otros);
                 viewedit.down('#otrosmontosId').setValue(Ext.util.Format.number(otros, '0,00'));
+
+                window.open(preurl +'facturas/exportPDF/?idfactura=' + idboleta)
             }
         });
 
@@ -1384,9 +1350,13 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                  viewIngresa.close();
                  stPreventa.load();
                  window.open(preurl + 'preventa/exportPDF/?idpreventa='+idpreventa);
+
             }
            
         });
+
+
+
 
         
     //this.generarpago();       
