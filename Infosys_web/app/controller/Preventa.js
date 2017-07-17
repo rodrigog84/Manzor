@@ -44,7 +44,8 @@ Ext.define('Infosys_web.controller.Preventa', {
             'Preventa.Autoriza2',
             'Preventa.IngresarClientes',
             'Preventa.EditarPreventa',
-            'Preventa.IngresoGastos'
+            'Preventa.IngresoGastos',
+            'Preventa.Pagodirecto'
             ],
 
     //referencias, es un alias interno para el controller
@@ -114,6 +115,9 @@ Ext.define('Infosys_web.controller.Preventa', {
     },{
         ref: 'ingresogastos',
         selector: 'ingresogastos'
+    },{
+        ref: 'documentosingresar',
+        selector: 'documentosingresar'
     }
 
 
@@ -249,6 +253,11 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventaingresar #tipoDocumento2Id': {
                 select: this.selectItemdocuemento
             },
+
+            'documentosingresar #tipoDocumento2Id': {
+                select: this.selectItemdocuemento2
+            },
+
             'preventaprincipal button[action=exportarpreventa]': {
                 click: this.exportarpreventa
             },
@@ -1855,6 +1864,123 @@ Ext.define('Infosys_web.controller.Preventa', {
         });       
        
     },
+
+
+
+selectItemdocuemento2: function() {
+        
+        var view = this.getDocumentosingresar();
+        var tipo_documento = view.down('#tipoDocumento2Id');
+        var bodegaid = view.down('#bodegaId').getValue();
+
+
+
+        var stCombo = tipo_documento.getStore();
+        var record = stCombo.findRecord('id', tipo_documento.getValue()).data;
+        //console.log(record);
+        var nombre = (record.id);    
+        habilita = false;
+        if(nombre == 2){ 
+
+             Ext.Ajax.request({
+
+                url: preurl + 'correlativos/generaventa?valida='+bodegaid,
+                params: {
+                    id: 1
+                },
+                success: function(response){
+                    var resp = Ext.JSON.decode(response.responseText);
+
+                    if (resp.success == true) {
+                        var cliente = resp.cliente;
+                        var correlanue = cliente.num_otrabajo;
+                        correlanue = (parseInt(correlanue)+1);
+                        var correlanue = correlanue;
+                        view.down('#ticketId').setValue(correlanue);
+                        
+                    }else{
+                        Ext.Msg.alert('Correlativo YA Existe');
+                        return;
+                    }
+
+                }            
+            });
+
+
+
+
+        }else{// FACTURA ELECTRONICA o FACTURA EXENTA
+
+
+            // se valida que exista certificado
+            response_certificado = Ext.Ajax.request({
+            async: false,
+            url: preurl + 'facturas/existe_certificado/'});
+
+            var obj_certificado = Ext.decode(response_certificado.responseText);
+
+            if(obj_certificado.existe == true){
+
+                //buscar folio factura electronica
+                // se buscan folios pendientes, o ocupados hace más de 4 horas
+
+                response_folio = Ext.Ajax.request({
+                async: false,
+                url: preurl + 'facturas/folio_documento_electronico/'+nombre});  
+                var obj_folio = Ext.decode(response_folio.responseText);
+                //console.log(obj_folio); 
+                nuevo_folio = obj_folio.folio;
+                if(nuevo_folio != 0){
+                    view.down('#ticketId').setValue(nuevo_folio);  
+                    habilita = true;
+                }else{
+                    Ext.Msg.alert('Atención','No existen folios disponibles');
+                    view.down('#ticketId').setValue('');  
+
+                    //return
+                }
+
+            }else{
+                    Ext.Msg.alert('Atención','No se ha cargado certificado');
+                    view.down('#numfacturaId').setValue('');  
+            }            
+
+        }
+        var grid  = view.down('#itemsgridId');        
+
+
+        //console.log(tipo_documento.getValue())
+        //console.log(habilita)
+
+
+
+        var bolDisabled = tipo_documento.getValue() == 1 || tipo_documento.getValue() == 19 || ((tipo_documento.getValue() == 101 || tipo_documento.getValue() == 103) && habilita) ? false : true; // campos se habilitan sólo en factura o factura electronica
+
+        if(bolDisabled == true){  // limpiar campos
+           view.down('#rutId').setValue('19');
+           this.validaboleta();
+           
+        }
+
+
+        /*view.down('#rutId').setDisabled(bolDisabled);
+        view.down('#buscarBtn').setDisabled(bolDisabled);
+        view.down('#nombre_id').setDisabled(bolDisabled);
+        view.down('#direccionId').setDisabled(bolDisabled);
+        view.down('#giroId').setDisabled(bolDisabled);
+        view.down('#tipoCiudadId').setDisabled(bolDisabled);
+        view.down('#tipoComunaId').setDisabled(bolDisabled);
+        view.down('#sucursalId').setDisabled(bolDisabled);
+        view.down('#tipoVendedorId').setDisabled(bolDisabled);
+        view.down('#tipocondpagoId').setDisabled(bolDisabled);
+        view.down('#rutId').focus();
+        grid.getStore().removeAll();  
+        var controller = this.getController('Productos');*/
+        //controller.recalcularFinal();
+
+    },  
+
+
 
     selectItemdocuemento: function() {
         
