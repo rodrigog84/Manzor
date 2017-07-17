@@ -433,6 +433,10 @@ public function reporte_detalle_productos_stock($idproducto,$mes,$anno){
     $cantidad_hoja = 50;
       $fila = 1;
       $num_final = 1;
+
+      $precio_costo = 0;
+      $cant_entradas = 0;
+      $cant_salidas = 0;
       $this->mpdf->SetHeader('Manzor - Informe Detalle Producto Stock');
       $this->mpdf->setFooter('{PAGENO}');         
       foreach ($detalle_productos_stock['data'] as $detalle_producto) {
@@ -447,18 +451,41 @@ public function reporte_detalle_productos_stock($idproducto,$mes,$anno){
         <td style="text-align:right">'.$detalle_producto->numdocto.'</td> 
         <td style="text-align:right">'.$detalle_producto->fecha.'</td> 
         <td align="right">'.number_format($detalle_producto->precio, 0, '.', ',').'</td>
-        <td align="text-align:right">'.$detalle_producto->cant_entradas.'</td>
+        <td style="text-align:right">'.$detalle_producto->cant_entradas.'</td> 
         <td style="text-align:right">'.$detalle_producto->cant_salidas.'</td> 
         <td style="text-align:right">'.$detalle_producto->stock.'</td> 
         <td style="text-align:right">'.$detalle_producto->detalle.'</td> 
         </tr>';
 
+        $precio_costo += $detalle_producto->precio;
+        $cant_entradas += $detalle_producto->cant_entradas;
+        $cant_salidas += $detalle_producto->cant_salidas;
 
         $this->mpdf->WriteHTML($detail_row);
         //echo $detail;
 
         if(($fila % $cantidad_hoja) == 0 ){  #LLEVA 30 LINEAS EN LA HOJA
-            $this->mpdf->WriteHTML($fin_pagina);         
+
+          $sum_row = '
+          <tr>
+            <td colspan="9">&nbsp;</td>
+          </tr>
+          <tr>
+          <td style="border-top:1pt solid black;text-align:center;" colspan="4"><b>TOTALES</b></td>      
+          <td style="border-top:1pt solid black;" align="right"><b>'.number_format($precio_costo, 0, '.', ',').'</b></td>
+          <td style="border-top:1pt solid black;text-align:right"><b>'.$cant_entradas.'</b></td> 
+          <td style="border-top:1pt solid black;text-align:right"><b>'.$cant_salidas.'</b></td> 
+          <td style="border-top:1pt solid black;text-align:right" colspan="2">&nbsp;</td> 
+          </tr>';    
+          
+          $this->mpdf->WriteHTML($sum_row);   
+          
+          $precio_costo = 0;
+          $cant_entradas = 0;
+          $cant_salidas = 0;                 
+            $this->mpdf->WriteHTML($fin_pagina);    
+
+
           //echo $fin_tabla;
             $fila = 0;            
             $this->mpdf->AddPage();
@@ -468,6 +495,24 @@ public function reporte_detalle_productos_stock($idproducto,$mes,$anno){
         $num_final++;
         //$pag++;
       }
+
+
+          $sum_row = '
+          <tr>
+            <td colspan="9">&nbsp;</td>
+          </tr>
+          <tr>
+          <td style="border-top:1pt solid black;text-align:center;" colspan="4"><b>TOTALES</b></td>      
+          <td style="border-top:1pt solid black;" align="right"><b>'.number_format($precio_costo, 0, '.', ',').'</b></td>
+          <td style="border-top:1pt solid black;text-align:right"><b>'.$cant_entradas.'</b></td> 
+          <td style="border-top:1pt solid black;text-align:right"><b>'.$cant_salidas.'</b></td> 
+          <td style="border-top:1pt solid black;text-align:right" colspan="2">&nbsp;</td> 
+          </tr>';  
+             
+        
+        $this->mpdf->WriteHTML($sum_row);
+
+
       $this->mpdf->WriteHTML($fin_pagina);
       //echo $body_totales.$footer.$fin_tabla; exit;
      // $this->mpdf->WriteHTML($body_totales.$footer.$fin_tabla);
