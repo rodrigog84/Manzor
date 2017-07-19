@@ -1989,12 +1989,17 @@ class Recaudacion extends CI_Controller {
 
  			$this->load->database();
 
+
  			$query = $this->db->query('SELECT acc.*, n.nombre as nom_caja, e.nombre as 
  			nom_cajero FROM recaudacion acc
             left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
 			WHERE acc.fecha = "'.$fecha.'" and n.id="'.$idcaja.'" ');
 
+
+			$query_gastos = $this->db->query('SELECT g.numero, g.detalle, g.num_doc, g.monto
+ 			FROM control_caja_gastos g
+			WHERE g.fecha = "'.$fecha.'" and g.id_caja="'.$idcaja.'"  and g.id_cajero = "' . $idcajero  . '"');
            
                 $header = '
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -2039,7 +2044,50 @@ class Recaudacion extends CI_Controller {
 			
 		  </tr>
 			<tr><td colspan="3">&nbsp;</td></tr>		  
-			</table>';     
+			</table>';  
+
+
+$header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Libro de Recaudacion</title>
+		<style type="text/css">
+		td {
+			font-size: 16px;
+		}
+		p {
+		}
+		</style>
+		</head>
+
+		<body>
+		<table width="987px" height="602" border="0">
+		  <tr>
+		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
+		    </td>
+		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top">
+		    <p>FECHA EMISION : '.$fecha2.'</p>
+		    </td>
+		  </tr><tr>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>GASTOS</h2></td>
+		  </tr>
+		  <tr>
+			<td>CAJA : '.$nomcaja.'</td>
+			<td>CAJERO : '.$nomcajero.'</td>
+			<td>FECHA : '.$fecha2.'</td>
+		  </tr>
+		  <tr>
+			
+		  </tr>
+			<tr><td colspan="3">&nbsp;</td></tr>		  
+			</table>';  			   
 		      $cancelado = 0;		     
 		      $i = 0;
               //$body_detail = '';
@@ -2056,23 +2104,25 @@ class Recaudacion extends CI_Controller {
 			  $credito30dias = 0;
 			  $credito60dias = 0;
 
-			  $header .= '
+			  $header2 .= '
 	    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
-	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:12px" >Num.Doc.</td>
-	        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:12px" >Tip Doc.</td>
-	        <td width="247px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:12px" >Cliente</td>
+	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Num.Doc.</td>
+	        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Tip Doc.</td>
+	        <td width="177px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Cliente</td>
 	         <!--td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >&nbsp;</td-->
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Total</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Compte</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Efectivo</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque al Dia</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque a fecha</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Credito</td>
-	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cred 30d</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Debito</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Credito</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Transfer.</td>	        	             
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Total</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Compte</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Efectivo</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque al Dia</td>
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque a fecha</td>
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Credito</td>
+	        <td width="70px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cred 30d</td>
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Tarjeta Debito</td>
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Tarjeta Credito</td>
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Transfer.</td>	        	             
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Vale</td>		        
+	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Observaci&oacute;n</td>
 	       </tr>';	
 	       
 	        $a="ok";
@@ -2562,19 +2612,21 @@ class Recaudacion extends CI_Controller {
 
 				$body_detail .= '
 				<tr>				
-				<td width="60px" style="text-align:center;font-size:12px">'.$v['num_doc'].'</td>	
-				<td width="60px" style="text-align:center;font-size:12px">'.$tip.'</td>
-				<td width="247px" style="text-align:left;font-size:12px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequeafecha, 0, ',', ',').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito, 0, ',', '.').'</td>
-				<td width="80px" style="text-align:right;font-size:12px">'.number_format($credito30dias, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
+				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
+				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', ',').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+				<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">0</td>
+				<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
 				</tr>
 				';				
 
@@ -2584,19 +2636,21 @@ class Recaudacion extends CI_Controller {
 
 		    $body_detail .= '
 				<tr>				
-				<td width="60px" style="text-align:center;font-size:12px">'.$v['num_doc'].'</td>	
-				<td width="60px" style="text-align:center;font-size:12px">'.$tip.'</td>
-				<td width="247px" style="text-align:left;font-size:12px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequeafecha, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito, 0, ',', '.').'</td>
-				<td width="80px" style="text-align:right;font-size:12px">'.number_format($credito30dias, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
+				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
+				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+				<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">0</td>
+				<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
 				</tr>
 				';
 
@@ -2740,7 +2794,48 @@ class Recaudacion extends CI_Controller {
 
 		';
 	    };
+
+
+	    $header4 = '</table><br><br><table width="987px" cellspacing="0" cellpadding="0" border="0">
+	      <tr>
+	        <td width="162"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc Gasto.</td>
+	        <td width="500px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Detalle.</td>
+	        <td width="162px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Comprobante</td>
+	        <td width="163px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Monto</td>
+	       </tr>';
+
+	       $footer2  = "";
+		$gastos = $query_gastos->result_array();
+		$sum_gastos = 0;
+		        foreach($gastos as $gasto){ 
+
+				    $footer2 .= '
+						<tr>				
+						<td width="162px" style="text-align:center;font-size:14px">'.$gasto['numero'].'</td>	
+						<td width="500px" style="text-align:left;font-size:14px">'.$gasto['detalle'].'</td>
+						<td width="162px" style="text-align:right;font-size:14px">'.$gasto['num_doc'].'</td>
+						<td width="163px" style="text-align:right;font-size:14px">'.number_format($gasto['monto'], 0, ',', '.').'</td>
+						
+						</tr>
+						';
+						$sum_gastos += $gasto['monto'];
+		        }
+
+		$footer2 .= '</table><table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
+		<td  colspan="4" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
+		</tr>';		        
+		$footer2 .= '
+		<tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GASTOS</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($sum_gastos, 0, ',', '.').'</b></td>
+	    </tr></table>';
+
+
+
+
 	    $fin_tabla = "</table>
+
+
 		</body>
 		</html>";
 	    
@@ -2769,6 +2864,7 @@ class Recaudacion extends CI_Controller {
 			foreach ($array_detail as $detail) {
 				if($fila == 1){
 					$this->mpdf->WriteHTML($header);		
+					$this->mpdf->WriteHTML($header2);	
 					//echo $header.$header2.$body_header;
 				}
 
@@ -2785,9 +2881,17 @@ class Recaudacion extends CI_Controller {
 				$fila++;
 				$pag++;
 			}
+
+
 			$this->mpdf->WriteHTML($fin_tabla);
 			//echo $body_totales.$footer.$fin_tabla; exit;
 			$this->mpdf->WriteHTML($body_totales.$footer.$fin_tabla);
+			$this->mpdf->AddPage();
+
+			$this->mpdf->WriteHTML($header3);		
+			$this->mpdf->WriteHTML($header4.$footer2);				
+			$this->mpdf->WriteHTML($fin_tabla);
+
 			//echo $html; exit;
 			//exit;
 			//$this->mpdf->AddPage();
