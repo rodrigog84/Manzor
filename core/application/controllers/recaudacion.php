@@ -1220,7 +1220,7 @@ class Recaudacion extends CI_Controller {
 		foreach($items as $v){
 
 			$factura_clientes_item = array(
-		        'id_producto' => $v->id,
+		        'id_producto' => $v->id_producto,
 		        'id_factura' => $idfactura,
 		        'num_factura' => $numdocum,
 		        'precio' => $v->precio,
@@ -1233,7 +1233,7 @@ class Recaudacion extends CI_Controller {
 		        'id_bodega' => $idbodega
 			);
 
-		$producto = $v->id;
+		$producto = $v->id_producto;
         $saldo = 0;
 
 

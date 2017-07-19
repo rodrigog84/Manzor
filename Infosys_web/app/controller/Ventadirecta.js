@@ -878,7 +878,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var grid  = view.down('grid');
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            viewIngresa.down('#productoId').setValue(row.data.id);
+            viewIngresa.down('#productoId').setValue(row.data.id_producto);
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
             viewIngresa.down('#precioId').setValue(row.data.p_venta);
