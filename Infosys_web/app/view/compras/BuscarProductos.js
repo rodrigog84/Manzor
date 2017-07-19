@@ -42,13 +42,6 @@ Ext.define('Infosys_web.view.compras.BuscarProductos' ,{
                 align: 'right',
                 renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00")}
             },{
-                header: "Precio Neto",
-                width: 100,
-                dataIndex: 'p_neto',
-                align: 'right',
-                renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00")},
-                hidden: true
-            },{
                 header: "Stock",
                 width: 100,
                 align: 'right',
