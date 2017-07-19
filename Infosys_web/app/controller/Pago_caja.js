@@ -2221,7 +2221,10 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         var idcaja = stCombo.findRecord('id', caja.getValue()).data;
         correlanue = idcaja.correlativo;
         correlanue = (parseInt(correlanue)+1);
-        var caj = idcaja.id;       
+        var caj = idcaja.id;  
+        if(!efectivo){
+            var efectivo = view.down('#efectuvoinicialId').getValue(); 
+        };  
        
         if (!caje){
 
