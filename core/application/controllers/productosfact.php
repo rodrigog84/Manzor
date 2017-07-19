@@ -446,10 +446,18 @@ class Productosfact extends CI_Controller {
 			order by acc.id_producto desc 
 			limit '.$start.', '.$limit.'');
 
+			if($query->num_rows()>0){
+
 			foreach ($query->result() as $row)
 			{
 			$data[] = $row;
 			}
+
+			$resp['success'] = true;
+	        $resp['total'] = $countAll;
+	        $resp['data'] = $data;
+
+	        };
 				      
         };
 
@@ -485,13 +493,15 @@ class Productosfact extends CI_Controller {
 			{
 			$data[] = $row;
 			}
+
+			$resp['success'] = true;
+	        $resp['total'] = $countAll;
+	        $resp['data'] = $data;
 				       	
 
         };
                 
-        $resp['success'] = true;
-        $resp['total'] = $countAll;
-        $resp['data'] = $data;
+        
 
         echo json_encode($resp);
 
@@ -682,6 +692,8 @@ class Productosfact extends CI_Controller {
 		}
 
 		$data = array();
+
+		if($query->num_rows()>0){
 		
 		foreach ($query->result() as $row)
 		{
@@ -691,6 +703,8 @@ class Productosfact extends CI_Controller {
         $resp['success'] = true;
         $resp['total'] = $countAll;
         $resp['data'] = $data;
+
+        };
 
         echo json_encode($resp);
 	}
