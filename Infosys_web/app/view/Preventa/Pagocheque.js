@@ -18,9 +18,10 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
         'Ext.toolbar.Separator'
     ],
 
-    autoShow: true,
+    autoShow: false,
     height: 460,
     width: 1360,
+    closable: false,
     layout: 'fit',
     title: 'Pago Cheque Caja',
 
@@ -242,6 +243,16 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                             maxHeight: 40,
                             action: 'aceptacheques',
                             text: 'PAGAR'
+                        },{
+                            xtype: 'button',
+                            iconCls: 'icon-exit',
+                            scale: 'large',
+                            //labelWidth: 30,
+                            itemId: 'salircheques',
+                            disabled : false,
+                            maxHeight: 40,
+                            action: 'salircheques',
+                            text: 'SALIR'
                         }
                     ]
                 }

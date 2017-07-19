@@ -1202,6 +1202,10 @@ class Vale extends CI_Controller {
         $tipo = $this->input->post('documento');
         $fecha = $this->input->post('fecha');
         $idbodega = $this->input->post('bodega');
+
+        if(!$idBodega){
+        	$idBodega=1;
+        };
         if(!$fecha){
          $fecha = date('Y-m-d');
         };
@@ -1307,7 +1311,7 @@ class Vale extends CI_Controller {
 			$data = array();
 			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			WHERE acc.id_bodega = "'.$idbodega.'" 
+			WHERE acc.id_bodegasalida = "'.$idbodega.'" 
 			order by acc.id desc');
 
 			$total = 0;
@@ -1323,7 +1327,7 @@ class Vale extends CI_Controller {
 			$data = array();
 			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			WHERE acc.id_bodega = "'.$idbodega.'" 
+			WHERE acc.id_bodegasalida = "'.$idbodega.'" 
 			order by acc.id desc
 			limit '.$start.', '.$limit.'');	
 

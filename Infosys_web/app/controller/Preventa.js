@@ -250,9 +250,9 @@ Ext.define('Infosys_web.controller.Preventa', {
             'preventaeditar #DescuentoproId': {
                 change: this.changedctofinal4
             },
-            'preventaingresar #tipoDocumento2Id': {
+            /*'preventaingresar #tipoDocumento2Id': {
                 select: this.selectItemdocuemento
-            },
+            },*/
 
             'documentosingresar #tipoDocumento2Id': {
                 select: this.selectItemdocuemento2
@@ -545,6 +545,8 @@ Ext.define('Infosys_web.controller.Preventa', {
          var nombre =idbodega;
          var tipo = "2";
 
+         console.log("LLegamos");
+
          if(!idbodega){
             Ext.Msg.alert('Alerta', 'Debe Elegir Bodega');
             return;    
@@ -565,7 +567,8 @@ Ext.define('Infosys_web.controller.Preventa', {
                     var correlanue = correlativo.num_otrabajo;
                     var numboleta = (parseInt(boleta.num_boleta) +1);
                     var correlanue = (parseInt(correlanue) +1);
-                    view.down("#ticketId").setValue(correlanue);
+                    view.down("#numvaleId").setValue(correlanue);
+                    view.down("#ticketId").setValue(numboleta);
                     view.down("#tipoDocumento2Id").setValue(tipo);
                     view.down('#bodegaId').setValue(idbodega);
                     view.down('#rutId').setValue(detalle.rut);
@@ -1805,7 +1808,7 @@ Ext.define('Infosys_web.controller.Preventa', {
 
     validaboleta: function(){
 
-        var view =this.getPreventaingresar();
+        var view =this.getDocumentosingresar();
         var rut = view.down('#rutId').getValue();
         
         Ext.Ajax.request({
@@ -1823,39 +1826,7 @@ Ext.define('Infosys_web.controller.Preventa', {
                         view.down("#nombre_id").setValue(cliente.nombres)
                         view.down("#tipocondpagoId").setValue(cliente.id_pago)
                         view.down("#rutId").setValue(rut)
-                        var bolEnable = false;
-                    if (cliente.id_pago == 1){
-                        view.down('#DescuentoproId').setDisabled(bolEnable);
-                        view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                        view.down('#descuentovalorId').setDisabled(bolEnable);
-                            
-                    };
-                    if (cliente.id_pago == 2){
-                        view.down('#DescuentoproId').setDisabled(bolEnable);
-                        view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                        view.down('#descuentovalorId').setDisabled(bolEnable);
-                            
-                    };
-                    if (cliente.id_pago == 4){
-                        view.down('#DescuentoproId').setDisabled(bolEnable);
-                        view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                        view.down('#descuentovalorId').setDisabled(bolEnable);
-                            
-                    };
-                    if (cliente.id_pago == 6){
-
-                         view.down('#DescuentoproId').setDisabled(bolEnable);
-                         view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                         view.down('#descuentovalorId').setDisabled(bolEnable);
-                        
-                    };
-                    if (cliente.id_pago == 7){
-
-                         view.down('#DescuentoproId').setDisabled(bolEnable);
-                         view.down('#tipoDescuentoId').setDisabled(bolEnable);
-                         view.down('#descuentovalorId').setDisabled(bolEnable);
-                        
-                    };                   
+                              
                 }
                     
                 }
@@ -1872,12 +1843,10 @@ selectItemdocuemento2: function() {
         var view = this.getDocumentosingresar();
         var tipo_documento = view.down('#tipoDocumento2Id');
         var bodegaid = view.down('#bodegaId').getValue();
-
-
-
         var stCombo = tipo_documento.getStore();
         var record = stCombo.findRecord('id', tipo_documento.getValue()).data;
-        //console.log(record);
+        console.log(record);
+        console.log("Llegamos 2");
         var nombre = (record.id);    
         habilita = false;
         if(nombre == 2){ 
@@ -1957,26 +1926,10 @@ selectItemdocuemento2: function() {
         var bolDisabled = tipo_documento.getValue() == 1 || tipo_documento.getValue() == 19 || ((tipo_documento.getValue() == 101 || tipo_documento.getValue() == 103) && habilita) ? false : true; // campos se habilitan sólo en factura o factura electronica
 
         if(bolDisabled == true){  // limpiar campos
-           view.down('#rutId').setValue('19');
+           view.down('#rutId').setValue('');
            this.validaboleta();
            
         }
-
-
-        /*view.down('#rutId').setDisabled(bolDisabled);
-        view.down('#buscarBtn').setDisabled(bolDisabled);
-        view.down('#nombre_id').setDisabled(bolDisabled);
-        view.down('#direccionId').setDisabled(bolDisabled);
-        view.down('#giroId').setDisabled(bolDisabled);
-        view.down('#tipoCiudadId').setDisabled(bolDisabled);
-        view.down('#tipoComunaId').setDisabled(bolDisabled);
-        view.down('#sucursalId').setDisabled(bolDisabled);
-        view.down('#tipoVendedorId').setDisabled(bolDisabled);
-        view.down('#tipocondpagoId').setDisabled(bolDisabled);
-        view.down('#rutId').focus();
-        grid.getStore().removeAll();  
-        var controller = this.getController('Productos');*/
-        //controller.recalcularFinal();
 
     },  
 
@@ -1992,12 +1945,7 @@ selectItemdocuemento2: function() {
            view.down('#rutId').setValue('19');
            this.validaboleta();           
         }
-        //view.down('#rutId').setDisabled(bolDisabled);
-        //view.down('#buscarBtn').setDisabled(bolDisabled);
-        //view.down('#nombre_id').setDisabled(bolDisabled);
-        //view.down('#giroId').setDisabled(bolDisabled);
-        //view.down('#sucursalId').setDisabled(bolDisabled);
-        //view.down('#direccionId').setDisabled(bolDisabled);        
+           
         view.down("#rutId").focus();
 
     },
@@ -3109,7 +3057,8 @@ selectItemdocuemento2: function() {
     grabarpreventa: function(){
 
         var viewIngresa = this.getPreventaingresar();
-        var numeroticket = viewIngresa.down('#ticketId').getValue();
+        var numerodocum = viewIngresa.down('#ticketId').getValue();
+        var numeroticket = viewIngresa.down('#numvaleId').getValue();
         var idtipo = viewIngresa.down('#tipoDocumento2Id').getValue();
         var idcliente = viewIngresa.down('#id_cliente').getValue();
         var sucursal = viewIngresa.down('#id_sucursalID').getValue();

@@ -85,10 +85,21 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             maxHeight: 25,
                                             width: 200,
                                             allowBlank: false,
+                                            name: 'num_vale',
+                                            itemId: 'numvaleId',
+                                            fieldLabel: '<b>VALE</b>',
+                                            readOnly: true
+
+                                        },{
+                                            xtype: 'numberfield',
+                                            fieldCls: 'required',
+                                            maxHeight: 25,
+                                            width: 200,
+                                            allowBlank: false,
                                             name: 'num_ticket',
                                             itemId: 'ticketId',
                                             fieldLabel: '<b>VALE</b>',
-                                            readOnly: true
+                                            hidden: true
 
                                         },{
                                             xtype: 'textfield',

@@ -1017,6 +1017,7 @@ class Recaudacion extends CI_Controller {
 	        'valor_vuelto' => $r->valor_vuelto,
 	        'fecha_transac' => date('Y-m-d'),
 	        'fecha_comp' => $r->fecha_comp,
+	        'num_vale' => $numpreventa
 			);
 		
 		$this->db->insert('recaudacion_detalle', $recaudacion_detalle);

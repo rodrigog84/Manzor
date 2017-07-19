@@ -288,7 +288,8 @@ class Correlativos extends CI_Controller {
 		if($query->num_rows()>0){
 	   		$row = $query->first_row();
 	   		$resp['cliente'] = $row;
-	   		$corr = (($row->num_otrabajo)+1); 
+	   		$corr = (($row->num_otrabajo)+1);
+	   		$corr2 = (($row->num_boleta));  
 	   		$id = ($row->id);
 
 	   		$data3 = array(

@@ -108,7 +108,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 change: this.changedctofinal3
             },
             'documentosingresar #tipoDocumento2Id': {
-                select: this.selectItemdocuemento,
+                select: this.selectItemdocuemento
             },
             'buscarclientesboleta2 button[action=buscar]': {
                 click: this.buscar
@@ -150,7 +150,22 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'documentosingresar button[action=editaritem]': {
                 click: this.editaritemvale
             },
+            'generapagocheque button[action=salircheques]': {
+                click: this.salircheques
+            },
         });
+    },
+
+    salircheques: function(){
+
+        var view =this.getDocumentosingresar();
+        var edit =this.getGenerapagocheque();
+        var bolEnable = false;
+        view.down('#pagoId').setDisabled(bolEnable);
+        view.down('#grababoletaId').setDisabled(bolEnable);
+        edit.close();
+        
+
     },
 
     editaritemvale: function() {
@@ -222,7 +237,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         var view = this.getGenerapagocheque();
         var viewIngresa = this.getDocumentosingresar();
-        var valida = view.down('#validapagoId').getValue();
+        var valida = "SI";
         var cero=0;
         var valortotal = view.down('#finaltotalId').getValue();
         if (valortotal == 0){
@@ -235,6 +250,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             return;
             
         }
+        viewIngresa.down('#permiteId').setValue(valida);
+        console.log(valida);
         
     },
 
@@ -1207,13 +1224,15 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var bolEnable = true;
         viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
         var numeroticket = viewIngresa.down('#ticketId').getValue();
+        var numerovale = viewIngresa.down('#numvaleId').getValue();
         var idtipo = viewIngresa.down('#tipoDocumento2Id').getValue();
         var idcliente = viewIngresa.down('#id_cliente').getValue();
         var sucursal = viewIngresa.down('#id_sucursalID').getValue();
         var idpago = viewIngresa.down('#tipocondpagoId').getValue();
         var vender = viewIngresa.down('#tipoVendedorId').getValue();
         var mecanicos = viewIngresa.down('#mecanicosId').getValue();
-        var valida = viewIngresa.down('#validapagoId').getValue();
+        var valida2 = viewIngresa.down('#permiteId').getValue();
+        console.log(valida2);
         var otrabajo = viewIngresa.down('#otrabajoId').getValue();      
         var rtItem = this.getRecaudacionItemsStore();                
         if(!vender){
@@ -1249,7 +1268,16 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var totaldocumento = viewIngresa.down('#finaltotalpostId').getValue();
         var tdocumento = (viewIngresa.down('#finaltotalpostId').getValue());        
         var finalafectoId = (totaldocumento / 1.19);
-        var bodega = viewIngresa.down('#bodegaId').getValue();   
+        var bodega = viewIngresa.down('#bodegaId').getValue();
+       
+        if(valida2=="NO"){
+            var bolEnable = false;
+            viewIngresa.down('#grababoletaId').setDisabled(bolEnable);
+             Ext.Msg.alert('Informacion', 'Debe Cancelar Venta');
+             return;            
+        };
+        
+           
                         
         var dataItems = new Array();
         stItem.each(function(r){
@@ -1266,8 +1294,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             params: {
                 fecha : Ext.Date.format(fechapreventa,'Y-m-d'),
                 fechapago : Ext.Date.format(fechapreventa,'Y-m-d'),
-                numboleta: numdoc,
-                numeroticket: numeroticket,
+                numboleta: numeroticket,
+                numeroticket: numerovale,
                 tipdocumento: idtipo, 
                 recitems: Ext.JSON.encode(recItems),
                 items: Ext.JSON.encode(dataItems),                
@@ -1336,7 +1364,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 idgiro : idgiro,
                 otrabajo: otrabajo,
                 idbodega : idbodega,
-                numeroticket : numeroticket,
+                numeroticket : numerovale,
                 fechapreventa : fechapreventa,
                 descuento : viewIngresa.down('#totdescuentoId').getValue(),
                 neto : finalafectoId,
@@ -1570,8 +1598,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var totdocu = view.down('#finaltotalpostId').getValue();
         var totdoc = view.down('#finaltotalId').getValue();
         var numdocu = view.down('#numboleta2Id').getValue();        
-        //view.down('#numchequeId').setDisabled(bolDisabled);
-        //view.down('#bancoId').setDisabled(bolDisabled);
         if(!totdocu){
 
             var bolEnable = false;
