@@ -1561,15 +1561,23 @@ Ext.define('Infosys_web.controller.Compras', {
 
         var view = this.getBuscarproductosfacturascompras();
         var viewIngresa = this.getFacturascomprasingresar();
+        var bodegaId = viewIngresa.down('#bodegaId').getValue();
         var grid  = view.down('grid');
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
+            if (row.data.id_bodega != bodegaId){
+
+                Ext.Msg.alert('Alerta', 'Stock Seleccionado No Corresponde a Bodega Despacho');
+                return;
+                
+            }else{
             viewIngresa.down('#productoId').setValue(row.data.id);
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
             viewIngresa.down('#precioId').setValue(row.data.p_venta);
             viewIngresa.down('#cantidadOriginalId').setValue(row.data.stock);
             view.close();
+            };
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
             return;

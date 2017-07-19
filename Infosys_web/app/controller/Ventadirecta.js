@@ -875,9 +875,16 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         var view = this.getBuscarproductospreventa3();
         var viewIngresa = this.getDocumentosingresar();
+        var bodegaId = viewIngresa.down('#bodegaId').getValue();
         var grid  = view.down('grid');
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
+            if (row.data.id_bodega != bodegaId){
+
+                Ext.Msg.alert('Alerta', 'Stock Seleccionado No Corresponde a Bodega Despacho');
+                return;
+                
+            }else{
             viewIngresa.down('#productoId').setValue(row.data.id_producto);
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
@@ -885,6 +892,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             viewIngresa.down('#cantidadOriginalId').setValue(row.data.stock);
             viewIngresa.down("#cantidadId").focus();
             view.close();
+            };
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
             return;

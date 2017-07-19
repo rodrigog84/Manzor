@@ -52,6 +52,11 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos' ,{
                 dataIndex: 'nom_bodega',
                 hidden: true
             },{
+                header: "Id_bodega",
+                 width: 100,
+                dataIndex: 'id_bodega',
+                hidden: true
+            },{
                 header: "Precio Venta",
                 width: 100,
                 dataIndex: 'p_venta',

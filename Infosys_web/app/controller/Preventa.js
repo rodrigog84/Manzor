@@ -2441,7 +2441,8 @@ selectItemdocuemento2: function() {
 
         var view = this.getBuscarproductospreventa();
         var viewIngresa = this.getPreventaingresar();
-        var estado = viewIngresa.down('#estadoId').getValue();        
+        var estado = viewIngresa.down('#estadoId').getValue();
+        var bodegaId = viewIngresa.down('#bodegaId').getValue();        
         var cero = 0;
         var cero2 = "";
         var cero1 = "";
@@ -2452,6 +2453,12 @@ selectItemdocuemento2: function() {
             viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
             viewIngresa.down('#codigoId').setValue(row.data.codigo);
             var precioventa = (row.data.p_venta);
+            if (row.data.id_bodega != bodegaId){
+
+                Ext.Msg.alert('Alerta', 'Stock Seleccionado No Corresponde a Bodega Despacho');
+                return;
+                
+            }else{
             if (row.data.stock < 0){
                         view.close();
                         Ext.Msg.alert('Alerta', 'Producto Sin Stock');
@@ -2488,7 +2495,8 @@ selectItemdocuemento2: function() {
                     viewIngresa.down("#cantidadId").focus();
                 }
             }
-        }  
+        }
+        } 
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
             return;
