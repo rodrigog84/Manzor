@@ -278,6 +278,11 @@ Ext.define('Infosys_web.controller.Compras', {
             return;
         };
 
+        if (!numfactura){
+            Ext.Msg.alert('Debe ingresar Numero de Factura');
+            return;
+        };
+
         Ext.Ajax.request({
             url: preurl + 'compras/validanumero',
             params: {
@@ -1142,7 +1147,6 @@ Ext.define('Infosys_web.controller.Compras', {
 
             var numfactura = viewIngresa.down('#numfacturaId').getValue();
             var idproveedor = viewIngresa.down('#id_cliente').getValue();
-            console.log("llegamos");
             Ext.Ajax.request({
                 url: preurl + 'compras/validanumero',
                 params: {
@@ -1242,38 +1246,101 @@ Ext.define('Infosys_web.controller.Compras', {
     selectItemdocuemento: function() {
         
         var view =this.getFacturascomprasingresar();
-        var tipo_documento = view.down('#tipoDocumentoId');
-        var stCombo = tipo_documento.getStore();
-        var record = stCombo.findRecord('id', tipo_documento.getValue()).data;
-        //console.log(record);
-        var nombre = (record.id);    
-        habilita = false;
+        var nombre = view.down('#tipoDocumentoId').getValue();
+        console.log(nombre);
+        var cero="";
         
-        var grid  = view.down('#itemsgridId');
-
-        var bolDisabled = tipo_documento.getValue() == 1 || tipo_documento.getValue() == 1 || tipo_documento.getValue() == 19 || ((tipo_documento.getValue() == 101 || tipo_documento.getValue() == 103) && habilita) ? false : true; // campos se habilitan sólo en factura o factura electronica
-
-        if(bolDisabled == true){  // limpiar campos
-           view.down('#rutId').setValue('19');
-           this.validaboleta();
-           
+        if(nombre == 3){  // limpiar campos           
+           view.down("#id_cliente").setValue(cero)
+           view.down("#nombre_id").setValue(cero)
+           view.down("#tipoCiudadId").setValue(cero)
+           view.down("#tipoComunaId").setValue(cero)
+           view.down("#tipoVendedorId").setValue(cero)
+           view.down("#giroId").setValue(cero)
+           view.down("#preciosId").setValue(cero)
+           view.down("#direccionId").setValue(cero)
+           view.down("#tipocondpagoId").setValue(cero)
+           view.down('#rutId').setValue(cero); 
+           view.down('#tipoDocumentoId').setValue(nombre);  
+           view.down("#numfacturaId").focus();               
         }
 
-        /*view.down('#rutId').setDisabled(bolDisabled);
-        view.down('#buscarBtn').setDisabled(bolDisabled);
-        view.down('#nombre_id').setDisabled(bolDisabled);
-        view.down('#direccionId').setDisabled(bolDisabled);
-        view.down('#giroId').setDisabled(bolDisabled);
-        view.down('#tipoCiudadId').setDisabled(bolDisabled);
-        view.down('#tipoComunaId').setDisabled(bolDisabled);
-        view.down('#sucursalId').setDisabled(bolDisabled);
-        view.down('#tipoVendedorId').setDisabled(bolDisabled);
-        view.down('#tipocondpagoId').setDisabled(bolDisabled);
-        view.down('#rutId').focus();*/
-        grid.getStore().removeAll();  
-        var controller = this.getController('Productos');
-        controller.recalcularFinal();
+        if(nombre == 4){  // limpiar campos
+           view.down("#id_cliente").setValue(cero)
+           view.down("#nombre_id").setValue(cero)
+           view.down("#tipoCiudadId").setValue(cero)
+           view.down("#tipoComunaId").setValue(cero)
+           view.down("#tipoVendedorId").setValue(cero)
+           view.down("#giroId").setValue(cero)
+           view.down("#preciosId").setValue(cero)
+           view.down("#direccionId").setValue(cero)
+           view.down("#tipocondpagoId").setValue(cero)
+           view.down('#rutId').setValue(cero); 
+           view.down('#tipoDocumentoId').setValue(nombre);  
+           view.down("#numfacturaId").focus();              
+        }
 
+        if(nombre == 5){
+           view.down("#id_cliente").setValue(cero)
+           view.down("#nombre_id").setValue(cero)
+           view.down("#tipoCiudadId").setValue(cero)
+           view.down("#tipoComunaId").setValue(cero)
+           view.down("#tipoVendedorId").setValue(cero)
+           view.down("#giroId").setValue(cero)
+           view.down("#preciosId").setValue(cero)
+           view.down("#direccionId").setValue(cero)
+           view.down("#tipocondpagoId").setValue(cero)
+           view.down('#rutId').setValue(cero); 
+           view.down('#tipoDocumentoId').setValue(nombre);  
+           view.down("#numfacturaId").focus();           
+        }
+
+        if(nombre == 1){
+           view.down("#id_cliente").setValue(cero)
+           view.down("#nombre_id").setValue(cero)
+           view.down("#tipoCiudadId").setValue(cero)
+           view.down("#tipoComunaId").setValue(cero)
+           view.down("#tipoVendedorId").setValue(cero)
+           view.down("#giroId").setValue(cero)
+           view.down("#preciosId").setValue(cero)
+           view.down("#direccionId").setValue(cero)
+           view.down("#tipocondpagoId").setValue(cero)
+           view.down('#rutId').setValue(cero); 
+           view.down('#tipoDocumentoId').setValue(nombre);  
+           view.down("#numfacturaId").focus();           
+        }
+
+        if(nombre == 2){           
+           view.down("#id_cliente").setValue(cero)
+           view.down("#nombre_id").setValue(cero)
+           view.down("#tipoCiudadId").setValue(cero)
+           view.down("#tipoComunaId").setValue(cero)
+           view.down("#tipoVendedorId").setValue(cero)
+           view.down("#giroId").setValue(cero)
+           view.down("#preciosId").setValue(cero)
+           view.down("#direccionId").setValue(cero)
+           view.down("#tipocondpagoId").setValue(cero)
+           view.down('#rutId').setValue(cero); 
+           view.down('#tipoDocumentoId').setValue(nombre);  
+           view.down("#numfacturaId").focus();
+        }
+
+        if(nombre == 6){           
+           view.down("#id_cliente").setValue(cero)
+           view.down("#nombre_id").setValue(cero)
+           view.down("#tipoCiudadId").setValue(cero)
+           view.down("#tipoComunaId").setValue(cero)
+           view.down("#tipoVendedorId").setValue(cero)
+           view.down("#giroId").setValue(cero)
+           view.down("#preciosId").setValue(cero)
+           view.down("#direccionId").setValue(cero)
+           view.down("#tipocondpagoId").setValue(cero)
+           view.down('#rutId').setValue(cero); 
+           view.down('#tipoDocumentoId').setValue(nombre);  
+           view.down("#numfacturaId").focus();
+        }
+
+       
     },
 
     recalcularFinal: function(){
@@ -1308,7 +1375,7 @@ Ext.define('Infosys_web.controller.Compras', {
 
     validaboleta: function(){
 
-        var view =this.getfacturascomprasingresar();
+        var view =this.getFacturascomprasingresar();
         var rut = view.down('#rutId').getValue();
         
         Ext.Ajax.request({
@@ -1338,7 +1405,9 @@ Ext.define('Infosys_web.controller.Compras', {
                 }
             }
 
-        });       
+        }); 
+        
+        view.down('#numfacturaId').focus();      
        
     },
 
@@ -1407,7 +1476,7 @@ Ext.define('Infosys_web.controller.Compras', {
 
         });       
         }
-        this.validanumfact();
+        //this.validanumfact();
         view.down("#codigoId").focus();
     },
     

@@ -431,7 +431,7 @@ Ext.define('Infosys_web.controller.Preventa', {
             return;    
          }else{
                 Ext.Ajax.request({
-                url: preurl + 'correlativos/generaventa?valida='+nombre,
+                url: preurl + 'correlativos/generagastos?valida='+nombre,
                 params: {
                     id: 1
                 },

@@ -368,7 +368,7 @@ class Cambios extends CI_Controller {
 			);
 
 		$productoentrada = $v->id_entrada;
-		$productosalida = $v->id_entrada;
+		$productosalida = $v->id_salida;
 
 		$this->db->insert('cambios_detalle', $devolucion_detalle);
 

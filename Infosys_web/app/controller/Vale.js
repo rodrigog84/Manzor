@@ -100,8 +100,8 @@ Ext.define('Infosys_web.controller.Vale', {
             'valedespachoprincipal button[action=exportarexcelpreventa]': {
                 click: this.exportarexcelpreventa
             },
-            'valedespachoprincipal button[action=buscarpreventa]': {
-                click: this.buscarpreventa
+            'valedespachoprincipal button[action=buscarvaledespacho]': {
+                click: this.buscarvaledespacho
             },
             'topmenus menuitem[action=mvaledespacho]': {
                 click: this.mvaledespacho
@@ -444,16 +444,16 @@ Ext.define('Infosys_web.controller.Vale', {
         
     },    
     
-    buscarpreventa: function(){
+    buscarvaledespacho: function(){
         
         var view = this.getValedespachoprincipal();
-        var st = this.getPreventaStore()
-        var tipo = view.down('#tipoDocumentoId').getValue();
+        var st = this.getValeStore()
         var opcion = view.down('#tipoSeleccionId').getValue()
+        var bodega = view.down('#bodegaId').getValue()
         var nombre = view.down('#nombreId').getValue()
         st.proxy.extraParams = {nombre : nombre,
                                 opcion : opcion,
-                                documento: tipo}
+                                bodega: bodega}
         st.load();
     },
 

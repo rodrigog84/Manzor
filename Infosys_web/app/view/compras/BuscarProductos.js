@@ -29,26 +29,18 @@ Ext.define('Infosys_web.view.compras.BuscarProductos' ,{
                 dataIndex: 'codigo'
             },{
                 header: "Nombres",
-                width: 750,
+                width: 450,
                 dataIndex: 'nombre'
             },{
                 header: "Ubicacion Fisica",
-                 width: 100,
-                dataIndex: 'nom_bodega',
-                hidden: true
+                 width: 250,
+                dataIndex: 'nom_bodega'
             },{
                 header: "Precio Venta",
-                width: 100,
+                width: 150,
                 dataIndex: 'p_venta',
                 align: 'right',
                 renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00")}
-            },{
-                header: "Precio Neto",
-                width: 100,
-                dataIndex: 'p_neto',
-                align: 'right',
-                renderer: function(valor){return Ext.util.Format.number(parseInt(valor),"0,00")},
-                hidden: true
             },{
                 header: "Stock",
                 width: 100,

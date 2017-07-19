@@ -86,7 +86,7 @@ Ext.define('Infosys_web.view.compras.Facturas', {
                                             maxHeight: 25,
                                             width: 250,
                                             labelWidth: 150,
-                                            allowBlank: false,
+                                            //allowBlank: false,
                                             name: 'num_factura',
                                             itemId: 'numfacturaId',
                                             fieldLabel: '<b>NUMERO DOCUMENTO</b>'
