@@ -1209,19 +1209,11 @@ class Vale extends CI_Controller {
         
 		if($opcion == "Rut"){
 
-			$tipo = 1;
-	        $tipo5 = 2;
-	        $tipo2 = 101; // FACTURA ELECTRONICA
-	        $tipo3 = 103; // FACTURA EXENTA ELECTRONICA        
-	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
-
-
+			
 			$data = array();		
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			left join vendedores v on (acc.id_vendedor = v.id)
-			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') and c.rut = "'.$nombres.'" and acc.estado = "'.$estado.'"
+			WHERE c.rut = "'.$nombres.'" and acc.estado = "'.$estado.'"
 			order by acc.id desc');
 
 			$total = 0;
@@ -1236,25 +1228,18 @@ class Vale extends CI_Controller {
 
 	    }else if($opcion == "Nombre"){
 
-	    	$tipo = 1;
-	        $tipo5 = 2;
-	        $tipo2 = 101; // FACTURA ELECTRONICA
-	        $tipo3 = 103; // FACTURA EXENTA ELECTRONICA        
-	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
 	    	
 			$sql_nombre = "";
 	        $arrayNombre =  explode(" ",$nombres);
 
 	        foreach ($arrayNombre as $nombre) {
-	        	$sql_nombre .= "and c.nombres like '%".$nombre."%' ";
+	        	$sql_nombre .= "c.nombres like '%".$nombre."%' ";
 	        }
 
 	        $data = array();	        	    	
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			left join vendedores v on (acc.id_vendedor = v.id)
-			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.id_tip_docu in ('.$tipo5.','.$tipo.',' .$tipo2.',' .$tipo3.',' .$tipo4.') ' . $sql_nombre . ' and acc.estado = "'.$estado.'"
+			WHERE ' . $sql_nombre . ' and acc.estado = "'.$estado.'"
 			order by acc.id desc'
 						
 			);
@@ -1271,12 +1256,6 @@ class Vale extends CI_Controller {
 	 
 		}else if($opcion == "Todos"){
 
-			$tipo = 1;
-	        $tipo5 = 2;
-	        $tipo2 = 101; // FACTURA ELECTRONICA
-	        $tipo3 = 103; // FACTURA EXENTA ELECTRONICA        
-	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
-			
 			$data = array();
 			
 			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
@@ -1303,18 +1282,11 @@ class Vale extends CI_Controller {
 
 		}else if($opcion == "Numero"){
 
-			$tipo = 1;
-	        $tipo5 = 2;
-	        $tipo2 = 101; // FACTURA ELECTRONICA
-	        $tipo3 = 103; // FACTURA EXENTA ELECTRONICA        
-	        $tipo4 = 105; // GUIA DE DESPACHO ELECTRONICA
 			
 			$data = array();
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			left join vendedores v on (acc.id_vendedor = v.id)
-			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.num_ticket = "'.$nombres.'" and acc.estado = "'.$estado.'"
+			WHERE acc.num_vale = "'.$nombres.'" 
 			order by acc.id desc'	
 			
 			);
@@ -1333,11 +1305,9 @@ class Vale extends CI_Controller {
 		}else{
 			
 			$data = array();
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			left join vendedores v on (acc.id_vendedor = v.id)
-			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.estado = "'.$estado.'" and acc.id_bodega = "'.$idbodega.'" 
+			WHERE acc.id_bodega = "'.$idbodega.'" 
 			order by acc.id desc');
 
 			$total = 0;
@@ -1351,11 +1321,9 @@ class Vale extends CI_Controller {
 			$countAll = $total;
 
 			$data = array();
-			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu	FROM preventa acc
+			$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente FROM vale acc
 			left join clientes c on (acc.id_cliente = c.id)
-			left join vendedores v on (acc.id_vendedor = v.id)
-			left join correlativos co on (acc.id_tip_docu = co.id)
-			WHERE acc.estado = "'.$estado.'" and acc.id_bodega = "'.$idbodega.'" 
+			WHERE acc.id_bodega = "'.$idbodega.'" 
 			order by acc.id desc
 			limit '.$start.', '.$limit.'');	
 

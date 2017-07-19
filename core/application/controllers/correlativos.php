@@ -19,11 +19,11 @@ class Correlativos extends CI_Controller {
 		if($query->num_rows()>0){
 	   		$row = $query->first_row();
 	   		$resp['cliente'] = $row;
-	   		$corr = (($row->num_gasto)+1); 
+	   		$corr = (($row->num_gastos)+1); 
 	   		$id = ($row->id);
 
 	   		$data3 = array(
-	         'num_gasto' => $corr
+	         'num_gastos' => $corr
 		    );
 
 		    $this->db->where('id', $id);

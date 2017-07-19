@@ -137,7 +137,7 @@ Ext.define('Infosys_web.view.vale_despacho.Principal' ,{
             },'-',{
                 xtype: 'button',
                 iconCls: 'icon-search',
-                action: 'buscarpreventa',
+                action: 'buscarvaledespacho',
                 text : 'Buscar'
             },{
                 xtype: 'button',

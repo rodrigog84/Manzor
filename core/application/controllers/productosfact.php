@@ -455,13 +455,12 @@ class Productosfact extends CI_Controller {
 
         if ($tipo=="Todos"){
 
-        	$query2 = $this->db->query('SELECT c.id, acc.id_bodega, acc.stock, acc.fecha_ultimo_movimiento, c.id as id_producto, c.nombre as nombre, c.codigo as 	
+        	$query2 = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
         	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
         	FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
-			inner join productos c on (acc.id_producto = c.id)
-			left join mae_medida m on (c.id_uni_medida = m.id)
-			order by acc.id_producto desc');
+			left join productos c on (acc.id_producto = c.id)
+			left join mae_medida m on (c.id_uni_medida = m.id)');
 			
 			$total = 0;
 
@@ -473,11 +472,11 @@ class Productosfact extends CI_Controller {
 
 			$countAll = $total;
 
-			$query = $this->db->query('SELECT c.id, acc.id_bodega, acc.stock, acc.fecha_ultimo_movimiento, c.id as id_producto, c.nombre as nombre, c.codigo as 	
+			$query = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
         	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
         	FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
-			inner join productos c on (acc.id_producto = c.id)
+			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)			
 			order by acc.id_producto desc
 			limit '.$start.', '.$limit.'');
