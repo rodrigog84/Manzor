@@ -1024,6 +1024,7 @@ class Recaudacion extends CI_Controller {
 
 		$query5 = $this->db->query('SELECT * FROM recaudacion_general 
 			WHERE id_recaudacion = '.$recauda.'');
+			$formadepago=$r->id_forma;
 			
 			if($query5->num_rows()>0){
 
@@ -1191,7 +1192,7 @@ class Recaudacion extends CI_Controller {
 				
 				$this->db->insert('recaudacion_general', $update_general);
 
-				$formadepago=$r->id_forma;
+				
 
 		    };
 
