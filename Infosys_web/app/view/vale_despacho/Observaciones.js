@@ -43,37 +43,6 @@ Ext.define('Infosys_web.view.vale_despacho.Observaciones', {
                         fieldLabel: 'valida',
                         hidden:true
                     },{
-                        xtype: 'fieldcontainer',
-                        layout: 'hbox',
-                        items: [{
-                            msgTarget: 'side',
-                            fieldLabel: 'Rut ',
-                            xtype: 'textfield',
-                            enableKeyEvents: true,
-                            labelWidth: 60,
-                            width: 180,
-                            name : 'rut',
-                            itemId: 'rutmId',
-                            hidden: true
-                        },{
-                            msgTarget: 'side',
-                            fieldLabel: 'Rut ',
-                            xtype: 'textfield',
-                            enableKeyEvents: true,
-                            labelWidth: 60,
-                            width: 180,
-                            name : 'rut',
-                            itemId: 'rutId'
-                        },{xtype: 'splitter'}
-                        ,{
-                            xtype: 'button',
-                            text: 'Buscar',
-                            itemId: 'validarutId',
-                            maxHeight: 25,
-                            width: 70,
-                            action: 'validar'
-                        }]
-                     },{
                         xtype: 'textfield',
                         fieldCls: 'required',
                         labelWidth: 60,

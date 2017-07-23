@@ -513,7 +513,6 @@ Ext.define('Infosys_web.controller.Vale', {
 
          var viewIngresa = this.getPreventaeditar();
          var observa = viewIngresa.down('#observaId').getValue();
-         console.log(observa);
          if(observa){
          Ext.Ajax.request({
             url: preurl + 'preventa/getObserva',
@@ -524,11 +523,7 @@ Ext.define('Infosys_web.controller.Vale', {
                 var resp = Ext.JSON.decode(response.responseText);
                 if (resp.success == true){                
                 var observar = (resp.observar);
-                var rut = (observar.rut);
-                console.log(rut);
                 var view = Ext.create('Infosys_web.view.vale_despacho.Observaciones2').show();
-                view.down('#rutmId').setValue(observar.rut);
-                view.down('#rutId').setValue(observar.rutm);
                 view.down('#nombreId').setValue(observar.nombre);
                 view.down('#camionId').setValue(observar.pat_camion);
                 view.down('#carroId').setValue(observar.pat_carro);
@@ -536,13 +531,13 @@ Ext.define('Infosys_web.controller.Vale', {
                 view.down('#observaId').setValue(observar.observacion);
                 }else{
                 var edit = Ext.create('Infosys_web.view.vale_despacho.Observaciones2').show();
-                
+                edit.down("#nombreId").focus();
                 };
             }           
             });
         }else{
          var edit = Ext.create('Infosys_web.view.vale_despacho.Observaciones2').show();
-         view.down('#rutmId').setValue(observa);
+         view.down('#preventaId').setValue(observa);
 
          };        
         
@@ -552,7 +547,6 @@ Ext.define('Infosys_web.controller.Vale', {
 
         var view = this.getObservacionesvale();
         var viewIngresar = this.getValedespachoingresar();                
-        var rut = view.down('#rutmId').getValue();
         var nombre = view.down('#nombreId').getValue();
         var camion = view.down('#camionId').getValue();
         var fono = view.down('#fonoId').getValue();
@@ -564,14 +558,6 @@ Ext.define('Infosys_web.controller.Vale', {
         
         var permite = "SI"
 
-        /*if (valida == "NO"){
-             Ext.Msg.alert('Alerta', 'Debe Validar Rut');
-                 return;
-        };  */      
-        
-        if (!rut){
-             rut = 19;
-        };
         if (!nombre){
              Ext.Msg.alert('Alerta', 'Debe Ingresar Nombre');
                  return;
@@ -580,7 +566,6 @@ Ext.define('Infosys_web.controller.Vale', {
         Ext.Ajax.request({
             url: preurl + 'vale/saveobserva',
             params: {
-                rut: rut,
                 nombre: nombre,
                 camion: camion,
                 carro : carro,
@@ -608,7 +593,7 @@ Ext.define('Infosys_web.controller.Vale', {
         var numpreventa = viewIngresa.down('#ticketId').getValue();
         if (!observa){
             var view = Ext.create('Infosys_web.view.vale_despacho.Observaciones').show();
-            view.down("#rutId").focus();
+            view.down("#nombreId").focus();
             view.down("#preventaId").setValue(numpreventa);          
 
         }else{
@@ -621,11 +606,7 @@ Ext.define('Infosys_web.controller.Vale', {
                 var resp = Ext.JSON.decode(response.responseText);
                 if (resp.success == true){                
                 var observar = (resp.observar);
-                var rut = (observar.rut);
-                console.log(rut);
                 var view = Ext.create('Infosys_web.view.vale_despacho.Observaciones').show();
-                view.down('#rutmId').setValue(observar.rut);
-                view.down('#rutId').setValue(observar.rutm);
                 view.down('#nombreId').setValue(observar.nombre);
                 view.down('#camionId').setValue(observar.pat_camion);
                 view.down('#carroId').setValue(observar.pat_carro);

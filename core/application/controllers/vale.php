@@ -195,7 +195,6 @@ class Vale extends CI_Controller {
 	public function saveobserva(){
 
 		$resp = array();
-		$rut = $this->input->post('rut');
 		$nombre = $this->input->post('nombre');
 		$camion = $this->input->post('camion');
 		$carro = $this->input->post('carro');
@@ -207,7 +206,6 @@ class Vale extends CI_Controller {
 		if(!$id){
 
 		$observa = array(
-			'rut' => $rut,
 			'nombre' => $nombre,
 	        'id_vale' => $numero,
 	        'fono' => $fono,
@@ -510,7 +508,7 @@ class Vale extends CI_Controller {
 		$codigo = $row->num_vale;
 		$nombre_contacto = $row->nom_cliente;
 		$observacion = $row->observacion;
-		$rutobserva = $row->rut_observa;
+		//$rutobserva = $row->rut_observa;
 		$nom_observa = $row->nom_observa;
 		$fecha = $row->fecha_venta;
 		$datetime = DateTime::createFromFormat('Y-m-d', $fecha);
@@ -661,9 +659,6 @@ class Vale extends CI_Controller {
 
 		  	<p>Observacion: '.$observacion.'</p>
 		     <!--p>&nbsp;</p-->
-		     <!--p>&nbsp;</p-->
-		     <!--p>&nbsp;</p-->
-		     <p>Rut: '. number_format(substr($row->rut_observa, 0, strlen($row->rut_observa) - 1),0,".",".")."-".substr($row->rut_observa,-1).'</p>
 		     <!--p>&nbsp;</p-->
 		     <p>Nombre: '.$nom_observa.'</p>
 		     <!--p>&nbsp;</p-->
@@ -1203,8 +1198,8 @@ class Vale extends CI_Controller {
         $fecha = $this->input->post('fecha');
         $idbodega = $this->input->post('bodega');
 
-        if(!$idBodega){
-        	$idBodega=1;
+        if(!$idbodega){
+        	$idbodega=1;
         };
         if(!$fecha){
          $fecha = date('Y-m-d');
