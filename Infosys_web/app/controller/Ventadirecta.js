@@ -1240,7 +1240,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var vender = viewIngresa.down('#tipoVendedorId').getValue();
         var mecanicos = viewIngresa.down('#mecanicosId').getValue();
         var valida2 = viewIngresa.down('#permiteId').getValue();
-        console.log(valida2);
         var otrabajo = viewIngresa.down('#otrabajoId').getValue();      
         var rtItem = this.getRecaudacionItemsStore();                
         if(!vender){
@@ -1261,11 +1260,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var observa = viewIngresa.down('#observaId').getValue();
         var idbodega = viewIngresa.down('#bodegaId').getValue();
         var recauda =  viewIngresa.down('#recaudaId').getValue();
-
-        
         var numdoc = viewIngresa.down('#ticketId').getValue();
-
-        
         var viewedit = this.getPreventaprincipal();
         var recauda =  viewedit.down('#recaudaId').getValue();
         var idcajero = viewedit.down('#cajeroId').getValue();
@@ -1284,9 +1279,27 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
              Ext.Msg.alert('Informacion', 'Debe Cancelar Venta');
              return;            
         };
-        
-           
-                        
+
+
+        if(!finalafectoId){
+            Ext.Msg.alert('Ingrese Productos a la Venta');
+            return;   
+        }
+      
+
+        if(!idpago){
+            Ext.Msg.alert('Ingrese Condicion Venta');
+            return;   
+        }        
+       
+       
+
+        var dataItems2 = new Array();
+        stItem.each(function(r){
+            dataItems2.push(r.data)
+        });
+
+                      
         var dataItems = new Array();
         stItem.each(function(r){
             dataItems.push(r.data)
@@ -1297,6 +1310,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             recItems.push(r.data)
         });
 
+        console.log(idcliente);
+
         Ext.Ajax.request({
             url: preurl + 'recaudacion/save',
             params: {
@@ -1305,8 +1320,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 numboleta: numeroticket,
                 numeroticket: numerovale,
                 tipdocumento: idtipo, 
+                vendedor: vender,
                 recitems: Ext.JSON.encode(recItems),
-                items: Ext.JSON.encode(dataItems),                
+                items: Ext.JSON.encode(dataItems),   
+                items2: Ext.JSON.encode(dataItems2),                
                 id_cliente : idcliente,
                 id_caja : idcaja,
                 id_cajero : idcajero,
@@ -1314,59 +1331,12 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 totaldocumento: totaldocumento,
                 tdocumento: tdocumento,
                 bodega: bodega,
+                observa: observa,
+                idtipo : idtipo,
                 idrecauda: recauda,
                 contado: contado,
                 cheques: cheques,
-                otros: otros
-            },
-
-            success: function(response){
-                var text = response.responseText;
-                var resp = Ext.JSON.decode(response.responseText);
-                var idboleta= resp.idboleta;
-                //viewIngresa.close();
-                Ext.Msg.alert('Informacion', 'Creada Exitosamente.');
-                //st.load();
-                //window.open(preurl + 'facturas/exportPDF/?idfactura='+idboleta);
-                //var viewedit = this.getPreventaprincipal();             
-                viewedit.down('#efectivonId').setValue(contado);
-                viewedit.down('#efectivoId').setValue(Ext.util.Format.number(contado, '0,00'));        
-                viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
-                viewedit.down('#totchequesnId').setValue(cheques);
-                viewedit.down('#otrosmontosnId').setValue(otros);
-                viewedit.down('#otrosmontosId').setValue(Ext.util.Format.number(otros, '0,00'));
-
-                window.open(preurl +'facturas/exportPDF/?idfactura=' + idboleta)
-            }
-        });
-
-     
-        if(!finalafectoId){
-            Ext.Msg.alert('Ingrese Productos a la Venta');
-            return;   
-        }
-      
-
-        if(!idpago){
-            Ext.Msg.alert('Ingrese Condicion Venta');
-            return;   
-        }
-
-        
-        var dataItems = new Array();
-        stItem.each(function(r){
-            dataItems.push(r.data)
-        });
-
-        Ext.Ajax.request({
-            url: preurl + 'preventa/save',
-            params: {
-                idcliente: idcliente,
-                items: Ext.JSON.encode(dataItems),
-                vendedor : vendedor,
-                sucursal: sucursal,
-                observa: observa,
-                idtipo : idtipo,
+                otros: otros,
                 idmecanicos : mecanicos,
                 idpago : idpago,
                 idgiro : idgiro,
@@ -1379,23 +1349,30 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 iva : (totaldocumento - finalafectoId),
                 afecto: finalafectoId,
                 total: totaldocumento
+                
+                
             },
+
             success: function(response){
-                 var resp = Ext.JSON.decode(response.responseText);
-                 var idpreventa= resp.idpreventa;
-                 viewIngresa.close();
-                 stPreventa.load();
-                 window.open(preurl + 'preventa/exportPDF/?idpreventa='+idpreventa);
+                var text = response.responseText;
+                var resp = Ext.JSON.decode(response.responseText);
+                var idboleta= resp.idboleta;
+                var idpreventa= resp.idpreventa;
+                Ext.Msg.alert('Informacion', 'Creada Exitosamente.');
+                viewedit.down('#efectivonId').setValue(contado);
+                viewedit.down('#efectivoId').setValue(Ext.util.Format.number(contado, '0,00'));        
+                viewedit.down('#totchequesId').setValue(Ext.util.Format.number(cheques, '0,00'));
+                viewedit.down('#totchequesnId').setValue(cheques);
+                viewedit.down('#otrosmontosnId').setValue(otros);
+                viewedit.down('#otrosmontosId').setValue(Ext.util.Format.number(otros, '0,00'));
+                viewIngresa.close();
+                stPreventa.load();
+                window.open(preurl + 'preventa/exportPDF/?idpreventa='+idpreventa);
+                window.open(preurl +'facturas/exportPDF/?idfactura=' + idboleta)
+                
 
             }
-           
         });
-
-
-
-
-        
-    //this.generarpago();       
     },
   
 

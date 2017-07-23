@@ -266,8 +266,8 @@ class Recaudacion extends CI_Controller {
 		$numdocum = json_decode($this->input->post('num_documento'));
         $documento = json_decode($this->input->post('documento'));
 		$tipodocumento = json_decode($this->input->post('documento'));
-		$idcliente = json_decode($this->input->post('id_cliente'));
-		$vendedor = json_decode($this->input->post('vendedor'));
+		$idcliente = $this->input->post('id_cliente');
+		$vendedor = $this->input->post('vendedor');
 		$idcaja = json_decode($this->input->post('id_caja'));
 		$idcajero = json_decode($this->input->post('id_cajero'));
 		$items = json_decode($this->input->post('items'));
@@ -295,7 +295,14 @@ class Recaudacion extends CI_Controller {
 	         'correlativo' => $corr
 		    );
 
-		    $preventa = array(
+		    
+
+		    $this->db->where('id', $id);		  
+		    $this->db->update('correlativos', $data3);
+		    $this->Bitacora->logger("M", 'correlativos', $id);
+		};
+
+		$preventa = array(
 	        'num_ticket' => $corr,
 	        'fecha_venta' => $fechacomp,
 	        'id_cliente' => $idcliente,
@@ -308,13 +315,8 @@ class Recaudacion extends CI_Controller {
 	        'id_documento'=> $numdocum
 			);
 
-			$this->db->insert('preventa', $preventa);
-			$idticket = $this->db->insert_id();
-
-		    $this->db->where('id', $id);		  
-		    $this->db->update('correlativos', $data3);
-		    $this->Bitacora->logger("M", 'correlativos', $id);
-		};
+		$this->db->insert('preventa', $preventa);
+		$idticket = $this->db->insert_id();
 
 		$fiva = ($ftotal- $neto);
 
@@ -905,7 +907,6 @@ class Recaudacion extends CI_Controller {
 
 	public function save(){
 		$resp = array();
-
 		$fechaboleta = json_decode($this->input->post('fecha'));
 		$fechapago = json_decode($this->input->post('fechapago'));
 		$numdocum = json_decode($this->input->post('numboleta'));
@@ -925,14 +926,118 @@ class Recaudacion extends CI_Controller {
 		$condpago = json_decode($this->input->post('condpago'));
 		$idbodega = json_decode($this->input->post('bodega'));
 		$idrecauda = json_decode($this->input->post('idrecauda'));
-		$vendedor = 1;
-		$sucursal= 0;
-		//$tipodocumento=2;
 		$ftotal=$totaldocumento;
-        
-        if (!$idmecanicos){			
+		$numticket = $this->input->post('numeroticket');
+		$idbodega = $this->input->post('idbodega');
+		$idmecanicos = $this->input->post('idmecanicos');
+		$idtipo = $this->input->post('idtipo');
+		$idpago = $this->input->post('idpago');
+		$idgiro = $this->input->post('idgiro');
+		$otrabajo = $this->input->post('otrabajo');
+	    $fechapreventa = $this->input->post('fechapreventa');
+		$vendedor = $this->input->post('vendedor');
+		$sucursal = $this->input->post('sucursal');
+		//$datacliente = json_decode($this->input->post('datacliente'));
+		$items2 = json_decode($this->input->post('items2'));
+		$neto = $this->input->post('neto');
+		$desc = $this->input->post('descuento');
+		$fiva = $this->input->post('iva');
+		$fafecto = $this->input->post('afecto');
+		$ftotal = $this->input->post('total');
+		$observa = $this->input->post('observa');
+
+		if (!$idmecanicos){			
 			$idmecanicos=0;
-		};		
+		};        
+        if (!$otrabajo){			
+			$otrabajo=0;
+		};
+
+		$agregaclient = array(
+         'id_pago' => $idpago,
+         'id_giro' => $idgiro,
+         'id_rubro' => $idgiro
+    	);
+
+    	$this->db->where('id', $idcliente);
+
+    	$this->db->update('clientes', $agregaclient);
+
+				
+		if ($desc){			
+			$desc = $this->input->post('descuento');
+		}else{
+				
+			$desc = 0;
+		};
+		
+		$preventa = array(
+	        'num_ticket' => $numticket,
+	        'fecha_venta' => $fechapreventa,
+	        'id_cliente' => $idcliente,
+	        'id_sucursal' => $sucursal,
+	        'id_vendedor' => $vendedor,
+	        'id_mecanicos' => $idmecanicos,
+	        'neto' => $neto,
+	        'id_tip_docu' => $idtipo,
+	        'id_pago' => $idpago,
+	        'desc' => $desc,
+	        'total' => $ftotal,
+	        'id_observa' => $observa,
+	        'id_bodega' => $idbodega,
+	        'o_trabajo' => $otrabajo
+		);
+
+		$this->db->insert('preventa', $preventa); 
+		$idpreventa = $this->db->insert_id();
+
+		$secuencia = 0;
+
+		foreach($items2 as $v){
+
+			$secuencia = $secuencia + 1;
+			$preventa_detalle = array(
+		        'id_producto' => $v->id_producto,
+		        'id_ticket' => $idpreventa,
+		        'valor_unit' => $v->precio,
+		        'neto' => $v->neto,
+		        'cantidad' => $v->cantidad,
+		        'desc' => $v->dcto,
+		        'neto' => $v->neto,
+		        'iva' => $v->iva,
+		        'total' => $v->total,
+		        'fecha' => $fechapreventa,
+		        'secuencia' => $secuencia
+			);
+
+		$producto = $v->id;
+
+		$this->db->insert('preventa_detalle', $preventa_detalle);
+
+		$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
+		 
+		$saldo = 0;
+		if($query->num_rows()>0){
+
+		$row = $query->first_row();
+	 	$saldo = ($row->stock)-($v->cantidad); 
+
+        };
+
+		$datos = array(
+         'stock' => $saldo,
+    	);
+
+    	$this->db->where('id', $producto);
+
+    	$this->db->update('productos', $datos);
+    	
+		}
+        
+		$this->Bitacora->logger("I", 'preventa', $idpreventa);
+		$this->Bitacora->logger("I", 'preventa_detalle', $idpreventa);
+        
+		
 
 		if (!$contado){			
 			$contado=0;
@@ -1239,19 +1344,29 @@ class Recaudacion extends CI_Controller {
 
 
 		$this->db->insert('detalle_factura_cliente', $factura_clientes_item);
+
+		$facturap = array(
+		     'id_doc_asociado' => $idfactura,
+		     'id_pago_vale' => $recauda
+			);
+
+		$this->db->where('id', $idpreventa);
+		$this->db->update('preventa', $facturap);
+		
 		
 		$query = $this->db->query('SELECT * FROM existencia WHERE id_producto="'.$producto.'" and id_bodega="'.$idbodega.'"');		 
     	 $row = $query->result();
     	 if ($query->num_rows()>0){
 				$row = $row[0];	
 				$saldo = ($row->stock)-($v->cantidad);
-		        if ($producto==($row->id_producto) and $idbodega=$row->id_bodega){
+				$idp = ($row->id);
+		        if ($producto==($row->id_producto) && $idbodega==($row->id_bodega)){
 				    $datos3 = array(
 					'stock' => $saldo,
-			        'fecha_ultimo_movimiento' => $fechaboleta
+			        'fecha_ultimo_movimiento' => date('Y-m-d')	
 					);
 
-					$this->db->where('id_producto', $producto);
+					$this->db->where('id', $idp);
 
 		    	    $this->db->update('existencia', $datos3);
 	    	    }else{
@@ -1545,7 +1660,11 @@ class Recaudacion extends CI_Controller {
 				
         $resp['success'] = true;
         $resp['idboleta'] = $idfactura;
+        $resp['idpreventa'] = $idpreventa;
+        $resp['idrecauda'] = $idrecauda;
 		$resp['numrecauda'] = $numcomp;
+		$resp['producto'] = $producto;
+		$resp['bodega'] = $idbodega;
 		
 		//$resp['ctacte'] = $idcuentacorriente;       
         

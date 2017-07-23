@@ -910,8 +910,8 @@ class Vale extends CI_Controller {
         $resp['success'] = true;
 		$resp['idpreventa'] = $idvale;
 
-		$this->Bitacora->logger("I", 'preventa', $idvale);
-		$this->Bitacora->logger("I", 'preventa_detalle', $idvale);        
+		$this->Bitacora->logger("I", 'vale', $idvale);
+		$this->Bitacora->logger("I", 'vale_detalle', $idvale);        
 
         echo json_encode($resp);
 	}

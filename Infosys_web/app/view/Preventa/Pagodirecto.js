@@ -102,6 +102,28 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                                             hidden: true
 
                                         },{
+                                            xtype: 'numberfield',
+                                            fieldCls: 'required',
+                                            maxHeight: 25,
+                                            width: 200,
+                                            allowBlank: false,
+                                            name: 'id_doc_rel',
+                                            itemId: 'iddocrelId',
+                                            fieldLabel: '<b>DOC. RELAC.</b>',
+                                            hidden: true
+
+                                        },{
+                                            xtype: 'numberfield',
+                                            fieldCls: 'required',
+                                            maxHeight: 25,
+                                            width: 200,
+                                            allowBlank: false,
+                                            name: 'id_pago_real',
+                                            itemId: 'idpagorealId',
+                                            fieldLabel: '<b>ID. PAG.RELAC.</b>',
+                                            hidden: true
+
+                                        },{
                                             xtype: 'textfield',
                                             itemId: 'observaId',
                                             name : 'observacion',

@@ -491,13 +491,15 @@ class Preventa extends CI_Controller {
 
 	public function exportPDF(){
 		$idpreventa = $this->input->get('idpreventa');
-		$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, c.direccion as direccion,
-		c.id_pago as id_pago, suc.direccion as direccion_sucursal, ciu.nombre as ciudad, com.nombre as comuna, cor.nombre as nom_documento, cod.nombre as nom_giro, pag.nombre as nom_pago, ob.rut as rut_observa, ob.nombre as nom_observa, ob.observacion as observacion FROM preventa acc
+		$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor,m.nombre as nom_mecanico, v.id as id_vendedor, c.direccion as direccion,
+		c.id_pago as id_pago, suc.direccion as direccion_sucursal, ciu.nombre as ciudad, com.nombre as comuna, cor.nombre as nom_documento, cod.nombre as nom_giro, pag.nombre as nom_pago, ob.rut as rut_observa, ob.nombre as nom_observa, ob.observacion as observacion, f.num_factura as num_documento FROM preventa acc
 		left join correlativos cor on (acc.id_tip_docu = cor.id)
 		left join clientes c on (acc.id_cliente = c.id)
 		left join observacion_preventa ob on (acc.id_observa = ob.id)
 		left join cond_pago pag on (c.id_pago = pag.id)
 		left join vendedores v on (acc.id_vendedor = v.id)
+		left join factura_clientes f on (acc.id_doc_asociado = f.id)
+		left join mecanicos m on (acc.id_mecanicos = m.id)
 		left join clientes_sucursales suc on (acc.id_sucursal = suc.id)
 		left join comuna com on (suc.id_comuna = com.id)
 		left join ciudad ciu on (suc.id_ciudad = ciu.id)
@@ -513,6 +515,7 @@ class Preventa extends CI_Controller {
 		$codigo = $row->num_ticket;
 		$nombre_contacto = $row->nom_cliente;
 		$vendedor = $row->nom_vendedor;
+		$mecanico = $row->nom_mecanico;
 		$observacion = $row->observacion;
 		$rutobserva = $row->rut_observa;
 		$nom_observa = $row->nom_observa;
@@ -569,7 +572,7 @@ class Preventa extends CI_Controller {
 			</td>
 		  </tr>
 		  <tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>VALE</h1></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>VALE '.$row->nom_pago.'</h1></td>
 		  </tr>
 		  <tr>
 		    <td colspan="3" width="987px" >
@@ -582,11 +585,13 @@ class Preventa extends CI_Controller {
 		    </tr>
 		    <tr>
 		    <td width="60px">Vendedor:</td>
-			<td width="195px">'. $row->nom_vendedor.'</td>
-			<td width="50px">Cond. Pago:</td>
-			<td width="100px">'.$row->nom_pago.'</td>
+			<td width="145px">'. $row->nom_vendedor.'</td>
+			<td width="60px">Mecanico:</td>
+			<td width="145px">'. $row->nom_mecanico.'</td>			
 			<td width="60px">Tipo Doc.:</td>
 			<td width="100px">'.$row->nom_documento.'</td>
+			<td width="60px">Num Doc.:</td>
+			<td width="100px">'.$row->num_documento.'</td>
 		    </tr>		    	
 		    	</table>
 			</td>
@@ -745,123 +750,9 @@ class Preventa extends CI_Controller {
 	public function save(){
 
 		$resp = array();
-		$idcliente = $this->input->post('idcliente');
-		$numticket = $this->input->post('numeroticket');
-		$idbodega = $this->input->post('idbodega');
-		$idmecanicos = $this->input->post('idmecanicos');
-		$idtipo = $this->input->post('idtipo');
-		$idpago = $this->input->post('idpago');
-		$idgiro = $this->input->post('idgiro');
-		$otrabajo = $this->input->post('otrabajo');
-	    $fechapreventa = $this->input->post('fechapreventa');
-		$vendedor = $this->input->post('vendedor');
-		$sucursal = $this->input->post('sucursal');
-		$datacliente = json_decode($this->input->post('datacliente'));
-		$items = json_decode($this->input->post('items'));
-		$neto = $this->input->post('neto');
-		$desc = $this->input->post('descuento');
-		$fiva = $this->input->post('iva');
-		$fafecto = $this->input->post('afecto');
-		$ftotal = $this->input->post('total');
-		$observa = $this->input->post('observa');
-
-		if (!$idmecanicos){			
-			$idmecanicos=0;
-		};
-
-		if (!$otrabajo){			
-			$otrabajo=0;
-		};
-
-		$agregaclient = array(
-         'id_pago' => $idpago,
-         'id_giro' => $idgiro,
-         'id_rubro' => $idgiro
-    	);
-
-    	$this->db->where('id', $idcliente);
-
-    	$this->db->update('clientes', $agregaclient);
-
-				
-		if ($desc){			
-			$desc = $this->input->post('descuento');
-		}else{
-				
-			$desc = 0;
-		};
 		
-		$preventa = array(
-	        'num_ticket' => $numticket,
-	        'fecha_venta' => $fechapreventa,
-	        'id_cliente' => $idcliente,
-	        'id_sucursal' => $sucursal,
-	        'id_vendedor' => $vendedor,
-	        'id_mecanicos' => $idmecanicos,
-	        'neto' => $neto,
-	        'id_tip_docu' => $idtipo,
-	        'id_pago' => $idpago,
-	        'desc' => $desc,
-	        'total' => $ftotal,
-	        'id_observa' => $observa,
-	        'id_bodega' => $idbodega,
-	        'o_trabajo' => $otrabajo
-		);
-
-		$this->db->insert('preventa', $preventa); 
-		$idpreventa = $this->db->insert_id();
-
-		$secuencia = 0;
-
-		foreach($items as $v){
-
-			$secuencia = $secuencia + 1;
-			$preventa_detalle = array(
-		        'id_producto' => $v->id_producto,
-		        'id_ticket' => $idpreventa,
-		        'valor_unit' => $v->precio,
-		        'neto' => $v->neto,
-		        'cantidad' => $v->cantidad,
-		        'desc' => $v->dcto,
-		        'neto' => $v->neto,
-		        'iva' => $v->iva,
-		        'total' => $v->total,
-		        'fecha' => $fechapreventa,
-		        'secuencia' => $secuencia
-			);
-
-		$producto = $v->id;
-
-		$this->db->insert('preventa_detalle', $preventa_detalle);
-
-		$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
-		 
-		$saldo = 0;
-		if($query->num_rows()>0){
-
-		$row = $query->first_row();
-	 	$saldo = ($row->stock)-($v->cantidad); 
-
-        };
-
-		$datos = array(
-         'stock' => $saldo,
-    	);
-
-    	$this->db->where('id', $producto);
-
-    	$this->db->update('productos', $datos);
-    	
-		}
-
 		
-        $resp['success'] = true;
-		$resp['idpreventa'] = $idpreventa;
-
-		$this->Bitacora->logger("I", 'preventa', $idpreventa);
-		$this->Bitacora->logger("I", 'preventa_detalle', $idpreventa);
-        
-
+		
         echo json_encode($resp);
 	}
 
