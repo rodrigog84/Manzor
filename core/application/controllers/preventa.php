@@ -631,10 +631,10 @@ class Preventa extends CI_Controller {
 		}
 
 		// RELLENA ESPACIO
-		while($i < 30){
+		/*while($i < 30){
 			$html .= '<tr><td colspan="5">&nbsp;</td></tr>';
 			$i++;
-		}
+		}*/
 
 
 		$html .= '<tr><td colspan="5">&nbsp;</td></tr></table></td>
