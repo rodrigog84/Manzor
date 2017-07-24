@@ -1930,8 +1930,11 @@ class Recaudacion extends CI_Controller {
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
-			WHERE nom_caja like "%'.$nombre.'%" and acc.id_caja= "'.$idcaja.'"
+			WHERE nom_caja like "%'.$nombre.'%" and acc.id_caja= "'.$idcaja.'
+			GROUP BY acc.id"
 			');
+
+
 
 			$total = 0;
 
@@ -1951,6 +1954,7 @@ class Recaudacion extends CI_Controller {
 			left join cajeros e on (acc.id_cajero = e.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
 			WHERE nom_caja like "%'.$nombre.'%" and acc.id_caja= "'.$idcaja.'"
+			GROUP BY acc.id
 			limit '.$start.', '.$limit.'');
 		}else{
 
@@ -1959,8 +1963,8 @@ class Recaudacion extends CI_Controller {
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
-			WHERE acc.id_caja = "'.$idcaja.'"');
-
+			WHERE acc.id_caja = "'.$idcaja.'" 
+			GROUP BY acc.id');
 		    $total = 0;
 
 		  	foreach ($query->result() as $row)
@@ -1976,7 +1980,9 @@ class Recaudacion extends CI_Controller {
 			left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
 			left join vendedores v on (acc.id_vendedor = v.id)
-			WHERE acc.id_caja= "'.$idcaja.'" order by acc.id desc			
+			WHERE acc.id_caja= "'.$idcaja.'"
+			GROUP BY acc.id
+			order by acc.id desc			
 			limit '.$start.', '.$limit.' ' 
 
 		);
