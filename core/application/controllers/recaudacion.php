@@ -2112,6 +2112,13 @@ class Recaudacion extends CI_Controller {
           $b=0;
           $pag=1;
 
+
+ 
+		    $this->load->model('facturaelectronica');
+		    $empresa = $this->facturaelectronica->get_empresa();
+
+		    $logo =  PATH_FILES."facturacion_electronica/images/".$empresa->logo; 
+
           if ($tipo == "DETALLE"){
 
  			$this->load->database();
@@ -2146,19 +2153,19 @@ class Recaudacion extends CI_Controller {
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
-		    <p>RUT:3.992.565-6</p>
-		    <p>2 SUR # 1629 - Talca - Chile</p>
-		    <p>Fonos: (71)2 510250</p>
-		    <p>http://</p>
+		    <p>' . $empresa->razon_social .'</p>
+		    <p>RUT:' . number_format($empresa->rut,0,".",".").'-' . $empresa->dv . '</p>
+		    <p>' . $empresa->dir_origen . ' - ' . $empresa->comuna_origen . ' - Chile</p>
+		    <p>Fonos: ' . $empresa->fono . '</p>
+		    <p>&nbsp;</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top">
 		    <p>FECHA EMISION : '.$fecha2.'</p>
 		    </td>
 		  </tr>';              
-              
+
 		  $header .= '<tr>
 			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>LIBRO DE RECAUDACION</h2></td>
 		  </tr>
@@ -2191,13 +2198,13 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
-		    <p>RUT:3.992.565-6</p>
-		    <p>2 SUR # 1629 - Talca - Chile</p>
-		    <p>Fonos: (71)2 510250</p>
-		    <p>http://</p>
+		    <p>' . $empresa->razon_social .'</p>
+		    <p>RUT:' . number_format($empresa->rut,0,".",".").'-' . $empresa->dv . '</p>
+		    <p>' . $empresa->dir_origen . ' - ' . $empresa->comuna_origen . ' - Chile</p>
+		    <p>Fonos: ' . $empresa->fono . '</p>
+		    <p>&nbsp;</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top">
 		    <p>FECHA EMISION : '.$fecha2.'</p>
@@ -2987,9 +2994,17 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			$fila = 1;
 
 			$this->mpdf->SetHeader('Manzor - Libro Recaudación');
-			$this->mpdf->setFooter('{PAGENO}');			
+			$this->mpdf->setFooter('{PAGENO}');	
+
+			if($fila == 1){
+				$this->mpdf->WriteHTML($header);		
+				$this->mpdf->WriteHTML($header2);	
+				//echo $header.$header2.$body_header;
+			}
+
+			$dif_prim_fila = false;					
 			foreach ($array_detail as $detail) {
-				if($fila == 1){
+				if($fila == 1 && $dif_prim_fila){
 					$this->mpdf->WriteHTML($header);		
 					$this->mpdf->WriteHTML($header2);	
 					//echo $header.$header2.$body_header;
@@ -3007,6 +3022,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				//echo $fila."<br>";
 				$fila++;
 				$pag++;
+				$dif_prim_fila = true;	
 			}
 
 
@@ -3062,13 +3078,13 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		<body>
 		<table width="987px" height="602" border="0">
 		  <tr>
-		  <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		  <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
-		    <p>RUT:3.992.565-6</p>
-		    <p>2 SUR # 1629 - Talca - Chile</p>
-		    <p>Fonos: (71)2 510250</p>
-		    <p>http://</p>
+		    <p>' . $empresa->razon_social .'</p>
+		    <p>RUT:' . number_format($empresa->rut,0,".",".").'-' . $empresa->dv . '</p>
+		    <p>' . $empresa->dir_origen . ' - ' . $empresa->comuna_origen . ' - Chile</p>
+		    <p>Fonos: ' . $empresa->fono . '</p>
+		    <p>&nbsp;</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top">
 		    <p>FECHA EMISION : '.$fecha2.'</p>

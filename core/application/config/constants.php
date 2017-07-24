@@ -36,8 +36,8 @@ define('FOPEN_READ_WRITE_CREATE',				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 define('SALT',  '#*1nf0-*%');
-define('PATH_APP',  'http://192.168.1.100/vibrados_web/core/application/');
-define('PATH_FILES',  'http://localhost/Manzor/core/');
+define('PATH_APP',  'http://angus.agricultorestalca.cl/manzor/core/');
+define('PATH_FILES',  'http://angus.agricultorestalca.cl/manzor/core/');
 define('NOMBRE_EMPRESA',		'MANZOR');
 
 
