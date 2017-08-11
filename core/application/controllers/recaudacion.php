@@ -2128,7 +2128,8 @@ class Recaudacion extends CI_Controller {
  			nom_cajero FROM recaudacion acc
             left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
-			WHERE acc.fecha = "'.$fecha.'" and n.id="'.$idcaja.'" ');
+			WHERE acc.fecha = "'.$fecha.'" and n.id="'.$idcaja.'"
+			GROUP BY acc.num_doc');
 
 
 			$query_gastos = $this->db->query('SELECT g.numero, g.detalle, g.num_doc, g.monto
@@ -2278,7 +2279,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		        left join cajas n on (r.id_caja = n.id)
 		        left join cajeros e on (r.id_cajero = e.id)
 		        left join clientes cli on (r.id_cliente = cli.id)
-		        WHERE acc.id_recaudacion = "'.$iddetalle.'"  
+		        WHERE acc.id_recaudacion = "'.$iddetalle.'"
+		        GROUP BY r.id  
 		        order by num_doc asc');	  
 		        
 		        $users2 = $query2->result_array();
