@@ -159,8 +159,8 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
             },'-',{
                 iconCls: 'icon-reset',
                 text: 'Cancelar',
-                scope: this,
-                handler: this.close
+                action: 'cacelacaja'
+                
             }]
         }];
 

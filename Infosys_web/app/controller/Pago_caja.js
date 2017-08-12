@@ -134,6 +134,9 @@ Ext.define('Infosys_web.controller.Pago_caja', {
             'aperturacaja button[action=mpagocaja2]': {
                 click: this.mpagocaja2
             },
+            'aperturacaja button[action=cacelacaja]': {
+                click: this.cacelacaja
+            },
             'aperturacaja #cajeroId': {
                 select: this.aperturacaja  
             },
@@ -187,6 +190,18 @@ Ext.define('Infosys_web.controller.Pago_caja', {
             },
 
         });
+    },
+
+    cacelacaja: function(){
+
+        console.log("llegamos")
+        var stItms = Ext.getStore('Preventa');
+        stItms.removeAll();
+        var view = this.getAperturacaja();
+        view.close();
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+        //viewport.add({xtype: 'preventaprincipal'});
     },
 
     validaboleta: function(){

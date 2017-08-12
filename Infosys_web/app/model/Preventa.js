@@ -19,6 +19,7 @@ Ext.define('Infosys_web.model.Preventa', {
         {name: 'id_tip_docu'},
         {name: 'id_pago'},
         {name: 'nom_documento'},
+        {name: 'num_docu'},
     	{name: 'nom_cliente'},
         {name: 'rut_cliente'},
     	{name: 'nom_vendedor'},

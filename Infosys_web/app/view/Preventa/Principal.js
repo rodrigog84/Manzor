@@ -41,6 +41,11 @@ Ext.define('Infosys_web.view.Preventa.Principal' ,{
         dataIndex: 'nom_documento'
                
     },{
+        header: "Num. Documento",
+        flex: 1,
+        dataIndex: 'num_docu'
+               
+    },{
         header: "Fecha Orden",
         flex: 1,
         dataIndex: 'fecha_venta',
