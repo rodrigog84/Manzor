@@ -111,6 +111,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'documentosingresar #rutId': {
                 specialkey: this.special6
             },
+            'observacionespvale #rutId': {
+                specialkey: this.special7
+            },
             'documentosingresar #DescuentoproId': {
                 change: this.changedctofinal3
             },
@@ -170,6 +173,12 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 click: this.validarut2
             },
         });
+    },
+
+    special7: function(f,e){
+        if (e.getKey() == e.ENTER) {
+            this.validarut2()
+        }
     },
 
     validarut2: function(){
