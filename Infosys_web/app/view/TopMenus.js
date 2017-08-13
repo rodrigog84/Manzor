@@ -91,6 +91,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         iconCls: '',
                         action: 'mtablas'
                 },{
+                        text: 'Tipos Cuentas Corrientes',
+                        //itemId: 'vyf_tg_tablasdescuento',
+                        //disabled: true,
+                        iconCls: '',
+                        action: 'mtipoctacte'
+                },{
                         text: 'Control de Caja',
                         //itemId: 'vyf_tg_ccaja',
                         //disabled: true,

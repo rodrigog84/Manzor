@@ -9,6 +9,7 @@ Ext.define('Infosys_web.controller.General', {
               'comunas.Items',
               'vendedores.Items',
               'Ciudad',
+              'Tipoctacte',
               'Usuario',
               'Login',
               'Comuna',
@@ -46,6 +47,7 @@ Ext.define('Infosys_web.controller.General', {
               'Usuarios.Item',
               'Comunas.Item',
               'marcas',
+              'tipoctacte',
               'Vendedores.Item',
               'Ciudad',
               'Cajas.Item',
@@ -129,6 +131,9 @@ Ext.define('Infosys_web.controller.General', {
         'bancos.BusquedaBancos',
         'bancos.Ingresar',
         'bancos.Principal',
+        'tipoctacte.BusquedaBancos',
+        'tipoctacte.Ingresar',
+        'tipoctacte.Principal',
         'cond_pagos.BusquedaCondicionesdepagos',
         'cond_pagos.Ingresar',
         'cond_pagos.Principal',
@@ -237,6 +242,12 @@ Ext.define('Infosys_web.controller.General', {
     },{
         ref: 'bancosingresar',
         selector: 'bancosingresar'
+    },{
+        ref: 'tipoctacteprincipal',
+        selector: 'tipoctacteprincipal'
+    },{
+        ref: 'tipoctacteingresar',
+        selector: 'tipoctacteingresar'
     },{
         ref: 'condicionesdepagosprincipal',
         selector: 'condicionesdepagosprincipal'
@@ -397,6 +408,9 @@ Ext.define('Infosys_web.controller.General', {
             },
             'topmenus menuitem[action=mbancos]': {
                 click: this.mbancos
+            },
+            'topmenus menuitem[action=mtipoctacte]': {
+                click: this.mtipoctacte
             },
             'topmenus menuitem[action=mcondicionpagos]': {
                 click: this.mcondicionpagos
@@ -619,6 +633,12 @@ Ext.define('Infosys_web.controller.General', {
             'bancosprincipal button[action=buscarbancos]': {
                 click: this.buscarbancos
             },
+            'tipoctacteprincipal button[action=agregartipoctacte]': {
+                click: this.agregartipoctacte
+            },
+            'tipoctacteprincipal button[action=buscartipoctacte]': {
+                click: this.buscartipoctacte
+            },
             'tablaprincipal button[action=agregartablas]': {
                 click: this.agregartablas
             },
@@ -628,17 +648,29 @@ Ext.define('Infosys_web.controller.General', {
             'bancosprincipal button[action=editarbancos]': {
                 click: this.editarbancos
             },
+            'tipoctacteprincipal button[action=editartipoctacte]': {
+                click: this.editartipoctacte
+            },
             'tablaprincipal button[action=editartablas]': {
                 click: this.editartablas
             },
             'bancosingresar button[action=grabarbancos]': {
                 click: this.grabarbancos
             },
+            'tipoctacteingresar button[action=grabartipoctacte]': {
+                click: this.grabartipoctacte
+            },
             'tablaingresar button[action=grabartablas]': {
                 click: this.grabartablas
             }, 
             'bancosprincipal button[action=cerrarbancos]': {
                 click: this.cerrarbancos
+            },
+            'tipoctacteprincipal button[action=cerrartipoctacte]': {
+                click: this.cerrartipoctacte
+            },
+            'tipoctacteprincipal button[action=exportarexceltipoctacte]': {
+                click: this.exportarexceltipoctacte
             },
             'tablaprincipal button[action=cerrartablas]': {
                 click: this.cerrartablas
@@ -962,6 +994,23 @@ Ext.define('Infosys_web.controller.General', {
  
     },
 
+    exportarexceltipoctacte: function(){
+        
+        var jsonCol = new Array()
+        var i = 0;
+        var grid =this.getTipoctacteprincipal()
+        Ext.each(grid.columns, function(col, index){
+          if(!col.hidden){
+              jsonCol[i] = col.dataIndex;
+          }
+          
+          i++;
+        })     
+                         
+        window.open(preurl + 'adminServicesExcel/exportarExcelTipoctacte?cols='+Ext.JSON.encode(jsonCol));
+ 
+    },
+
     exportarexcelbancos: function(){
         
         var jsonCol = new Array()
@@ -1114,6 +1163,13 @@ Ext.define('Infosys_web.controller.General', {
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
         viewport.add({xtype: 'bancosprincipal'});
+    },
+
+    mtipoctacte: function(){
+      
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+        viewport.add({xtype: 'tipoctacteprincipal'});
     },
 
     mcodactivecon: function(){
@@ -1486,6 +1542,33 @@ Ext.define('Infosys_web.controller.General', {
             record.set(values);
         } else{
             record = Ext.create('Infosys_web.model.Banco');
+            record.set(values);
+            st.add(record);
+            nuevo = true;
+        }
+        
+        win.close();
+        st.sync();
+
+        if (nuevo){ 
+            st.load();
+        }
+    },
+
+    grabartipoctacte: function(){
+        var win    = this.getTipoctacteingresar(),
+            form   = win.down('form'),
+            record = form.getRecord(),
+            values = form.getValues();
+
+        var st = this.getTipoctacteStore();
+        
+        var nuevo = false;
+        
+        if (values.id > 0){
+            record.set(values);
+        } else{
+            record = Ext.create('Infosys_web.model.tipoctacte');
             record.set(values);
             st.add(record);
             nuevo = true;
@@ -2052,6 +2135,14 @@ Ext.define('Infosys_web.controller.General', {
         st.load();
     },
 
+    buscartipoctacte: function(){
+        var view = this.getTipoctacteprincipal()
+        var st = this.getTipoctacteStore()
+        var nombre = view.down('#nombreId').getValue()
+        st.proxy.extraParams = {nombre : nombre}
+        st.load();
+    },
+
     buscartablas: function(){
         var view = this.getTablaprincipal()
         var st = this.getTabladescuentoStore()
@@ -2243,6 +2334,19 @@ Ext.define('Infosys_web.controller.General', {
         if (view.getSelectionModel().hasSelection()) {
             var row = view.getSelectionModel().getSelection()[0];
             var edit = Ext.create('Infosys_web.view.bancos.Ingresar').show();
+            edit.down('form').loadRecord(row);
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+
+    },
+
+    editartipoctacte: function(){
+        var view = this.getTipoctacteprincipal();
+        if (view.getSelectionModel().hasSelection()) {
+            var row = view.getSelectionModel().getSelection()[0];
+            var edit = Ext.create('Infosys_web.view.tipoctacte.Ingresar').show();
             edit.down('form').loadRecord(row);
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
@@ -2466,6 +2570,10 @@ Ext.define('Infosys_web.controller.General', {
         Ext.create('Infosys_web.view.bancos.Ingresar').show();
     },
 
+    agregartipoctacte: function(){
+        Ext.create('Infosys_web.view.tipoctacte.Ingresar').show();
+    },
+
     agregartablas: function(){
         Ext.create('Infosys_web.view.Tabladescuento.Ingresar').show();
     },    
@@ -2557,6 +2665,12 @@ Ext.define('Infosys_web.controller.General', {
     }, 
 
     cerrarbancos: function(){
+        var viewport = this.getPanelprincipal();
+        viewport.removeAll();
+     
+    },
+    
+    cerrartipoctacte: function(){
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
      

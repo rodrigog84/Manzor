@@ -3224,6 +3224,89 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
             echo '</table>';
         }
 
+        public function exportarExcelBancos(){
+            
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=banco.xls"); 
+            
+            $columnas = json_decode($this->input->get('cols'));
+            
+            $this->load->database();
+            
+            $query = $this->db->query("select cl.id, cl.nombre, cl.codigo from banco cl");
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<tr>";
+                if (in_array("id", $columnas)):
+                     echo "<td>ID</td>";
+                endif;                
+                if (in_array("nombre", $columnas)):
+                     echo "<td>NOMBRE</td>";
+                endif;
+                if (in_array("codigo", $columnas)):
+                     echo "<td>CODIGO</td>";
+                endif;
+                
+              echo "<tr>";
+              
+              foreach($users as $v){
+                 echo "<tr>";
+                   if (in_array("id", $columnas)) :
+                      echo "<td>".$v['id']."</td>";
+                   endif;
+                   if (in_array("nombre", $columnas)) :
+                      echo "<td>".$v['nombre']."</td>";
+                   endif;
+                   if (in_array("codigo", $columnas)) :
+                      echo "<td>".$v['codigo']."</td>";
+                   endif;
+                 }
+            echo '</table>';
+        }
+
+        public function exportarExcelTipoctacte(){
+            
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=tipoctacte.xls"); 
+            
+            $columnas = json_decode($this->input->get('cols'));
+            
+            $this->load->database();
+            
+            $query = $this->db->query("select cl.id, cl.nombre, cl.codigo from tipo_ctacte cl");
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<tr>";
+                if (in_array("id", $columnas)):
+                     echo "<td>ID</td>";
+                endif;
+                
+                if (in_array("nombre", $columnas)):
+                     echo "<td>NOMBRE</td>";
+                endif;
+                if (in_array("codigo", $columnas)):
+                     echo "<td>CODIGO</td>";
+                endif;
+                
+              echo "<tr>";
+              
+              foreach($users as $v){
+                 echo "<tr>";
+                   if (in_array("id", $columnas)) :
+                      echo "<td>".$v['id']."</td>";
+                   endif;
+                   if (in_array("nombre", $columnas)) :
+                      echo "<td>".$v['nombre']."</td>";
+                   endif;
+                   if (in_array("codigo", $columnas)) :
+                      echo "<td>".$v['codigo']."</td>";
+                   endif;
+                 }
+            echo '</table>';
+        }
+
         public function exportarExcelCajeros(){
             
             header("Content-type: application/vnd.ms-excel"); 
