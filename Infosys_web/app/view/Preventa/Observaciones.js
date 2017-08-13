@@ -1,6 +1,6 @@
 Ext.define('Infosys_web.view.Preventa.Observaciones', {
     extend: 'Ext.window.Window',
-    alias : 'widget.observacionespreventa',
+    alias : 'widget.observacionespvale',
 
     requires: ['Ext.form.Panel',
                'Ext.form.field.Text'],

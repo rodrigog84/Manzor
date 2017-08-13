@@ -638,6 +638,14 @@ Ext.define('Infosys_web.view.Preventa.Pagodirecto', {
                     },
                     items: ['->',{
                             xtype: 'button',
+                            text: 'Observaciones',
+                            iconCls: '',
+                            width: 150,
+                            scale: 'large',
+                            allowBlank: true,
+                            action: 'agregarobservacionesvale'
+                        },{
+                            xtype: 'button',
                             text: 'PAGO',
                             itemId: 'pagoId',
                             iconCls: '',

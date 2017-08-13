@@ -36,7 +36,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'Pago_caja.BuscarSucursales',
             'Preventa.BuscarProductos3',
             'Preventa.BuscarClientes3',
-            'Preventa.Pagocheque'],
+            'Preventa.Pagocheque',
+            'Preventa.Observaciones'],
 
     //referencias, es un alias interno para el controller
     //podemos dejar el alias de la vista en el ref y en el selector
@@ -78,7 +79,13 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
     },{    
         ref: 'preventaprincipal',
         selector: 'preventaprincipal'
+    },{    
+        ref: 'observacionespvale',
+        selector: 'observacionespvale'
     }
+
+
+
 
     ],
     
@@ -153,8 +160,163 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             'generapagocheque button[action=salircheques]': {
                 click: this.salircheques
             },
+            'documentosingresar button[action=agregarobservacionesvale]': {
+                click: this.agregarobserva
+            },
+            'observacionespvale button[action=ingresaobs]': {
+                click: this.ingresaobs
+            },
+            'observacionespvale button[action=validar]': {
+                click: this.validarut2
+            },
         });
     },
+
+    validarut2: function(){
+
+        var view = this.getObservacionespvale();
+        var rut = view.down('#rutId').getValue();
+        var okey = "SI";
+        var cero = " ";
+        
+        if (!rut){
+             Ext.Msg.alert('Alerta', 'Debe Ingresar Rut');
+                 return;
+        };
+
+        Ext.Ajax.request({
+            url: preurl + 'preventa/validaRut?valida='+rut,
+            params: {
+                id: 1
+            },
+            
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) {
+                    var rutm = resp.rut;
+                    if (resp.existe == true){
+                        var observa = resp.observa;
+                        if (observa){
+                         view.down("#nombreId").setValue(observa.nombre);
+                         view.down("#rutId").setValue(observa.rut);
+                         view.down("#rutmId").setValue(rut);
+                         view.down("#camionId").setValue(observa.pat_camion);
+                         view.down("#carroId").setValue(observa.pat_carro);
+                         view.down("#fonoId").setValue(observa.fono);
+                         view.down("#validaId").setValue(okey);
+                         view.down("#observaId").focus();
+                    }             
+                    };
+                    if (resp.existe == false){
+                        view.down("#nombreId").focus();
+                        view.down("#rutId").setValue(rutm);
+                        view.down("#rutmId").setValue(rut);
+                        view.down("#validaId").setValue(okey);
+                    }  
+                    
+                }else{
+
+                      Ext.Msg.alert('Informacion', 'Rut Incorrecto');                      
+                      return false;
+                     
+                      
+                }
+               
+            }
+
+        });
+    },
+
+    ingresaobs: function(){
+
+        var view = this.getObservacionespvale();
+        var viewIngresar = this.getDocumentosingresar();                
+        var rut = view.down('#rutmId').getValue();
+        var nombre = view.down('#nombreId').getValue();
+        var camion = view.down('#camionId').getValue();
+        var fono = view.down('#fonoId').getValue();
+        var carro = view.down('#carroId').getValue();
+        var observa = view.down('#observaId').getValue();
+        var valida = view.down('#validaId').getValue();
+        var numero = viewIngresar.down('#ticketId').getValue();
+        var id = viewIngresar.down('#observaId').getValue();       
+        
+        var permite = "SI"
+
+        if (valida == "NO"){
+             Ext.Msg.alert('Alerta', 'Debe Validar Rut');
+                 return;
+        };        
+        
+        if (!rut){
+             Ext.Msg.alert('Alerta', 'Debe Ingresar Rut');
+                 return;
+        };
+        if (!nombre){
+             Ext.Msg.alert('Alerta', 'Debe Ingresar Nombre');
+                 return;
+        };       
+       
+        Ext.Ajax.request({
+            url: preurl + 'preventa/saveobserva',
+            params: {
+                rut: rut,
+                nombre: nombre,
+                camion: camion,
+                carro : carro,
+                fono : fono,
+                observa : observa,
+                numero: numero,
+                id: id
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                var idobserva = resp.idobserva;         
+                view.close();
+                viewIngresar.down("#observaId").setValue(idobserva);
+                viewIngresar.down("#permiteId").setValue(permite);
+            }           
+        });
+    },
+
+    agregarobserva: function(){
+
+        var viewIngresa = this.getDocumentosingresar();
+        var observa = viewIngresa.down('#observaId').getValue();
+        var numpreventa = viewIngresa.down('#ticketId').getValue();
+        if (!observa){
+            var view = Ext.create('Infosys_web.view.Preventa.Observaciones').show();
+            view.down("#rutId").focus();
+            view.down("#preventaId").setValue(numpreventa);          
+
+        }else{
+            Ext.Ajax.request({
+            url: preurl + 'preventa/getObserva',
+            params: {
+                idobserva: observa
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                console.log("llegamos")
+                if (resp.success == true){                
+                var observar = (resp.observar);
+                var rut = (observar.rut);
+                console.log(rut);
+                var view = Ext.create('Infosys_web.view.Preventa.Observaciones').show();
+                view.down('#rutmId').setValue(observar.rut);
+                view.down('#rutId').setValue(observar.rutm);
+                view.down('#nombreId').setValue(observar.nombre);
+                view.down('#camionId').setValue(observar.pat_camion);
+                view.down('#carroId').setValue(observar.pat_carro);
+                view.down('#fonoId').setValue(observar.fono);
+                view.down('#observaId').setValue(observar.observacion);
+                };
+            }           
+            });
+        }
+
+    },
+
 
     salircheques: function(){
 
