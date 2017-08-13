@@ -87,6 +87,15 @@ Ext.define('Infosys_web.view.clientes.Principal' ,{
         dataIndex: 'imp_adicional',
         hidden: true
     },{
+        header: "Tipo Cta-Cte",
+        flex: 1,
+        dataIndex: 'nom_tipctacte'
+    },{
+        header: "IdTipo Cta-Cte",
+        flex: 1,
+        dataIndex: 'id_tipoctacte',
+        hidden: true
+    },{
         header: "Estado",
         flex: 1,
         dataIndex: 'estado',

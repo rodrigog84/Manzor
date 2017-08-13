@@ -219,7 +219,8 @@ Ext.define('Infosys_web.view.clientes.Ingresar', {
                         itemId: 'fecha_incripcionId',
                         value: new Date(),
                         format: 'd-m-Y',
-                        anchor: '65%',
+                        labelWidth: 90,
+                        width: 210,
                         allowBlank: true
                      
                     },{xtype: 'splitter'},{
@@ -228,14 +229,16 @@ Ext.define('Infosys_web.view.clientes.Ingresar', {
                         itemId: 'fecha_ult_actualizId',
                         value: new Date(),
                         fieldLabel: 'Fecha Ultima Actualizacion',
-                        anchor: '65%',
+                        labelWidth: 90,
+                        width: 210,
                         allowBlank: true,
                         format: 'd-m-Y'
                     },{xtype: 'splitter'},{
                         xtype: 'combo',
                         itemId: 'tipoEstadoId',
-                        anchor: '65%',
-                        fieldLabel: 'Estado         ',
+                        labelWidth: 50,
+                        width: 210,
+                        fieldLabel: 'Estado',
                         forceSelection : true,
                         editable : false,
                         name : 'estado',
@@ -244,7 +247,21 @@ Ext.define('Infosys_web.view.clientes.Ingresar', {
                         emptyText : "Seleccione",
                         store : 'clientes.Activo',
                         allowBlank: false
-                    },,]
+                    },,{xtype: 'splitter'},{
+                        xtype: 'combo',
+                        labelWidth: 50,
+                        width: 250,
+                        itemId: 'tipoctacteId',
+                        fieldLabel: 'Tipo Cta-Cte',
+                        forceSelection : true,
+                        editable : false,
+                        name : 'id_tipoctacte',
+                        valueField : 'id',
+                        displayField : 'nombre',
+                        emptyText : "Seleccione",
+                        store : 'Tipoctacte',
+                        allowBlank: false
+                    },]
                     }
                 ]
             }

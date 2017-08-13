@@ -391,6 +391,7 @@ Ext.define('Infosys_web.controller.Clientes', {
                         edit.down("#rutId").setValue(rutdes)
                         edit.down("#disponibleId").setValue(cliente.cupo_disponible)
                         edit.down("#impuestoId").setValue(cliente.imp_adicional)
+                        edit.down("#tipoctacteId").setValue(cliente.id_tipoctacte)
                     }else{
                         console.log("llegamos")
                         var edit = Ext.create('Infosys_web.view.clientes.Ingresar').show();
@@ -495,6 +496,7 @@ Ext.define('Infosys_web.controller.Clientes', {
         var fechaactualiza = view.down('#fecha_ult_actualizId').getValue();
         var estado = view.down('#tipoEstadoId').getValue();
         var tipocliente = view.down('#tipoClienteId').getValue();
+        var tipoctacteId = view.down('#tipoctacteId').getValue();
         var st = this.getClientesStore();
 
          Ext.Ajax.request({
@@ -517,7 +519,8 @@ Ext.define('Infosys_web.controller.Clientes', {
                 fechaincorporacion : fechaincorporacion,
                 fechaactualiza : fechaactualiza,
                 estado : estado,
-                tipocliente : tipocliente
+                tipocliente : tipocliente,
+                tipoctacteId : tipoctacteId
             },
              success: function(response){
                 view.close();

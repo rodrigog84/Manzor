@@ -2893,35 +2893,35 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
             $this->load->database();
                  
             if($nombre){
-               $query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,
-                ven.nombre as nombre_vendedor, g.nombre as giro, con.nombre as nom_id_pago FROM clientes acc
-                left join ciudad c on (acc.id_ciudad = c.id)
-                left join cod_activ_econ g on (acc.id_giro = g.id)
-                left join comuna com on (acc.id_comuna = com.id)
-                left join vendedores ven on (acc.id_vendedor = ven.id)
-                left join cond_pago con on (acc.id_pago = con.id)
+               $query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,ven.nombre as nombre_vendedor, g.nombre as giro,con.nombre as nom_id_pago, tip.nombre as nom_tipctacte FROM clientes acc
+            left join ciudad c on (acc.id_ciudad = c.id)
+            left join cod_activ_econ g on (acc.id_giro = g.id)
+            left join comuna com on (acc.id_comuna = com.id)
+            left join vendedores ven on (acc.id_vendedor = ven.id)
+            left join cond_pago con on (acc.id_pago = con.id)
+            left join tipo_ctacte tip on (acc.id_tipoctacte = tip.id)
                 WHERE acc.nombres like "%'.$nombres.'%"');
 
         
                 }else if($tipo) {
-              $query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,
-                ven.nombre as nombre_vendedor, g.nombre as giro, con.nombre as nom_id_pago FROM clientes acc
-                left join ciudad c on (acc.id_ciudad = c.id)
-                left join cod_activ_econ g on (acc.id_giro = g.id)
-                left join comuna com on (acc.id_comuna = com.id)
-                left join vendedores ven on (acc.id_vendedor = ven.id)
-                left join cond_pago con on (acc.id_pago = con.id)
+              $query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,ven.nombre as nombre_vendedor, g.nombre as giro,con.nombre as nom_id_pago, tip.nombre as nom_tipctacte FROM clientes acc
+            left join ciudad c on (acc.id_ciudad = c.id)
+            left join cod_activ_econ g on (acc.id_giro = g.id)
+            left join comuna com on (acc.id_comuna = com.id)
+            left join vendedores ven on (acc.id_vendedor = ven.id)
+            left join cond_pago con on (acc.id_pago = con.id)
+            left join tipo_ctacte tip on (acc.id_tipoctacte = tip.id)
                 WHERE estado ='.$tipo);
                 } 
                 else
                 {
-                $query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,
-                ven.nombre as nombre_vendedor, g.nombre as giro, con.nombre as nom_id_pago FROM clientes acc
-                left join ciudad c on (acc.id_ciudad = c.id)
-                left join cod_activ_econ g on (acc.id_giro = g.id)
-                left join comuna com on (acc.id_comuna = com.id)
-                left join vendedores ven on (acc.id_vendedor = ven.id)
-                left join cond_pago con on (acc.id_pago = con.id)');
+               $query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,ven.nombre as nombre_vendedor, g.nombre as giro,con.nombre as nom_id_pago, tip.nombre as nom_tipctacte FROM clientes acc
+            left join ciudad c on (acc.id_ciudad = c.id)
+            left join cod_activ_econ g on (acc.id_giro = g.id)
+            left join comuna com on (acc.id_comuna = com.id)
+            left join vendedores ven on (acc.id_vendedor = ven.id)
+            left join cond_pago con on (acc.id_pago = con.id)
+            left join tipo_ctacte tip on (acc.id_tipoctacte = tip.id)');
           }
             
                  
@@ -2977,6 +2977,12 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
                 if (in_array("imp_adicional", $columnas)):
                      echo "<td>IMP. ADICIONAL</td>";
                 endif;
+                if (in_array("nom_tipctacte", $columnas)):
+                     echo "<td>TIPO CTA-CTE</td>";
+                endif;
+                if (in_array("id_tipoctacte", $columnas)):
+                     echo "<td>ID TIPO CTACTE</td>";
+                endif;
             
                 foreach($users as $v){
                  echo "<tr>";
@@ -3022,6 +3028,12 @@ public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
                     endif;
                     if (in_array("imp_adicional", $columnas)):
                         echo "<td>".$v['imp_adicional']."</td>";
+                    endif;
+                    if (in_array("nom_tipctacte", $columnas)):
+                        echo "<td>".$v['nom_tipctacte']."</td>";
+                    endif;
+                    if (in_array("id_tipoctacte", $columnas)):
+                        echo "<td>".$v['id_tipoctacte']."</td>";
                     endif;
 
                  }

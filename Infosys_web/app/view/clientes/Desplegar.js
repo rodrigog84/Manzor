@@ -7,7 +7,7 @@ Ext.define('Infosys_web.view.clientes.Desplegar', {
     title : 'Editar/Crear Clientes',
     layout: 'fit',
     autoShow: true,
-    width: 1150,
+    width: 1250,
     modal: true,
     iconCls: 'icon-sheet',
 
@@ -60,7 +60,7 @@ Ext.define('Infosys_web.view.clientes.Desplegar', {
                             name : 'nombres',
                             itemId: 'nombre_id',
                             fieldLabel: '<b>Razon Social</b>',
-                            width: 780,
+                            width: 830,
                             allowBlank: false
                     },{
                         xtype: 'textfield',
@@ -209,7 +209,8 @@ Ext.define('Infosys_web.view.clientes.Desplegar', {
                         name : 'fecha_incripcion',
                         fieldLabel: 'Fecha Incorporacion',
                         itemId: 'fecha_incripcionId',
-                        anchor: '65%',
+                        labelWidth: 90,
+                        width: 210,
                          format: 'd-m-Y',
                         readOnly: true
                     },{xtype: 'splitter'},{
@@ -218,16 +219,18 @@ Ext.define('Infosys_web.view.clientes.Desplegar', {
                         itemId: 'fecha_ult_actualizId',
                         fieldLabel: 'Fecha Ultima Actualizacion',
                         format: 'd-m-Y',
-                        anchor: '65%',
+                        labelWidth: 90,
+                        width: 210,
                         value: new Date(),
                         format: 'Y-m-d'
                     },{xtype: 'splitter'},{
                         xtype: 'combo',
                         itemId: 'tipoEstadoId',
-                        anchor: '65%',
                         fieldLabel: 'Estado',
                         forceSelection : true,
                         editable : false,
+                        labelWidth: 50,
+                        width: 250,
                         name : 'estado',
                         valueField : 'id',
                         displayField : 'nombre',
@@ -247,6 +250,20 @@ Ext.define('Infosys_web.view.clientes.Desplegar', {
                         displayField : 'nombre',
                         emptyText : "Seleccione",
                         store : 'clientes.Clientes',
+                        allowBlank: false
+                    },{xtype: 'splitter'},{
+                        xtype: 'combo',
+                        labelWidth: 50,
+                        width: 250,
+                        itemId: 'tipoctacteId',
+                        fieldLabel: 'Tipo Cta-Cte',
+                        forceSelection : true,
+                        editable : false,
+                        name : 'id_tipoctacte',
+                        valueField : 'id',
+                        displayField : 'nombre',
+                        emptyText : "Seleccione",
+                        store : 'Tipoctacte',
                         allowBlank: false
                     },]
                     }
