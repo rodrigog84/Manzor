@@ -56,9 +56,9 @@ Ext.define('Infosys_web.view.Cambios.Principal' ,{
                 action:'agregarcambios'
             },{
                 xtype: 'button',
-                iconCls : 'icon-exel',
-                text: 'Exportar EXCEL',
-                action:''
+                iconCls : 'icon-pdf',
+                text: 'Imprimir PDF',
+                action:'exportarcambios'
             },'->',{
                 xtype: 'combo',
                 itemId: 'tipoSeleccionId',
