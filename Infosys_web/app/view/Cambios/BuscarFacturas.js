@@ -36,6 +36,18 @@ Ext.define('Infosys_web.view.Cambios.BuscarFacturas' ,{
                 dataIndex: 'num_factura'
                 
             },{
+                header: "id_vendedor",
+                 width: 190,
+                dataIndex: 'id_vendedor',
+                hidden: true
+                
+            },{
+                header: "id_mecanico",
+                 width: 190,
+                dataIndex: 'id_mecanicos',
+                hidden: true
+                
+            },{
                 header: "Neto",
                 flex: 1,
                 dataIndex: 'neto',

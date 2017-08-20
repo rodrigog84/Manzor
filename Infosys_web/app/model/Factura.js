@@ -14,6 +14,7 @@ Ext.define('Infosys_web.model.Factura', {
         {name: 'num_factura'},
         {name: 'tipo_doc'},
         {name: 'id_vendedor'},
+        {name: 'id_mecanicos'},
         {name: 'nom_vendedor'},
         {name: 'fecha_factura', type:'date',dateFormat:"Y-m-d"},
         {name: 'fecha_venc', type:'date',dateFormat:"Y-m-d"},

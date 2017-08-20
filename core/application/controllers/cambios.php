@@ -77,40 +77,45 @@ class Cambios extends CI_Controller {
 
 	public function exportPDF(){
 		$idcambio = $this->input->get('idcambio');
-		$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, v.id as id_vendedor, c.direccion as direccion,
-		c.id_pago as id_pago, suc.direccion as direccion_sucursal, ciu.nombre as ciudad, com.nombre as comuna, cor.nombre as nom_documento, cod.nombre as nom_giro, pag.nombre as nom_pago, ob.rut as rut_observa, ob.nombre as nom_observa, ob.observacion as observacion FROM preventa acc
-		left join correlativos cor on (acc.id_tip_docu = cor.id)
-		left join clientes c on (acc.id_cliente = c.id)
-		left join observacion_preventa ob on (acc.id_observa = ob.id)
-		left join cond_pago pag on (c.id_pago = pag.id)
-		left join vendedores v on (acc.id_vendedor = v.id)
-		left join clientes_sucursales suc on (acc.id_sucursal = suc.id)
-		left join comuna com on (suc.id_comuna = com.id)
-		left join ciudad ciu on (suc.id_ciudad = ciu.id)
-		left join cod_activ_econ cod on (c.id_giro = cod.id)
-		WHERE acc.id = "'.$idpreventa.'"
-		');
+
+		$query = $this->db->query('SELECT acc.*, c.nombres as nom_cliente, c.rut as rut_cliente, co.nombre as nom_documento, v.nombre as nom_vendedor, co.id as id_tip_docu, b.nombre as nom_bodega, fa.num_factura as num_documento, fa.tipo_documento as tipofactura	FROM cambios acc
+			left join clientes c on (acc.id_cliente = c.id)
+			left join bodegas b on (acc.id_bodega = b.id)
+			left join vendedores v on (acc.id_vendedor = v.id)
+			left join correlativos co on (acc.tipo_documento = co.id)
+			left join factura_clientes fa on (acc.tipo_documento = fa.id)
+			WHERE acc.id = "'.$idcambio.'"'	);
+		
+
 		//cotizacion header
 		$row = $query->result();
 		$row = $row[0];
 		//items
-		$items = $this->db->get_where('preventa_detalle', array('id_ticket' => $idpreventa));
+		$items = $this->db->get_where('cambios_detalle', array('id_cambio' => $idcambio));
 		//variables generales
-		$codigo = $row->num_ticket;
+		$codigo = $row->num_comprobante;
 		$nombre_contacto = $row->nom_cliente;
 		$vendedor = $row->nom_vendedor;
-		$observacion = $row->observacion;
-		$rutobserva = $row->rut_observa;
-		$nom_observa = $row->nom_observa;
-		$fecha = $row->fecha_venta;
+		//$observacion = $row->observacion;
+		//$rutobserva = $row->rut_observa;
+		//$nom_observa = $row->nom_observa;
+		$fecha = $row->fecha_cambio;
 		$datetime = DateTime::createFromFormat('Y-m-d', $fecha);
 		$fecha = $datetime->format('d/m/Y');
 		$totaliva = 0;
-		$neto = ($row->total / 1.19);
-		$iva = ($row->total - $neto);
-		$subtotal = ($row->total + $row->desc);
+		//$neto = ($row->total / 1.19);
+		//$iva = ($row->total - $neto);
+		//$subtotal = ($row->total + $row->desc);
 
-		if($row->direccion_sucursal == " "){
+		if($row->tipofactura=="101"){
+		   $nomdocumento="FACTURA ELECTRONICA";
+		}else{
+		   $nomdocumento="BOLETA";
+			
+		};
+
+
+		/*if($row->direccion_sucursal == " "){
 
 			$direccion = $row->direccion;
 			
@@ -118,14 +123,14 @@ class Cambios extends CI_Controller {
 
 			$direccion = $row->direccion_sucursal;
 			
-		};
+		};*/
 
 		$html = '
 		<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Untitled Document</title>
+		<title>COMPROBANTE CAMBIOUntitled Document</title>
 		<style type="text/css">
 		td {
 			font-size: 16px;
@@ -139,7 +144,7 @@ class Cambios extends CI_Controller {
 		<table width="987px" height="602" border="0">
 		    </td>
 		  <tr>
-		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		   <td width="197px"><img src="http://localhost/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
 		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
 		    <p>RUT:3.992.565-6</p>
@@ -148,14 +153,14 @@ class Cambios extends CI_Controller {
 		    <p>http://</p>
 		    </td>
 		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top"	>
-		          <p>PREVENTA N°: '.$codigo.'</p>
+		          <p>N°: '.$codigo.'</p>
 		          <!--p>&nbsp;</p-->
 		          <p>FECHA EMISION : '.$fecha.'</p>
 		          <!--p>&nbsp;</p-->		         
 			</td>
 		  </tr>
 		  <tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>PREVENTA</h1></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h1>'.$row->nom_documento.'</h1></td>
 		  </tr>
 		  <tr>
 		    <td colspan="3" width="987px" >
@@ -169,10 +174,8 @@ class Cambios extends CI_Controller {
 		    <tr>
 		    <td width="60px">Vendedor:</td>
 			<td width="195px">'. $row->nom_vendedor.'</td>
-			<td width="50px">Cond. Pago:</td>
-			<td width="100px">'.$row->nom_pago.'</td>
 			<td width="60px">Tipo Doc.:</td>
-			<td width="100px">'.$row->nom_documento.'</td>
+			<td width="100px">'.$nomdocumento.'</td>
 		    </tr>		    	
 		    	</table>
 			</td>
@@ -181,28 +184,35 @@ class Cambios extends CI_Controller {
 		    <td colspan="3" >
 		    	<table width="987px" cellspacing="0" cellpadding="0" >
 		      <tr>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Cantidad</td>
-		        <td width="395px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >Descripci&oacute;n</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Precio/Unidad</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Neto</td>
-		        <td width="148px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >Total</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >ENTRADA</td>
+		        <td width="280px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >PRODUCTO ENTRADA</td>
+		        <td width="80px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >SALIDA</td>
+		        <td width="280px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >PRODUCTO SALIDA</td>
+		        <td width="150px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >VALOR ENTRADA</td>
+		        <td width="150px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" >VALOR SALIDA</td>
 		      </tr>';
 		$descripciones = '';
 		$i = 0;
 		foreach($items->result() as $v){
 			//$i = 0;
 			//while($i < 30){
-			$this->db->where('id', $v->id_producto);
+			$this->db->where('id', $v->id_entrada);
 			$producto = $this->db->get("productos");	
 			$producto = $producto->result();
 			$producto = $producto[0];
+
+			$this->db->where('id', $v->id_salida);
+			$producto2 = $this->db->get("productos");	
+			$producto2 = $producto2->result();
+			$producto2 = $producto2[0];
 			
 			$html .= '<tr>
-			<td style="text-align:right">'.$v->cantidad.'&nbsp;&nbsp;</td>			
-			<td style="text-align:left">'.$producto->nombre.'</td>			
-			<td align="right">$ '.number_format($v->valor_unit, 0, '.', ',').'</td>
-			<td align="right">$ '.number_format($v->neto - $v->desc, 0, '.', ',').'</td>
-			<td align="right">$ '.number_format($v->total, 0, '.', ',').'</td>
+			<td width="80px" style="text-align:right">'.$v->cantidad_entrada.'</td>	
+			<td width="280px" style="text-align:right">'.$producto->nombre.'</td>
+			<td width="80px" style="text-align:right">'.$v->cantidad_salida.'</td>	
+			<td width="280px" style="text-align:right">'.$producto2->nombre.'</td>
+			<td align="right">$ '.number_format($v->val_entrada, 0, '.', ',').'</td>
+			<td align="right">$ '.number_format($v->val_salida, 0, '.', ',').'</td>
 			</tr>';
 			
 			//}
@@ -210,89 +220,17 @@ class Cambios extends CI_Controller {
 		}
 
 		// RELLENA ESPACIO
-		while($i < 30){
+		/*while($i < 30){
 			$html .= '<tr><td colspan="5">&nbsp;</td></tr>';
 			$i++;
-		}
+		}*/
 
 
 		$html .= '<tr><td colspan="5">&nbsp;</td></tr></table></td>
 		  </tr>
-		  <tr>
-		  	<td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>VALORES EN DETALLE NETOS+IVA</b></p></td>
-		  </tr>
-		  
-		  <tr>
-		  	<td colspan="2" rowspan="6" style="font-size: 20px;border-bottom:1pt solid black;border-top:1pt solid black;border-left:1pt solid black;border-right:1pt solid black;text-align:left;">
-
-		  	<p>Observacion: '.$observacion.'</p>
-		     <!--p>&nbsp;</p-->
-		     <!--p>&nbsp;</p-->
-		     <!--p>&nbsp;</p-->
-		     <p>Rut: '. number_format(substr($row->rut_observa, 0, strlen($row->rut_observa) - 1),0,".",".")."-".substr($row->rut_observa,-1).'</p>
-		     <!--p>&nbsp;</p-->
-		     <p>Nombre: '.$nom_observa.'</p>
-		     <!--p>&nbsp;</p-->
-		    </td>
-
-		  	<td>
-				<table width="296px" border="0">
-				<tr>
-					<td width="150px" style="font-size: 20px;text-align:left;">Pretotal</td>
-					<td width="146px" style="text-align:right;">$ '. number_format($subtotal, 0, '.', ',') .'</td>
-				</tr>
-				</table>
-		  	</td>
-		  </tr>
-		  <tr>
-		  	<td>
-				<table width="296px" border="0">
-					<tr>
-						<td width="150px" style="font-size: 20px;text-align:left;">Descuento</td>
-						<td width="146px" style="text-align:right;">$ '. number_format($row->desc, 0, ',', '.') .'</td>
-					</tr>
-				</table>
-		  	</td>		  
-		  </tr>	
-		  <tr>
-		  	<td>
-				<table width="296px" border="0">
-					<tr>
-						<td width="150px" style="font-size: 20px;text-align:left;">Neto</td>
-						<td width="146px" style="text-align:right;">$ '.number_format($neto, 0, '.', ',').'</td>
-					</tr>
-				</table>
-		  	</td>		  
-		  </tr>	
-		  <tr>
-		  	<td>
-				<table width="296px" border="0">
-					<tr>
-						<td width="150px" style="font-size: 20px;text-align:left;">IVA</td>
-						<td width="146px" style="text-align:right;">$ '.number_format($iva, 0, '.', ',').'</td>
-					</tr>
-				</table>
-		  	</td>		  
-		  </tr>
-		  <tr>
-		  	<td>
-				<table width="296px" border="0">
-					<tr>
-						<td width="150px" style="font-size: 20px;text-align:left;">Total</td>
-						<td width="146px" style="text-align:right;">$ '. number_format($row->total, 0, '.', ',') .'</td>
-					</tr>
-				</table>
-		  	</td>		  
-		  </tr>
-		  <tr>
-		  	<td>&nbsp;</td>		  
-		  </tr>
-		  <tr>
-		  	<td>&nbsp;</td>		  
-		  </tr>		  		  		  	  
-		  <tr>
-		    <td colspan="2" style="text-align:right;font-style: italic;"><b>EL SERVICIO MARCA LA DIFERENCIA!!!</b></td>
-		  </tr>
+		  		  
+		 	  	  
+		 
 		  
 		</table>
 		</body>

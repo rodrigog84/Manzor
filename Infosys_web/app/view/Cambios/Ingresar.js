@@ -20,7 +20,7 @@ Ext.define('Infosys_web.view.Cambios.Ingresar', {
 
     autoShow: true,
     height: 540,
-    width: 1200,
+    width: 1230,
     layout: 'fit',
     title: 'Cambio Productos',
 
@@ -189,7 +189,7 @@ Ext.define('Infosys_web.view.Cambios.Ingresar', {
                                 style: 'font-weight: bold;'
                             },{
                                 xtype: 'displayfield',
-                                width: 60                               
+                                width: 10                               
                             },{
                                 xtype: 'numberfield',
                                 width: 180,
@@ -199,11 +199,11 @@ Ext.define('Infosys_web.view.Cambios.Ingresar', {
                                 style: 'font-weight: bold;'
                             },{
                                 xtype: 'displayfield',
-                                width: 60                               
+                                width: 10                               
                             },{
                                 xtype: 'datefield',
                                 fieldLabel: 'Fecha',
-                                //anchor: '25%',
+                                width: 180,
                                 labelWidth: 45,
                                 name:'fecha',
                                 format: 'd/m/Y',
@@ -221,7 +221,7 @@ Ext.define('Infosys_web.view.Cambios.Ingresar', {
                                 itemId: 'buscarBtn'
                             },{
                                 xtype: 'displayfield',
-                                width: 30                               
+                                width: 20                               
                             },{
                                 xtype: 'combo',
                                 itemId: 'tipoVendedorId',
@@ -236,6 +236,23 @@ Ext.define('Infosys_web.view.Cambios.Ingresar', {
                                 displayField : 'nombre',
                                 emptyText : "Seleccione",
                                 store : 'Vendedores'
+                            },{
+                                xtype: 'displayfield',
+                                width: 10                               
+                            },{
+                                xtype: 'combo',
+                                itemId: 'tipoMecanicoId',
+                                width: 250,
+                                labelWidth: 80,
+                                fieldCls: 'required',
+                                maxHeight: 25,
+                                fieldLabel: '<b>MECANICOS</b>',
+                                forceSelection : true,
+                                name : 'id_mecanicos',
+                                valueField : 'id',
+                                displayField : 'nombre',
+                                emptyText : "Seleccione",
+                                store : 'Mecanicos'
                             }]
                         },{
                         xtype: 'fieldset',

@@ -120,8 +120,22 @@ Ext.define('Infosys_web.controller.Cambios', {
             'cambiosinventario #cantidadId': {
                 specialkey: this.calculacambio
             },
+            'cambiosprincipal button[action=exportarcambios]': {
+                click: this.exportarcambios
+            },
            
         });
+    },
+
+    exportarcambios: function(){
+        var view = this.getCambiosprincipal();
+        if (view.getSelectionModel().hasSelection()) {
+            var row = view.getSelectionModel().getSelection()[0];
+            window.open(preurl +'cambios/exportPDF/?idcambio=' + row.data.id)
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
     },
 
     calculacambio: function(){
@@ -317,13 +331,13 @@ Ext.define('Infosys_web.controller.Cambios', {
             var nomproducto = (row.data.nombre);
             var pventa = (row.data.p_venta);
             var codigo = (row.data.codigo);
-            if(idproducto==row.data.id){
+            if(idproducto==row.data.id_producto){
                 Ext.Msg.alert('Alerta', 'Producto debe ser Diferente');
                 return;                
             }else{
             viewIngresa.down('#cantidadOriginaldevId').setValue(cantidaddev);
             viewIngresa.down('#cantidaddevId').setValue(cantidaddev);
-            viewIngresa.down('#productodevId').setValue(row.data.id);
+            viewIngresa.down('#productodevId').setValue(row.data.id_producto);
             viewIngresa.down('#nombreproductodevId').setValue(nomproducto);
             viewIngresa.down('#codigodevId').setValue(row.data.codigo);
             viewIngresa.down('#preciodevId').setValue(pventa);
@@ -491,7 +505,9 @@ Ext.define('Infosys_web.controller.Cambios', {
             viewIngresa.down('#facturaId').setValue(row.data.id);
             viewIngresa.down('#numfactId').setValue(row.data.num_factura);
             viewIngresa.down('#totalfactId').setValue(row.data.totalfactura);
-            viewIngresa.down('#fechafactid').setValue(row.data.fecha_factura);            
+            viewIngresa.down('#fechafactid').setValue(row.data.fecha_factura);
+            viewIngresa.down('#tipoVendedorId').setValue(row.data.id_vendedor); 
+            viewIngresa.down('#tipoMecanicoId').setValue(row.data.id_mecanicos);            
             view.close();
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
