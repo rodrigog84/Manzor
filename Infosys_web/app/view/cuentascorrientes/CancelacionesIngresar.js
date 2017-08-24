@@ -123,6 +123,46 @@ Ext.define('Infosys_web.view.cuentascorrientes.CancelacionesIngresar', {
                             name: 'detalle',
                             itemId: 'detalleId'
                         }]
+                    },{
+                        xtype: 'fieldcontainer',
+                        layout: 'hbox',
+                        labelWidth: 150,
+                        items: [{
+                                xtype: 'combo',
+                                itemId: 'bodegaId',
+                                width: 250,
+                                fieldCls: 'required',
+                                maxHeight: 25,
+                                fieldLabel: 'Bodega',
+                                forceSelection : true,
+                                name : 'id_bodega',
+                                valueField : 'id',
+                                displayField : 'nombre',
+                                emptyText : "Seleccione",
+                                store : 'Bodegas'
+                            },{
+                                xtype: 'splitter'
+                                },{
+                                    xtype: 'combo',
+                                    itemId: 'cajaId',
+                                    fieldLabel: 'Caja',
+                                    width: 250,
+                                    store: 'Cajas',
+                                    forceSelection : true,
+                                    valueField: 'id',
+                                    displayField: 'nombre'
+                                },{
+                                xtype: 'splitter'
+                                },{
+                                    xtype: 'combo',
+                                    itemId: 'cajeroId',
+                                    fieldLabel: 'Cajero',
+                                    width: 250,
+                                    store: 'Cajeros',
+                                    forceSelection : true,
+                                    valueField: 'id',
+                                    displayField: 'nombre'
+                                }]
                     }
 
                 ]

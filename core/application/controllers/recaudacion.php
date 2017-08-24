@@ -2934,8 +2934,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 	    $header4 = '</table><br><br><table width="987px" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
-	        <td width="162"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc Gasto.</td>
-	        <td width="500px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Detalle.</td>
+	        <td width="182px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc Gasto.</td>
+	        <td width="480px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size:14px" >Detalle.</td>
 	        <td width="162px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Comprobante</td>
 	        <td width="163px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Monto</td>
 	       </tr>';
@@ -2947,9 +2947,9 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 				    $footer2 .= '
 						<tr>				
-						<td width="162px" style="text-align:center;font-size:14px">'.$gasto['numero'].'</td>	
-						<td width="500px" style="text-align:left;font-size:14px">'.$gasto['detalle'].'</td>
-						<td width="162px" style="text-align:right;font-size:14px">'.$gasto['num_doc'].'</td>
+						<td width="182px" style="text-align:center;font-size:14px">'.$gasto['numero'].'</td>	
+						<td width="480px" style="text-align:left;font-size:14px">'.$gasto['detalle'].'</td>
+						<td width="162px" style="text-align:center;font-size:14px">'.$gasto['num_doc'].'</td>
 						<td width="163px" style="text-align:right;font-size:14px">'.number_format($gasto['monto'], 0, ',', '.').'</td>
 						
 						</tr>
