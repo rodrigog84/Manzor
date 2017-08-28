@@ -2129,7 +2129,17 @@ class Recaudacion extends CI_Controller {
             left join cajas n on (acc.id_caja = n.id)
 			left join cajeros e on (acc.id_cajero = e.id)
 			WHERE acc.fecha = "'.$fecha.'" and n.id="'.$idcaja.'"
+			and e.id = "' . $idcajero . '" and origen = "CAJA"
 			GROUP BY acc.num_doc');
+
+			$query_cta_cte = $this->db->query('SELECT acc.*, n.nombre as nom_caja, e.nombre as 
+ 			nom_cajero FROM recaudacion acc
+            left join cajas n on (acc.id_caja = n.id)
+			left join cajeros e on (acc.id_cajero = e.id)
+			WHERE acc.fecha = "'.$fecha.'" and n.id="'.$idcaja.'"
+			and e.id = "' . $idcajero . '" and origen = "CTACTE"
+			GROUP BY acc.num_doc');
+
 
 
 			$query_gastos = $this->db->query('SELECT g.numero, g.detalle, g.num_doc, g.monto
@@ -2181,6 +2191,93 @@ class Recaudacion extends CI_Controller {
 			<tr><td colspan="3">&nbsp;</td></tr>		  
 			</table>';  
 
+$header5 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Libro de Recaudacion</title>
+		<style type="text/css">
+		td {
+			font-size: 16px;
+		}
+		p {
+		}
+		</style>
+		</head>
+
+		<body>
+		<table width="987px" height="602" border="0">
+		  <tr>
+		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
+		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
+		    <p>' . $empresa->razon_social .'</p>
+		    <p>RUT:' . number_format($empresa->rut,0,".",".").'-' . $empresa->dv . '</p>
+		    <p>' . $empresa->dir_origen . ' - ' . $empresa->comuna_origen . ' - Chile</p>
+		    <p>Fonos: ' . $empresa->fono . '</p>
+		    <p>&nbsp;</p>
+		    </td>
+		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top">
+		    <p>FECHA EMISION : '.$fecha2.'</p>
+		    </td>
+		  </tr><tr>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>CUENTA CORRIENTE</h2></td>
+		  </tr>
+		  <tr>
+			<td>CAJA : '.$nomcaja.'</td>
+			<td>CAJERO : '.$nomcajero.'</td>
+			<td>FECHA : '.$fecha2.'</td>
+		  </tr>
+		  <tr>
+			
+		  </tr>
+			<tr><td colspan="3">&nbsp;</td></tr>		  
+			</table>';  
+
+
+
+$header6 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+		<html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<title>Libro de Recaudacion</title>
+		<style type="text/css">
+		td {
+			font-size: 16px;
+		}
+		p {
+		}
+		</style>
+		</head>
+
+		<body>
+		<table width="987px" height="602" border="0">
+		  <tr>
+		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
+		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
+		    <p>' . $empresa->razon_social .'</p>
+		    <p>RUT:' . number_format($empresa->rut,0,".",".").'-' . $empresa->dv . '</p>
+		    <p>' . $empresa->dir_origen . ' - ' . $empresa->comuna_origen . ' - Chile</p>
+		    <p>Fonos: ' . $empresa->fono . '</p>
+		    <p>&nbsp;</p>
+		    </td>
+		    <td width="296px" style="font-size: 16px;text-align:left;vertical-align:text-top">
+		    <p>FECHA EMISION : '.$fecha2.'</p>
+		    </td>
+		  </tr><tr>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>TOTAL GENERAL</h2></td>
+		  </tr>
+		  <tr>
+			<td>CAJA : '.$nomcaja.'</td>
+			<td>CAJERO : '.$nomcajero.'</td>
+			<td>FECHA : '.$fecha2.'</td>
+		  </tr>
+		  <tr>
+			
+		  </tr>
+			<tr><td colspan="3">&nbsp;</td></tr>		  
+			</table>';  
+
+
 
 $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 		<html xmlns="http://www.w3.org/1999/xhtml">
@@ -2223,23 +2320,9 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		  </tr>
 			<tr><td colspan="3">&nbsp;</td></tr>		  
 			</table>';  			   
-		      $cancelado = 0;		     
-		      $i = 0;
-              //$body_detail = '';
-              $users = $query->result_array();
-              $despago = " ";
-              $boleta = 0;
-			  $chequealdia = 0;
-			  $chequeafecha = 0;
-			  $credito = 0;
-			  $tarjetadebito = 0;
-			  $tarjetacredito = 0;
-			  $transferencia = 0;
-			  $valevista = 0;
-			  $credito30dias = 0;
-			  $credito60dias = 0;
 
-			  $header2 .= '
+
+			  $header2 = '
 	    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
 	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Num.Doc.</td>
@@ -2260,6 +2343,24 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Observaci&oacute;n</td>
 	       </tr>';	
 	       
+
+	       	//// INICIO RECAUDACIONES CAJA
+
+		      $cancelado = 0;		     
+		      $i = 0;
+              //$body_detail = '';
+              $users = $query->result_array();
+              $despago = " ";
+              $boleta = 0;
+			  $chequealdia = 0;
+			  $chequeafecha = 0;
+			  $credito = 0;
+			  $tarjetadebito = 0;
+			  $tarjetacredito = 0;
+			  $transferencia = 0;
+			  $valevista = 0;
+			  $credito30dias = 0;
+			  $credito60dias = 0;	       
 	        $a="ok";
 
 			$array_detail = array();
@@ -2290,487 +2391,491 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		      	list($dia, $mes, $anio) = explode("-",$v['fecha_transac']);
 				$fecha3 = $anio ."-". $mes ."-". $dia;
 	            
-	            if ($v['nom_documento']=="BOLETAS"){
-            	$tip = "BOL";
-            	
-            	if ($v['desc_pago']=="CONTADO"){				
-					$boleta = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="CHEQUE AL DIA"){				
-					$chequealdia = $v['valor_pago'];
-					$boleta = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;				
-				};
-				if ($v['desc_pago']=="CHEQUE A FECHA"){				
-					$chequeafecha = $v['valor_pago'];
-					$chequealdia = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;				
-				};
-				if ($v['desc_pago']=="CREDITO 30 DIAS"){				
-					$credito30dias = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito = 0;				
-				};
-				if ($v['desc_pago']=="CREDITO"){				
-					$credito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-				};
-				if ($v['desc_pago']=="CREDITO 60 DIAS"){				
-					$credito60dias = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito = 0;
-				};
-				if ($v['desc_pago']=="TARJETA DEBITO"){				
-					$tarjetadebito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TARJETA CREDITO"){				
-					$tarjetacredito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$credito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
-					$transferencia = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$credito = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="VALE VISTA"){				
-					$valevista = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$credito = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-			};
-			if ($v['nom_documento']=="FACTURA ELECTRONICA"){
-				$tip = "FACT.";
-				if ($v['desc_pago']=="CONTADO"){				
-					$boleta = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="CHEQUE AL DIA"){				
-					$chequealdia = $v['valor_pago'];
-					$boleta = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;			
-				};
-				if ($v['desc_pago']=="CHEQUE A FECHA"){				
-					$chequeafecha = $v['valor_pago'];
-					$chequealdia = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;				
-				};
-				if ($v['desc_pago']=="CREDITO 30 DIAS"){				
-					$credito30dias = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito = 0;
-					$credito60dias = 0;				
-				};
-				if ($v['desc_pago']=="CREDITO"){				
-					$credito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				
-				if ($v['desc_pago']=="TARJETA DEBITO"){				
-					$tarjetadebito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TARJETA CREDITO"){				
-					$tarjetacredito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$credito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
-					$transferencia = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$credito = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				
-			};
-
-			if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
-				$tip = "N/C";
-
-				if ($v['desc_pago']=="CONTADO"){				
-					$boleta = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$credito = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="CHEQUE AL DIA"){				
-					$chequealdia = $v['valor_pago'];
-					$boleta = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				
-				};
-				if ($v['desc_pago']=="CHEQUE A FECHA"){				
-					$chequeafecha = $v['valor_pago'];
-					$chequealdia = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				
-				};
-				if ($v['desc_pago']=="CREDITO 30 DIAS"){				
-					$credito30dias = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito = 0;
-					$credito60dias = 0;
-				
-				};
-				if ($v['desc_pago']=="CREDITO"){				
-					$credito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				
-				if ($v['desc_pago']=="TARJETA DEBITO"){				
-					$tarjetadebito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TARJETA CREDITO"){;
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$credito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
-					$transferencia = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$credito = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-			};
-
-			if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
-				$tip = "G/D";
-				if ($v['desc_pago']=="CONTADO"){				
-					$boleta = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$credito = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="CHEQUE AL DIA"){				
-					$chequealdia = $v['valor_pago'];
-					$boleta = 0;
-					$chequeafecha = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				
-				};
-				if ($v['desc_pago']=="CHEQUE A FECHA"){				
-					$chequeafecha = $v['valor_pago'];
-					$chequealdia = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				
-				};
-				if ($v['desc_pago']=="CREDITO 30 DIAS"){				
-					$credito30dias = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito = 0;
-					$credito60dias = 0;
-				
-				};
-				if ($v['desc_pago']=="CREDITO"){				
-					$credito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				
-				if ($v['desc_pago']=="TARJETA DEBITO"){				
-					$tarjetadebito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$credito = 0;
-					$tarjetacredito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TARJETA CREDITO"){				
-					$tarjetacredito = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$credito = 0;
-					$transferencia = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
-					$transferencia = $v['valor_pago'];
-					$chequealdia = 0;
-					$chequeafecha = 0;
-					$boleta = 0;
-					$tarjetadebito = 0;
-					$tarjetacredito = 0;
-					$credito = 0;
-					$valevista = 0;
-					$credito30dias = 0;
-					$credito60dias = 0;
-				};
-				
-			};
+		            if ($v['nom_documento']=="BOLETAS"){
+	            	$tip = "BOL";
+	            	
+		            	if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+						};
+						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
+							$credito60dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito = 0;
+						};
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){				
+							$tarjetacredito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="VALE VISTA"){				
+							$valevista = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$credito = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+					}; // FIN if ($v['nom_documento']=="BOLETAS"){
 
 
-			if ($v['estado']=="NUL"){
-			  $boleta = 0;
-			  $chequealdia = 0;
-			  $chequeafecha = 0;
-			  $credito = 0;
-			  $tarjetadebito = 0;
-			  $tarjetacredito = 0;
-			  $transferencia = 0;
-			  $valevista = 0;
-			  $credito30dias = 0;
-			  $credito60dias = 0;
-			  $valor_pago=0;
-			  $v['nom_cliente'] = "DOCUMENTO NULO";
-			}				
-				
-			if ($a=="ok"){
-				$a="no";
+					if ($v['nom_documento']=="FACTURA ELECTRONICA"){
+						$tip = "FACT.";
+						if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;			
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){				
+							$tarjetacredito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+					}; // FIN if ($v['nom_documento']=="FACTURA ELECTRONICA"){
 
-				$body_detail .= '
-				<tr>				
-				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
-				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
-				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', ',').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
-				<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">0</td>
-				<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
-				</tr>
-				';				
+					if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
+						$tip = "N/C";
 
-			};
+						if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$credito = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){;
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+					}; // FIN if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
 
-		};
+					if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
+						$tip = "G/D";
+						if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$credito = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){				
+							$tarjetacredito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+					}; //  FIN if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
 
-		    $body_detail .= '
+
+					if ($v['estado']=="NUL"){
+					  $boleta = 0;
+					  $chequealdia = 0;
+					  $chequeafecha = 0;
+					  $credito = 0;
+					  $tarjetadebito = 0;
+					  $tarjetacredito = 0;
+					  $transferencia = 0;
+					  $valevista = 0;
+					  $credito30dias = 0;
+					  $credito60dias = 0;
+					  $valor_pago=0;
+					  $v['nom_cliente'] = "DOCUMENTO NULO";
+					}	// FIN if ($v['estado']=="NUL"){			
+						
+					if ($a=="ok"){
+						$a="no";
+
+						$body_detail = '
+						<tr>				
+						<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
+						<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
+						<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', ',').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+						<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">0</td>
+						<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
+						</tr>
+						';		
+
+						//$array_detail[] = $body_detail;		
+
+					}; // FIN if ($a=="ok"){
+
+			}; // FIN  foreach($users2 as $v){  	
+
+		    $body_detail = '
 				<tr>				
 				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
 				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
@@ -2841,95 +2946,824 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				};
 				
 				$i++;
-     	};
+     		}; // FIN foreach($users as $t){
 
 
      		$body_totales = '<table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
 		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
 		</tr>';
-		$footer = "";
+			$footer = "";
+			$cancelado_total = 0;
+			if($doc1 != ""){
+			
+			$footer .= '
+			<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc1.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado1, 0, ',', '.').'</b></td>
+			</tr>
+			';
+			$cancelado_total += $cancelado1;
 
-		if($doc1 != ""){
-		
-		$footer .= '
-		<tr>
-		<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc1.'</b></td>
-		<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado1, 0, ',', '.').'</b></td>
-		</tr>
-		';
+		    };
 
-	    };
+		    if($doc2 != ""){
 
-	    if($doc2 != ""){
+			$footer .= '<tr>
+			<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc2.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado2, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado2;
+		    };
+		    	         
+	        if($doc3 != ""){
 
-		$footer .= '<tr>
-		<tr>
-		<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc2.'</b></td>
-		<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado2, 0, ',', '.').'</b></td>
-	    </tr>';
+			$footer .= '
+			<tr>
+			<td width="867px"   style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc3.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado3, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado3;
+		    };
 
-	    };
-	    	         
-        if($doc3 != ""){
+		    if($doc4 != ""){
 
-		$footer .= '
-		<tr>
-		<td width="867px"   style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc3.'</b></td>
-		<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado3, 0, ',', '.').'</b></td>
-	    </tr>';
+			$footer .= '
+			<tr>
+			<td width="867px"    style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc4.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado4, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado4;
+		    };
 
-	    };
+		    if($doc5 != ""){
 
-	    if($doc4 != ""){
+			$footer .= '
+			<tr>
+			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc5.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado5, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado5;
+		    };
 
-		$footer .= '
-		<tr>
-		<td width="867px"    style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc4.'</b></td>
-		<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado4, 0, ',', '.').'</b></td>
-	    </tr>';
+		    if($doc6 != ""){
 
-	    };
+			$footer .= '
+			<tr>
+			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc6.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado6, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado6;
+		    };	   
 
-	    if($doc5 != ""){
+		   
+		    if($doc8 != ""){
 
-		$footer .= '
-		<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc5.'</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado5, 0, ',', '.').'</b></td>
-	    </tr>';
-
-	    };
-
-	    if($doc6 != ""){
-
-		$footer .= '
-		<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc6.'</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado6, 0, ',', '.').'</b></td>
-	    </tr>';
-
-	    };	   
-
-	   
-	    if($doc8 != ""){
-
-		$footer .= '
-		<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc8.'</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado8, 0, ',', '.').'</b></td>
-	    </tr>';
-
-	    };	   
+			$footer .= '
+			<tr>
+			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc8.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado8, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado8;
+		    };	   
 
 
-	    if($doc9 != ""){
-		$footer .= '<tr>
-		<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc9.'</b></td>
-		<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado9, 0, ',', '.').'</b></td>
-		</tr>
+		    if($doc9 != ""){
+			$footer .= '<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc9.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado9, 0, ',', '.').'</b></td>
+			</tr>
 
-		';
-	    };
+			';
+			$cancelado_total += $cancelado9;
+		    };
+
+			$footer .= '<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CAJA</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
+			</tr>';	    
+
+
+
+
+
+
+		    // INICIO RECAUDACIONES CUENTAS CORRIENTES
+
+
+		      $cancelado = 0;		     
+		      $cancelado1 = 0;	
+		      $cancelado2 = 0;	
+		      $cancelado3 = 0;	
+		      $cancelado4 = 0;	
+		      $cancelado5 = 0;	
+		      $cancelado6 = 0;	
+		      //$cancelado7 = 0;	
+		      $cancelado8 = 0;	
+		      $cancelado9 = 0;	
+
+		      $i = 0;
+              //$body_detail = '';
+              $users = $query_cta_cte->result_array();
+              $despago = " ";
+              $boleta = 0;
+			  $chequealdia = 0;
+			  $chequeafecha = 0;
+			  $credito = 0;
+			  $tarjetadebito = 0;
+			  $tarjetacredito = 0;
+			  $transferencia = 0;
+			  $valevista = 0;
+			  $credito30dias = 0;
+			  $credito60dias = 0;
+
+	        $a="ok";
+
+			$array_detail_ctacte = array();
+			$body_detail = "";
+			 
+		    foreach($users as $t){
+
+		    	$iddetalle = ($t['id']);
+
+				$query2 = $this->db->query('SELECT acc.*, t.nombre as desc_pago,
+		        r.id_caja as id_caja, r.id_cajero as id_cajero, n.nombre as nom_caja,
+		        e.nombre as nom_cajero, r.num_comp as num_comp, r.num_doc as num_doc, cor.nombre as nom_documento, cli.nombres as nom_cliente FROM recaudacion_detalle acc
+		        left join cond_pago t on (acc.id_forma = t.id)
+		        left join recaudacion r on (acc.id_recaudacion = r.id)
+		        left join preventa pr on (r.id_ticket = pr.num_ticket)
+		        left join correlativos cor on (pr.id_tip_docu = cor.id)
+		        left join cajas n on (r.id_caja = n.id)
+		        left join cajeros e on (r.id_cajero = e.id)
+		        left join clientes cli on (r.id_cliente = cli.id)
+		        WHERE acc.id_recaudacion = "'.$iddetalle.'"
+		        GROUP BY r.id  
+		        order by num_doc asc');	  
+		        
+		        $users2 = $query2->result_array();
+		        
+		        foreach($users2 as $v){  	    		      		     	
+
+		      	list($dia, $mes, $anio) = explode("-",$v['fecha_transac']);
+				$fecha3 = $anio ."-". $mes ."-". $dia;
+	            
+		            if ($v['nom_documento']=="BOLETAS"){
+	            	$tip = "BOL";
+	            	
+		            	if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+						};
+						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
+							$credito60dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito = 0;
+						};
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){				
+							$tarjetacredito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="VALE VISTA"){				
+							$valevista = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$credito = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+					}; // FIN if ($v['nom_documento']=="BOLETAS"){
+
+
+					if ($v['nom_documento']=="FACTURA ELECTRONICA"){
+						$tip = "FACT.";
+						if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;			
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;
+							$credito60dias = 0;				
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){				
+							$tarjetacredito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+					}; // FIN if ($v['nom_documento']=="FACTURA ELECTRONICA"){
+
+					if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
+						$tip = "N/C";
+
+						if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$credito = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){;
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+					}; // FIN if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
+
+					if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
+						$tip = "G/D";
+						if ($v['desc_pago']=="CONTADO"){				
+							$boleta = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$credito = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="CHEQUE AL DIA"){				
+							$chequealdia = $v['valor_pago'];
+							$boleta = 0;
+							$chequeafecha = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CHEQUE A FECHA"){				
+							$chequeafecha = $v['valor_pago'];
+							$chequealdia = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
+							$credito30dias = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito = 0;
+							$credito60dias = 0;
+						
+						};
+						if ($v['desc_pago']=="CREDITO"){				
+							$credito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+						if ($v['desc_pago']=="TARJETA DEBITO"){				
+							$tarjetadebito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$credito = 0;
+							$tarjetacredito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TARJETA CREDITO"){				
+							$tarjetacredito = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$credito = 0;
+							$transferencia = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
+							$transferencia = $v['valor_pago'];
+							$chequealdia = 0;
+							$chequeafecha = 0;
+							$boleta = 0;
+							$tarjetadebito = 0;
+							$tarjetacredito = 0;
+							$credito = 0;
+							$valevista = 0;
+							$credito30dias = 0;
+							$credito60dias = 0;
+						};
+						
+					}; //  FIN if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
+
+
+					if ($v['estado']=="NUL"){
+					  $boleta = 0;
+					  $chequealdia = 0;
+					  $chequeafecha = 0;
+					  $credito = 0;
+					  $tarjetadebito = 0;
+					  $tarjetacredito = 0;
+					  $transferencia = 0;
+					  $valevista = 0;
+					  $credito30dias = 0;
+					  $credito60dias = 0;
+					  $valor_pago=0;
+					  $v['nom_cliente'] = "DOCUMENTO NULO";
+					}	// FIN if ($v['estado']=="NUL"){			
+						
+					if ($a=="ok"){
+						$a="no";
+
+						$body_detail_ctacte = '
+						<tr>				
+						<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
+						<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
+						<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', ',').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+						<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">0</td>
+						<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
+						</tr>
+						';	
+
+						//$array_detail_ctacte[] = $body_detail_ctacte;			
+
+					}; // FIN if ($a=="ok"){
+
+			}; // FIN  foreach($users2 as $v){  	
+
+		    $body_detail_ctacte = '
+				<tr>				
+				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
+				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
+				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+				<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">0</td>
+				<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
+				</tr>
+				';
+
+				$array_detail_ctacte[] = $body_detail_ctacte;
+				if ($chequeafecha>0){
+				$doc1 = "CHEQUE A FECHA";
+				if ($v['estado']!="NUL"){
+				$cancelado1 +=$chequeafecha;
+			    };
+				};
+				if ($boleta>0){
+				$doc2 = "CONTADO";
+				if ($v['estado']!="NUL"){
+				$cancelado2 +=$boleta;
+			    };
+				};
+				if ($credito30dias>0){
+				$doc3 = "CREDITO 30 DIAS";
+				if ($v['estado']!="NUL"){
+				$cancelado3 +=$credito30dias;
+			    };
+				};
+				if ($tarjetacredito>0){
+				$doc4 = "TARJETA CREDITO";
+				if ($v['estado']!="NUL"){
+				$cancelado4 +=$tarjetacredito;
+				};
+				};
+				if ($tarjetadebito>0){
+				$doc5 = "TARJETA DEBITO";
+				if ($v['estado']!="NUL"){
+				$cancelado5 +=$tarjetadebito;
+			    };
+				};
+				if ($transferencia>0){
+				$doc6 = "TRANSFERENCIA BANCARIA";
+				if ($v['estado']!="NUL"){
+				$cancelado6 +=$transferencia;
+			    };
+				};
+				if ($credito>0){
+				$doc9 = "CREDITO";
+				if ($v['estado']!="NUL"){
+				$cancelado9 += $credito;
+			    };
+				};
+				if ($chequealdia>0){
+				$doc8 = "CHEQUE AL DIA";
+				if ($v['estado']!="NUL"){
+				$cancelado8 += $chequealdia;
+			    };
+				};
+				
+				$i++;
+     		}; // FIN foreach($users as $t){
+
+
+     		$body_totales_ctacte = '<table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
+		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
+		</tr>';
+			$footer_ctacte = "";
+			$cancelado_total_ctacte = 0;
+			if($cancelado1 > 0){
+			
+			$footer_ctacte .= '
+			<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc1.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado1, 0, ',', '.').'</b></td>
+			</tr>
+			';
+			$cancelado_total_ctacte += $cancelado1;
+		    };
+
+		    if($cancelado2 > 0){
+
+			$footer_ctacte .= '<tr>
+			<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc2.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado2, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total_ctacte += $cancelado2;
+		    };
+		    	         
+	        if($cancelado3 > 0){
+
+			$footer_ctacte .= '
+			<tr>
+			<td width="867px"   style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc3.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado3, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total_ctacte += $cancelado3;
+		    };
+
+		    if($cancelado4 > 0){
+
+			$footer_ctacte .= '
+			<tr>
+			<td width="867px"    style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc4.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado4, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total_ctacte += $cancelado4;
+		    };
+
+		    if($cancelado5 > 0){
+
+			$footer_ctacte .= '
+			<tr>
+			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc5.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado5, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total_ctacte += $cancelado5;
+		    };
+
+		    if($cancelado6 > 0){
+
+			$footer_ctacte .= '
+			<tr>
+			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc6.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado6, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total_ctacte += $cancelado6;
+		    };	   
+
+		   
+		    if($cancelado8 > 0){
+
+			$footer_ctacte .= '
+			<tr>
+			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc8.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado8, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total_ctacte += $cancelado8;
+		    };	   
+
+
+		    if($cancelado9 > 0){
+			$footer_ctacte .= '<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc9.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado9, 0, ',', '.').'</b></td>
+			</tr>
+
+			';
+			$cancelado_total_ctacte += $cancelado9;
+		    };
+
+
+
+			$footer_ctacte .= '<tr>
+			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
+			</tr>';	    
+
+
+
+
+
 
 
 	    $header4 = '</table><br><br><table width="987px" cellspacing="0" cellpadding="0" border="0">
@@ -2967,14 +3801,28 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	    </tr></table>';
 
 
-
+		$footer_total .= '</table><table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr>
+		<tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CAJA</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
+	    </tr>
+	    <tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
+	    </tr><tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GASTOS</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ - ('.number_format($sum_gastos, 0, ',', '.').')</b></td>
+	    </tr><tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GENERAL</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total + $cancelado_total_ctacte - $sum_gastos, 0, ',', '.').'</b></td>
+	    </tr></table>';
 
 	    $fin_tabla = "</table>
 
 
 		</body>
 		</html>";
-	    
+	    //exit;
 	   	              
         $this->load->library("mpdf");
 			
@@ -3033,9 +3881,60 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			$this->mpdf->WriteHTML($body_totales.$footer.$fin_tabla);
 			$this->mpdf->AddPage();
 
+
+
+	//************** cuentas corrientes ***********/
+			$cantidad_hoja = 50;
+			$fila = 1;
+
+			if($fila == 1){
+				$this->mpdf->WriteHTML($header5);		
+				$this->mpdf->WriteHTML($header2);	
+				//echo $header.$header2.$body_header;
+			}
+
+			$dif_prim_fila = false;					
+			foreach ($array_detail_ctacte as $detail) {
+				if($fila == 1 && $dif_prim_fila){
+					$this->mpdf->WriteHTML($header);		
+					$this->mpdf->WriteHTML($header2);	
+					//echo $header.$header2.$body_header;
+				}
+
+				$this->mpdf->WriteHTML($detail);
+				//echo $detail;
+
+				if(($fila % $cantidad_hoja) == 0 ){  #LLEVA 30 LINEAS EN LA HOJA
+						$this->mpdf->WriteHTML($fin_tabla);					
+					//echo $fin_tabla;
+						$fila = 0;						
+						$this->mpdf->AddPage();
+				}		
+				//echo $fila."<br>";
+				$fila++;
+				$pag++;
+				$dif_prim_fila = true;	
+			}
+
+
+			$this->mpdf->WriteHTML($fin_tabla);
+			//echo $body_totales.$footer.$fin_tabla; exit;
+			$this->mpdf->WriteHTML($body_totales_ctacte.$footer_ctacte.$fin_tabla);
+			$this->mpdf->AddPage();	
+
+
 			$this->mpdf->WriteHTML($header3);		
 			$this->mpdf->WriteHTML($header4.$footer2);				
 			$this->mpdf->WriteHTML($fin_tabla);
+
+			$this->mpdf->AddPage();	
+
+			/************** TOTAL GENERAL ***********/
+
+			$this->mpdf->WriteHTML($header6);		
+			$this->mpdf->WriteHTML($fin_tabla);
+			//echo $body_totales.$footer.$fin_tabla; exit;
+			$this->mpdf->WriteHTML($body_totales_ctacte.$footer_total.$fin_tabla);			
 
 			//echo $html; exit;
 			//exit;

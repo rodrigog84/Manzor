@@ -370,4 +370,13 @@ ALTER TABLE `log_libros`
 	ADD COLUMN `trackid` VARCHAR(30) NULL AFTER `estado`;
 ALTER TABLE `log_libros`
 	ADD COLUMN `xml_libro` TEXT NULL DEFAULT NULL AFTER `trackid`;	
+
+
+/*********************************************************************************/
+
+
+ALTER TABLE `recaudacion`
+	ADD COLUMN `id_bodega` INT(11) NOT NULL AFTER `id_cliente`;
+ALTER TABLE `recaudacion`
+	ADD COLUMN `origen` ENUM('CAJA','CTACTE') NOT NULL DEFAULT 'CAJA' AFTER `id`;		
 	

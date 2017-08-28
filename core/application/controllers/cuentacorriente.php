@@ -511,11 +511,13 @@ class Cuentacorriente extends CI_Controller {
 
 		$recaudacion = array(
 	        'num_comp' => $numcomp,
+	        'origen' => 'CTACTE',
 	        'fecha' => date('Y-m-d'),
 	        'id_cliente' => $ctacte->idcliente,
 	        'id_ticket' => $this->input->post('numero'), //que numero va aca?
 	        'id_vendedor' => 1,
 			'num_doc' => $this->input->post('numero'),
+			'id_bodega' => $bodega,
 			'id_caja' => $idcaja,
 			'id_cajero' => $idcajero,
 			'total' => $debe
@@ -539,7 +541,7 @@ class Cuentacorriente extends CI_Controller {
 	        'valor_vuelto' => 0,
 	        'fecha_transac' => date('Y-m-d'),
 	        'fecha_comp' => $fecha,
-	        'num_vale' => $this->input->post('numero')
+	        'num_vale' => $item->documento
 			);
 		
 		$this->db->insert('recaudacion_detalle', $recaudacion_detalle);
@@ -559,6 +561,9 @@ class Cuentacorriente extends CI_Controller {
 		$items = json_decode($this->input->post('items'));
 		//print_r($items); exit;
 		$arrayFecha = explode("T",$this->input->post('fecha'));
+		$bodega = $this->input->post('bodega');
+		$idcaja = $this->input->post('caja');
+		$idcajero = $this->input->post('cajero');		
 		$fecha = $arrayFecha[0];
 
 
@@ -580,6 +585,7 @@ class Cuentacorriente extends CI_Controller {
 
 
 		$idctacte_cancela = 0;
+		$idcliente_recauda = 0;
 
 		foreach($items as $item){
 			if(($item->debe != 0 || $item->haber != 0) && $item->cliente != 0){  // SIEMPRE QUEDA UNA FILA EN BLANCO
@@ -601,6 +607,7 @@ class Cuentacorriente extends CI_Controller {
 		}
 		// VER QUE PASA CUANDO SE CANCELA MAS DE UNA CUENTA
 		$i = 0;
+		$debe = 0;
 		foreach($items as $item){
 			if(($item->debe != 0 || $item->haber != 0) ){  // SIEMPRE QUEDA UNA FILA EN BLANCO
 				$valor = $item->debe != 0 ? $item->debe : $item->haber;
@@ -717,7 +724,71 @@ class Cuentacorriente extends CI_Controller {
 
 			}
 			$i++;
+			$debe += $item->debe;
+			$idcliente_recauda = is_null($idcliente) ? $idcliente_recauda : $idcliente;
 		}
+
+
+		$query = $this->db->query('SELECT acc.*, con.nombre as nom_cajero FROM cajas acc 
+			left join cajeros con on (acc.id_cajero = con.id)
+			WHERE acc.id like "'.$idcaja.'"');
+
+		if($query->num_rows()>0){
+	   		$row = $query->first_row();
+	   		$resp['cliente'] = $row;
+	   		$numcomp = (($row->correlativo)+1); 
+	   		$id = ($row->id);
+
+	   		$data3 = array(
+	         'correlativo' => $numcomp
+	    	);
+
+		    $this->db->where('id', $id);	  
+		    $this->db->update('cajas', $data3);
+
+			    
+		 };			
+
+		
+		$recaudacion = array(
+	        'num_comp' => $numcomp,
+	        'origen' => 'CTACTE',
+	        'fecha' => date('Y-m-d'),
+	        'id_cliente' => $idcliente_recauda,
+	        'id_ticket' => $this->input->post('numero'), //que numero va aca?
+	        'id_vendedor' => 1,
+			'num_doc' => $this->input->post('numero'),
+			'id_bodega' => $bodega,
+			'id_caja' => $idcaja,
+			'id_cajero' => $idcajero,
+			'total' => $debe
+		);
+
+		$this->db->insert('recaudacion', $recaudacion); 
+		$recauda = $this->db->insert_id();
+
+		foreach($items as $item){
+			if(($item->debe != 0 || $item->haber != 0) && $item->documento == 0){  // SIEMPRE QUEDA UNA FILA EN BLANCO
+
+			$valor_docto = $item->debe != 0 ? $item->debe : $item->haber;
+			 $recaudacion_detalle = array(				
+	        'id_recaudacion' => $recauda,
+	        'id_forma' => 1, //CUAL VA?
+	        'detalle' => $item->glosa,
+	        'num_cheque' => 0,
+	        'id_banco' => 0,
+	        'valor_pago' => $valor_docto,
+	        'valor_cancelado' => $valor_docto,
+	        'valor_vuelto' => 0,
+	        'fecha_transac' => date('Y-m-d'),
+	        'fecha_comp' => $fecha,
+	        'num_vale' => $item->documento
+			);
+		
+		$this->db->insert('recaudacion_detalle', $recaudacion_detalle);
+			}
+		}
+
 
         $resp['success'] = true;
         echo json_encode($resp);

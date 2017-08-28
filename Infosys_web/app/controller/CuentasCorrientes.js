@@ -980,7 +980,13 @@ Ext.define('Infosys_web.controller.CuentasCorrientes', {
         }else if(view.down('#fechaId').getValue() == null){
             Ext.Msg.alert('Alerta', 'Debe Ingresar Fecha de Cancelación.');      
         }else if(view.down('#tipoComprobante').getValue() == null){
-            Ext.Msg.alert('Alerta', 'Debe Ingresar Tipo de Comprobante.');      
+            Ext.Msg.alert('Alerta', 'Debe Ingresar Tipo de Comprobante.');   
+        }else if(view.down('#bodegaId').getValue() == null){
+            Ext.Msg.alert('Alerta', 'Debe seleccionar bodega.');    
+        }else if(view.down('#cajaId').getValue() == null){
+            Ext.Msg.alert('Alerta', 'Debe seleccionar caja.');   
+        }else if(view.down('#cajeroId').getValue() == null){
+            Ext.Msg.alert('Alerta', 'Debe seleccionar cajero.');                  
         }else if(sumdebe == 0 && sumhaber == 0){
             Ext.Msg.alert('Alerta', 'Debe Ingresar al menos un detalle de cancelacion.');                          
         }else if(sumdebe != sumhaber){
@@ -996,6 +1002,9 @@ Ext.define('Infosys_web.controller.CuentasCorrientes', {
                     numero: view.down('#numeroId').getValue(),
                     tipoComprobante: view.down('#tipoComprobante').getValue(),
                     detalle: view.down('#detalleId').getValue(),
+                    bodega: view.down('#bodegaId').getValue(),
+                    caja: view.down('#cajaId').getValue(),
+                    cajero: view.down('#cajeroId').getValue(),                    
                     items: Ext.JSON.encode(dataItems),
                     origen : 'OTRO'
                 },               
