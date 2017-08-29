@@ -3091,12 +3091,13 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		        e.nombre as nom_cajero, r.num_comp as num_comp, r.num_doc as num_doc, cor.nombre as nom_documento, cli.nombres as nom_cliente FROM recaudacion_detalle acc
 		        left join cond_pago t on (acc.id_forma = t.id)
 		        left join recaudacion r on (acc.id_recaudacion = r.id)
-		        left join preventa pr on (r.id_ticket = pr.num_ticket)
-		        left join correlativos cor on (pr.id_tip_docu = cor.id)
+		        left join movimiento_cuenta_corriente pr on (r.id_ticket = pr.numcomprobante)
+		        left join detalle_mov_cuenta_corriente dm on pr.id = dm.idmovimiento
+		        left join correlativos cor on (dm.tipodocumento = cor.id)
 		        left join cajas n on (r.id_caja = n.id)
 		        left join cajeros e on (r.id_cajero = e.id)
 		        left join clientes cli on (r.id_cliente = cli.id)
-		        WHERE acc.id_recaudacion = "'.$iddetalle.'"
+		       	WHERE acc.id_recaudacion = "'.$iddetalle.'"
 		        GROUP BY r.id  
 		        order by num_doc asc');	  
 		        
