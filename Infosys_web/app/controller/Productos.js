@@ -589,10 +589,17 @@ Ext.define('Infosys_web.controller.Productos', {
     },
 
     exportarexcelproductos: function(){
-        
+
+        var view = this.getProductosprincipal();
+        var nombre = view.down('#nombreId').getValue();
+        opcion="";
+        if(nombre){
+            opcion="Nombre";
+        };        
+        console.log(nombre)
         var jsonCol = new Array()
         var i = 0;
-        var grid =this.getProductosprincipal()
+        var grid =this.getProductosprincipal()       
         Ext.each(grid.columns, function(col, index){
           if(!col.hidden){
               jsonCol[i] = col.dataIndex;
@@ -601,7 +608,7 @@ Ext.define('Infosys_web.controller.Productos', {
           i++;
         })     
                          
-        window.open(preurl + 'adminServicesExcel/exportarExcelProductos?cols='+Ext.JSON.encode(jsonCol));
+        window.open(preurl + 'adminServicesExcel/exportarExcelProductos?cols='+Ext.JSON.encode(jsonCol)+'&opcion='+opcion+'&nombre='+nombre);
  
     },
 
@@ -621,7 +628,7 @@ Ext.define('Infosys_web.controller.Productos', {
                                 subfamilia : subfamilia,
                                 opcion : opcion}
         var tipo = "Nombre";
-        view.down('#nombreId').setValue(cero);
+        //view.down('#nombreId').setValue(cero);
         view.down('#tipofamiliaId').setValue(cero);
         view.down('#tipoagrupacionId').setValue(cero);
         view.down('#tiposubfamiliaId').setValue(cero);
