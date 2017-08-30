@@ -511,6 +511,10 @@ class Preventa extends CI_Controller {
 		$row = $row[0];
 		//items
 		$items = $this->db->get_where('preventa_detalle', array('id_ticket' => $idpreventa));
+
+		$idpagovale= $row->id_pago_vale;
+
+		$items2 = $this->db->get_where('recaudacion_detalle', array('id_recaudacion' => $idpagovale));
 		//variables generales
 		$codigo = $row->num_ticket;
 		$nombre_contacto = $row->nom_cliente;
@@ -636,14 +640,80 @@ class Preventa extends CI_Controller {
 			$i++;
 		}*/
 
+		foreach($items2->result() as $z){
 
-		$html .= '<tr><td colspan="5">&nbsp;</td></tr></table></td>
+			$nom_banco = "";
+
+			$query5 = $this->db->query('SELECT * FROM banco WHERE id like "'.$z->id_banco.'"');
+
+			if($query5->num_rows()>0){
+
+			foreach($query5->result() as $x){
+				$nom_banco = $x->nombre;
+			};
+
+		    };
+
+			if($z->id_forma==1){
+				$forma="CONTADO";
+				$numero = $z->num_vale;
+				$banco = "";
+				$fecha = "";
+			};
+			if($z->id_forma==2){
+				$forma="CHEQUE AL DIA";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transaccion;
+			};
+			if($z->id_forma==8){
+				$forma="CHEQUE A FECHA";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transaccion;
+			};
+			if($z->id_forma==7){
+				$forma="TARJETA DEBITO";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transaccion;
+			};
+			if($z->id_forma==4){
+				$forma="TARJETA CREDITO";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transaccion;
+			};
+			if($z->id_forma==3){
+				$forma="CREDITO 30 DIAS";
+				$numero = $z->num_vale;
+				$banco = "";
+				$fecha = "";
+			};
+			if($z->id_forma==5){
+				$forma="CREDITO 60 DIAS";
+				$numero = $z->num_vale;
+				$banco = "";
+				$fecha = "";
+			};
+
+		$html .= '<tr><td></td></tr>
 		  </tr>
 		  <tr>
-		  	<td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>VALORES EN DETALLE NETOS+IVA</b></p></td>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>FORMA DE PAGO</b></p></td>		  	
 		  </tr>
-		  
 		  <tr>
+			<td style="text-align:right">Forma pago '.$forma.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">N. Documento '.$numero.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">Banco : '.$banco.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">Fecha :'.$fecha.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">&nbsp;&nbsp;</td>
+			<td style="text-align:left">Valor $'.$z->valor_cancelado.'</td>			
+		  </tr></table></td>';
+
+		};
+
+		$html .= '<tr>
 		  	<td colspan="2" rowspan="6" style="font-size: 20px;border-bottom:1pt solid black;border-top:1pt solid black;border-left:1pt solid black;border-right:1pt solid black;text-align:left;">
 
 		  	<p>Observacion: '.$observacion.'</p>
