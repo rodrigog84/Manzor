@@ -391,11 +391,11 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
     eliminaritem2: function() {
         var view = this.getGenerapagocheque();
         var grid  = view.down('#recaudacionId');
-        var valortotal = view.down('#valorpagoId').getValue();
+        var valortotal = view.down('#finaltotalId').getValue();
         if (grid.getSelectionModel().hasSelection()) {
             var row = grid.getSelectionModel().getSelection()[0];
-            var valortotal = valortotal + row.data.valor_cancelado;
-            view.down('#valorpagoId').setValue(valortotal);
+            var valortotal = parseInt(valortotal) + row.data.valor_cancelado;
+            view.down('#finaltotalId').setValue(valortotal);
             grid.getStore().remove(row);
 
         }else{
