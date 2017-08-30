@@ -312,7 +312,26 @@ Ext.define('Infosys_web.view.cuentascorrientes.CancelacionesIngresar', {
                                             if(editor.value != null && editor.value != 0){
                                                 reccuenta = cuentascontablecancela.findRecord('id', record.get('cuenta'));
                                                 if(reccuenta.get('cancelaabono') == 0){
+   
+
+                                                            var sumdebe = 0;
+                                                            var sumhaber = 0;
+                                                            stItem = grid.getStore();
+                                                            
+                                                            stItem.each(function(r){
+                                                                sumdebe += parseInt(r.data.debe);
+                                                                sumhaber += parseInt(r.data.haber);
+                                                            });      
+                                                            me.down("#totaldebe").setValue(sumdebe);                                      
+                                                            me.down("#totalhaber").setValue(sumhaber); 
+
                                                             var diff = parseInt(me.down("#totalhaber").getValue()) - parseInt(me.down('#totaldebe').getValue());
+                                                            console.log("debe : " + parseInt(me.down("#totaldebe").getValue()))
+                                                            console.log("haber : " + parseInt(me.down("#totalhaber").getValue()))
+                                                            console.log("debe_actual : " + record.get('debe'));
+                                                            console.log("haber_actual : " + record.get('haber'));
+
+
                                                             if(diff > 0){
                                                                 editor.record.set({debe: diff}); 
                                                             }
@@ -395,14 +414,14 @@ Ext.define('Infosys_web.view.cuentascorrientes.CancelacionesIngresar', {
                                                         editor.record.set({debe: obj.data[0].saldo});  
                                                         grid.plugins[0].startEditByPosition({
                                                             row: editor.rowIdx,
-                                                            column: 5
+                                                            column: 3
                                                         }); 
 
                                                       }else if(obj.data[0].tipodocumento == 16 || obj.data[0].tipodocumento == 104){ //NOTA DE DEBITO   
                                                         editor.record.set({haber: obj.data[0].saldo});  
                                                         grid.plugins[0].startEditByPosition({
                                                             row: editor.rowIdx,
-                                                            column: 6
+                                                            column: 3
                                                         });   
                                                       }else{
 
@@ -417,14 +436,14 @@ Ext.define('Infosys_web.view.cuentascorrientes.CancelacionesIngresar', {
                                                             editor.record.set({debe: obj.data[0].saldo});  
                                                             grid.plugins[0].startEditByPosition({
                                                                 row: editor.rowIdx,
-                                                                column: 5
+                                                                column: 3
                                                             });    
 
                                                         }else{
                                                             editor.record.set({haber: obj.data[0].saldo});  
                                                             grid.plugins[0].startEditByPosition({
                                                                 row: editor.rowIdx,
-                                                                column: 6
+                                                                column: 3
                                                             });
 
                                                         }
