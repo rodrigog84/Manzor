@@ -664,37 +664,43 @@ class Preventa extends CI_Controller {
 				$forma="CHEQUE AL DIA";
 				$numero = $z->num_cheque;
 				$banco = $nom_banco;
-				$fecha = $z->fecha_transaccion;
+				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==8){
 				$forma="CHEQUE A FECHA";
 				$numero = $z->num_cheque;
 				$banco = $nom_banco;
-				$fecha = $z->fecha_transaccion;
+				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==7){
 				$forma="TARJETA DEBITO";
 				$numero = $z->num_cheque;
 				$banco = $nom_banco;
-				$fecha = $z->fecha_transaccion;
+				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==4){
 				$forma="TARJETA CREDITO";
 				$numero = $z->num_cheque;
 				$banco = $nom_banco;
-				$fecha = $z->fecha_transaccion;
+				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==3){
 				$forma="CREDITO 30 DIAS";
 				$numero = $z->num_vale;
 				$banco = "";
-				$fecha = "";
+				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==5){
 				$forma="CREDITO 60 DIAS";
 				$numero = $z->num_vale;
 				$banco = "";
-				$fecha = "";
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==11){
+				$forma="CREDITO";
+				$numero = $z->num_vale;
+				$banco = "";
+				$fecha = $z->fecha_transac;
 			};
 
 		$html .= '<tr><td></td></tr>
@@ -708,7 +714,7 @@ class Preventa extends CI_Controller {
 			<td style="text-align:right">Banco : '.$banco.'&nbsp;&nbsp;</td>
 			<td style="text-align:right">Fecha :'.$fecha.'&nbsp;&nbsp;</td>
 			<td style="text-align:right">&nbsp;&nbsp;</td>
-			<td style="text-align:left">Valor $'.$z->valor_cancelado.'</td>			
+			<td style="text-align:left">Valor $'.number_format($z->valor_cancelado, 0, '.', ',').'</td>			
 		  </tr></table></td>';
 
 		};
