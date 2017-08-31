@@ -676,7 +676,7 @@ class Preventa extends CI_Controller {
 				$forma="CONTADO";
 				$numero = $z->num_vale;
 				$banco = "";
-				$fecha = "";
+				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==2){
 				$forma="CHEQUE AL DIA";
