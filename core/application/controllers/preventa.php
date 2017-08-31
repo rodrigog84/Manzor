@@ -546,7 +546,7 @@ class Preventa extends CI_Controller {
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Untitled Document</title>
+		<title>Vale Venta Directa</title>
 		<style type="text/css">
 		td {
 			font-size: 16px;
