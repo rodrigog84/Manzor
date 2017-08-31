@@ -639,6 +639,24 @@ class Preventa extends CI_Controller {
 			$html .= '<tr><td colspan="5">&nbsp;</td></tr>';
 			$i++;
 		}*/
+		
+
+		$html .= ' <tr>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>FORMA DE PAGO</b></p></td>
+		  </tr>
+		  <tr>
+		  <td style="text-align:right">Forma pago &nbsp;&nbsp;</td>
+		  <td style="text-align:right">N. Documento &nbsp;&nbsp;</td>
+		  <td style="text-align:right">Banco  &nbsp;&nbsp;</td>
+		  <td style="text-align:right">Fecha  &nbsp;&nbsp;</td>
+		  <td style="text-align:right">&nbsp;&nbsp;</td>
+		  <td style="text-align:left">Valor $</td>		  	
+		  </tr>
+		  <tr>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b></b></p></td>
+		  </tr>';
+
+		 $i=0;
 
 		foreach($items2->result() as $z){
 
@@ -703,23 +721,26 @@ class Preventa extends CI_Controller {
 				$fecha = $z->fecha_transac;
 			};
 
-		$html .= '<tr><td></td></tr>
-		  </tr>
+		$html .= '
 		  <tr>
-		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>FORMA DE PAGO</b></p></td>		  	
-		  </tr>
-		  <tr>
-			<td style="text-align:right">Forma pago '.$forma.'&nbsp;&nbsp;</td>
-			<td style="text-align:right">N. Documento '.$numero.'&nbsp;&nbsp;</td>
-			<td style="text-align:right">Banco : '.$banco.'&nbsp;&nbsp;</td>
-			<td style="text-align:right">Fecha :'.$fecha.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$forma.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$numero.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$banco.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$fecha.'&nbsp;&nbsp;</td>
 			<td style="text-align:right">&nbsp;&nbsp;</td>
-			<td style="text-align:left">Valor $'.number_format($z->valor_cancelado, 0, '.', ',').'</td>			
-		  </tr></table></td>';
+			<td style="text-align:right">$'.number_format($z->valor_cancelado, 0, '.', ',').'</td>			
+		  </tr>';
+
+		  $i++;
 
 		};
 
-		$html .= '<tr>
+		$html .= '</table></td>
+		<tr>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b></b></p></td>
+		  </tr>
+		<tr>
+		
 		  	<td colspan="2" rowspan="6" style="font-size: 20px;border-bottom:1pt solid black;border-top:1pt solid black;border-left:1pt solid black;border-right:1pt solid black;text-align:left;">
 
 		  	<p>Observacion: '.$observacion.'</p>
