@@ -672,6 +672,8 @@ class Preventa extends CI_Controller {
 
 		    };
 
+		    $valor_cancelado=($z->valor_cancelado-$z->valor_vuelto);
+
 			if($z->id_forma==1){
 				$forma="CONTADO";
 				$numero = $z->num_vale;
@@ -684,38 +686,44 @@ class Preventa extends CI_Controller {
 				$banco = $nom_banco;
 				$fecha = $z->fecha_transac;
 			};
-			if($z->id_forma==8){
-				$forma="CHEQUE A FECHA";
-				$numero = $z->num_cheque;
-				$banco = $nom_banco;
-				$fecha = $z->fecha_transac;
-			};
-			if($z->id_forma==7){
-				$forma="TARJETA DEBITO";
+			if($z->id_forma==3){
+				$forma="CREDITO 30 DIAS";
 				$numero = $z->num_cheque;
 				$banco = $nom_banco;
 				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==4){
-				$forma="TARJETA CREDITO";
+				$forma="TARJETA DINER/MASTER/OTRO";
 				$numero = $z->num_cheque;
 				$banco = $nom_banco;
 				$fecha = $z->fecha_transac;
 			};
-			if($z->id_forma==3){
-				$forma="CREDITO 30 DIAS";
+			if($z->id_forma==5){
+				$forma="CREDITO 60 DIAS";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==6){
+				$forma="TRANSFERENCIA BANCARIA";
 				$numero = $z->num_vale;
 				$banco = "";
 				$fecha = $z->fecha_transac;
 			};
-			if($z->id_forma==5){
-				$forma="CREDITO 60 DIAS";
+			if($z->id_forma==7){
+				$forma="CREDITO DEBITO";
+				$numero = $z->num_vale;
+				$banco = "";
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==8){
+				$forma="TARJETA CREDITO";
 				$numero = $z->num_vale;
 				$banco = "";
 				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==11){
-				$forma="CREDITO";
+				$forma="CHEQUE A FECHA";
 				$numero = $z->num_vale;
 				$banco = "";
 				$fecha = $z->fecha_transac;
@@ -728,7 +736,7 @@ class Preventa extends CI_Controller {
 			<td style="text-align:right">'.$banco.'&nbsp;&nbsp;</td>
 			<td style="text-align:right">'.$fecha.'&nbsp;&nbsp;</td>
 			<td style="text-align:right">&nbsp;&nbsp;</td>
-			<td style="text-align:right">$'.number_format($z->valor_cancelado, 0, '.', ',').'</td>			
+			<td style="text-align:right">$'.number_format($valor_cancelado, 0, '.', ',').'</td>			
 		  </tr>';
 
 		  $i++;

@@ -16,7 +16,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
              'Preventa',
              'Sucursales_clientes',
              'Boleta',
-             'productos.Items'
+             'productos.Items',
+             'Cond_pago'
              ],
 
     models: ['Venta.Item',

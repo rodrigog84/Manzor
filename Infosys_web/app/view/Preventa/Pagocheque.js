@@ -27,7 +27,7 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
 
     initComponent: function() {
         var me = this;
-        var formaPago = Ext.create('Ext.data.Store', {
+        /*var formaPago = Ext.create('Ext.data.Store', {
         fields: ['id', 'nombre'],
         data : [
             {"id":1, "nombre":"CONTADO"},
@@ -36,7 +36,7 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
             {"id":4, "nombre":"TARJETA DE DEBITO"},
             {"id":7, "nombre":"TARJETA DE CREDITO"}
         ]
-        }); 
+        }); */
         var stItms = Ext.getStore('recaudacion.Items');
         stItms.removeAll();
         Ext.applyIf(me, {
@@ -81,9 +81,9 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                             itemId: 'condpagoId',
                             fieldLabel: '<b>FORMA PAGO</b>',
                             fieldCls: 'required',
-                            store: formaPago,
+                            store: 'Cond_pago',
                             name: 'cond_pago',
-                            value: 1,
+                            value: "1",
                             valueField: 'id',
                             displayField: 'nombre'                           
                         },{
