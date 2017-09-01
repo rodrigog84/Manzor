@@ -706,26 +706,26 @@ class Preventa extends CI_Controller {
 			};
 			if($z->id_forma==6){
 				$forma="TRANSFERENCIA BANCARIA";
-				$numero = $z->num_vale;
+				$numero = $z->num_cheque;
 				$banco = "";
 				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==7){
-				$forma="CREDITO DEBITO";
-				$numero = $z->num_vale;
-				$banco = "";
+				$forma="TARJETA DEBITO";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
 				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==8){
 				$forma="TARJETA CREDITO";
-				$numero = $z->num_vale;
-				$banco = "";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
 				$fecha = $z->fecha_transac;
 			};
 			if($z->id_forma==11){
 				$forma="CHEQUE A FECHA";
-				$numero = $z->num_vale;
-				$banco = "";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
 				$fecha = $z->fecha_transac;
 			};
 

@@ -205,9 +205,11 @@ Ext.define('Infosys_web.view.Preventa.Pagocheque', {
                           store: 'recaudacion.Items',
                           height: 200,
                           columns: [
+                              { text: 'Id Pago',  dataIndex: 'id_pago', width: 250, hidden: true },
                               { text: 'Forma Pago',  dataIndex: 'nom_forma', width: 250 },
                               { text: 'Documento',  dataIndex: 'num_doc', width: 100},
                               { text: 'Num Cheque',  dataIndex: 'num_cheque', width: 100},
+                              { text: 'Id Banco',  dataIndex: 'id_banco', width: 100, hidden: true},
                               { text: 'Detalle',  dataIndex: 'detalle', width: 200},
                               { text: 'Valor', dataIndex: 'valor_pago', width: 150},
                               { text: 'Monto', dataIndex: 'valor_cancelado', width: 150},
