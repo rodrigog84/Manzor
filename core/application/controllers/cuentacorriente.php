@@ -532,7 +532,7 @@ class Cuentacorriente extends CI_Controller {
 			$valor_docto = $item->debe != 0 ? $item->debe : $item->haber;
 			 $recaudacion_detalle = array(				
 	        'id_recaudacion' => $recauda,
-	        'id_forma' => 1, //CUAL VA?
+	        'id_forma' => $item->cuenta == 7 ? 2 : 1, //CUAL VA?
 	        'detalle' => $item->glosa,
 	        'num_cheque' => 0,
 	        'id_banco' => 0,
@@ -773,7 +773,8 @@ class Cuentacorriente extends CI_Controller {
 			$valor_docto = $item->debe != 0 ? $item->debe : $item->haber;
 			 $recaudacion_detalle = array(				
 	        'id_recaudacion' => $recauda,
-	        'id_forma' => 1, //CUAL VA?
+	        //'id_forma' => 1, //CUAL VA?
+	        'id_forma' => $item->cuenta == 7 ? 2 : 1, //CUAL VA?
 	        'detalle' => $item->glosa,
 	        'num_cheque' => 0,
 	        'id_banco' => 0,
