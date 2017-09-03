@@ -1810,7 +1810,13 @@ class Compras extends CI_Controller {
 			 	if ($pmc < $puc){			 		
 			 		$pmc = $puc;
 			 	};			 
-			};                
+			}else{
+
+			    $ppm = $v->precio;
+                $ppm = $v->precio;
+			 	$saldo =  $v->cantidad;
+			 	$pmc = $v->precio;
+			 };                
 		   };
 		   $prod = array(
 	         'stock' => $saldo,
@@ -1831,7 +1837,7 @@ class Compras extends CI_Controller {
 		$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
 		if($query->num_rows()>0){
 		 	$row = $query->first_row();
-		 	$saldo = ($row->stock)-($v->cantidad);
+		 	$saldo = ($row->stock)+($v->cantidad);
 		};
 
 		 $query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
@@ -1971,8 +1977,8 @@ class Compras extends CI_Controller {
 
 		}else if($tipodocumento ==  101 || $tipodocumento == 103 || $tipodocumento == 105){ // FACTURA ELECTRONICA O FACTURA EXENTA ELECTRONCA O GUIA DE DESPACHO
 				//$es_cedible = is_null($cedible) ? false : true;
-				$this->load->model('facturaelectronica');
-				$this->facturaelectronica->exportFePDF($idfactura,'id');
+				$this->exportFacturaPDF($idfactura,$numero);
+
 
 		}else{
 
