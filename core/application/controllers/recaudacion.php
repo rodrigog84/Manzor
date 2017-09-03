@@ -1054,8 +1054,8 @@ class Recaudacion extends CI_Controller {
 			$cajas = array(
 		         'efectivo' => $contado,
 		         'cheques' => $cheques,
-		         'otros' => $otros
-		    );
+		         'otros' => $otros,
+		     );
 		    $this->db->where('id', $idrecauda);		  
 		    $this->db->update('control_caja', $cajas);
 	    }else{
@@ -1063,6 +1063,7 @@ class Recaudacion extends CI_Controller {
 	    	 'id_caja' => $idcaja,
 	    	 'id_cajero' => $idcajero,
 	         'efectivo' => $contado,
+	         'id_bodega' => $idbodega,
 	         'cheques' => $cheques,
 	         'otros' => $otros
 	    	);
@@ -1099,7 +1100,8 @@ class Recaudacion extends CI_Controller {
 	        'fecha' => date('Y-m-d'),
 	        'id_cliente' => $idcliente,
 	        'id_ticket' => $numpreventa,
-	        'id_vendedor' => 1,
+	        'id_bodega' => $idbodega,
+	        'id_vendedor' => $vendedor,
 			'num_doc' => $numdocum,
 			'id_caja' => $idcaja,
 			'id_cajero' => $idcajero,
@@ -1111,12 +1113,19 @@ class Recaudacion extends CI_Controller {
 
 		foreach($recitems as $r){
 
+			if (!$r->id_banco){
+				$idbanco = "";
+			}else{
+				$idbanco = $r->id_banco;
+			};
+
 			 $recaudacion_detalle = array(				
 	        'id_recaudacion' => $recauda,
 	        'id_forma' => $r->id_forma,
 	        'detalle' => $r->detalle,
 	        'num_cheque' => $r->num_cheque,
-	        'id_banco' => $r->id_banco,
+	        'id_bodega' => $idbodega,
+	        'id_banco' => $idbanco,
 	        'valor_pago' => $r->valor_pago,
 	        'valor_cancelado' => $r->valor_cancelado,
 	        'valor_vuelto' => $r->valor_vuelto,
@@ -1315,7 +1324,8 @@ class Recaudacion extends CI_Controller {
 	        'iva' => $fiva,
 	        'totalfactura' => $totaldocumento,
 	        'fecha_factura' => date('Y-m-d'),
-	        'fecha_venc' => date('Y-m-d'),	          
+	        'fecha_venc' => date('Y-m-d'),
+	        'id_bodega' => $idbodega	          
 		);
 
 		$this->db->insert('factura_clientes', $factura_cliente); 
@@ -1392,6 +1402,7 @@ class Recaudacion extends CI_Controller {
 		$datos2 = array(
 				'num_movimiento' => $numdocum,
 		        'id_producto' => $v->id,
+		        'id_cliente' => $idcliente,
 		        'id_tipo_movimiento' => $tipodocumento,
 		        'valor_producto' =>  $v->precio,
 		        'cantidad_salida' => $v->cantidad,
