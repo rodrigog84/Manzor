@@ -3439,7 +3439,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ - ('.number_format($sum_gastos, 0, ',', '.').')</b></td>
 	    </tr><tr>
 		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>EFECTIVO FINAL</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado2 + $canceladoctacte2, 0, ',', '.').'</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado2 + $canceladoctacte2 - $sum_gastos, 0, ',', '.').'</b></td>
 	    </tr><tr>
 		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACI&Oacute;N DEL D&Iacute;A</b></td>
 		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado_total + $cancelado_total_ctacte - $sum_gastos, 0, ',', '.').'</b></td>
