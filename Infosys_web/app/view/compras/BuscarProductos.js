@@ -24,6 +24,11 @@ Ext.define('Infosys_web.view.compras.BuscarProductos' ,{
 
             },
            columns: [{
+                header: "Id",
+                width: 100,
+                dataIndex: 'id_producto',
+                hidden: true
+            },{
                 header: "Codigo",
                 width: 100,
                 dataIndex: 'codigo'

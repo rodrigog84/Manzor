@@ -1171,7 +1171,7 @@ class Recaudacion extends CI_Controller {
 				};
 				if ($r->id_forma == 4){
 					$update_general = array(				        
-				        'tarjetacredito' => ($r->valor_pago+$tarjetacredito)				        
+				        'tarjetadebito' => ($r->valor_pago+$tarjetadebito)				        
 					);
 				};
 				if ($r->id_forma == 6){

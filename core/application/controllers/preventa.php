@@ -511,6 +511,10 @@ class Preventa extends CI_Controller {
 		$row = $row[0];
 		//items
 		$items = $this->db->get_where('preventa_detalle', array('id_ticket' => $idpreventa));
+
+		$idpagovale= $row->id_pago_vale;
+
+		$items2 = $this->db->get_where('recaudacion_detalle', array('id_recaudacion' => $idpagovale));
 		//variables generales
 		$codigo = $row->num_ticket;
 		$nombre_contacto = $row->nom_cliente;
@@ -542,7 +546,7 @@ class Preventa extends CI_Controller {
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Untitled Document</title>
+		<title>Vale Venta Directa</title>
 		<style type="text/css">
 		td {
 			font-size: 16px;
@@ -635,15 +639,116 @@ class Preventa extends CI_Controller {
 			$html .= '<tr><td colspan="5">&nbsp;</td></tr>';
 			$i++;
 		}*/
+		
 
-
-		$html .= '<tr><td colspan="5">&nbsp;</td></tr></table></td>
+		$html .= ' <tr>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>FORMA DE PAGO</b></p></td>
 		  </tr>
 		  <tr>
-		  	<td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b>VALORES EN DETALLE NETOS+IVA</b></p></td>
+		  <td style="text-align:right">Forma pago &nbsp;&nbsp;</td>
+		  <td style="text-align:right">N. Documento &nbsp;&nbsp;</td>
+		  <td style="text-align:right">Banco  &nbsp;&nbsp;</td>
+		  <td style="text-align:right">Fecha  &nbsp;&nbsp;</td>
+		  <td style="text-align:right">&nbsp;&nbsp;</td>
+		  <td style="text-align:left">Valor $</td>		  	
 		  </tr>
-		  
 		  <tr>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b></b></p></td>
+		  </tr>';
+
+		 $i=0;
+
+		foreach($items2->result() as $z){
+
+			$nom_banco = "";
+
+			$query5 = $this->db->query('SELECT * FROM banco WHERE id like "'.$z->id_banco.'"');
+
+			if($query5->num_rows()>0){
+
+			foreach($query5->result() as $x){
+				$nom_banco = $x->nombre;
+			};
+
+		    };
+
+		    $valor_cancelado=($z->valor_cancelado-$z->valor_vuelto);
+
+			if($z->id_forma==1){
+				$forma="CONTADO";
+				$numero = $z->num_vale;
+				$banco = "";
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==2){
+				$forma="CHEQUE AL DIA";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==3){
+				$forma="CREDITO 30 DIAS";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==4){
+				$forma="TARJETA DINER/MASTER/OTRO";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==5){
+				$forma="CREDITO 60 DIAS";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==6){
+				$forma="TRANSFERENCIA BANCARIA";
+				$numero = $z->num_cheque;
+				$banco = "";
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==7){
+				$forma="TARJETA DEBITO";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==8){
+				$forma="TARJETA CREDITO";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+			if($z->id_forma==11){
+				$forma="CHEQUE A FECHA";
+				$numero = $z->num_cheque;
+				$banco = $nom_banco;
+				$fecha = $z->fecha_transac;
+			};
+
+		$html .= '
+		  <tr>
+			<td style="text-align:right">'.$forma.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$numero.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$banco.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">'.$fecha.'&nbsp;&nbsp;</td>
+			<td style="text-align:right">&nbsp;&nbsp;</td>
+			<td style="text-align:right">$'.number_format($valor_cancelado, 0, '.', ',').'</td>			
+		  </tr>';
+
+		  $i++;
+
+		};
+
+		$html .= '</table></td>
+		<tr>
+		  <td colspan="3" style="border-top:1pt solid black;text-align:center;"><p><b></b></p></td>
+		  </tr>
+		<tr>
+		
 		  	<td colspan="2" rowspan="6" style="font-size: 20px;border-bottom:1pt solid black;border-top:1pt solid black;border-left:1pt solid black;border-right:1pt solid black;text-align:left;">
 
 		  	<p>Observacion: '.$observacion.'</p>
