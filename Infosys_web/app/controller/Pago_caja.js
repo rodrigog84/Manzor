@@ -2282,6 +2282,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
                 caja: caj,
                 fecha: fecha,
                 efectivoinicio: efectivoinicio,
+                id_bodega: idbodega,
                 efectivo: efectivo,
                 cheques: cheques,
                 otros: otros 
