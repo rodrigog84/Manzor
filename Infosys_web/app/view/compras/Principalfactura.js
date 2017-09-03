@@ -212,7 +212,7 @@ Ext.define('Infosys_web.view.compras.Principalfactura' ,{
             },{
                 xtype: 'button',
                 iconCls: 'icon-delete',
-                action: 'cerrarpreventa',
+                action: 'cerrarfacturacompra',
                 text : 'Cerrar'
             }],
         },{

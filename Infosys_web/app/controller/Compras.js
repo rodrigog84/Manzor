@@ -105,8 +105,8 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasingresar button[action=grabarfactura]': {
                 click: this.grabarfactura
             },
-            'facturascomprasprincipal button[action=cerrarfactura]': {
-                click: this.cerrarfactura
+            'facturascomprasprincipal button[action=cerrarfacturacompra]': {
+                click: this.cerrarfacturacompra
             },
             'facturascomprasprincipal button[action=generarfacturapdf]': {
                 click: this.generarfacturapdf
@@ -1261,7 +1261,9 @@ Ext.define('Infosys_web.controller.Compras', {
         };
     },
 
-    cerrarfactura: function(){
+    cerrarfacturacompra: function(){
+        var stItms = Ext.getStore('FacturaCompras');
+        stItms.removeAll();
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
     },
@@ -1270,7 +1272,6 @@ Ext.define('Infosys_web.controller.Compras', {
         
         var view =this.getFacturascomprasingresar();
         var nombre = view.down('#tipoDocumentoId').getValue();
-        console.log(nombre);
         var cero="";
         
         if(nombre == 3){  // limpiar campos           
@@ -1527,6 +1528,9 @@ Ext.define('Infosys_web.controller.Compras', {
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
         viewport.add({xtype: 'facturascomprasprincipal'});
+        var st = this.getFacturaComprasStore();
+        st.proxy.extraParams = {opcion : "Todos"}
+        st.load();
         var viewIngresa = this.getFacturascomprasprincipal();
         var idbodega = "1";
         viewIngresa.down('#bodegaId').setValue(idbodega);
