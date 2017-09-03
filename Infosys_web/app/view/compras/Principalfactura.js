@@ -175,17 +175,17 @@ Ext.define('Infosys_web.view.compras.Principalfactura' ,{
             },'->',{
                 xtype: 'combo',
                 align: 'center',
-                width: 260,
+                width: 360,
                 labelWidth: 85,
                 maxHeight: 25,
                 matchFieldWidth: false,
                 listConfig: {
-                    width: 175
+                    width: 290
                 },
                 itemId: 'tipoDocumentoId',
                 fieldLabel: '<b>DOCUMENTO</b>',
                 fieldCls: 'required',
-                store: 'Tipo_documento.Selector',
+                store: 'Tipo_documento.Selector5',
                 valueField: 'id',
                 displayField: 'nombre'
             },{
@@ -207,7 +207,7 @@ Ext.define('Infosys_web.view.compras.Principalfactura' ,{
             },'-',{
                 xtype: 'button',
                 iconCls: 'icon-search',
-                action: 'buscarpreventa',
+                action: 'buscarcompras',
                 text : 'Buscar'
             },{
                 xtype: 'button',

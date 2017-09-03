@@ -135,6 +135,10 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasingresar #tipoDocumentoId': {
                 select: this.selectItemdocuemento
             },
+            'facturascomprasprincipal #tipoDocumentoId': {
+                select: this.buscarfacturasgrilla
+            },
+                        
             'buscarsucursalesclientescompras button[action=seleccionarsucursalcliente]': {
                 click: this.seleccionarsucursalcliente
             },
@@ -193,9 +197,28 @@ Ext.define('Infosys_web.controller.Compras', {
                 specialkey: this.special7,
                 //blur: this.validanumfact              
             },
+            'facturascomprasprincipal button[action=buscarcompras]': {
+                click: this.buscarfacturasgrilla
+            },
 
             
              });
+    },
+
+    buscarfacturasgrilla: function(){
+
+        var view = this.getFacturascomprasprincipal();
+        var st = this.getFacturaComprasStore();
+        var opcion = view.down('#tipoSeleccionId').getValue();
+        var documento = view.down('#tipoDocumentoId').getValue();
+        var nombre = view.down('#nombreId').getValue();
+        st.proxy.extraParams = {nombre : nombre,
+                                opcion : opcion,
+                                documento: documento}
+        st.load();
+
+
+        
     },
 
     eliminaritem: function(){
