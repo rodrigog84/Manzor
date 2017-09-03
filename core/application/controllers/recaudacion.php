@@ -3078,15 +3078,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 
 		      $cancelado = 0;		     
-		      $cancelado1 = 0;	
-		      $cancelado2 = 0;	
-		      $cancelado3 = 0;	
-		      $cancelado4 = 0;	
-		      $cancelado5 = 0;	
-		      $cancelado6 = 0;	
-		      //$cancelado7 = 0;	
-		      $cancelado8 = 0;	
-		      $cancelado9 = 0;	
+		      $canceladoctacte2 = 0;	
+		      $canceladoctacte8 = 0;	
 
 		      $i = 0;
               //$body_detail = '';
@@ -3236,14 +3229,14 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				if ($boleta>0){
 				$doc2 = "CONTADO";
 				if ($v['estado']!="NUL"){
-				$cancelado2 +=$boleta;
+				$canceladoctacte2 +=$boleta;
 			    };
 				};
 	
 				if ($chequealdia>0){
 				$doc8 = "CHEQUE AL DIA";
 				if ($v['estado']!="NUL"){
-				$cancelado8 += $chequealdia;
+				$canceladoctacte8 += $chequealdia;
 			    };
 				};
 				
@@ -3257,14 +3250,14 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			$footer_ctacte = "";
 			$cancelado_total_ctacte = 0;
 
-		    if($cancelado2 > 0){
+		    if($canceladoctacte2 > 0){
 
 			$footer_ctacte .= '<tr>
 			<tr>
 			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc2.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado2, 0, ',', '.').'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($canceladoctacte2, 0, ',', '.').'</b></td>
 		    </tr>';
-		    $cancelado_total_ctacte += $cancelado2;
+		    $cancelado_total_ctacte += $canceladoctacte2;
 		    };
 
 
@@ -3272,14 +3265,14 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	
 
 		   
-		    if($cancelado8 > 0){
+		    if($canceladoctacte8 > 0){
 
 			$footer_ctacte .= '
 			<tr>
 			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc8.'</b></td>
-			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado8, 0, ',', '.').'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($canceladoctacte8, 0, ',', '.').'</b></td>
 		    </tr>';
-		    $cancelado_total_ctacte += $cancelado8;
+		    $cancelado_total_ctacte += $canceladoctacte8;
 		    };	   
 
 
@@ -3331,20 +3324,125 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	    </tr></table>';
 
 
-		$footer_total .= '</table><table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr>
-		<tr>
+		$footer_total .= '</table><table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr>' ;
+
+
+		$query_efectivo_inicial = $this->db->query('SELECT efectivoinicio FROM control_caja
+			WHERE fecha = "'.$fecha.'" and id_caja="'.$idcaja.'"
+			and id_cajero = "' . $idcajero . '" limit 1');
+		$result_efectivo_inicial = $query_efectivo_inicial->row_array();
+		$efectivoinicio = isset($result_efectivo_inicial['efectivoinicio']) ? $result_efectivo_inicial['efectivoinicio'] : 0;
+		
+
+
+		$footer_total .= '<tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>EFECTIVO INICIAL</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio, 0, ',', '.').'</b></td>
+	    </tr>';
+
+
+		$footer_total .= '<tr>
 		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CAJA</b></td>
 		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
-	    </tr>
-	    <tr>
+	    </tr>';
+
+		if($cancelado2 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - EFECTIVO DEL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado2, 0, ',', '.').'</td>
+				    </tr>';
+
+
+		}
+		
+
+		if($cancelado1 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CHEQUE A FECHA</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado1, 0, ',', '.').'</td>
+				    </tr>';
+		}
+
+
+		if($cancelado3 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO 30 D&Iacute;AS</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado3, 0, ',', '.').'</td>
+				    </tr>';
+		}
+
+		if($cancelado4 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL TARJETA DE CR&Eacute;DITO</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado4, 0, ',', '.').'</td>
+				    </tr>';
+		}		
+
+		if($cancelado5 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL TARJETA DE D&Eacute;BITO</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado5, 0, ',', '.').'</td>
+				    </tr>';
+		}	
+
+
+		if($cancelado6 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL TRANSFERENCIA BANCARIA</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado6, 0, ',', '.').'</td>
+				    </tr>';
+		}	
+
+
+
+		if($cancelado8 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CHEQUE AL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado8, 0, ',', '.').'</td>
+				    </tr>';
+		}	
+
+
+		if($cancelado9 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado9, 0, ',', '.').'</td>
+				    </tr>';
+		}						
+		
+
+
+	    $footer_total .= '<tr>
 		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
 		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
-	    </tr><tr>
+	    </tr>
+	    ';
+
+
+		if($canceladoctacte2 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - EFECTIVO DEL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($canceladoctacte2, 0, ',', '.').'</td>
+				    </tr>';
+		}	
+
+
+		if($canceladoctacte8 > 0){
+				$footer_total .= '<tr>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CHEQUE AL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($canceladoctacte8, 0, ',', '.').'</td>
+				    </tr>';
+		}	
+
+	    $footer_total .= '<tr>
 		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GASTOS</b></td>
 		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ - ('.number_format($sum_gastos, 0, ',', '.').')</b></td>
 	    </tr><tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GENERAL</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total + $cancelado_total_ctacte - $sum_gastos, 0, ',', '.').'</b></td>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>EFECTIVO FINAL</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado2 + $canceladoctacte2, 0, ',', '.').'</b></td>
+	    </tr><tr>
+		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACI&Oacute;N DEL D&Iacute;A</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado_total + $cancelado_total_ctacte - $sum_gastos, 0, ',', '.').'</b></td>
 	    </tr></table>';
 
 	    $fin_tabla = "</table>
