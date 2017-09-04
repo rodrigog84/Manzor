@@ -282,8 +282,14 @@ Ext.define('Infosys_web.controller.Recaudacion', {
     },
 
     exportarlibrorecaudacion : function(){
-
-        Ext.create('Infosys_web.view.recaudacion.ExportarPdf');
+        var view = this.getRecaudacionprincipal();
+        var bodega = view.down('#bodegaId').getValue();
+        if(bodega == null){
+            Ext.Msg.alert('Alerta', 'Debe Seleccionar Bodega.');
+        }else{
+            Ext.create('Infosys_web.view.recaudacion.ExportarPdf', {idbodega: bodega} );    
+        }
+        
     },
 
     exportarpdfrecaudacion : function(){
@@ -300,6 +306,7 @@ Ext.define('Infosys_web.controller.Recaudacion', {
         var idcaja = caja.id;
         var nomcaja = caja.nombre;
         var condicion = view.down('#cajeroId');
+        var idbodega = view.down('#idbodega').getValue();
         var stCombo = condicion.getStore();
         var cajero = stCombo.findRecord('id', condicion.getValue()).data;
         var idcajero = cajero.id;
@@ -338,7 +345,7 @@ Ext.define('Infosys_web.controller.Recaudacion', {
           i++;
         })
         
-        window.open(preurl + 'recaudacion/exportarPdflibroRecauda?cols='+Ext.JSON.encode(jsonCol)+'&idcajero='+idcajero+'&idcaja='+idcaja+'&fecha2='+fecha2+'&tipo='+tipo+'&nomcaja='+nomcaja+'&nomcajero='+nomcajero);
+        window.open(preurl + 'recaudacion/exportarPdflibroRecauda?cols='+Ext.JSON.encode(jsonCol)+'&idbodega='+idbodega+'&idcajero='+idcajero+'&idcaja='+idcaja+'&fecha2='+fecha2+'&tipo='+tipo+'&nomcaja='+nomcaja+'&nomcajero='+nomcajero);
 
         view.close();
    },
