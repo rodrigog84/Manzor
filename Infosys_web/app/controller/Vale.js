@@ -352,7 +352,7 @@ Ext.define('Infosys_web.controller.Vale', {
          var tipdoc="101";
          var rut ="19";
          var nombre =idbodega;
-         var tipo = "2";
+         var tipo = "24";
 
          if(!idbodega){
             Ext.Msg.alert('Alerta', 'Debe Elegir Bodega');

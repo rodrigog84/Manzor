@@ -769,7 +769,7 @@ class Vale extends CI_Controller {
 		$fafecto = $this->input->post('afecto');
 		$ftotal = $this->input->post('total');
 		$observa = $this->input->post('observa');
-		$tipodocumento = 6;
+		$tipodocumento = 24;
 				
 		$vale = array(
 	        'num_vale' => $numvale,
