@@ -2091,6 +2091,7 @@ class Recaudacion extends CI_Controller {
             
           $columnas = json_decode($this->input->get('cols'));
           $idcaja = $this->input->get('idcaja');
+          $idbodega = $this->input->get('idbodega');
           $idcajero = $this->input->get('idcajero');
           $nomcaja = $this->input->get('nomcaja');
           $nomcajero = $this->input->get('nomcajero');
@@ -2133,6 +2134,10 @@ class Recaudacion extends CI_Controller {
           if ($tipo == "DETALLE"){
 
  			$this->load->database();
+ 			$query_bodega = $this->db->query("select nombre from bodegas where id = " . $idbodega);
+ 			$result_bodega = $query_bodega->row_array();
+ 			$nombre_bodega = $result_bodega['nombre'];
+
 
  			$query = $this->db->query('SELECT acc.*, n.nombre as nom_caja, e.nombre as 
  			nom_cajero FROM recaudacion acc
@@ -2188,9 +2193,10 @@ class Recaudacion extends CI_Controller {
 		  </tr>';              
 
 		  $header .= '<tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>LIBRO DE RECAUDACION</h2></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="4"><h2>LIBRO DE RECAUDACION</h2></td>
 		  </tr>
 		  <tr>
+		  	<td>BODEGA : ' . $nombre_bodega . '</td>
 			<td>CAJA : '.$nomcaja.'</td>
 			<td>CAJERO : '.$nomcajero.'</td>
 			<td>FECHA : '.$fecha2.'</td>
@@ -2198,7 +2204,7 @@ class Recaudacion extends CI_Controller {
 		  <tr>
 			
 		  </tr>
-			<tr><td colspan="3">&nbsp;</td></tr>		  
+			<tr><td colspan="4">&nbsp;</td></tr>		  
 			</table>';  
 
 $header5 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -2230,9 +2236,10 @@ $header5 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		    <p>FECHA EMISION : '.$fecha2.'</p>
 		    </td>
 		  </tr><tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>CUENTA CORRIENTE</h2></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="4"><h2>CUENTA CORRIENTE</h2></td>
 		  </tr>
 		  <tr>
+		  	<td>BODEGA : ' . $nombre_bodega . '</td>
 			<td>CAJA : '.$nomcaja.'</td>
 			<td>CAJERO : '.$nomcajero.'</td>
 			<td>FECHA : '.$fecha2.'</td>
@@ -2240,7 +2247,7 @@ $header5 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		  <tr>
 			
 		  </tr>
-			<tr><td colspan="3">&nbsp;</td></tr>		  
+			<tr><td colspan="4">&nbsp;</td></tr>		  
 			</table>';  
 
 
@@ -2274,9 +2281,10 @@ $header6 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		    <p>FECHA EMISION : '.$fecha2.'</p>
 		    </td>
 		  </tr><tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>TOTAL GENERAL</h2></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="4"><h2>TOTAL GENERAL</h2></td>
 		  </tr>
 		  <tr>
+		  	<td>BODEGA : ' . $nombre_bodega . '</td>
 			<td>CAJA : '.$nomcaja.'</td>
 			<td>CAJERO : '.$nomcajero.'</td>
 			<td>FECHA : '.$fecha2.'</td>
@@ -2284,7 +2292,7 @@ $header6 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		  <tr>
 			
 		  </tr>
-			<tr><td colspan="3">&nbsp;</td></tr>		  
+			<tr><td colspan="4">&nbsp;</td></tr>		  
 			</table>';  
 
 
@@ -2318,9 +2326,10 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		    <p>FECHA EMISION : '.$fecha2.'</p>
 		    </td>
 		  </tr><tr>
-			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>GASTOS</h2></td>
+			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="4"><h2>GASTOS</h2></td>
 		  </tr>
 		  <tr>
+		  	<td>BODEGA : ' . $nombre_bodega . '</td>
 			<td>CAJA : '.$nomcaja.'</td>
 			<td>CAJERO : '.$nomcajero.'</td>
 			<td>FECHA : '.$fecha2.'</td>
@@ -2328,7 +2337,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		  <tr>
 			
 		  </tr>
-			<tr><td colspan="3">&nbsp;</td></tr>		  
+			<tr><td colspan="4">&nbsp;</td></tr>		  
 			</table>';  			   
 
 

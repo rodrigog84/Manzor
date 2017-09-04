@@ -13,6 +13,10 @@ Ext.define('Infosys_web.view.recaudacion.ExportarPdf', {
     iconCls: 'icon-sheet',
 
     initComponent: function() {
+
+        var me = this
+        var idbodega = me.idbodega;
+
         this.items = [
             {
                 xtype: 'form',
@@ -30,6 +34,13 @@ Ext.define('Infosys_web.view.recaudacion.ExportarPdf', {
                 },
 
                 items: [
+                    {
+                        xtype: 'textfield',
+                        name : 'idbodega',
+                        itemId: 'idbodega',
+                        value : idbodega,
+                        hidden:true
+                    },                
                     {
                         xtype: 'textfield',
                         name : 'id',
