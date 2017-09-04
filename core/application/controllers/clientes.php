@@ -264,7 +264,7 @@ class Clientes extends CI_Controller {
 	        	$sql_nombre .= "acc.nombres like '%".$nombre."%' and ";
 	        }
 	        
-			$$query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,ven.nombre as nombre_vendedor, g.nombre as giro,con.nombre as nom_id_pago, tip.nombre as nom_tipctacte FROM clientes acc
+			$query = $this->db->query('SELECT acc.*, c.nombre as nombre_ciudad, com.nombre as nombre_comuna,ven.nombre as nombre_vendedor, g.nombre as giro,con.nombre as nom_id_pago, tip.nombre as nom_tipctacte FROM clientes acc
 			left join ciudad c on (acc.id_ciudad = c.id)
 			left join cod_activ_econ g on (acc.id_giro = g.id)
 			left join comuna com on (acc.id_comuna = com.id)

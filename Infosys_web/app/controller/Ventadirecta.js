@@ -307,11 +307,9 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             },
             success: function(response){
                 var resp = Ext.JSON.decode(response.responseText);
-                console.log("llegamos")
                 if (resp.success == true){                
                 var observar = (resp.observar);
                 var rut = (observar.rut);
-                console.log(rut);
                 var view = Ext.create('Infosys_web.view.Preventa.Observaciones').show();
                 view.down('#rutmId').setValue(observar.rut);
                 view.down('#rutId').setValue(observar.rutm);
@@ -423,8 +421,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             
         }
         viewIngresa.down('#permiteId').setValue(valida);
-        console.log(valida);
-        
+              
     },
 
     agregarrecaudacion: function() {
@@ -478,9 +475,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var cero = 0;
         var valida = 1; 
         
-        console.log(record.nombre);    
-               
-
         if (record.id == 1) {
                    
             var valortotal = ((valorcancela))-((valorvuelto)) ;
@@ -568,8 +562,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         if (record.id == 4) {
 
-            console.log("llegamos");
-            
             var otros = (otros) + (valortotal);
             view.down('#validapagoId').setValue(vali);
             if(numcheque==0){
@@ -1442,7 +1434,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         var record = stCombo.findRecord('id', producto.getValue()).data;        
         var vendedor = record.id;
         var fechapreventa = viewIngresa.down('#fechaventaId').getValue();
-        var stItem = this.getProductosItemsStore();
+        var steItem = this.getProductosItemsStore();
         var stPreventa = this.getPreventaStore();
         var observa = viewIngresa.down('#observaId').getValue();
         var idbodega = viewIngresa.down('#bodegaId').getValue();
@@ -1477,19 +1469,11 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         if(!idpago){
             Ext.Msg.alert('Ingrese Condicion Venta');
             return;   
-        }        
-       
-       
-
-        var dataItems2 = new Array();
-        stItem.each(function(r){
-            dataItems2.push(r.data)
-        });
-
-                      
+        }
+                           
         var dataItems = new Array();
-        stItem.each(function(r){
-            dataItems.push(r.data)
+        steItem.each(function(m){
+            dataItems.push(m.data)
         });
 
         var recItems = new Array();
@@ -1497,7 +1481,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             recItems.push(r.data)
         });
 
-        console.log(idcliente);
+        console.log(recItems);
+        console.log(dataItems);
 
         Ext.Ajax.request({
             url: preurl + 'recaudacion/save',
@@ -1510,7 +1495,6 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 vendedor: vender,
                 recitems: Ext.JSON.encode(recItems),
                 items: Ext.JSON.encode(dataItems),   
-                items2: Ext.JSON.encode(dataItems2),                
                 id_cliente : idcliente,
                 id_caja : idcaja,
                 id_cajero : idcajero,

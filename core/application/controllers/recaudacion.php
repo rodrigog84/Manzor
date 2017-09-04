@@ -938,7 +938,7 @@ class Recaudacion extends CI_Controller {
 		$vendedor = $this->input->post('vendedor');
 		$sucursal = $this->input->post('sucursal');
 		//$datacliente = json_decode($this->input->post('datacliente'));
-		$items2 = json_decode($this->input->post('items2'));
+		//$items2 = json_decode($this->input->post('items2'));
 		$neto = $this->input->post('neto');
 		$desc = $this->input->post('descuento');
 		$fiva = $this->input->post('iva');
@@ -993,7 +993,7 @@ class Recaudacion extends CI_Controller {
 
 		$secuencia = 0;
 
-		foreach($items2 as $v){
+		foreach($items as $v){
 
 			$secuencia = $secuencia + 1;
 			$preventa_detalle = array(
