@@ -2353,7 +2353,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Efectivo</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque al Dia</td>
 	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque a fecha</td>
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Credito</td>
+	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cred 60d</td>
 	        <td width="70px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cred 30d</td>
 	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Tarjeta Debito</td>
 	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Tarjeta Credito</td>
@@ -2659,6 +2659,19 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$credito30dias += 0;
 							$credito60dias += 0;
 						};
+						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
+							$credito60dias += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$tarjetacredito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito += 0;
+						};
+						
 						
 					}; // FIN if ($v['nom_documento']=="FACTURA ELECTRONICA"){
 
@@ -2767,6 +2780,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$credito30dias += 0;
 							$credito60dias += 0;
 						};
+
+						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
+							$credito60dias += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$tarjetacredito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito += 0;
+						};
+						
 					}; // FIN if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
 
 					if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
@@ -2775,8 +2802,6 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$boleta += $v['monto_recauda'];
 							$chequealdia += 0;
 							$chequeafecha += 0;
-							$credito += 0;
-							$credito += 0;
 							$credito += 0;
 							$tarjetadebito += 0;
 							$tarjetacredito += 0;
@@ -2873,6 +2898,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$credito30dias += 0;
 							$credito60dias += 0;
 						};
+
+						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
+							$credito60dias += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$tarjetacredito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito += 0;
+						};
+						
 						
 					}; //  FIN if ($v['nom_documento']=="GUIA DE DESPACHO ELECTRONICA"){
 
@@ -2905,7 +2944,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 						<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
 						<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
 						<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', ',').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito60dias, 0, ',', '.').'</td>
 						<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
 						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
 						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
@@ -2926,12 +2965,12 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
 				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
 				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta+$chequealdia+$chequeafecha+$credito+$credito30dias+$tarjetadebito+$tarjetacredito+$transferencia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta+$chequealdia+$chequeafecha+$credito60dias+$credito30dias+$tarjetadebito+$tarjetacredito+$transferencia, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
 				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
 				<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito, 0, ',', '.').'</td>
+				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito60dias, 0, ',', '.').'</td>
 				<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
 				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
 				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
@@ -2960,6 +2999,12 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				$cancelado3 +=$credito30dias;
 			    };
 				};
+				if ($credito60dias>0){
+				$doc9 = "CREDITO 60 DIAS";
+				if ($v['estado']!="NUL"){
+				$cancelado9 +=$credito60dias;
+			    };
+				};
 				if ($tarjetacredito>0){
 				$doc4 = "TARJETA CREDITO";
 				if ($v['estado']!="NUL"){
@@ -2976,12 +3021,6 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				$doc6 = "TRANSFERENCIA BANCARIA";
 				if ($v['estado']!="NUL"){
 				$cancelado6 +=$transferencia;
-			    };
-				};
-				if ($credito>0){
-				$doc9 = "CREDITO";
-				if ($v['estado']!="NUL"){
-				$cancelado9 += $credito;
 			    };
 				};
 				if ($chequealdia>0){
@@ -3425,7 +3464,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		if($cancelado9 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO</td>
+					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO 60 DIAS</td>
 					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado9, 0, ',', '.').'</td>
 				    </tr>';
 		}						
@@ -3681,7 +3720,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Efectivo</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque al Dia</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque a fecha</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Credito</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Credito 60d</td>
 	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cred 30d</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Debito</td>
 	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Credito</td>
@@ -3720,7 +3759,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				$transferencia = $v['transferencia'];
 				$credito30dias = $v['credito30dias'];
 				$credito60dias = $v['credito60dias'];
-				$valor_pago = ($boleta+$chequealdia+$chequeafecha+$credito+$tarjetadebito+$tarjetacredito+$transferencia+$credito30dias+$credito60dias);
+				$valor_pago = ($boleta+$chequealdia+$chequeafecha+$tarjetadebito+$tarjetacredito+$transferencia+$credito30dias+$credito60dias);
 
 				if ($v['estado']=="NUL"){
 				  $boleta = 0;
@@ -3750,7 +3789,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($boleta, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequealdia, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequeafecha, 0, ',', ',').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito60dias, 0, ',', '.').'</td>
 				<td width="80px" style="text-align:right;font-size:12px">'.number_format($credito30dias, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
@@ -3770,7 +3809,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($boleta, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequealdia, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequeafecha, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito60dias, 0, ',', '.').'</td>
 				<td width="80px" style="text-align:right;font-size:12px">'.number_format($credito30dias, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
 				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
@@ -3817,9 +3856,9 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			    };
 				};
 				if ($credito>0){
-				$doc9 = "CREDITO";
+				$doc9 = "CREDITO 60 DIAS";
 				if ($v['estado']!="NUL"){
-				$cancelado9 += $credito;
+				$cancelado9 += $credito60dias;
 			    };
 				};
 				if ($chequealdia>0){
