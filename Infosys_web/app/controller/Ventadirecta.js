@@ -500,7 +500,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 var stCombo = banco.getStore();
                 var nombrebanco = stCombo.findRecord('id', banco.getValue()).data;
                 var nombrebanco = nombrebanco.nombre;
-                var id_banco = nombrebanco.id;          
+                var id_banco = nombrebanco.id;                
+                console.log(nombrebanco); 
+                var id_banco = view.down('#bancoId').getValue();    
+                console.log(id_banco);     
             
             } 
 
@@ -554,7 +557,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 var id_banco = nombrebanco.id;
                 var valortotal = (valorcancela);
                 var valort = (valorcancela); 
-                var banco = view.down('#bancoId').getValue();        
+                var id_banco = view.down('#bancoId').getValue();          
             
             }                 
 
@@ -585,8 +588,8 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 var id_banco = nombrebanco.id;
                 var valortotal = (valorcancela);
                 var valort = (valorcancela);  
-                var banco = view.down('#bancoId').getValue();        
-            
+                var id_banco = view.down('#bancoId').getValue();
+                           
             }                 
 
         }
@@ -616,7 +619,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
                 var id_banco = nombrebanco.id;
                 var valortotal = (valorcancela);
                 var valort = (valorcancela); 
-                var banco = view.down('#bancoId').getValue();        
+                var id_banco = view.down('#bancoId').getValue();            
             
             }
         }
@@ -656,6 +659,14 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         if(exists == 1)
             return;
 
+        if(!banco){
+            id_banco="";
+        };
+
+        if(!numcheque){
+            numcheque=0
+        };
+
         stItem.add(new Infosys_web.model.recaudacion.Item({
             id_pago: record.id,
             detalle: nombrebanco,
@@ -667,7 +678,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             fecha_comp: fechacheque,
             fecha_transac: fechatransac,            
             nom_banco: nombrebanco,
-            id_banco: banco,
+            id_banco: id_banco,
             valor_pago: valorpago,
             valor_cancelado: valorcancela,
             valor_vuelto: valorvuelto
@@ -691,11 +702,11 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         view.down('#valorcancelaId').setValue(cero);
         if  (tipodoc == 2 && record.id == 7){
             view.down('#numboleta2Id').setValue(numcheque);
-            view.down('#fpagoId').setValue(record.id);
+            view.down('#condpagoId').setValue(record.id);
         }; 
         if (tipodoc == 2 && record.id == 4){
             view.down('#numboleta2Id').setValue(numcheque);
-            view.down('#fpagoId').setValue(record.id);           
+            view.down('#condpagoId').setValue(record.id);           
         };      
         
     },
@@ -1017,6 +1028,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
         });
         if(exists == 1)
             return;
+
+        if(!iddescuento){
+            iddescuento="";
+        };
                 
         stItem.add(new Infosys_web.model.Productos.Item({
             id: producto,
@@ -1483,7 +1498,7 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
 
         console.log(recItems);
         console.log(dataItems);
-
+        console.log("EXIT");
         Ext.Ajax.request({
             url: preurl + 'recaudacion/save',
             params: {
