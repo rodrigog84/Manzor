@@ -1020,7 +1020,8 @@ class Recaudacion extends CI_Controller {
 		if($query->num_rows()>0){
 
 		$row = $query->first_row();
-	 	$saldo = ($row->stock)-($v->cantidad); 
+	 	$saldo = ($row->stock)-($v->cantidad);
+	 	$nom_producto = $row->nombre;
 
         };
 
@@ -1406,6 +1407,7 @@ class Recaudacion extends CI_Controller {
 		        'id_tipo_movimiento' => $tipodocumento,
 		        'valor_producto' =>  $v->precio,
 		        'cantidad_salida' => $v->cantidad,
+		        'nom_producto' => $nom_producto,
 		        'id_bodega' => $idbodega,
 		        'fecha_movimiento' => date('Y-m-d')
 		);

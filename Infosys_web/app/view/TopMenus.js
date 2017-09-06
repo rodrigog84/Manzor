@@ -598,6 +598,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                         //itemId: 'cc_rep_cartola',
                         //disabled: true,
                         action: 'cc_rep_cartola'
+                },{
+                        text: 'Existencia por Cliente',
+                        //itemId: 'inv_inm_Clientes',
+                        //disabled: true,
+                        iconCls: '',
+                        action: 'mexistenciaclientes'
                 }               
                 ],            
             }

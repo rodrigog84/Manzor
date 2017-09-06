@@ -2806,6 +2806,7 @@ public function cargacontribuyentes(){
 		if($query->num_rows()>0){
 		 	$row = $query->first_row();
 		 	$saldo = ($row->stock)-($v->cantidad);
+		 	$nom_producto = ($row->nombre);
 		};
 
 		 $query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
@@ -2848,8 +2849,10 @@ public function cargacontribuyentes(){
 		        'id_producto' => $v->id_producto,
 		        'id_tipo_movimiento' => $tipodocumento,
 		        'valor_producto' =>  $v->precio,
+		        'nom_producto' =>   $nom_producto,
 		        'cantidad_salida' => $v->cantidad,
 		        'id_bodega' => $idbodega,
+		        'id_cliente' => $idcliente,
 		        'fecha_movimiento' => $fechafactura
 		);
 

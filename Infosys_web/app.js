@@ -1,9 +1,9 @@
 Ext.util.Format.thousandSeparator = '.';
 //variables globales
 
-var gbl_site = 'http://localhost/Manzor/';
+//var gbl_site = 'http://localhost/Manzor/';
 
-//var gbl_site = 'http://angus.agricultorestalca.cl/manzor/';
+var gbl_site = 'http://angus.agricultorestalca.cl/manzor/';
 
 //var gbl_site = 'http://192.168.1.100/vibrados_web/';
 var preurl = gbl_site + 'core/index.php/';
@@ -22,7 +22,7 @@ Ext.application({
                 "Recaudacion", "Notacredito","Caja", "Guiasdespacho",
                 "Comisiones","Notadebito","Tipodocumentocompras", "Precios",
                 "Facturaglosa", 'Cambios', 'preventaferreteria','Ventadirecta',
-                'Compras',"Facturacompraglosa","Vale"],
+                'Compras',"Facturacompraglosa","Vale","ExistenciasClientes"],
 	   
     views: [
         'Infosys_web.view.WLogin',

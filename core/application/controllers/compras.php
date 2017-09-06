@@ -46,6 +46,10 @@ class Compras extends CI_Controller {
 		    foreach($users as $v){
 
 		    	$producto = $v['id_producto'];
+				$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
+				if($query->num_rows()>0){
+				$nom_producto = $row->nombre;
+				};
 		    	$cantidad = $v['cantidad'];
 		    	$numfactura = $v['num_factura'];
 		    	$precio = $v['precio'];
@@ -67,8 +71,7 @@ class Compras extends CI_Controller {
 					);
 					$this->db->where('id', $idexiste);
 		    	    $this->db->update('existencia', $datos3);
-	    	    }
-
+	    	    };
 	    	    $datos2 = array(
 						'num_movimiento' => $numfactura,
 				        'id_producto' => $producto,
@@ -76,6 +79,8 @@ class Compras extends CI_Controller {
 				        'valor_producto' =>  $precio,
 				        'cantidad_salida' => $cantidad,
 				        'id_bodega' => $idbodega,
+				        'id_cliente' => $idcliente,
+				        'nom_producto' => $nom_producto,
 				        'fecha_movimiento' => date('Y-m-d H:i:s')
 				);
 
@@ -683,6 +688,10 @@ class Compras extends CI_Controller {
 		    foreach($items->result() as $v){
 
 	    	$producto=$v->id_producto;
+			$query8 = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
+			if($query8->num_rows()>0){
+			$nom_producto = $row->nombre;
+			};
 	    	$query = $this->db->query('SELECT * FROM existencia 
 	    	WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
 	    	 $row = $query->result();
@@ -726,6 +735,8 @@ class Compras extends CI_Controller {
 				        'valor_producto' =>  $v->precio,
 				        'cantidad_entrada' => $v->cantidad,
 				        'id_bodega' => $idbodega,
+				        'id_cliente' => $idcliente,
+				        'nom_producto' => $nom_producto,
 				        'fecha_movimiento' => date('Y-m-d H:i:s')
 				);
 
@@ -1838,6 +1849,7 @@ class Compras extends CI_Controller {
 		if($query->num_rows()>0){
 		 	$row = $query->first_row();
 		 	$saldo = ($row->stock)+($v->cantidad);
+		 	$nom_producto= $row->nombre;
 		};
 
 		 $query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
@@ -1882,6 +1894,8 @@ class Compras extends CI_Controller {
 		        'valor_producto' =>  $v->precio,
 		        'cantidad_entrada' => $v->cantidad,
 		        'id_bodega' => $idbodega,
+		        'id_cliente' => $idcliente,
+				'nom_producto' => $nom_producto,
 		        'fecha_movimiento' => $fechafactura
 		);
 

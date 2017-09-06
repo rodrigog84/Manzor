@@ -606,8 +606,8 @@ class Notacredito extends CI_Controller {
 		 if($query->num_rows()>0){
 
 		 	$row = $query->first_row();
-
 		 	$saldo = ($row->stock)+($v->cantidad); 
+		 	$nom_producto=$row->nombre;
 
 		 };
 
@@ -667,6 +667,8 @@ class Notacredito extends CI_Controller {
 		        'id_tipo_movimiento' => $tipodocumento,
 		        'valor_producto' =>  $v->precio,
 		        'cantidad_entrada' => $v->cantidad,
+		        'id_cliente' => $idcliente,
+				'nom_producto' => $nom_producto,
 		        'fecha_movimiento' => $fechafactura
 			);
 
