@@ -685,7 +685,18 @@ class Productos extends CI_Controller {
 		$data = array();
 						
 		foreach ($query->result() as $row)
-		{
+		{			
+			$id_producto =$row->id;
+			$id_bodega=1;
+			$query2 = $this->db->query('SELECT acc.*, c.nombre as nom_producto, b.nombre as nom_bodega, c.p_costo as p_costo, c.p_venta as p_venta FROM existencia acc
+			left join productos c on (acc.id_producto = c.id)
+			left join bodegas b on (acc.id_bodega = b.id)
+			WHERE acc.id_bodega = "'.$id_bodega.'" and acc.id_producto = "'.$id_producto.'" ');
+			foreach ($query2->result() as $r)		    
+			{
+				$row->stock_bodega=$r->stock;
+				
+			};
 			$data[] = $row;
 		}
         $resp['success'] = true;

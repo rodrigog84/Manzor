@@ -136,7 +136,7 @@ Ext.define('Infosys_web.controller.ProductosControl', {
 
     selectItem: function() {
         var view = this.getProductoscontroldesplegar();
-        var idproducto = view.down('#tipobodegaId').getValue();
+        var idproducto = view.down('#Id').getValue();
         var bodega = view.down('#tipobodegaId');
         var stCombo = bodega.getStore();
         var record = stCombo.findRecord('id', bodega.getValue()).data;
@@ -310,7 +310,6 @@ Ext.define('Infosys_web.controller.ProductosControl', {
     },
         
     editarcontrolproductos: function(){
-
           
         var view = this.getProductoscontrolprincipal();
         if (view.getSelectionModel().hasSelection()) {

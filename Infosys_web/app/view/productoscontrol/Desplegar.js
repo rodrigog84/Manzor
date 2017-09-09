@@ -58,8 +58,7 @@ Ext.define('Infosys_web.view.productoscontrol.Desplegar', {
             xtype: 'textfield',
             name : 'id',
             itemId: 'Id',
-            fieldLabel: 'id',
-            hidden:true
+            fieldLabel: 'id'
         },{
             xtype: 'fieldcontainer',
             layout: 'hbox',
@@ -81,6 +80,9 @@ Ext.define('Infosys_web.view.productoscontrol.Desplegar', {
         },{xtype: 'splitter'},{
             xtype: 'combo',
             itemId: 'tipobodegaId',
+            listConfig: {
+               minWidth: 250
+            },
             fieldLabel: 'Bodega',
             forceSelection : true,
             width: 240,
