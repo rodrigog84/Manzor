@@ -58,7 +58,8 @@ Ext.define('Infosys_web.view.productoscontrol.Desplegar', {
             xtype: 'textfield',
             name : 'id',
             itemId: 'Id',
-            fieldLabel: 'id'
+            fieldLabel: 'id',
+            hidden: true
         },{
             xtype: 'fieldcontainer',
             layout: 'hbox',
