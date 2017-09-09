@@ -21,6 +21,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 //itemId: 'inv_tg_productos',
                 action: 'mproductos'            
             },{
+                text: 'Control Valor Productos',
+                iconCls: '',
+                //disabled: true,
+                //itemId: 'inv_tg_productos',
+                action: 'mcontrolproductos'            
+            },{
                 text: 'Tabla Proveedores',
                 iconCls: '',
                 //itemId: 'adq_tg_proveedores',

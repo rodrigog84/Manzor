@@ -211,6 +211,10 @@
     background-image: url(../images/icons/cart.png) !important;
 }
 
+.icon-calculator {
+    background-image: url(../images/icons/calculator_link.png) !important;
+}
+
 .icon-proveedores  {
     background-image: url(../images/proveedor.png) !important;
 }

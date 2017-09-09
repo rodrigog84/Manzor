@@ -93,6 +93,49 @@ class Productos extends CI_Controller {
         echo json_encode($resp);
 
 	}
+
+	public function update2(){
+
+		$resp = array();
+
+		$id = $_REQUEST['id'];
+
+  		$config['upload_path'] = "./imagenes_productos/"	;
+        $config['file_name'] = $_REQUEST['codigo'];
+        $config['allowed_types'] = "*";
+        $config['max_size'] = "10240";
+        $config['overwrite'] = TRUE;
+
+        $this->load->library('upload', $config);
+        $this->upload->do_upload("imagen");
+        $dataupload = $this->upload->data();
+
+
+		$data = array(
+			'nombre' => strtoupper($_REQUEST['nombre']),
+	        'codigo' => $_REQUEST['codigo'],			
+	        'p_ult_compra' => $_REQUEST['p_ult_compra'],
+	        'p_venta' => $_REQUEST['p_venta'],
+	        'p_ventadiva' => $_REQUEST['p_ventadiva'],
+	        'p_ventasiva' => $_REQUEST['p_ventasiva'],
+	        'mar_venta' => $_REQUEST['mar_venta'],
+	        'por_adicional' => $_REQUEST['por_adicional'],
+	        'com_vendedor' => $_REQUEST['com_vendedor'],
+	        'com_maestro' => $_REQUEST['com_maestro'],
+	        'p_valvula' => $_REQUEST['p_valvula'],
+	        'p_calcula_compra' => $_REQUEST['p_calcula_compra'],
+	        'stock_critico' => $_REQUEST['stock_critico'],
+	    );
+
+		$this->db->where('id', $id);
+		
+		$this->db->update('productos', $data); 
+		$resp['success'] = true;
+
+		$this->Bitacora->logger("M", 'productos', $id);
+
+        echo json_encode($resp);
+		}
 	
 	
 	public function update(){

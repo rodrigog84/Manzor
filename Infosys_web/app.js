@@ -22,7 +22,8 @@ Ext.application({
                 "Recaudacion", "Notacredito","Caja", "Guiasdespacho",
                 "Comisiones","Notadebito","Tipodocumentocompras", "Precios",
                 "Facturaglosa", 'Cambios', 'preventaferreteria','Ventadirecta',
-                'Compras',"Facturacompraglosa","Vale","ExistenciasClientes"],
+                'Compras',"Facturacompraglosa","Vale","ExistenciasClientes",
+                "ProductosControl"],
 	   
     views: [
         'Infosys_web.view.WLogin',

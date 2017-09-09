@@ -10,6 +10,17 @@ Ext.define('Infosys_web.model.Producto', {
         {name: 'p_ult_compra'},
         {name: 'p_may_compra'},
         {name: 'p_venta'},
+
+        {name: 'p_ventadiva'},
+        {name: 'p_ventasiva'},
+        {name: 'mar_venta'},
+        {name: 'por_adicional'},
+
+        {name: 'com_vendedor'},
+        {name: 'com_maestro'},
+        {name: 'p_valvula'},
+        {name: 'p_calcula_compra'},
+        
         {name: 'p_ferreteria'},
         {name: 'p_neto'},
         {name: 'p_costo'},
@@ -32,6 +43,7 @@ Ext.define('Infosys_web.model.Producto', {
         {name: 'nom_agrupacion'},
         {name: 'nom_subfamilia'},
         {name: 'stock'},
+        {name: 'stock_critico'},
         {name: 'stock1'},
         {name: 'stock2'},
         {name: 'valor', decimalPrecision:3},

@@ -79,6 +79,7 @@ class Existencias2 extends CI_Controller {
 		
 		$resp = array();
 		$nombres = $this->input->post('nombre');
+		$id_bodega = $this->input->post('id_bodega');
         $total = 0;
         $stock = 0;
            
@@ -88,7 +89,7 @@ class Existencias2 extends CI_Controller {
 			$query = $this->db->query('SELECT acc.*, c.nombre as nom_producto, bod.nombre as nom_bodega  FROM existencia acc
 			left join productos c on (acc.id_producto = c.id)
 			left join bodegas bod on (acc.id_bodega = bod.id)
-			WHERE acc.id_producto="'.$nombres.'"');
+			WHERE acc.id_producto="'.$nombres.'" and acc.id_bodega = "'.$id_bodega.'" ');
 		}
 
 		$data = array();
