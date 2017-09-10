@@ -118,10 +118,10 @@ Ext.define('Infosys_web.controller.ProductosControl', {
         
         var pventa = (costo + valvula + maestro + vendedor);
         if(adicional){
-            var adicional = ((costo * adicional)/100);            
+            var adicional = ((pventa * adicional)/100);            
         };
         if(margen){
-             var margen = ((margen * adicional)/100);            
+             var margen = (((pventa + adicional) * margen)/100);            
         };
         var pventafinal = (pventa + adicional + margen);
         var pventaiva = (pventafinal * 1.19);
