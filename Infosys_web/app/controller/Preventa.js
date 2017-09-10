@@ -472,7 +472,6 @@ Ext.define('Infosys_web.controller.Preventa', {
         st.load();
 
         var cajero = "1";
-        console.log(bodega)
         if (bodega==1){
         var caja = "1";
         };
@@ -489,8 +488,6 @@ Ext.define('Infosys_web.controller.Preventa', {
         var caja = "5";
         };
         var fecha = 0;
-        console.log(caja)
-                
         Ext.Ajax.request({
             url: preurl + 'genera_pagos/leer',
             params: {
@@ -510,8 +507,11 @@ Ext.define('Infosys_web.controller.Preventa', {
                     view.down('#recaudaId').setValue(caja.id);
                     view.down('#cajaId').setValue(caja.id_caja);
                     view.down('#cajeroId').setValue(caja.id_cajero);
+                    view.down('#depositoId').setValue(caja.deposito);
                     var bolDisabled = true;
-                    view.down('#efectuvoinicialId').setDisabled(bolDisabled);
+                    if (caja.efectivoinicio>0){
+                        view.down('#efectuvoinicialId').setDisabled(bolDisabled);                        
+                    };                    
                     view.down('#efectuvoId').focus();                 
                     
                 }else{
@@ -3185,6 +3185,8 @@ selectItemdocuemento2: function() {
     },
 
     cerrarpreventa: function(){
+        var stItms = Ext.getStore('Preventa');
+        stItms.removeAll();
         var viewport = this.getPanelprincipal();
         viewport.removeAll();
      

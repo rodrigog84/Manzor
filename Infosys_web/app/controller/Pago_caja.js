@@ -194,7 +194,6 @@ Ext.define('Infosys_web.controller.Pago_caja', {
 
     cacelacaja: function(){
 
-        console.log("llegamos")
         var stItms = Ext.getStore('Preventa');
         stItms.removeAll();
         var view = this.getAperturacaja();
@@ -575,13 +574,10 @@ Ext.define('Infosys_web.controller.Pago_caja', {
                     view.down('#totchequesId').setValue(caja.cheques);
                     view.down('#otrosmontosId').setValue(caja.otros);
                     view.down('#recaudaId').setValue(caja.id);
+                    view.down('#depositoId').setValue(caja.deposito);
                     
                 }else{
-
                      view.down("#efectuvoId").focus();
-                    
-                         
-
 
                 }
             }
@@ -2226,7 +2222,8 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         var cheques = view.down('#totchequesId').getValue();
         var otros = view.down('#otrosmontosId').getValue();
         var fecha = view.down('#fechaaperturaId').getValue();
-        var recauda = view.down('#recaudaId').getValue();        
+        var recauda = view.down('#recaudaId').getValue(); 
+        var depositos = view.down('#depositoId').getValue();        
         var stCombo = cajero.getStore();
         var idcajero = stCombo.findRecord('id', cajero.getValue()).data;
         var caje = idcajero.id;
@@ -2237,10 +2234,7 @@ Ext.define('Infosys_web.controller.Pago_caja', {
         correlanue = idcaja.correlativo;
         correlanue = (parseInt(correlanue)+1);
         var caj = idcaja.id;  
-        if(!efectivo){
-            var efectivo = view.down('#efectuvoinicialId').getValue(); 
-        };  
-       
+             
         if (!caje){
 
             Ext.Msg.alert('Alerta', 'Selecciona un Cajero.');
@@ -2285,7 +2279,8 @@ Ext.define('Infosys_web.controller.Pago_caja', {
                 id_bodega: idbodega,
                 efectivo: efectivo,
                 cheques: cheques,
-                otros: otros 
+                otros: otros,
+                depositos: depositos 
             },
             success: function(response){
                 var resp = Ext.JSON.decode(response.responseText);

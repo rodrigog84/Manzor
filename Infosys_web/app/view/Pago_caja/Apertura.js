@@ -9,7 +9,8 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
     layout: 'fit',
     autoShow: true,
     width: 280,
-    height: 300,
+    closable: false,
+    height: 330,
     modal: true,
     iconCls: 'icon-sheet',
 
@@ -24,7 +25,6 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                 fieldDefaults: {
                     anchor: '100%',
                     labelAlign: 'left',
-                    //allowBlank: false,
                     combineErrors: true,
                     labelWidth: 150,
                     msgTarget: 'side'
@@ -77,7 +77,6 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                         labelWidth: 105,
                         width: 120,
                         name: 'efectivoinicio',
-                        //readOnly: true,
                         itemId: 'efectuvoinicialId',
                         disabled : false,
                         fieldLabel: '<b>EFECTIVO Inicial</b>'
@@ -88,21 +87,16 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                         maxHeight: 25,
                         labelWidth: 105,
                         width: 120,
-                        //allowBlank: false,
                         name: 'efectivo',
-                        //readOnly: true,
                         itemId: 'efectuvoId',
                         fieldLabel: '<b>EFECTIVO</b>'
-
                     },{
                         xtype: 'numberfield',
                         fieldCls: 'required',
                         maxHeight: 25,
                         labelWidth: 105,
                         width: 120,
-                        //allowBlank: false,
                         name: 'totcheques',
-                        //readOnly: true,
                         itemId: 'totchequesId',
                         fieldLabel: '<b>CHEQUES</b>'
 
@@ -112,9 +106,7 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                         maxHeight: 25,
                         labelWidth: 105,
                         width: 120,
-                        //allowBlank: false,
                         name: 'otrosmontos',
-                        //readOnly: true,
                         itemId: 'otrosmontosId',
                         fieldLabel: '<b>OTROS</b>'
 
@@ -124,11 +116,20 @@ Ext.define('Infosys_web.view.Pago_caja.Apertura', {
                         maxHeight: 25,
                         labelWidth: 105,
                         width: 120,
-                        //allowBlank: false,
                         name: 'otrosmontos',
                         readOnly: true,
                         itemId: 'recaudaId',
                         hidden: true
+
+                    },{
+                        xtype: 'numberfield',
+                        fieldCls: 'required',
+                        fieldLabel: '<b>DEPOSITO</b>',
+                        maxHeight: 25,
+                        labelWidth: 105,
+                        width: 120,
+                        name: 'depositos',
+                        itemId: 'depositoId'
 
                     },{
                         xtype: 'datefield',
