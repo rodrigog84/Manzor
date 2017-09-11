@@ -73,12 +73,7 @@ class Compras extends CI_Controller {
         $resp['data'] = $data; 
         echo json_encode($resp);	
         
-    }  
-
-
-
-	
-
+    }
 
 	public function validanumero(){
 
@@ -107,7 +102,6 @@ class Compras extends CI_Controller {
         $items = $this->db->get_where('factura_compras', array('id' => $idcliente));
 
 	    if($items->num_rows()>0){
-
 	     
 	   	 	$items = $this->db->get_where('detalle_factura_compra', array('id_factura' => $idcliente));
 
@@ -115,11 +109,12 @@ class Compras extends CI_Controller {
 
 	   	 	$users = $items->result_array();
 		    foreach($users as $v){
-
 		    	$producto = $v['id_producto'];
 				$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
 				if($query->num_rows()>0){
-				$nom_producto = $row->nombre;
+				$r = $query->result();
+				$r = $r[0];
+				$nom_producto = $r->nombre;
 				};
 		    	$cantidad = $v['cantidad'];
 		    	$numfactura = $v['num_factura'];
@@ -146,7 +141,7 @@ class Compras extends CI_Controller {
 	    	    $datos2 = array(
 						'num_movimiento' => $numfactura,
 				        'id_producto' => $producto,
-				        'id_tipo_movimiento' => 4,
+				        'id_tipo_movimiento' => 25,
 				        'valor_producto' =>  $precio,
 				        'cantidad_salida' => $cantidad,
 				        'id_bodega' => $idbodega,
@@ -196,6 +191,8 @@ class Compras extends CI_Controller {
 
 	}
 
+
+	
 	public function exportarPdflibroFacturas()
          {            
             $columnas = json_decode($this->input->get('cols'));
@@ -1827,7 +1824,15 @@ class Compras extends CI_Controller {
 		$tipodocumento = $this->input->post('tipodocumento');
 		$idbodega = 1;
 		$neto = ($ftotal - $fiva);
-		
+
+		if($idfactura){
+			$validafactura = $this->db->get_where('factura_compras', array('id' => $idfactura));
+		    if($validafactura->num_rows()>0){
+		    	$resp['success'] = false;
+				$resp['idfactura'] = $idfactura;
+			
+	    }else{
+	    		
 		$data3 = array(
 	         'correlativo' => $numfactura
 	    );
@@ -1848,8 +1853,7 @@ class Compras extends CI_Controller {
 	        'iva' => $fiva,
 	        'totalfactura' => $ftotal,
 	        'fecha_factura' => $fechafactura,
-	        'fecha_venc' => $fechavenc
-	          
+	        'fecha_venc' => $fechavenc	          
 		);
 
 		$this->db->insert('factura_compras', $factura_cliente); 
@@ -1894,12 +1898,11 @@ class Compras extends CI_Controller {
 			 		$pmc = $puc;
 			 	};			 
 			}else{
-
 			    $ppm = $v->precio;
                 $ppm = $v->precio;
 			 	$saldo =  $v->cantidad;
 			 	$pmc = $v->precio;
-			 };                
+			};                
 		   };
 		   $prod = array(
 	         'stock' => $saldo,
@@ -1909,9 +1912,7 @@ class Compras extends CI_Controller {
 	         'fecha_ult_compra' => $fechafactura
 	         
 	    	);
-
 	    	$this->db->where('id', $producto);
-
 	    	$this->db->update('productos', $prod);
 
 
@@ -2037,13 +2038,11 @@ class Compras extends CI_Controller {
 	        'origen' => 'VENTA',
 	        'fecha' => $fechafactura
 		);
+		$this->db->insert('cartola_cuenta_corriente', $cartola_cuenta_corriente);
+		}
 
-		$this->db->insert('cartola_cuenta_corriente', $cartola_cuenta_corriente); 			
-
-
-		}		
-
-		
+        };
+        };
         echo json_encode($resp);
 	}
 

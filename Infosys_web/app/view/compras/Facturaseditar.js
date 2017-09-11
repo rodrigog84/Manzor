@@ -22,6 +22,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
     height: 640,
     width: 1300,
     layout: 'fit',
+    closable: false,
     title: 'Factura de Compras',
 
     initComponent: function() {
@@ -484,7 +485,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                 iconCls: 'icon-plus',
                                 width: 80,
                                 allowBlank: true,
-                                action: 'agregarItem'
+                                action: 'agregarItem2'
                             }]
                         }
 
@@ -503,12 +504,11 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                             tbar: [{
                                 iconCls: 'icon-delete',
                                 text: 'Eliminar',
-                                action: 'eliminaritem'
-                            },
-                            {
+                                action: 'eliminaritem2'
+                            },{
                                 iconCls: 'icon-delete',
                                 text: 'Editar',
-                                action: 'editaritem'
+                                action: 'editaritem2'
                             }
                             ],
                             height: 210,
@@ -641,9 +641,9 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                             xtype: 'button',
                             iconCls: 'icon-save',
                             scale: 'large',
-                            itemId: 'grabarfactura',
+                            itemId: 'grabarfactura2',
                             disabled : false,
-                            action: 'grabarfactura',
+                            action: 'grabarfactura2',
                             text: 'Grabar / Emitir'
                         },
                         {
