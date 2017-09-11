@@ -128,7 +128,7 @@ Ext.define('Infosys_web.controller.ProductosControl', {
 
         view.down('#preciosinivaId').setValue(pventafinal);
         view.down('#precioivaId').setValue(pventaiva);
-        view.down('#pventaId').setValue(pventafinal);
+        view.down('#pventaId').setValue(pventaiva);
                 
     },
 

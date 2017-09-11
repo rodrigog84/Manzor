@@ -70,6 +70,7 @@ class Genera_pagos extends CI_Controller {
 
 			$cajas = array(
 	         'efectivo' => $efectivo,
+	         'efectivoinicio' => $efectivoinicio,
 	         'cheques' => $cheques,
 	         'otros' => $otros
 		    );
