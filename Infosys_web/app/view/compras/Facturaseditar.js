@@ -422,7 +422,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                 maxHeight: 25,
                                 width: 120,
                                 allowBlank: true,
-                                action: 'buscarproductos',
+                                action: 'buscarproductos2',
                                 itemId: 'buscarproc'
                             },
                             {xtype: 'splitter'},

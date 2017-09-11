@@ -27,6 +27,7 @@ Ext.define('Infosys_web.controller.Compras', {
              'compras.Principalfactura',
              'compras.BuscarSucursales',
              'compras.BuscarProductos',
+             'compras.BuscarProductos2',
              'compras.Exportar',
              'compras.Exportartxt',
              'compras.Observaciones',
@@ -70,6 +71,9 @@ Ext.define('Infosys_web.controller.Compras', {
         ref: 'buscarproductosfacturascompras',
         selector: 'buscarproductosfacturascompras'
     },{
+        ref: 'buscarproductosfacturascompras2',
+        selector: 'buscarproductosfacturascompras2'
+    },{
         ref: 'eliminarcompra',
         selector: 'eliminarcompra'
     },{
@@ -103,6 +107,9 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasingresar button[action=buscarproductos]': {
                 click: this.buscarproductos
             },
+            'facturascompraseditar button[action=buscarproductos2]': {
+                click: this.buscarproductos2
+            },
             'facturascomprasingresar button[action=validarut]': {
                 click: this.validarut
             },
@@ -130,8 +137,14 @@ Ext.define('Infosys_web.controller.Compras', {
             'buscarproductosfacturascompras button[action=seleccionarproductos]': {
                 click: this.seleccionarproductoscompras
             },
+            'buscarproductosfacturascompras2 button[action=seleccionarproductos2]': {
+                click: this.seleccionarproductoscompras2
+            },
             'buscarproductosfacturascompras button[action=buscar]': {
                 click: this.buscarp
+            },
+            'buscarproductosfacturascompras2 button[action=buscar2]': {
+                click: this.buscarp2
             },            
             'facturascomprasingresar #tipoDocumentoId': {
                 select: this.selectItemdocuemento
@@ -220,6 +233,77 @@ Ext.define('Infosys_web.controller.Compras', {
              });
     },
 
+    buscarproductos2: function(){
+          
+        var viewIngresa = this.getFacturascompraseditar();
+        var idbodega = viewIngresa.down('#bodegaId').getValue();
+        var codproducto = viewIngresa.down('#codigoId').getValue();
+
+        if (codproducto){
+
+            Ext.Ajax.request({
+            url: preurl + 'productos/buscacodigo',
+            params: {
+                idBodega: idbodega,
+                codigo: codproducto                 
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                var cero = "";
+                if (resp.success == true) {
+                    
+                var cliente = resp.cliente;
+                viewIngresa.down("#productoId").setValue(cliente.id_producto)
+                viewIngresa.down("#nombreproductoId").setValue(cliente.nombre)
+                viewIngresa.down("#precioId").setValue(cliente.p_costo)
+                viewIngresa.down("#cantidadOriginalId").setValue(cliente.stock)
+                viewIngresa.down("#cantidadId").focus();
+                }else{                      
+                    var view = Ext.create('Infosys_web.view.productos.Ingresar').show();
+                    view.down("#codigoId").setValue(codproducto);
+                    view.down("#tipobodegaId").setValue(idbodega);                    
+                    view.down("#nombreId").focus();
+                }
+            }
+        });
+        }else{        
+            var st = this.getProductosEStore();
+            st.proxy.extraParams = {opcion : idbodega};
+            st.load();
+            var edit = Ext.create('Infosys_web.view.compras.BuscarProductos2').show();
+            edit.down('#bodegaId').setValue(idbodega);
+        };
+      
+    },
+
+    seleccionarproductoscompras2: function(){
+
+        var view = this.getBuscarproductosfacturascompras2();
+        var viewIngresa = this.getFacturascompraseditar();
+        var bodegaId = viewIngresa.down('#bodegaId').getValue();
+        var grid  = view.down('grid');
+        if (grid.getSelectionModel().hasSelection()) {
+            var row = grid.getSelectionModel().getSelection()[0];
+            if (row.data.id_bodega != bodegaId){
+
+                Ext.Msg.alert('Alerta', 'Stock Seleccionado No Corresponde a Bodega Despacho');
+                return;
+                
+            }else{
+            viewIngresa.down('#productoId').setValue(row.data.id_producto);
+            viewIngresa.down('#nombreproductoId').setValue(row.data.nombre);
+            viewIngresa.down('#codigoId').setValue(row.data.codigo);
+            viewIngresa.down('#precioId').setValue(row.data.p_venta);
+            viewIngresa.down('#cantidadOriginalId').setValue(row.data.stock);
+            view.close();
+            };
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+        viewIngresa.down("#cantidadId").focus();
+    },
+
     agregarItem2: function() {
 
         var view = this.getFacturascompraseditar();
@@ -227,6 +311,9 @@ Ext.define('Infosys_web.controller.Compras', {
         var rut = view.down('#rutId').getValue();
         var stItem = this.getProductosDetalleStore();
         var producto = view.down('#productoId').getValue();
+
+        var idfacturacompra = view.down('#idfactura').getValue();
+        var bodega = 1;
         var nombre = view.down('#nombreproductoId').getValue();
         var cantidad = view.down('#cantidadId').getValue();
         var cantidadori = view.down('#cantidadOriginalId').getValue();
@@ -235,6 +322,26 @@ Ext.define('Infosys_web.controller.Compras', {
         var descuento = view.down('#totdescuentoId').getValue(); 
         var iddescuento = view.down('#DescuentoproId').getValue();
         var bolEnable = true;
+        var permite = view.down('#permiteId').getValue();
+
+        if (permite="NO"){
+
+            var permite = "SI";
+            Ext.Ajax.request({
+            url: preurl + 'compras/elimina2',
+            params: {
+                idcliente: idfacturacompra,
+                bodega : bodega
+            },
+            success: function(response){
+            var resp = Ext.JSON.decode(response.responseText);
+            if (resp.success == true) {
+               
+            }
+            }
+            }); 
+            
+        };
 
          
         if (descuento == 1){            
@@ -453,26 +560,31 @@ Ext.define('Infosys_web.controller.Compras', {
             var row = grid.getSelectionModel().getSelection()[0];
             grid.getStore().remove(row);
             var id_producto = row.data.id_producto;
-            Ext.Ajax.request({
-            url: preurl + 'compras/elimina2',
-            params: {
-                idcliente: idfacturacompra,
-                bodega : bodega
-            },
-            success: function(response){
-            var resp = Ext.JSON.decode(response.responseText);
-            if (resp.success == true) {
-               
-            }
-            }
-            });  
+            var permite = view.down('#permiteId').getValue();
+            if (permite="NO"){
+                var permite = "SI";
+                Ext.Ajax.request({
+                url: preurl + 'compras/elimina2',
+                params: {
+                    idcliente: idfacturacompra,
+                    bodega : bodega
+                },
+                success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) {
+                   
+                }
+                }
+                }); 
+                
+            };        
 
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
             return;
         }
 
-        this.recalcularFinal();       
+        this.recalcularFinal2();       
     },
 
     editaritem: function() {
@@ -548,19 +660,24 @@ Ext.define('Infosys_web.controller.Compras', {
                         view.down('#codigoId').setValue(cliente.codigo);
                         view.down('#cantidadOriginalId').setValue(cliente.stock);
                         view.down('#cantidadId').setValue(cantidad);
-                        Ext.Ajax.request({
-                        url: preurl + 'compras/elimina2',
-                        params: {
-                            idcliente: idfacturacompra,
-                            bodega : bodega
-                        },
-                        success: function(response){
-                        var resp = Ext.JSON.decode(response.responseText);
-                        if (resp.success == true) {
-                           
-                        }
-                        }
-                        });                                                     
+                        var permite = view.down('#permiteId').getValue();
+                        if (permite="NO"){
+                            var permite = "SI";
+                            Ext.Ajax.request({
+                            url: preurl + 'compras/elimina2',
+                            params: {
+                                idcliente: idfacturacompra,
+                                bodega : bodega
+                            },
+                            success: function(response){
+                            var resp = Ext.JSON.decode(response.responseText);
+                            if (resp.success == true) {
+                               
+                            }
+                            }
+                            }); 
+                            
+                        };                                                    
                     }
                 }
             }
@@ -1228,6 +1345,8 @@ Ext.define('Infosys_web.controller.Compras', {
        
     },
 
+   
+
     buscar: function(){
 
         var view = this.getBuscarproveedores()
@@ -1599,41 +1718,13 @@ Ext.define('Infosys_web.controller.Compras', {
                         var bolEnable = false; 
                         viewIngresa.close();
                         stFactura.load();              
-                        viewIngresa.down('#grabarfactura2').setDisabled(bolEnable);
+                        //viewIngresa.down('#grabarfactura2').setDisabled(bolEnable);
                         Ext.Msg.alert('Factura No se Modifica');                        
                         return;                                   
 
                     }else{
 
-                       if(vendedor==0  && tipo_documento.getValue() == 1){  
-                            var bolEnable = false;               
-                            viewIngresa.down('#grabarfactura2').setDisabled(bolEnable);
-                            Ext.Msg.alert('Ingrese Datos del Vendedor');
-                            return;   
-                        }
-
-                        if(vendedor==0  && tipo_documento.getValue() == 1){                 
-                            var bolEnable = false;               
-                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);
-                            Ext.Msg.alert('Ingrese Datos del Vendedor');
-                            return;   
-                        }
-
-                        if(!numfactura){
-
-                            var bolEnable = false;               
-                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);             
-                            Ext.Msg.alert('Ingrese Numero de Factura');
-                            return;   
-                        }
-
-                        if(numfactura==0){
-                            var bolEnable = false;               
-                            viewIngresa.down('#grabarfactura').setDisabled(bolEnable);           
-                            Ext.Msg.alert('Ingrese Datos a La Factura');
-                            return;   
-                        }
-
+                        
                         var dataItems = new Array();
                         stItem.each(function(r){
                             dataItems.push(r.data)
@@ -1641,7 +1732,7 @@ Ext.define('Infosys_web.controller.Compras', {
 
                         
                     Ext.Ajax.request({
-                        url: preurl + 'compras/save',
+                        url: preurl + 'compras/save2',
                         params: {
                             idcliente: idcliente,
                             idfactura: idfactura,
@@ -1796,9 +1887,9 @@ Ext.define('Infosys_web.controller.Compras', {
         var dcto = view.down('#finaldescuentoId').getValue();
 
         stItem.each(function(r){
-            pretotal = pretotal + r.data.total
-            iva = iva + r.data.iva
-            neto = neto + r.data.neto
+            pretotal = pretotal + (parseInt(r.data.total))
+            iva = iva + (parseInt(r.data.iva))
+            neto = neto + (parseInt(r.data.neto))
         });
         pretotalfinal = ((pretotal * dcto)  / 100);
         total = ((pretotal) - (pretotalfinal));
@@ -1826,9 +1917,9 @@ Ext.define('Infosys_web.controller.Compras', {
         var dcto = view.down('#finaldescuentoId').getValue();
 
         stItem.each(function(r){
-            pretotal = pretotal + r.data.total
-            iva = iva + r.data.iva
-            neto = neto + r.data.neto
+            pretotal = pretotal + (parseInt(r.data.total))
+            iva = iva + (parseInt(r.data.iva))
+            neto = neto + (parseInt(r.data.neto))
         });
         pretotalfinal = ((pretotal * dcto)  / 100);
         total = ((pretotal) - (pretotalfinal));
@@ -1988,6 +2079,7 @@ Ext.define('Infosys_web.controller.Compras', {
         Ext.create('Infosys_web.view.vendedores.BuscarVendedor').show();
     },
 
+
     buscarproductos: function(){
           
         var viewIngresa = this.getFacturascomprasingresar();
@@ -2057,6 +2149,17 @@ Ext.define('Infosys_web.controller.Compras', {
             return;
         }
         viewIngresa.down("#cantidadId").focus();
+    },
+
+    buscarp2: function(){
+        var view = this.getBuscarproductosfacturascompras2();
+        var st = this.getProductosEStore()
+        var nombre = view.down('#nombreId').getValue()
+        var bodega = view.down('#bodegaId').getValue()
+        st.proxy.extraParams = {opcion : bodega,
+                                tipo : "Nombre",
+                                nombre: nombre}
+        st.load();
     },
 
     buscarp: function(){

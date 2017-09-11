@@ -1825,6 +1825,241 @@ class Compras extends CI_Controller {
 		$idbodega = 1;
 		$neto = ($ftotal - $fiva);
 
+				
+		$data3 = array(
+	         'correlativo' => $numfactura
+	    );
+	    $this->db->where('id', $tipodocumento);
+	  
+	    $this->db->update('correlativos', $data3);
+			
+		$factura_cliente = array(
+			'tipo_documento' => $tipodocumento,
+	        'id_proveedor' => $idcliente,
+	        'num_factura' => $numfactura,
+	        'id_vendedor' => $vendedor,
+	        'id_sucursal' => $sucursal,
+	        'id_cond_venta' => $formadepago,
+	        'sub_total' => $neto,
+	        'descuento' => ($neto - $fafecto),
+	        'neto' => $neto,
+	        'iva' => $fiva,
+	        'totalfactura' => $ftotal,
+	        'fecha_factura' => $fechafactura,
+	        'fecha_venc' => $fechavenc	          
+		);
+
+		$this->db->insert('factura_compras', $factura_cliente); 
+		$idfactura = $this->db->insert_id();
+
+	    $secuencia = 0;
+
+		foreach($items as $v){
+			$factura_compras_item = array(
+		        'id_producto' => $v->id_producto,
+		        'id_factura' => $idfactura,
+		        'num_factura' => $numfactura,
+		        'precio' => $v->precio,
+		        'cantidad' => $v->cantidad,
+		        'neto' => $v->total,
+		        'descuento' => $v->dcto,
+		        'iva' => $v->iva,
+		        'totalproducto' => $v->total,
+		        'fecha' => $fechafactura
+			);
+
+		$producto = $v->id_producto;
+	    $puc = ($v->precio / 1.19);
+	    $cero=0;
+		
+		   $query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
+		   if($query->num_rows()>0){
+			 $row = $query->first_row();
+			 $query2 = $this->db->query('SELECT * FROM existencia_detalle WHERE id_producto='.$producto.' and cantidad_entrada > '.$cero.'');	    	 
+	    	 $ppm=0;
+	    	 $cal = 1;
+			 if ($query2->num_rows()>0){
+			 	foreach ($query2->result() as $r){			 	
+				 	$ppm = $ppm + ($v->precio);
+				 	$cal = $cal +1;
+			    };
+			    $ppm = $ppm + $puc;
+                $ppm = ($ppm / $cal);
+			 	$saldo = ($row->stock)+($v->stock);
+			 	$pmc = ($row->p_may_compra);
+			 	if ($pmc < $puc){			 		
+			 		$pmc = $puc;
+			 	};			 
+			}else{
+			    $ppm = $v->precio;
+                $ppm = $v->precio;
+			 	$saldo =  $v->cantidad;
+			 	$pmc = $v->precio;
+			};                
+		   };
+		   $prod = array(
+	         'stock' => $saldo,
+	         'p_ult_compra' => $puc,
+	         'p_may_compra' => $pmc,
+	         'p_promedio' => $ppm,
+	         'fecha_ult_compra' => $fechafactura
+	         
+	    	);
+	    	$this->db->where('id', $producto);
+	    	$this->db->update('productos', $prod);
+
+
+		$this->db->insert('detalle_factura_compra', $factura_compras_item);
+
+		$query = $this->db->query('SELECT * FROM productos WHERE id="'.$producto.'"');
+		if($query->num_rows()>0){
+		 	$row = $query->first_row();
+		 	$saldo = ($row->stock)+($v->cantidad);
+		 	$nom_producto= $row->nombre;
+		};
+
+		 $query = $this->db->query('SELECT * FROM existencia WHERE id_producto='.$producto.' and id_bodega='.$idbodega.'');
+	    	 $row = $query->result();
+			 if ($query->num_rows()>0){
+				$row = $row[0];
+				$saldo = ($row->stock)+($v->cantidad);
+				$idexiste = ($row->id);
+		        if ($producto==($row->id_producto) and $idbodega==($row->id_bodega)){
+				    $datos3 = array(
+					'stock' => $saldo,
+			        'fecha_ultimo_movimiento' => date('Y-m-d H:i:s')
+					);
+					$this->db->where('id', $idexiste);
+		    	    $this->db->update('existencia', $datos3);
+	    	    }else{
+
+	    	    	$datos3 = array(
+					'id_producto' => $producto,
+			        'stock' => $v->cantidad,
+			        'id_bodega' => $idbodega,
+			        'fecha_ultimo_movimiento' =>date('Y-m-d H:i:s')				
+					);
+					$this->db->insert('existencia', $datos3);
+		    	 	}
+				}else{					
+
+	    	    	$datos3 = array(
+					'id_producto' => $producto,
+			        'stock' =>  $v->cantidad,
+			        'id_bodega' => $idbodega,
+			        'fecha_ultimo_movimiento' =>date('Y-m-d H:i:s')				
+					);
+					$this->db->insert('existencia', $datos3);
+			    	
+				};
+
+		$datos2 = array(
+				'num_movimiento' => $numfactura,
+		        'id_producto' => $v->id_producto,
+		        'id_tipo_movimiento' => $tipodocumento,
+		        'valor_producto' =>  $v->precio,
+		        'cantidad_entrada' => $v->cantidad,
+		        'id_bodega' => $idbodega,
+		        'id_cliente' => $idcliente,
+				'nom_producto' => $nom_producto,
+		        'fecha_movimiento' => $fechafactura
+		);
+
+		$this->db->insert('existencia_detalle', $datos2);
+		
+		}
+    	
+        $resp['success'] = true;
+		$resp['idfactura'] = $idfactura;
+
+		$this->Bitacora->logger("I", 'factura_compras', $idfactura);       	
+	
+		if ($tipodocumento != 3 && $tipodocumento != 105){
+
+
+		/******* CUENTAS CORRIENTES ****/
+
+		 $query = $this->db->query("SELECT cc.id as idcuentacontable FROM cuenta_contable cc WHERE cc.nombre = 'FACTURAS POR COBRAR'");
+		 $row = $query->result();
+		 $row = $row[0];
+		 $idcuentacontable = $row->idcuentacontable;	
+
+
+			// VERIFICAR SI CLIENTE YA TIENE CUENTA CORRIENTE
+		 $query = $this->db->query("SELECT co.idcliente, co.id as idcuentacorriente  FROM cuenta_corriente co
+		 							WHERE co.idcuentacontable = '$idcuentacontable' and co.idcliente = '" . $idcliente . "'");
+    	 $row = $query->result();
+	
+		if ($query->num_rows()==0){	
+			$cuenta_corriente = array(
+		        'idcliente' => $idcliente,
+		        'idcuentacontable' => $idcuentacontable,
+		        'saldo' => $ftotal,
+		        'fechaactualiza' => $fechafactura
+			);
+			$this->db->insert('cuenta_corriente', $cuenta_corriente); 
+			$idcuentacorriente = $this->db->insert_id();
+
+
+		}else{
+			$row = $row[0];
+			$query = $this->db->query("UPDATE cuenta_corriente SET saldo = saldo + " . $ftotal . " where id = " .  $row->idcuentacorriente );
+			$idcuentacorriente =  $row->idcuentacorriente;
+		}
+
+		$detalle_cuenta_corriente = array(
+	        'idctacte' => $idcuentacorriente,
+	        'tipodocumento' => $tipodocumento,
+	        'numdocumento' => $numfactura,
+	        'saldoinicial' => $ftotal,
+	        'saldo' => $ftotal,
+	        'fechavencimiento' => $fechavenc,
+	        'fecha' => $fechafactura
+		);
+
+		$this->db->insert('detalle_cuenta_corriente', $detalle_cuenta_corriente); 	
+
+
+		$cartola_cuenta_corriente = array(
+	        'idctacte' => $idcuentacorriente,
+	        'idcuenta' => $idcuentacontable,
+	        'tipodocumento' => $tipodocumento,
+	        'numdocumento' => $numfactura,
+	        'glosa' => 'Registro de Factura en Cuenta Corriente',
+	        'fecvencimiento' => $fechavenc,
+	        'valor' => $ftotal,
+	        'origen' => 'VENTA',
+	        'fecha' => $fechafactura
+		);
+		$this->db->insert('cartola_cuenta_corriente', $cartola_cuenta_corriente);
+		}
+
+        
+        echo json_encode($resp);
+	}
+
+	public function save2(){
+		
+		$resp = array();
+		$idcliente = $this->input->post('idcliente');
+		$numfactura = $this->input->post('numfactura');
+		$idticket = $this->input->post('idticket');
+		$idfactura = $this->input->post('idfactura');
+		$fechafactura = $this->input->post('fechafactura');
+		$fechavenc = $this->input->post('fechavenc');
+		$vendedor = $this->input->post('vendedor');
+		$sucursal = $this->input->post('sucursal');
+		$datacliente = json_decode($this->input->post('datacliente'));
+		$items = json_decode($this->input->post('items'));
+		$neto = $this->input->post('netofactura');
+		$formadepago = $this->input->post('formadepago');
+		$fiva = $this->input->post('ivafactura');
+		$fafecto = $this->input->post('afectofactura');
+		$ftotal = $this->input->post('totalfacturas');
+		$tipodocumento = $this->input->post('tipodocumento');
+		$idbodega = 1;
+		$neto = ($ftotal - $fiva);
+
 		if($idfactura){
 			$validafactura = $this->db->get_where('factura_compras', array('id' => $idfactura));
 		    if($validafactura->num_rows()>0){
