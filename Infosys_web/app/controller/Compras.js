@@ -11,15 +11,18 @@ Ext.define('Infosys_web.controller.Compras', {
              'Tipo_documento',
              'Sucursales_clientes',
              'Tipo_documento.Selector5',
-             'facturas.Selector3'],
+             'facturas.Selector3',
+             'ProductosDetalle'],
 
     models: ['Facturas.Item',
              'Factura',
              'Tipo_documento',
              'Sucursales_clientes',
-             'Cargadteproveedores'],
+             'Cargadteproveedores',
+             'Productos.Item'],
 
     views: [ 'compras.Facturas',
+             'compras.Principalfactura',
              'compras.BuscarProveedores',
              'compras.Principalfactura',
              'compras.BuscarSucursales',
@@ -69,7 +72,10 @@ Ext.define('Infosys_web.controller.Compras', {
     },{
         ref: 'eliminarcompra',
         selector: 'eliminarcompra'
-    }  
+    },{
+        ref: 'facturascompraseditar',
+        selector: 'facturascompraseditar'
+    }
     
     ],
     //init es lo primero que se ejecuta en el controller
@@ -82,11 +88,9 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasingresar #rutId': {
                 specialkey: this.special
             },
-
             'facturascomprasprincipal button[action=mfactura]': {
                 click: this.mfactura
-            },
-           
+            },           
             'topmenus menuitem[action=mcompras]': {
                 click: this.mcompras
             },
@@ -111,15 +115,12 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasprincipal button[action=generarfacturapdf]': {
                 click: this.generarfacturapdf
             },
-
             'facturascomprasprincipal button[action=exporttxt]': {
                 click: this.exporttxt
             },
-
             'facturascomprasprincipal button[action=generarfacturacediblepdf]': {
                 click: this.generarfacturacediblepdf
-            },
-                    
+            },                    
             'buscarproveedores button[action=buscar]': {
                 click: this.buscar
             },
@@ -137,8 +138,7 @@ Ext.define('Infosys_web.controller.Compras', {
             },
             'facturascomprasprincipal #tipoDocumentoId': {
                 select: this.buscarfacturasgrilla
-            },
-                        
+            },                        
             'buscarsucursalesclientescompras button[action=seleccionarsucursalcliente]': {
                 click: this.seleccionarsucursalcliente
             },
@@ -178,12 +178,18 @@ Ext.define('Infosys_web.controller.Compras', {
              'facturascomprasingresar button[action=agregarItem]': {
                 click: this.agregarItem
             },
-             'facturascomprasingresar button[action=editaritem]': {
+            'facturascomprasingresar button[action=editaritem]': {
                 click: this.editaritem
             },
             'facturascomprasingresar button[action=eliminaritem]': {
                 click: this.eliminaritem
             },
+            'facturascompraseditar button[action=editaritem2]': {
+                click: this.editaritem2
+            },
+            'facturascompraseditar button[action=eliminaritem2]': {
+                click: this.eliminaritem2
+            },            
             'eliminarcompra button[action=salircompra]': {
                 click: this.salircompra
             },
@@ -200,9 +206,91 @@ Ext.define('Infosys_web.controller.Compras', {
             'facturascomprasprincipal button[action=buscarcompras]': {
                 click: this.buscarfacturasgrilla
             },
+            'facturascomprasprincipal button[action=editarfacturacompra]': {
+                click: this.editarfacturacompra
+            },
 
             
              });
+    },
+
+    editarfacturacompra: function(){
+
+        var stItms = Ext.getStore('ProductosDetalle');
+        stItms.removeAll();
+        var id_bodega = "1";
+        var view = this.getFacturascomprasprincipal();       
+                   
+        if (view.getSelectionModel().hasSelection()) {
+            var row = view.getSelectionModel().getSelection()[0];
+            var view = this.getFacturascompraseditar();
+            var stItem = this.getProductosDetalleStore();
+            var idfacturacompra = row.data.id;
+            stItem.proxy.extraParams = {idfacturacompra : idfacturacompra};
+            stItem.load();
+            Ext.Ajax.request({
+            url: preurl +'compras/edita/?idfacturacompra=' + row.data.id,
+            params: {
+                id: 1
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) {                    
+                    var view = Ext.create('Infosys_web.view.compras.Facturaseditar').show();                   
+                    var cliente = resp.cliente;
+                    var secuencia = resp.secuencia;
+                    if (cliente.id_sucursal == 0){
+                        view.down("#direccionId").setValue(cliente.direccion);
+                        view.down("#tipoComunaId").setValue(cliente.comuna);
+                        view.down("#tipoCiudadId").setValue(cliente.ciudad);
+
+                    }else{
+                        view.down("#id_sucursalID").setValue(cliente.id_sucursal);
+                        view.down("#direccionId").setValue(cliente.direccion_sucursal);
+                        view.down("#tipoComunaId").setValue(cliente.comuna_suc);
+                        view.down("#tipoCiudadId").setValue(cliente.ciudad_suc);
+                    };                            
+                    view.down("#numfacturaId").setValue(cliente.num_factura);
+                    view.down("#giroId").setValue(cliente.nom_giro);
+                    view.down("#idfactura").setValue(cliente.id);
+                    view.down("#tipoDocumentoId").setValue(cliente.tipo_documento);
+                    view.down("#fechafacturaId").setValue(cliente.fecha_factura);
+                    view.down("#fechavencId").setValue(cliente.fecha_venc);                    
+                    view.down("#id_cliente").setValue(cliente.id_cliente);
+                    view.down("#rutId").setValue(cliente.rut_cliente);
+                    view.down("#rutId").setValue(cliente.rut_cliente);
+                    view.down("#nombre_id").setValue(cliente.nombre_cliente);
+                    view.down("#tipocondpagoId").setValue(cliente.id_cond_venta);
+                    view.down("#tipoVendedorId").setValue(cliente.id_vendedor);
+                    view.down("#observaId").setValue(cliente.id_observa);
+                    view.down("#bodegaId").setValue(id_bodega);
+                    var total = (cliente.totalfactura);
+                    var neto = (cliente.sub_total);
+                    var iva = (cliente.totalfactura - cliente.sub_total);
+                    view.down('#finaltotalId').setValue(Ext.util.Format.number(total, '0,000'));
+                    view.down('#finaltotalpostId').setValue(Ext.util.Format.number(total, '0'));
+                    view.down('#finaltotalnetoId').setValue(Ext.util.Format.number(neto, '0'));
+                    view.down('#finaltotalivaId').setValue(Ext.util.Format.number(iva, '0'));
+                    view.down('#finalafectoId').setValue(Ext.util.Format.number(neto, '0'));
+                    view.down('#descuentovalorId').setValue(Ext.util.Format.number(cliente.desc, '0'));
+                    //view.down("#secuenciaId").setValue(secuencia);
+                     
+                }else{
+                    Ext.Msg.alert('Correlativo no Existe');
+                    return;
+                }
+
+            }
+            
+        });
+
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+        
+       
+       
     },
 
     buscarfacturasgrilla: function(){
@@ -277,6 +365,51 @@ Ext.define('Infosys_web.controller.Compras', {
         }
        
     },
+
+    editaritem2: function() {
+
+        var view = this.getFacturascompraseditar();
+        var bodega = view.down('#bodegaId').getValue();
+        var grid  = view.down('#itemsgridId');
+        var cero = "";
+        if (grid.getSelectionModel().hasSelection()) {
+            var row = grid.getSelectionModel().getSelection()[0];
+            var id_producto = row.data.id_producto;
+                       
+            Ext.Ajax.request({
+            url: preurl + 'productos/buscarp?nombre='+id_producto,
+            params: {
+                id: 1,
+                bodega: bodega,
+                nombre: id_producto
+            },
+            success: function(response){
+                var resp = Ext.JSON.decode(response.responseText);
+                if (resp.success == true) { 
+                    if(resp.cliente){
+                        var cliente = resp.cliente;
+                        view.down('#precioId').setValue(cliente.p_venta);
+                        view.down('#productoId').setValue(row.data.id_producto);
+                        view.down('#nombreproductoId').setValue(row.data.nombre);
+                        view.down('#codigoId').setValue(cliente.codigo);
+                        view.down('#cantidadOriginalId').setValue(cliente.stock);
+                        view.down('#cantidadId').setValue(row.data.cantidad);
+                                                     
+                    }
+                }
+            }
+
+        });
+        grid.getStore().remove(row);
+        this.recalcularFinal();
+        }else{
+            Ext.Msg.alert('Alerta', 'Selecciona un registro.');
+            return;
+        }
+       
+    },
+
+
 
     special7: function(f,e){
         if (e.getKey() == e.ENTER) {

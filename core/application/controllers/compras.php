@@ -9,6 +9,77 @@ class Compras extends CI_Controller {
 		$this->load->database();
 	}
 
+	public function edita(){
+
+		$resp = array();
+		$idfacturacompra = $this->input->get('idfacturacompra');
+		
+		$query = $this->db->query('SELECT acc.*, c.nombres as nombre_cliente, c.rut as rut_cliente, v.nombre as nom_vendedor, c.direccion as direccion, suc.direccion as direccion_sucursal, ciu.nombre as ciudad_suc, com.nombre as comuna_suc, cu.nombre as ciudad, cm.nombre as comuna, cod.nombre as nom_giro  FROM factura_compras acc
+        left join clientes c on (acc.id_proveedor = c.id)
+        left join clientes_sucursales suc on (acc.id_sucursal = suc.id)
+        left join comuna com on (suc.id_comuna = com.id)
+		left join ciudad ciu on (suc.id_ciudad = ciu.id)
+		left join comuna cm on (c.id_comuna = cm.id)
+		left join ciudad cu on (c.id_ciudad = cu.id)
+        left join vendedores v on (acc.id_vendedor = v.id)
+        left join cod_activ_econ cod on (c.id_giro = cod.id)
+        WHERE acc.id = "'.$idfacturacompra.'"');
+
+		$row1 = $query->result();
+		$row = $row1[0];	   	
+	    	
+	    $items = $this->db->get_where('detalle_factura_compra', array('id_factura' => $idfacturacompra));
+
+	   	$secuencia = 0;
+
+	   	foreach($items->result() as $item){
+			
+			$secuencia = $secuencia + 1;
+			
+		};
+
+		$row = $query->first_row();
+	   	$resp['cliente'] = $row;
+	    $resp['success'] = true;
+	    $resp['secuencia'] = $secuencia;       
+
+        echo json_encode($resp);
+	}
+
+	public function getAllCompras(){
+
+		$resp = array();
+	    $idfacturacompra = $this->input->get('idfacturacompra');
+
+		$items = $this->db->get_where('detalle_factura_compra', array('id_factura' => $idfacturacompra));
+
+	   	$data = array();
+
+	   	foreach($items->result() as $item){
+			$this->db->where('id', $item->id_producto);
+			$producto = $this->db->get("productos");	
+			$producto = $producto->result();
+			$producto = $producto[0];
+			$item->nombre = $producto->nombre;
+			$item->codigo = $producto->codigo;
+			$item->total = $item->totalproducto;
+			$item->neto = $item->totalproducto-$item->iva;
+			$data[] = $item;
+		}
+
+	    //$items = $items->first_row();
+	   	
+	   	$resp['success'] = true;
+        $resp['data'] = $data; 
+        echo json_encode($resp);	
+        
+    }  
+
+
+
+	
+
+
 	public function validanumero(){
 
 		$resp = array();
@@ -1755,6 +1826,7 @@ class Compras extends CI_Controller {
 		$ftotal = $this->input->post('totalfacturas');
 		$tipodocumento = $this->input->post('tipodocumento');
 		$idbodega = 1;
+		$neto = ($ftotal - $fiva);
 		
 		$data3 = array(
 	         'correlativo' => $numfactura

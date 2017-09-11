@@ -134,9 +134,8 @@ Ext.define('Infosys_web.view.compras.Principalfactura' ,{
             },{
                 xtype: 'button',
                 iconCls: 'icon-add',
-                action: 'editarcompras',
-                text : 'Editar / Agregar',
-                hidden: true
+                action: 'editarfacturacompra',
+                text : 'Editar'
             },{
                 xtype: 'button',
                 iconCls : 'icon-pdf',

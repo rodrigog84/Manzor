@@ -19,10 +19,10 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
     ],
 
     autoShow: true,
-    height: 340,
+    height: 640,
     width: 1300,
     layout: 'fit',
-    title: 'Facturacion',
+    title: 'Factura de Compras',
 
     initComponent: function() {
         var me = this;
@@ -40,7 +40,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                     items: [
                         {
                             xtype: 'container',
-                            height: 300,
+                            height: 200,
                             layout: {
                                 type: 'vbox',
                                 align: 'stretch'
@@ -70,14 +70,12 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             fieldCls: 'required',
                                             store: 'Tipo_documento.Selector5',
                                             valueField: 'id',
-                                            editable: false,
-                                            displayField: 'nombre',
-                                            readOnly: true
+                                            displayField: 'nombre'
                                         },{
                                             xtype: 'displayfield',
                                             width: 40                                          
                                         },{
-                                            xtype: 'textfield',
+                                            xtype: 'numberfield',
                                             name: 'idfactura',
                                             itemId: 'idfactura',
                                             hidden: true
@@ -88,13 +86,17 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             maxHeight: 25,
                                             width: 250,
                                             labelWidth: 150,
-                                            allowBlank: false,
+                                            //allowBlank: false,
                                             name: 'num_factura',
                                             itemId: 'numfacturaId',
-                                            fieldLabel: '<b>NUMERO DOCUMENTO</b>',
-                                            readOnly: true
-
-
+                                            fieldLabel: '<b>NUMERO DOCUMENTO</b>'
+                                        },{
+                                            xtype: 'textfield',
+                                            fieldCls: 'required',
+                                            name: 'val_factura',
+                                            itemId: 'valfacturaId',
+                                            fieldLabel: '<b>VALIDADOR</b>',
+                                            hidden: true
                                         },{
                                             xtype: 'displayfield',
                                             width: 145
@@ -108,8 +110,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             fieldLabel: '<b>FECHA</b>',
                                             itemId: 'fechafacturaId',
                                             name: 'fecha_factura',
-                                            value: new Date(),
-                                            readOnly: true
+                                            value: new Date()
                                         },{
                                             xtype: 'displayfield',
                                             width: 50
@@ -118,7 +119,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             xtype: 'datefield',
                                             fieldCls: 'required',
                                             maxHeight: 25,
-                                             labelWidth: 50,
+                                            labelWidth: 50,
                                             width: 150,
                                             fieldLabel: '<b>VENC.</b>',
                                             itemId: 'fechavencId',
@@ -152,7 +153,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             width: 220,
                                             fieldLabel: '<b>RUT</b>',
                                             itemId: 'rutId',
-                                            name : 'rut'
+                                            name : 'rut',
                                             //disabled : true                                            
                                         },{
                                             xtype: 'displayfield',
@@ -234,7 +235,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             maxHeight: 25,
                                             width: 70,
                                             allowBlank: true,
-                                            action: 'buscarsucursalfactura'
+                                            action: 'buscarsucursalfactura',
                                             //disabled : true  
                                         },{
                                             xtype: 'displayfield',
@@ -249,8 +250,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             itemId: 'giroId',
                                             readOnly: true,
                                             //disabled : true,                                           
-                                            name : 'giro'
-                                          
+                                            name : 'giro'                                      
                                         },{
                                             xtype: 'textfield',
                                             fieldCls: 'required',
@@ -260,6 +260,16 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             value: "NO",
                                             itemId: 'permiteId',
                                             fieldLabel: '<b>permite</b>',
+                                            hidden: true
+                                        },{
+                                            xtype: 'textfield',
+                                            fieldCls: 'required',
+                                            maxHeight: 25,
+                                            width: 100,
+                                            name: 'id_lista',
+                                            value: "NO",
+                                            itemId: 'preciosId',
+                                            fieldLabel: '<b>Lista Precios</b>',
                                             hidden: true
                                         }
                                     ]
@@ -278,8 +288,9 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             fieldCls: 'required',
                                             itemId: 'tipoCiudadId',
                                             name : 'nombre_ciudad',
+                                            labelWidth: 60,
                                             maxHeight: 25,
-                                            width: 210,
+                                            width: 190,
                                             readOnly: true,
                                             //disabled : true,                                            
                                             fieldLabel: '<b>CIUDAD</b>'
@@ -293,9 +304,10 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             fieldCls: 'required',
                                             itemId: 'tipoComunaId',
                                             name : 'nombre_comuna',
+                                            labelWidth: 60,
                                             readOnly: true,
                                             maxHeight: 25,
-                                            width: 210,
+                                            width: 190,
                                             //disabled : true,                                           
                                             fieldLabel: '<b>COMUNA</b>'
                                         },{
@@ -307,6 +319,7 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             xtype: 'combo',
                                             itemId: 'tipoVendedorId',
                                             width: 350,
+                                            labelWidth: 75,
                                             fieldCls: 'required',
                                             maxHeight: 25,
                                             fieldLabel: '<b>VENDEDOR</b>',
@@ -319,11 +332,12 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             //disabled : true, 
                                         },{
                                             xtype: 'displayfield',
-                                            width: 105
+                                            width: 10
                                         },{
                                             xtype: 'combo',
                                             itemId: 'tipocondpagoId',
-                                            width: 330,
+                                            labelWidth: 80,
+                                            width: 250,
                                             fieldCls: 'required',
                                             maxHeight: 25,
                                             fieldLabel: '<b>COND.PAGO</b>',
@@ -332,72 +346,277 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                                             valueField : 'id',
                                             displayField : 'nombre',
                                             emptyText : "Seleccione",
-                                            store : 'Cond_pago'
-                                        }
-                                    ]
-                             },{
-                                    xtype: 'fieldcontainer',
-                                    height: 30,
-                                    width: 462,
-                                    fieldLabel: '',
-                                    layout: {
-                                        type: 'hbox',
-                                        align: 'stretch'
-                                    },
-                                    items: [
-                                       {
-                                            xtype: 'textfield',
-                                            fieldCls: 'required',
-                                            itemId: 'netoId',
-                                            name : 'neto',
-                                            maxHeight: 25,
-                                            width: 210,
-                                            //readOnly: true,
-                                            fieldLabel: '<b>NETO</b>'
+                                            store : 'Cond_pago',
+                                            //disabled : true, 
                                         },{
                                             xtype: 'displayfield',
-                                            flex: 1,
-                                            maxWidth: 25,
-                                            labelWidth: 50
+                                            width: 10
                                         },{
-                                            xtype: 'textfield',
+                                            xtype: 'combo',
+                                            itemId: 'bodegaId',
+                                            labelWidth: 60,
+                                            width: 205,
                                             fieldCls: 'required',
-                                            itemId: 'ivaId',
-                                            name : 'iva',
-                                            //readOnly: true,
                                             maxHeight: 25,
-                                            width: 210,
-                                            fieldLabel: '<b>IVA</b>'
-                                        },{
-                                            xtype: 'displayfield',
-                                            flex: 1,
-                                            maxWidth: 25,
-                                            labelWidth: 50
-                                        },{
-                                            xtype: 'textfield',
-                                            fieldCls: 'required',
-                                            itemId: 'totalId',
-                                            name : 'total',
-                                            //readOnly: true,
-                                            maxHeight: 25,
-                                            width: 210,
-                                            fieldLabel: '<b>TOTAL</b>'
-                                        },{
-                                            xtype: 'textfield',
-                                            fieldCls: 'required',
-                                            itemId: 'totalantId',
-                                            name : 'total',
-                                            readOnly: true,
-                                            maxHeight: 25,
-                                            width: 210,
-                                            fieldLabel: '<b>TOTAL</b>',
-                                            hidden: true
+                                            fieldLabel: '<b>BODEGA</b>',
+                                            forceSelection : true,
+                                            name : 'id_bodega',
+                                            valueField : 'id',
+                                            displayField : 'nombre',
+                                            emptyText : "Seleccione",
+                                            store : 'Bodegas',
+                                            readOnly: true
                                         }
                                     ]
-                             }
+                                    },{
+                    xtype: 'fieldset',
+                    title: 'Items Documento',
+                    fieldDefaults: {
+                        labelWidth: 70,
+                        align: 'center'                        
+                    },
+                    items: [
+                    {
+                        xtype: 'container',
+                        layout: {
+                            type: 'vbox'
+                        },
+                        defaults: {
+                            flex: 1
+                        },
+                        items: [
+
+                        {
+                            xtype: 'fieldcontainer',
+                            layout: 'hbox',
+                            align: 'center',     
+                            items: [{
+                                xtype: 'textfield',
+                                width: 140,
+                                labelWidth: 40,
+                                fieldLabel: 'Codigo',
+                                itemId: 'codigoId',
+                                style: 'font-weight: bold;'
+                            },{xtype: 'splitter'},{
+                                xtype: 'textfield',
+                                align: 'center',
+                                labelWidth: 55,
+                                itemId: 'nombreproductoId',
+                                fieldLabel: 'Producto',
+                                name: 'nomproducto',                                
+                                readOnly: true
+                            },{
+                                xtype: 'textfield',
+                                align: 'center',
+                                labelWidth: 60,
+                                itemId: 'productoId',
+                                fieldLabel: 'Producto',
+                                name: 'Productos',                                
+                                hidden: true
+                            },
+                            {xtype: 'splitter'},
+                            {
+                                xtype: 'button',
+                                text: 'Buscar Producto',
+                                maxHeight: 25,
+                                width: 120,
+                                allowBlank: true,
+                                action: 'buscarproductos',
+                                itemId: 'buscarproc'
+                            },
+                            {xtype: 'splitter'},
+                            {
+                                xtype: 'numberfield',
+                                width: 180,
+                                labelWidth: 40,
+                                fieldLabel: 'Precio',
+                                itemId: 'precioId',
+                                style: 'font-weight: bold;',
+                                decimalPrecision:3
+                            },{xtype: 'splitter'},
+                            {
+                                xtype: 'textfield',
+                                width: 120,
+                                labelWidth: 40,
+                                minValue: 0,
+                                fieldLabel: 'Stock',
+                                readOnly: true,
+                                itemId: 'cantidadOriginalId',
+                                style: 'font-weight: bold;'
+
+                            },
+                            {xtype: 'splitter'},
+                            {
+                                xtype: 'numberfield',
+                                width: 160,
+                                labelWidth: 60,
+                                minValue: 0,
+                                //value: 1,
+                                fieldLabel: 'Cantidad',
+                                itemId: 'cantidadId',
+                                decimalPrecision:3
+                            },{
+                                xtype: 'numberfield',
+                                width: 120,
+                                labelWidth: 60,
+                                minValue: 0,
+                                value: 0,
+                                fieldLabel: 'Descuento Pro',
+                                itemId: 'totdescuentoId',
+                                hidden: true
+                            },
+                            {xtype: 'splitter'},
+                            {
+                            xtype: 'combo',
+                            width: 190,
+                            queryMode: 'local',
+                            itemId: 'DescuentoproId',
+                            fieldLabel: 'Descto %',
+                            store: 'Tabladescuento',
+                            emptyText : "Seleccione",
+                            valueField: 'id',
+                            displayField: 'nombre'
+                            },
+                            {xtype: 'splitter'},
+                            {
+                                xtype: 'button',
+                                text: 'Agregar',
+                                iconCls: 'icon-plus',
+                                width: 80,
+                                allowBlank: true,
+                                action: 'agregarItem'
+                            }]
+                        }
+
+                        ]
+                    }]
+
+                     }
 
                             ]
-                        }
+                        },{
+                            xtype: 'grid',
+                            itemId: 'itemsgridId',
+                            title: 'Detalle',
+                            labelWidth: 50,
+                            store: 'ProductosDetalle',
+                            tbar: [{
+                                iconCls: 'icon-delete',
+                                text: 'Eliminar',
+                                action: 'eliminaritem'
+                            },
+                            {
+                                iconCls: 'icon-delete',
+                                text: 'Editar',
+                                action: 'editaritem'
+                            }
+                            ],
+                            height: 210,
+                            columns: [
+                                { text: 'Id producto',  dataIndex: 'id_producto', width: 250, hidden : true },
+                                { text: 'codigo',  dataIndex: 'codigo', width: 250, hidden : true },
+                                { text: 'Producto',  dataIndex: 'nombre', width: 250 },
+                                { text: 'Bodega',  dataIndex: 'id_bodega', width: 250, hidden:true},
+                                { text: 'Precio Unitario',  dataIndex: 'precio', align: 'right',flex:1, decimalPrecision:3},
+                                { text: 'Cantidad',  dataIndex: 'cantidad', align: 'right',width: 150, decimalPrecision:3},
+                                { text: 'Descuento',  dataIndex: 'dcto', align: 'right',width: 100, renderer: function(valor){return Ext.util.Format.number((valor),"0,000")} },
+                                { text: 'Neto',  dataIndex: 'neto', align: 'right',flex:1,renderer: function(valor){return Ext.util.Format.number((valor),"0,000")} },
+                                { text: 'Iva',  dataIndex: 'iva', align: 'right',flex:1,renderer: function(valor){return Ext.util.Format.number((valor),"0,000")} },
+                                { text: 'Total',  dataIndex: 'total', align: 'right',flex:1, renderer: function(valor){return Ext.util.Format.number((valor),"0,000")} }
+                                ]
+                            },{
+                        xtype: 'fieldset',
+                        title: 'Total Documento',
+                        fieldDefaults: {
+                        labelWidth: 120
+                        },
+                        items: [
+                            {
+                        xtype: 'fieldcontainer',
+                        layout: 'hbox',
+                        items: [{
+                            xtype: 'numberfield',
+                            fieldCls: 'required',
+                            width: 200,
+                            name : 'neto',
+                            itemId: 'finaltotalnetoId',
+                            readOnly: true,
+                            fieldLabel: '<b>VALOR NETO</b>',
+                            labelAlign: 'top'
+                        },
+                        {xtype: 'splitter'},
+                        {
+                            xtype: 'combo',
+                            width: 280,
+                            queryMode: 'local',
+                            itemId: 'tipoDescuentoId',
+                            fieldLabel: '<b>DESCUENTO</b>',
+                            store: 'Tabladescuento',
+                            emptyText : "Seleccione",
+                            valueField: 'id',
+                            labelAlign: 'top',
+                            displayField: 'nombre',
+                            hidden: true
+                        },{
+                            xtype: 'numberfield',
+                            fieldCls: 'required',
+                            width: 200,
+                            name : 'descuento',
+                            itemId: 'finaldescuentoId',
+                            disabled : true,  
+                            readOnly: true,
+                            fieldLabel: '<b>descuento</b>',
+                            hidden: true
+                        },
+                        {xtype: 'splitter'},
+                        {
+                            xtype: 'numberfield',
+                            fieldCls: 'required',
+                            width: 150,
+                            name : 'descuentovalor',
+                            itemId: 'descuentovalorId',
+                            readOnly: true,
+                            fieldLabel: '<b>DESCUENTO $</b>',
+                            labelAlign: 'top',
+                            hidden: true
+                        },{xtype: 'splitter'},{
+                            xtype: 'numberfield',
+                            fieldCls: 'required',
+                            width: 150,
+                            name : 'afecto',
+                            itemId: 'finalafectoId',
+                            readOnly: true,
+                            fieldLabel: '<b>AFECTO</b>',
+                            labelAlign: 'top'
+                        },{xtype: 'splitter'},
+                        {
+                            xtype: 'numberfield',
+                            width: 150,
+                            fieldCls: 'required',
+                            name : 'iva',
+                            itemId: 'finaltotalivaId',
+                            readOnly: true,
+                            fieldLabel: '<b>IVA</b>',
+                            labelAlign: 'top'
+                            //renderer: function(valor){return Ext.util.Format.number(parseInt(iva),"0.000")} 
+                        },{xtype: 'splitter'},{
+                            xtype: 'textfield',
+                            fieldCls: 'required',
+                            width: 230,
+                            name : 'total',
+                            itemId: 'finaltotalId',
+                            readOnly: true,
+                            fieldLabel: '<b>TOTAL DOCUMENTO</b>',
+                            labelAlign: 'top'
+                        },{
+                            xtype: 'numberfield',
+                            itemId: 'finaltotalpostId',
+                            hidden: true
+                        }]
+                    }
+                    ]
+
+                }
                     ]
                 }
             ],
@@ -413,10 +632,19 @@ Ext.define('Infosys_web.view.compras.Facturaseditar', {
                     items: ['->',
                         {
                             xtype: 'button',
+                            //iconCls: 'icono',
+                            scale: 'large',
+                            action: 'observaciones',
+                            text: 'OBSERVACIONES',
+                            hidden: true
+                        },{
+                            xtype: 'button',
                             iconCls: 'icon-save',
                             scale: 'large',
-                            action: 'grabarfacturaeditar',
-                            text: 'Grabar'
+                            itemId: 'grabarfactura',
+                            disabled : false,
+                            action: 'grabarfactura',
+                            text: 'Grabar / Emitir'
                         },
                         {
                             xtype: 'tbseparator'
