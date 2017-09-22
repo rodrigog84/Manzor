@@ -68,6 +68,18 @@ Ext.define('Infosys_web.view.Preventa.BuscarProductos3' ,{
                 width: 100,
                 align: 'right',
                 dataIndex: 'stock'
+            },{
+                header: "Stock Critico",
+                width: 100,
+                align: 'right',
+                dataIndex: 'stock_critico',
+                hidden: true
+            },{
+                header: "Stock Total",
+                width: 100,
+                align: 'right',
+                dataIndex: 'stock1',
+                hidden: true
             }],
         };
         this.dockedItems = [{

@@ -418,14 +418,13 @@ class Productosfact extends CI_Controller {
 	        	$sql_nombre .= "c.nombre like '%".$nombre."%' and ";
 	        }
 
-        	$query2 = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
-        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
-        	FROM existencia acc
+			$query2 = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
+			codigo, b.nombre as nom_bodega, c.p_venta as p_venta, c.stock as stock1, c.stock_critico as stock_critico FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)
 			WHERE ' . $sql_nombre . ' 1 = 1 ');
-			
+
 			$total = 0;
 
 		  foreach ($query2->result() as $row)
@@ -437,8 +436,7 @@ class Productosfact extends CI_Controller {
 			$countAll = $total;
 
 			$query = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
-        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
-        	FROM existencia acc
+			codigo, b.nombre as nom_bodega, c.p_venta as p_venta, c.stock as stock1, c.stock_critico as stock_critico FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)
@@ -464,8 +462,7 @@ class Productosfact extends CI_Controller {
         if ($tipo=="Todos"){
 
         	$query2 = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
-        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
-        	FROM existencia acc
+			codigo, b.nombre as nom_bodega, c.p_venta as p_venta, c.stock as stock1, c.stock_critico as stock_critico FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)');
@@ -481,8 +478,7 @@ class Productosfact extends CI_Controller {
 			$countAll = $total;
 
 			$query = $this->db->query('SELECT acc.*, c.nombre as nombre, c.codigo as 	
-        	codigo, b.nombre as nom_bodega, c.p_venta as p_venta
-        	FROM existencia acc
+			codigo, b.nombre as nom_bodega, c.p_venta as p_venta, c.stock as stock1, c.stock_critico as stock_critico FROM existencia acc
 			left join bodegas b on (acc.id_bodega = b.id)	
 			left join productos c on (acc.id_producto = c.id)
 			left join mae_medida m on (c.id_uni_medida = m.id)			

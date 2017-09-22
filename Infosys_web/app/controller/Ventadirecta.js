@@ -1086,6 +1086,10 @@ Ext.define('Infosys_web.controller.Ventadirecta', {
             viewIngresa.down('#cantidadOriginalId').setValue(row.data.stock);
             viewIngresa.down("#cantidadId").focus();
             view.close();
+            if (row.data.stock1 < row.data.stock_critico){
+               Ext.Msg.alert('Alerta', 'Producto a Superado Stock Critico');
+               return;                       
+            };
             };
         }else{
             Ext.Msg.alert('Alerta', 'Selecciona un registro.');
