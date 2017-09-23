@@ -17,44 +17,44 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             menu: [{
                 text: 'Tabla Productos',
                 iconCls: '',
-                //disabled: true,
-                //itemId: 'inv_tg_productos',
+                disabled: true,
+                itemId: 'inv_tg_productos',
                 action: 'mproductos'            
             },{
                 text: 'Control Valor Productos',
                 iconCls: '',
-                //disabled: true,
-                //itemId: 'inv_tg_productos',
+                disabled: true,
+                itemId: 'inv_tg_controlproductos',
                 action: 'mcontrolproductos'            
             },{
                 text: 'Tabla Proveedores',
                 iconCls: '',
-                //itemId: 'adq_tg_proveedores',
-                //disabled: true,
+                itemId: 'inv_tg_proveedores',
+                disabled: true,
                 action: 'mproveedores'
             },{
                 text: 'Tabla Clientes',
                 iconCls: '',
-                //itemId: 'vyf_tg_clientes',
-                //disabled: true,
+                itemId: 'inv_tg_clientes',
+                disabled: true,
                 action: 'mclientes'
             },{
                 text: 'Tabla Vendedores',
-                //itemId: 'vyf_tg_vendedores',
-                //disabled: true,
+                itemId: 'inv_tg_vendedores',
+                disabled: true,
                 iconCls: '',
                 action: 'mvendedores'            
             },{
                 text: 'Tabla Mecanicos',
-                //itemId: 'vyf_tg_mecanicos',
-                //disabled: true,
+                itemId: 'inv_tg_mecanicos',
+                disabled: true,
                 iconCls: '',
                 action: 'mmecanicos'            
             },{
                 text: 'Control Correlativos',
                 iconCls: '',
-                //itemId: 'pg_ccorrelativos',
-                //disabled: true,
+                itemId: 'inv_tg_ccorrelativos',
+                disabled: true,
                 action: 'mcorrelativos'
             
             },{
@@ -62,50 +62,50 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 iconCls: '',
                 menu: [{
                         text: 'Ciudad',
-                        //itemId: 'vyf_tg_ciudad',
-                        //disabled: true,
+                        itemId: 'vyf_tg_ciudad',
+                        disabled: true,
                         iconCls: '',
                         action: 'mciudades'
                 },{
                         text: 'Comuna',
-                        //itemId: 'vyf_tg_comuna',
-                        //disabled: true,
+                        itemId: 'vyf_tg_comuna',
+                        disabled: true,
                         iconCls: '',
                         action: 'mcomunas'
                 },{
                         text: 'Codigo Actividad Economica',
                         iconCls: '',
-                        //itemId: 'vyf_tg_cactividade',
-                        //disabled: true,
+                        itemId: 'vyf_tg_cactividade',
+                        disabled: true,
                         action: 'mcodactivecon'
                 },{
                         text: 'Condiciones de Pago',
-                        //itemId: 'vyf_tg_cpago',
-                        //disabled: true,
+                        itemId: 'vyf_tg_cpago',
+                        disabled: true,
                         iconCls: '',
                         action: 'mcondicionpagos'
                 },{
                         text: 'Sucursales',
-                        //itemId: 'vyf_tg_sucursales',
-                        //disabled: true,
+                        itemId: 'vyf_tg_sucursales',
+                        disabled: true,
                         iconCls: '',
                         action: 'msucursales'
                 },{
                         text: 'Tablas Descuentos',
-                        //itemId: 'vyf_tg_tablasdescuento',
-                        //disabled: true,
+                        itemId: 'vyf_tg_tablasdescuento',
+                        disabled: true,
                         iconCls: '',
                         action: 'mtablas'
                 },{
                         text: 'Tipos Cuentas Corrientes',
-                        //itemId: 'vyf_tg_tablasdescuento',
-                        //disabled: true,
+                        itemId: 'vyf_tg_tablasdescuento',
+                        disabled: true,
                         iconCls: '',
                         action: 'mtipoctacte'
                 },{
                         text: 'Control de Caja',
-                        //itemId: 'vyf_tg_ccaja',
-                        //disabled: true,
+                        itemId: 'vyf_tg_ccaja',
+                        disabled: true,
                         iconCls: '',
                         menu: [{
                             text: 'Banco',
@@ -136,16 +136,9 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             menu: [{
                 text: 'Tablas Generales',                
                 menu: [{
-                        text: 'Actualizar Precios',
-                        iconCls: '',
-                        //disabled: true,
-                        //itemId: 'inv_tp_precios',
-                        action: 'mprecios',
-                        hidden: true
-                    },{
                     text: 'Codigo Productos',
-                    //itemId: 'inv_tg_cproductos',
-                    //disabled: true,
+                    itemId: 'inv_tg_cproductos',
+                    disabled: true,
                     iconCls: '',
                     menu: [{
                         text: 'Familias Productos',
@@ -164,44 +157,44 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 },{
                     text: 'Bodegas',
                     iconCls: '',
-                        //itemId: 'inv_tg_bodegas',
-                        //disabled: true,
+                    itemId: 'inv_tg_bodegas',
+                    disabled: true,
                     action: 'mbodegas'
 
                 },{
                     text: 'Marcas',
                     iconCls: '',
-                        //itemId: 'inv_tg_marcas',
-                        //disabled: true,
+                    itemId: 'inv_tg_marcas',
+                    disabled: true,
                     action: 'mmarcas'
 
                 },{
                     text: 'Ubicaciones',
                     iconCls: '',
-                        //itemId: 'inv_tg_ubicaciones',
-                        //disabled: true,
+                    itemId: 'inv_tg_ubicaciones',
+                    disabled: true,
                     action: 'mubica'
 
                 },{
                     text: 'Unidad de Medida',
                     iconCls: '',
-                        //itemId: 'inv_tg_umedida',
-                        //disabled: true,
+                    itemId: 'inv_tg_umedida',
+                    disabled: true,
                     action: 'mmedidas'
 
                                           
                 },{
                     text: 'Tipo Movimientos',
                     iconCls: '',
-                        //itemId: 'inv_tg_tmovimientos',
-                        //disabled: true,
+                    itemId: 'inv_tg_tmovimientos',
+                    disabled: true,
                     action: 'mtipomovimiento'
 
                 },{
                         text: 'Tipo Documentos Compras',
                         iconCls: '',
-                        //itemId: 'adq_tg_parametros',
-                        //disabled: true,
+                        itemId: 'inv_tg_tipdoccompras',
+                        disabled: true,
                         action: 'mtipodocumento'
                 }]
 
@@ -210,15 +203,15 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 iconCls: '',
                  menu: [{
                         text: 'Inventario Inicial',
-                        //itemId: 'inv_inm_iinicial',
-                        //disabled: true,
+                        itemId: 'inv_inm_iinicial',
+                        disabled: true,
                         iconCls: '',
                         action: 'minventario'
                     },{
                         text: 'Movimiento Diario',
                         iconCls: '',
-                        //itemId: 'inv_inm_mdiario',
-                        //disabled: true,
+                        itemId: 'inv_inm_mdiario',
+                        disabled: true,
                         action: 'mtipomovimientoinventario'
                         
                     }]
@@ -230,26 +223,26 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             menu: [{
                     text: 'Compras',
                     iconCls: '',
-                    //itemIfFACTURAfd: 'adq_md_compras',
-                    //disabled: true,
+                    itemId: 'com_md_compras',
+                    disabled: true,
                     action: 'mcompras'         
                 },{
                     text: 'Orden de Compra',
                     iconCls: '',
-                    //itemId: 'adq_md_oc',
-                    //disabled: true,
+                    itemId: 'com_md_oc',
+                    disabled: true,
                     action: 'mordencompra'
                 },{
                     text: 'Recepcion de Compra',
                     iconCls: '',
-                    //itemId: 'adq_md_rcompra',
-                    //disabled: true,
+                    itemId: 'com_md_rcompra',
+                    disabled: true,
                     action: 'mordencomprarec'
                 },{
                     text: 'Recepcion Forzada',
                     iconCls: '',
-                    //itemId: 'adq_md_rf',
-                    //disabled: true,
+                    itemId: 'com_md_rf',
+                    disabled: true,
                     action: 'mordencomprafor'
                            
             }],
@@ -261,43 +254,51 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             menu: [{
                     text: 'Caja',
                     iconCls: '',
+                    itemId: 'vv_acc_Caja',
+                    disabled: true,
                     action: 'mpreventa'
                 },{
                     text: 'Vale',
                     iconCls: '',
-                    //itemId: 'vv_acc_preventa',
-                    //disabled: true,
+                    itemId: 'vv_acc_Vale',
+                    disabled: true,
                     action: 'mpreventa'                
                 },{
                     text: 'Vale Despacho',
                     iconCls: '',
-                    //itemId: 'vv_acc_preventaferreteria',
-                    //disabled: true,
+                    itemId: 'vv_acc_ValeDespacho',
+                    disabled: true,
                     action: 'mvaledespacho'   
                 },{
                     text: 'Cotizaciones',
-                    //itemId: 'vyf_cp_cotizacion',
-                    //disabled: true,
+                    itemId: 'vv_cp_cotizacion',
+                    disabled: true,
                     iconCls: '',
                     action: 'mcotizacion'
                        
                 },{
                     text: 'Guia Despacho',
                     iconCls: '',
+                    itemId: 'vv_cp_GuiaDespacho',
+                    disabled: true,
                     action: 'mguias'
                 },{
                     text: 'Nota de Credito',
                     iconCls: '',
+                    itemId: 'vv_cp_NotaCredito',
+                    disabled: true,
                     action: 'meNotacredito'
                 },{
                     text: 'Nota de Debito',
                     iconCls: '',
+                    itemId: 'vv_cp_NotaDebito',
+                    disabled: true,
                     action: 'meNotadebito'
                 },{
                     text: 'Facturacion por Lotes',
                     iconCls: '',
-                    //itemId: 'vyf_im_flotes',
-                    //disabled: true,
+                    itemId: 'vv_cp_flotes',
+                    disabled: true,
                     menu: [{
                         text: 'Factura Guias',
                         iconCls: '',
@@ -312,17 +313,19 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 },{
                         text: 'Cambios Productos',
                         iconCls: '',
-                        //disabled: true,
-                        //itemId: 'inv_tp_cambios',
+                        disabled: true,
+                        itemId: 'vv_cp_cambios',
                         action: 'mcambios'
                 },{
                         text: 'Existencia',
                         iconCls: '',
-                        //itemId: 'inv_inm_estadisticas',
-                        //disabled: true,
+                        itemId: 'vv_cp_existencia',
+                        disabled: true,
                         action: 'mexistencia'
                 },{
                 text: 'Facturaci&oacute;n Electr&oacute;nica',
+                itemId: 'ff_reg_facturacionelectronica',
+                disabled: true,
                 iconCls: '',
                 menu: [{
                         text: 'Registro de Empresa',
@@ -388,12 +391,12 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             text : 'Cuentas Corrientes',
             menu: [{
                 text: 'Tablas Generales',
+                itemId: 'cc_tg_tablasgenerales',
+                disabled: true,
                 iconCls: '',
                 menu: [{
                         text: 'Parametros Generales',
-                        iconCls: '',
-                        //itemId: 'cc_tg_parametros',
-                        //disabled: true,
+                        iconCls: '',                        
                         action: ''
                 },{
                         text: 'Asociacion de Cuentas',
@@ -412,6 +415,8 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             },
             {
                 text: 'Movimiento Diario',
+                itemId: 'cc_md_movimientodiario',
+                disabled: true,
                 iconCls: '',
                 menu: [{
                         text: 'Cancelaciones',
@@ -449,6 +454,8 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             },
             {
                 text: 'Reportes',
+                itemId: 'cc_rep_reportes',
+                disabled: true,
                 iconCls: '',
                 menu: [{
                         text: 'Saldos de Cliente',
@@ -530,6 +537,8 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 }]
             },{
                 text: 'Procesos',
+                itemId: 'cc_proc_procesos',
+                disabled: true,
                 iconCls: '',
                 menu: [{
                         text: 'Centralizaci&oacute;n Diaria',
@@ -549,17 +558,25 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 menu: [{
                     text: 'Libro Ventas',
                     iconCls: '',
+                    itemId: 'in_informe_libroventas',
+                    disabled: true,
                     action: 'mejemplo'
                 },{
                     text: 'Resumen Ventas',
+                    itemId: 'in_informe_resumenventas',
+                    disabled: true,
                     iconCls: '',
                     action: 'resumenventas'
                 },{
                     text: 'Informe Stock',
+                    itemId: 'in_informe_stock',
+                    disabled: true,
                     iconCls: '',
                     action: 'informestock'
                 },{
                 text: 'Estadisticas de Ventas',
+                itemId: 'in_informe_estadisticasventas',
+                disabled: true,
                 iconCls: '',
                 menu: [{
                         text: 'Control Caja',
@@ -584,8 +601,8 @@ Ext.define('Infosys_web.view.TopMenus' ,{
             },{
                         text: 'Saldos de Cliente',
                         iconCls: '',
-                        //itemId: 'cc_rep_saldos',
-                        //disabled: true,
+                        itemId: 'in_informe_saldosclientes',
+                        disabled: true,
                         menu: [{
                             text: 'Saldo de Documentos',
                             iconCls: '',
@@ -601,13 +618,13 @@ Ext.define('Infosys_web.view.TopMenus' ,{
                 },{
                         text: 'Cartola de Cliente',
                         iconCls: '',
-                        //itemId: 'cc_rep_cartola',
-                        //disabled: true,
+                        itemId: 'in_informe_cartolacliente',
+                        disabled: true,
                         action: 'cc_rep_cartola'
                 },{
                         text: 'Existencia por Cliente',
-                        //itemId: 'inv_inm_Clientes',
-                        //disabled: true,
+                        itemId: 'in_informe_existenciaporcliente',
+                        disabled: true,
                         iconCls: '',
                         action: 'mexistenciaclientes'
                 }               

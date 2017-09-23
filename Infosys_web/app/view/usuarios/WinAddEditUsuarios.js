@@ -69,7 +69,7 @@
                     proxy: {
                         type: 'ajax',
                         api: {
-                            read: '/vibrados_web/core/index.php/usuarios/getAllRoles'
+                            read: '/Manzor/core/index.php/usuarios/getAllRoles'
                         },
                         reader: {
                             type: 'json',
@@ -130,7 +130,7 @@
 
                 if (values.id > 0){
                     sform.submit({
-                        url: '/vibrados_web/core/index.php/usuarios/update',
+                        url: '/Manzor/core/index.php/usuarios/update',
                         waitMsg: 'Grabando...',
                         params: {
                             roles: Ext.JSON.encode(records)
@@ -146,7 +146,7 @@
                     });
                 } else{
                     sform.submit({
-                        url: '/vibrados_web/core/index.php/usuarios/save',
+                        url: '/Manzor/core/index.php/usuarios/save',
                         waitMsg: 'Grabando...',
                         params: {
                             roles: Ext.JSON.encode(records)

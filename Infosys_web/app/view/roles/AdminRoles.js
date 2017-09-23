@@ -31,7 +31,7 @@ Ext.define('Infosys_web.view.roles.AdminRoles', {
             proxy: {
                 type: 'ajax',
                 api: {
-                    read: '/vibrados_web/core/index.php/roles/getAll'
+                    read: '/Manzor/core/index.php/roles/getAll'
                 },
                 reader: {
                     type: 'json',
@@ -81,7 +81,7 @@ Ext.define('Infosys_web.view.roles.AdminRoles', {
 	            proxy: {
 	                type: 'ajax',
 	                api: {
-	                    read: '/vibrados_web/core/index.php/roles/getAllWithNotFilter'
+	                    read: '/Manzor/core/index.php/roles/getAllWithNotFilter'
 	                },
 	                reader: {
 	                    type: 'json',
@@ -129,7 +129,7 @@ Ext.define('Infosys_web.view.roles.AdminRoles', {
                     if (grid.getSelectionModel().hasSelection()) {
                         var row = grid.getSelectionModel().getSelection()[0];
                         Ext.Ajax.request({
-                            url: '/vibrados_web/core/index.php/roles/enabled',
+                            url: '/Manzor/core/index.php/roles/enabled',
                             waitMsg: 'Actualizando...',
                             params: {
                                 id: row.data.id
@@ -162,7 +162,7 @@ Ext.define('Infosys_web.view.roles.AdminRoles', {
                     if (grid.getSelectionModel().hasSelection()) {
                         var row = grid.getSelectionModel().getSelection()[0];
                         Ext.Ajax.request({
-                            url: '/vibrados_web/core/index.php/roles/delete',
+                            url: '/Manzor/core/index.php/roles/delete',
                             waitMsg: 'Actualizando...',
                             params: {
                                 id: row.data.id

@@ -36,7 +36,7 @@ Ext.define('Infosys_web.view.usuarios.AdminUsuarios', {
             proxy: {
                 type: 'ajax',
                 api: {
-                    read: '/vibrados_web/core/index.php/usuarios/getAll'
+                    read: '/Manzor/core/index.php/usuarios/getAll'
                 },
                 reader: {
                     type: 'json',
@@ -85,7 +85,7 @@ Ext.define('Infosys_web.view.usuarios.AdminUsuarios', {
 	            proxy: {
 	                type: 'ajax',
 	                api: {
-	                    read: '/vibrados_web/core/index.php/usuarios/getAllWithNotFilter'
+	                    read: '/Manzor/core/index.php/usuarios/getAllWithNotFilter'
 	                },
 	                reader: {
 	                    type: 'json',
@@ -133,7 +133,7 @@ Ext.define('Infosys_web.view.usuarios.AdminUsuarios', {
                     if (grid.getSelectionModel().hasSelection()) {
                         var row = grid.getSelectionModel().getSelection()[0];
                         Ext.Ajax.request({
-                            url: '/vibrados_web/core/index.php/usuarios/enabled',
+                            url: '/Manzor/core/index.php/usuarios/enabled',
                             waitMsg: 'Actualizando...',
                             params: {
                                 id: row.data.id
@@ -166,7 +166,7 @@ Ext.define('Infosys_web.view.usuarios.AdminUsuarios', {
                     if (grid.getSelectionModel().hasSelection()) {
                         var row = grid.getSelectionModel().getSelection()[0];
                         Ext.Ajax.request({
-                            url: '/vibrados_web/core/index.php/usuarios/delete',
+                            url: '/Manzor/core/index.php/usuarios/delete',
                             waitMsg: 'Actualizando...',
                             params: {
                                 id: row.data.id
