@@ -262,16 +262,7 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                                                     producto : producto}
                                 stockProductos.load();
                             }                            
-                        },/*{
-                            xtype: 'button',
-                            iconCls : 'icon-pdf',
-                            text: 'Exportar PDF',
-                            handler: function() {
-                                    window.open(preurl +'adminServicesPdf/reporte_stock/' + id_familia + '/' + id_subfamilia + '/' + id_agrupacion + '/' + id_marca)    
-                            } 
-
-
-                        },*/{                
+                        },/*,*/{                
                             xtype: 'button',
                             iconCls : 'icon-exel',
                             text: 'Exportar EXCEL',
@@ -292,6 +283,22 @@ Ext.define('Infosys_web.view.ventas.InformeStock' ,{
                                 
 
                             }
+                        },{                
+                            xtype: 'button',
+                            iconCls : 'icon-exel',
+                            text: 'Genera Stock Critico',
+                            handler: function() {
+                                    window.open(preurl + 'adminServicesExcel/exportarstock');
+                            }                            
+                        },{
+                            xtype: 'button',
+                            iconCls : 'icon-pdf',
+                            text: 'Genera Stock Critico',
+                            handler: function() {
+                                    window.open(preurl +'adminServicesPdf/reporte_stock_critico');    
+                            } 
+
+
                         },{
                             xtype: 'button',
                             iconCls: 'icon-delete',

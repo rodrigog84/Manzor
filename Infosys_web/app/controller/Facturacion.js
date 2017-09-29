@@ -121,6 +121,9 @@ Ext.define('Infosys_web.controller.Facturacion', {
     },{
         ref: 'buscarproductosfacturas',
         selector: 'buscarproductosfacturas'
+    },{
+        ref: 'informestock',
+        selector: 'informestock'
     }  
 
 
@@ -344,9 +347,9 @@ Ext.define('Infosys_web.controller.Facturacion', {
             'formularioexportartxt button[action=exporttxtfechas]': {
                 click: this.exporttxtfechas
             },
-            //'facturasingresar #codigoId': {
-                //specialkey: this.buscarproductos
-            //}
+            /*'informestock button[action=genstockcritico]': {
+                click: this.genstockcritico
+            },*/
         });
     },
 

@@ -9,6 +9,51 @@ public function __construct()
     $this->load->database();
   }
 
+public function exportarstock()
+         {
+            header("Content-type: application/vnd.ms-excel"); 
+            header("Content-disposition: attachment; filename=listaproductos.xls"); 
+            
+            $this->load->database();
+
+            $query = $this->db->query('SELECT acc.*, c.nombre as nom_ubi_prod, ca.nombre as nom_uni_medida, m.nombre as nom_marca, fa.nombre as nom_familia, bo.nombre as nom_bodega, ag.nombre as nom_agrupacion, sb.nombre as nom_subfamilia FROM productos acc
+            left join mae_ubica c on (acc.id_ubi_prod = c.id)
+            left join marcas m on (acc.id_marca = m.id)
+            left join mae_medida ca on (acc.id_uni_medida = ca.id)
+            left join familias fa on (acc.id_familia = fa.id)
+            left join agrupacion ag on (acc.id_agrupacion = ag.id)
+            left join subfamilias sb on (acc.id_subfamilia = sb.id)
+            left join bodegas bo on (acc.id_bodega = bo.id)
+            WHERE acc.stock <= acc.stock_critico ');
+
+
+            $users = $query->result_array();
+            
+            echo '<table>';
+            echo "<td></td>";
+            echo "<td>LISTADO PRODUCTOS STOCK CRITICO</td>";
+            echo "<tr>";
+            echo "<td>ID</td>";
+            echo "<td>CODIGO</td>";
+            echo "<td>NOMBRE</td>";
+            echo "<td>PRECIO VENTA</td>";
+            echo "<td>STOCK</td>";
+            echo "<td>STOCK CRITICO</td>";
+            echo "<tr>";
+              
+              foreach($users as $v){
+               echo "<tr>";
+               echo "<td>".$v['id']."</td>";
+               echo "<td>".$v['codigo']."</td>";
+               echo "<td>".$v['nombre']."</td>";
+               echo "<td>".$v['p_venta']."</td>";
+               echo "<td>".$v['stock']."</td>";
+               echo "<td>".$v['stock_critico']."</td>";
+                 
+            }
+            echo '</table>';
+        }
+
 
 
 public function reporte_stock($familia,$subfamilia,$agrupacion,$marca,$producto)
