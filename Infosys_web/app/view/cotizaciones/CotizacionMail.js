@@ -1,6 +1,6 @@
 Ext.define('Infosys_web.view.cotizaciones.CotizacionMail' ,{
     extend: 'Ext.window.Window',
-    alias : 'widget.cotizacionmail',
+    alias : 'widget.cotizacionmailenvio',
     
 
     requires: ['Ext.form.Panel','Ext.form.field.Text'],
@@ -9,7 +9,7 @@ Ext.define('Infosys_web.view.cotizaciones.CotizacionMail' ,{
     layout: 'fit',
     autoShow: true,
     width: 450,
-    height: 280,
+    height: 250,
     modal: true,
     iconCls: 'icon-sheet',
 
@@ -35,28 +35,9 @@ Ext.define('Infosys_web.view.cotizaciones.CotizacionMail' ,{
                             xtype: 'textfield',
                             fieldLabel: 'Email',
                             width: 400,
-                            allowBlank: false,
                             name: 'email',
                             itemId: 'email',
                             vtype: 'email'
-                        }]
-                    },{
-                        xtype: 'fieldcontainer',
-                        layout: 'hbox',
-                        labelWidth: 70,
-                        items: [{
-                            xtype: 'combo',
-                            itemId: 'tipoenvioId',
-                            width: 290,
-                            fieldCls: 'required',
-                            maxHeight: 25,
-                            fieldLabel: '<b>TIPO</b>',
-                            forceSelection : true,
-                            name : 'id_tipo',
-                            valueField : 'id',
-                            displayField : 'nombre',
-                            emptyText : "Seleccione",
-                            store : 'cotizacion.Select'
                         }]
                     },{
                         xtype: 'fieldcontainer',

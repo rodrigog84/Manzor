@@ -74,8 +74,8 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         ref: 'observacionescotizapre',
         selector: 'observacionescotizapre'
     },{
-        ref: 'cotizacionmail',
-        selector: 'cotizacionmail'
+        ref: 'cotizacionmailenvio',
+        selector: 'cotizacionmailenvio'
     }
     ],
 
@@ -240,10 +240,10 @@ Ext.define('Infosys_web.controller.Cotizacion', {
             'cotizacioneditar #DescuentoproId': {
                 change: this.changedctofinal6
             },
-            'cotizacionprincipal button[action=enviaremail]': {
-                click: this.enviaremail
+            'cotizacionprincipal button[action=enviaremailcotiza]': {
+                click: this.enviaremailcotiza
             },
-            'cotizacionmail button[action=cotizacionemail]': {
+            'cotizacionmailenvio button[action=cotizacionemail]': {
                 click: this.cotizacionemail
             }
         });
@@ -251,7 +251,7 @@ Ext.define('Infosys_web.controller.Cotizacion', {
 
     cotizacionemail : function(){
         
-        var view =this.getCotizacionmail();
+        var view =this.getCotizacionmailenvio();
         var email = view.down('#email').getValue();
         var mensaje = view.down('#mensaje').getValue();
         var idcotiza = view.down('#idCotizaId').getValue();
@@ -285,14 +285,16 @@ Ext.define('Infosys_web.controller.Cotizacion', {
         }       
     },
 
-    enviaremail: function(){
+    enviaremailcotiza: function(){
+
+        console.log("Llegamos");
 
         var view = this.getCotizacionprincipal();
         if (view.getSelectionModel().hasSelection()) {
             var row = view.getSelectionModel().getSelection()[0];
             var idcotiza = row.data.id;
             var email = row.data.email_contacto;
-            edit =   Ext.create('Infosys_web.view.cotizaciones.CotizacionMail').show();
+            edit = Ext.create('Infosys_web.view.cotizaciones.CotizacionMail').show();
             edit.down('#idCotizaId').setValue(idcotiza);
             edit.down('#email').setValue(email);
             edit.down("#mensaje").focus();

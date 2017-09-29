@@ -109,7 +109,7 @@ Ext.define('Infosys_web.view.cotizaciones.Principal' ,{
                 xtype: 'button',
                 iconCls: 'icon-email',
                 text: 'Enviar E-mail',
-                action: 'enviaremail'
+                action: 'enviaremailcotiza'
             },
             '->',
             {

@@ -864,6 +864,7 @@ class Cotizaciones extends CI_Controller {
 		$observacion = $row->observaciones;
 		$vendedor = $row->nom_vendedor;
 		$condpago = $row->conpago;
+		$tipo="1";
 
 		if ($tipo=="1"){
 				
@@ -873,7 +874,7 @@ class Cotizaciones extends CI_Controller {
 		<html xmlns="http://www.w3.org/1999/xhtml">
 		<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-		<title>Untitled Document</title>
+		<title>Cotizaciones</title>
 		<style type="text/css">
 		td {
 			font-size: 16px;
@@ -1144,14 +1145,13 @@ class Cotizaciones extends CI_Controller {
 		<table width="987px" height="602" border="0">
 		  <tr>
 		   <tr>
-		    <td width="150px"><img src="http://angus.agricultorestalca.cl/vibrados_web/Infosys_web/resources/images/logo_empresa.png" width="300" height="200" /></td>
-		    <td width="193px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
-		    <p></p>
-		    <p></p>
-		    <p></p>
-		    <p></p>
-		    <p></p>
-		    </td>
+		     <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
+		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
+		    <p>SERGIO ADRIAN MANZOR MANCILLA</p>
+		    <p>RUT:3.992.565-6</p>
+		    <p>2 SUR # 1629 - Talca - Chile</p>
+		    <p>Fonos: (71)2 510250</p>
+		    <p>http://</p>
 		    </td>
 		    <td width="210px" style="font-size: 20px;text-align:left;vertical-align:text-top"	>
 		          <p>COTIZACION N°: '.$codigo.'</p>
