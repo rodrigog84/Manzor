@@ -907,7 +907,8 @@ class Recaudacion extends CI_Controller {
 
 	public function save(){
 		$resp = array();
-		$fechaboleta = json_decode($this->input->post('fecha'));
+		$fechaboleta = $this->input->post('fecha');
+		$fechacomp = $this->input->post('fecha');
 		$fechapago = json_decode($this->input->post('fechapago'));
 		$numdocum = json_decode($this->input->post('numboleta'));
         $tipodocumento = json_decode($this->input->post('tipdocumento'));
@@ -1424,11 +1425,12 @@ class Recaudacion extends CI_Controller {
 
         };
 
-        if ($tipodocumento != 3){
+		if ($tipodocumento != 3 && $tipodocumento != 105){
 		/******* CUENTAS CORRIENTES ****/
-
-		 $query = $this->db->query("SELECT cc.id as idcuentacontable FROM cuenta_contable cc WHERE cc.nombre = 'FACTURAS POR COBRAR'");
+		 $nombre_cuenta = $tipodocumento == 2 ? "BOLETAS POR COBRAR" : "FACTURAS POR COBRAR";
+		 $query = $this->db->query("SELECT cc.id as idcuentacontable FROM cuenta_contable cc WHERE cc.nombre = '" . $nombre_cuenta . "'");
 		 $row = $query->result();
+
 		 $row = $row[0];
 		 $idcuentacontable = $row->idcuentacontable;	
 
@@ -1436,22 +1438,21 @@ class Recaudacion extends CI_Controller {
 			// VERIFICAR SI CLIENTE YA TIENE CUENTA CORRIENTE
 		 $query = $this->db->query("SELECT co.idcliente, co.id as idcuentacorriente  FROM cuenta_corriente co
 		 							WHERE co.idcuentacontable = '$idcuentacontable' and co.idcliente = '" . $idcliente . "'");
-    	 $row = $query->result();
-	
+    	 $row = $query->result();	
+
 		if ($query->num_rows()==0){	
 			$cuenta_corriente = array(
 		        'idcliente' => $idcliente,
 		        'idcuentacontable' => $idcuentacontable,
 		        'saldo' => $ftotal,
-		        'fechaactualiza' => date('Y-m-d')
+		        'fechaactualiza' => $fechaboleta
 			);
 			$this->db->insert('cuenta_corriente', $cuenta_corriente); 
 			$idcuentacorriente = $this->db->insert_id();
 
-
 		}else{
 			$row = $row[0];
-			$query = $this->db->query("UPDATE cuenta_corriente SET saldo = saldo + " . $ftotal . " where id = " .  $row->idcuentacorriente );
+			$query = $this->db->query("UPDATE cuenta_corriente SET saldo = saldo + " . $ftotal . " where id = " .  $row->idcuentacorriente);
 			$idcuentacorriente =  $row->idcuentacorriente;
 		}
 
@@ -1461,10 +1462,9 @@ class Recaudacion extends CI_Controller {
 	        'numdocumento' => $numdocum,
 	        'saldoinicial' => $ftotal,
 	        'saldo' => $ftotal,
-	        'fechavencimiento' => date('Y-m-d'),
-	        'fecha' => date('Y-m-d'),
+	        'fechavencimiento' => $fechacomp,
+	        'fecha' => $fechaboleta
 		);
-
 		$this->db->insert('detalle_cuenta_corriente', $detalle_cuenta_corriente); 	
 
 
@@ -1473,17 +1473,161 @@ class Recaudacion extends CI_Controller {
 	        'idcuenta' => $idcuentacontable,
 	        'tipodocumento' => $tipodocumento,
 	        'numdocumento' => $numdocum,
-	        'glosa' => 'Registro de Factura en Cuenta Corriente',
-	        'fecvencimiento' => date('Y-m-d'),
+	        'glosa' => 'Registro de Documento en Cuenta Corriente',
+	        'fecvencimiento' => $fechacomp,
 	        'valor' => $ftotal,
 	        'origen' => 'VENTA',
-	        'fecha' => date('Y-m-d')
+	        'fecha' => $fechaboleta
 		);
+		$this->db->insert('cartola_cuenta_corriente', $cartola_cuenta_corriente); 			
 
-		$this->db->insert('cartola_cuenta_corriente', $cartola_cuenta_corriente); 
-		
-		}	
-							
+		/*****************************************/
+      
+
+		};
+
+
+
+
+
+		if ($tipodocumento != 3 && $tipodocumento != 105){
+		/******* CUENTAS CORRIENTES ****/
+
+			## DESDE
+
+			$total_cancelacion = 0;
+			$total_factura_cta_cte = 0;
+			foreach($recitems as $ri){ // SUMAR MONTOS PARA VER TOTAL CANCELACION
+				$total_factura_cta_cte += $ri->valor_pago;
+				if($ri->id_forma != 3 && $ri->id_forma != 5 ){ // NO CONSIDERA PAGOS A CREDITO
+					$total_cancelacion += $ri->valor_pago;
+				}
+			}
+
+
+		if($tipodocumento == 1 || $tipodocumento == 2 || $tipodocumento == 19 || $tipodocumento == 101 || $tipodocumento == 103){
+		 	 $nombre_cuenta = $tipodocumento == 2 ? "BOLETAS POR COBRAR" : "FACTURAS POR COBRAR";
+		 	 //$nombre_cuenta = "FACTURAS POR COBRAR";
+			 $query = $this->db->query("SELECT cc.id as idcuentacontable FROM cuenta_contable cc WHERE cc.nombre = '$nombre_cuenta'");											
+			 $row = $query->result();
+			 $row = $row[0];
+			 $idcuentacontable = $row->idcuentacontable;
+			 
+			 $query = $this->db->query("SELECT co.idcliente, co.id as idcuentacorriente  FROM cuenta_corriente co
+			 							WHERE co.idcuentacontable = '$idcuentacontable' and co.idcliente = '" . $idcliente . "'");
+	    	 $row = $query->row();		
+	    	 $idcuentacorriente =  $row->idcuentacorriente;
+
+			
+
+			$correlativo_cta_cte = null;
+			$array_cuentas = array();
+
+			foreach($recitems as $ri){
+				$formapago = $ri->id_forma;
+				if($formapago == 1 || $formapago == 6 || $formapago == 7){
+					$cuenta_cuadratura = 3;
+				}else if($formapago == 2){	
+					$cuenta_cuadratura = 18;
+				}else if($formapago == 4){
+					$cuenta_cuadratura = 19;
+				}elseif($formapago == 8){
+					$cuenta_cuadratura = 3;
+				}
+
+				
+				if($formapago != 3 && $formapago != 5 ){ 
+					if(is_null($correlativo_cta_cte)){ // si son varias formas de pago, entonces sólo en la primera genera el movimiento
+						 $query = $this->db->query("SELECT correlativo FROM correlativos WHERE nombre = 'CANCELACIONES CTA CTE'");
+						 $row = $query->row();
+						 $correlativo_cta_cte = $row->correlativo;
+						// guarda movimiento cuenta corriente (comprobante de ingreso ??? )
+						$data = array(
+					      	'numcomprobante' => $correlativo_cta_cte,
+					        'tipo' => 'INGRESO',
+					        'proceso' => 'CANCELACION',
+					        'glosa' => 'Cancelación de Documento por Caja',
+					        'fecha' => date("Y-m-d H:i:s")
+						);
+
+						$this->db->insert('movimiento_cuenta_corriente', $data); 
+						$idMovimiento = $this->db->insert_id();
+
+						// actualiza correlativo
+						$query = $this->db->query("UPDATE correlativos SET correlativo = correlativo + 1 where nombre = 'CANCELACIONES CTA CTE'");
+
+						//Detalle movimiento CARGO
+
+						$data = array(
+					      	'idmovimiento' => $idMovimiento,
+					        'tipo' => 'CTACTE',
+					        'idctacte' => $idcuentacorriente,
+					        'idcuenta' => $idcuentacontable,
+					        'tipodocumento' => $tipodocumento,
+					        'numdocumento' => $numdocum,		
+					        'glosa' => 'Cancelación de Documento por Caja',		        
+					        'fecvencimiento' => null,		        
+					        'debe' => 0,
+					        'haber' => $total_cancelacion
+						);
+
+						$this->db->insert('detalle_mov_cuenta_corriente', $data); 								
+					}
+					// DETALLE MOVIMIENTO CUADRATURA
+					$docpago = $formapago == 2 ? $ri->num_cheque : 0;
+					if(!in_array($cuenta_cuadratura, $array_cuentas)){ 
+						$data = array(
+					      	'idmovimiento' => $idMovimiento,
+					        'tipo' => 'CUADRATURA',
+					        'idctacte' => null,
+					        'idcuenta' => $cuenta_cuadratura,
+					        'docpago' => $docpago,
+					        'tipodocumento' => null,
+					        'numdocumento' => null,		
+					        'glosa' => 'Cancelación de Documento por Caja',		        
+					        'fecvencimiento' => null,		        
+					        'debe' => $ri->valor_pago,
+					        'haber' => 0
+						);			
+						$this->db->insert('detalle_mov_cuenta_corriente', $data); 	
+						array_push($array_cuentas,$cuenta_cuadratura);
+					}else{ // se actualiza la cuenta cuadratura (debería suceder sólo con caja)
+						$query = $this->db->query("UPDATE detalle_mov_cuenta_corriente SET debe = debe + " . $ri->valor_pago . " where idmovimiento = " .  $idMovimiento . " and idcuenta  = " . $cuenta_cuadratura );
+
+					}							
+
+					// genera cartola de cancelacion
+					$data = array(
+				      	'idctacte' => $idcuentacorriente,
+				        'idcuenta' => $idcuentacontable,
+				        'idmovimiento' => $idMovimiento,
+				        'tipodocumento' => $tipodocumento,
+				        'numdocumento' => $numdocum,
+				        'fecvencimiento' => $fechacomp,
+				        'glosa' => 'Cancelación de Documento por Caja',		        
+				        'valor' => $ri->valor_pago,
+				        'origen' => 'CTACTE',
+				        'fecha' => date("Y-m-d")
+					);
+
+					$this->db->insert('cartola_cuenta_corriente', $data);
+										
+					// REBAJA SALDO
+					
+					$query = $this->db->query("UPDATE cuenta_corriente SET saldo = saldo - " . $ri->valor_pago . " where id = " .  $idcuentacorriente );
+					$query = $this->db->query("UPDATE detalle_cuenta_corriente SET saldo = saldo - " . $ri->valor_pago . " where idctacte = " .  $idcuentacorriente . " and tipodocumento = " . $tipodocumento . " and numdocumento = " . $numdocum);
+
+					$resp['ctacte'] = $idcuentacorriente; 
+				}
+
+
+			} // end foreach		
+			
+		}			
+
+		}
+
+				
 		
 		## HASTA
 
