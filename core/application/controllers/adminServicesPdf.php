@@ -76,21 +76,17 @@ class AdminServicesPdf extends CI_Controller {
       <td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>Reporte Stock</h2></td>
       </tr>
       <tr><td>&nbsp;</td></tr>
-      <tr><td>&nbsp;</td></tr>      
-      <tr>
-        <td colspan="3" width="987px" >
-      </td>
-      </tr>';
+      ';
 
       $formato_tabla_detalle = '
       <tr>
         <td colspan="3" >
           <table width="987px" cellspacing="0" cellpadding="0" border="0">
           <tr>
-            <td width="300px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" ><b>#</b></td>
-            <td width="137px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" ><b>C&oacute;digo</b></td>
-            <td width="137px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ><b>Descripci&oacute;n</b></td>
-            <td width="139px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ><b>Precio Venta</b></td>
+            <td width="100px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" ><b>#</b></td>
+            <td width="137px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" ><b>C&oacute;digo</b></td>
+            <td width="337px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" ><b>Descripci&oacute;n</b></td>
+            <td width="139px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ><b>Precio Venta ($)</b></td>
             <td width="139px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ><b>Stock</b></td>
             <td width="139px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;" ><b>Stock Critico</b></td>
           </tr>';
@@ -123,20 +119,20 @@ class AdminServicesPdf extends CI_Controller {
     $cantidad_hoja = 50;
       $fila = 1;
       $this->mpdf->SetHeader('Manzor - Informe Stock Critico');
-      $this->mpdf->setFooter('{PAGENO}');         
+      $this->mpdf->setFooter('{PAGENO}');    
+      $this->mpdf->WriteHTML($encabezado_pdf);       
       foreach($users as $v){
         if($fila == 1){
-          $this->mpdf->WriteHTML($header);    
-          //echo $header.$header2.$body_header;
-        }
+          $this->mpdf->WriteHTML($formato_tabla_detalle);    
+         }
 
         $detail_row = '<tr>
-        <td style="text-align:left"></td>      
+        <td style="text-align:left">' . $fila . '</td>      
         <td style="text-align:left">'.$v['codigo'].'</td> 
         <td style="text-align:left">'.$v['nombre'].'</td> 
-        <td align="right">'.number_format($v['p_venta'], 0, '.', ',').'</td>
-        <td style="text-align:left">'.$v['stock'].'</td> 
-        <td style="text-align:left">'.$v['stock_critico'].'</td> 
+        <td align="right">'.number_format($v['p_venta'], 0, ',', '.').'</td>
+        <td style="text-align:right">'.$v['stock'].'</td> 
+        <td style="text-align:right">'.$v['stock_critico'].'</td> 
         </tr>';
 
 
