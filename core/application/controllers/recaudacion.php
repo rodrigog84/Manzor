@@ -1911,7 +1911,7 @@ class Recaudacion extends CI_Controller {
 		</head>
 
 		<body>
-		<table width="987px" height="602" border="0">
+		<table width="1120PX" height="602" border="0">
 		  <tr>
 		   <td width="197px"><img src="http://angus.agricultorestalca.cl/manzor/Infosys_web/resources/images/logo_empresa.png" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
@@ -1933,8 +1933,8 @@ class Recaudacion extends CI_Controller {
 			<td style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" colspan="3"><h2>COMPROBANTE DE PAGO</h2></td>
 		  </tr>
 		  <tr>
-		    <td colspan="3" width="987px" >
-		    	<table width="987px" border="0">
+		    <td colspan="3" width="1120PX" >
+		    	<table width="1120PX" border="0">
 		    		<tr>
 		    			<td width="197px">Razon Social:</td>
 		    			<td width="395px">'.$row->nom_cliente.'</td>
@@ -1958,7 +1958,7 @@ class Recaudacion extends CI_Controller {
 
 			$body_header = '<tr>
 		    <td colspan="3" >
-		    	<table width="987px" cellspacing="0" cellpadding="0" >
+		    	<table width="1120PX" cellspacing="0" cellpadding="0" >
 		      <tr>
 		        <td width="126px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Forma de Pago</td>
 		        <td width="100px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;" >Documento</td>
@@ -2011,7 +2011,7 @@ class Recaudacion extends CI_Controller {
 		  </tr>
 		  <tr>
 		  	<td colspan="3" >
-		    	<table width="987px" cellspacing="0" cellpadding="0" >
+		    	<table width="1120PX" cellspacing="0" cellpadding="0" >
 		      <tr>
 		        <td width="827px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b>Totales</b></td>
 		        <td width="30x"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size: 14px;" ><b></b></td>
@@ -2323,7 +2323,7 @@ class Recaudacion extends CI_Controller {
 		</head>
 
 		<body>
-		<table width="987px" height="602" border="0">
+		<table width="1120PX" height="602" border="0">
 		  <tr>
 		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
@@ -2368,7 +2368,7 @@ $header5 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		</head>
 
 		<body>
-		<table width="987px" height="602" border="0">
+		<table width="1120PX" height="602" border="0">
 		  <tr>
 		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
@@ -2413,7 +2413,7 @@ $header6 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		</head>
 
 		<body>
-		<table width="987px" height="602" border="0">
+		<table width="1120PX" height="602" border="0">
 		  <tr>
 		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
@@ -2458,7 +2458,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		</head>
 
 		<body>
-		<table width="987px" height="602" border="0">
+		<table width="1120PX" height="602" border="0">
 		  <tr>
 		   <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
@@ -2488,24 +2488,25 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 
 			  $header2 = '
-	    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
+	    	<table width="1120PX" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
-	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Num.Doc.</td>
-	        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Tip Doc.</td>
-	        <td width="177px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Cliente</td>
+	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc.</td>
+	        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Tip Doc.</td>
+	        <td width="177px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Cliente</td>
 	         <!--td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >&nbsp;</td-->
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Total</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Compte</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Efectivo</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque al Dia</td>
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque a fecha</td>
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cred 60d</td>
-	        <td width="70px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cred 30d</td>
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Tarjeta Debito</td>
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Tarjeta Credito</td>
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Transfer.</td>	        	             
-	        <td width="50px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Vale</td>		        
-	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Observaci&oacute;n</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Total</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Compte</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Efectivo</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cheque al Dia</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cheque a fecha</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cred 60d</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cred 30d</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Tarjeta Debito</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Tarjeta Credito</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Tarjeta Diner/Master</td>
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Transfer.</td>        	             
+	        <td width="60px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Vale</td>		        
+	        <td width="80px"  style="text-align:center;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Observaci&oacute;n</td>
 	       </tr>';	
 	       
 
@@ -2513,17 +2514,17 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 
 			  $header2_1 = '
-	    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
+	    	<table width="1120PX" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
-	        <td width="70"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Num.Doc.</td>
-	        <td width="100px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Tip Doc.</td>
-	        <td width="277px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:10px" >Cliente</td>
+	        <td width="70"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc.</td>
+	        <td width="100px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Tip Doc.</td>
+	        <td width="277px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Cliente</td>
 	         <!--td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >&nbsp;</td-->
-	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Total</td>
-	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Compte</td>
-	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Efectivo</td>
-	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Cheque al Dia</td>
-	        <td width="200px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:10px" >Observaci&oacute;n</td>
+	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Total</td>
+	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Compte</td>
+	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Efectivo</td>
+	        <td width="85px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cheque al Dia</td>
+	        <td width="200px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Observaci&oacute;n</td>
 	       </tr>';	
 	       	//// INICIO RECAUDACIONES CAJA
 
@@ -2537,6 +2538,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			  $chequeafecha = 0;
 			  $credito = 0;
 			  $tarjetadebito = 0;
+			  $tarjetadiner = 0;
 			  $tarjetacredito = 0;
 			  $transferencia = 0;
 			  $valevista = 0;
@@ -2557,6 +2559,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				$tarjetadebito = 0;
 				$tarjetacredito = 0;
 				$transferencia = 0;
+				$tarjetadiner = 0;
 				$valevista = 0;
 				$credito30dias = 0;
 				$credito60dias = 0;		    	
@@ -2596,6 +2599,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="CHEQUE AL DIA"){				
 							$chequealdia += $v['monto_recauda'];
@@ -2607,7 +2611,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$transferencia += 0;
 							$valevista += 0;
 							$credito30dias += 0;
-							$credito60dias += 0;				
+							$credito60dias += 0;
+							$tarjetadiner += 0;				
 						};
 						if ($v['desc_pago']=="CHEQUE A FECHA"){				
 							$chequeafecha += $v['monto_recauda'];
@@ -2619,7 +2624,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$transferencia += 0;
 							$valevista += 0;
 							$credito30dias += 0;
-							$credito60dias += 0;				
+							$credito60dias += 0;
+							$tarjetadiner += 0;				
 						};
 						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
 							$credito30dias += $v['monto_recauda'];
@@ -2630,7 +2636,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$tarjetacredito += 0;
 							$transferencia += 0;
 							$valevista += 0;
-							$credito += 0;				
+							$credito += 0;		
+							$tarjetadiner += 0;		
 						};
 						if ($v['desc_pago']=="CREDITO"){				
 							$credito += $v['monto_recauda'];
@@ -2642,6 +2649,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$transferencia += 0;
 							$valevista += 0;
 							$credito30dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
 							$credito60dias += $v['monto_recauda'];
@@ -2654,6 +2662,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="TARJETA DEBITO"){				
 							$tarjetadebito += $v['monto_recauda'];
@@ -2666,6 +2675,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="TARJETA CREDITO"){				
 							$tarjetacredito += $v['monto_recauda'];
@@ -2678,6 +2688,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
+						};
+						if ($v['desc_pago']=="TARJETA DINER/MASTER/OTRO"){				
+							$tarjetadiner += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$credito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito60dias += 0;
+							$tarjetacredito += 0;
 						};
 						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
 							$transferencia += $v['monto_recauda'];
@@ -2690,6 +2714,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="VALE VISTA"){				
 							$valevista = $v['monto_recauda'];
@@ -2702,6 +2727,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$credito += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 					}; // FIN if ($v['nom_documento']=="BOLETAS"){
 
@@ -2719,6 +2745,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="CHEQUE AL DIA"){				
 							$chequealdia += $v['monto_recauda'];
@@ -2730,7 +2757,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$transferencia += 0;
 							$valevista += 0;
 							$credito30dias += 0;
-							$credito60dias += 0;			
+							$credito60dias += 0;
+							$tarjetadiner += 0;			
 						};
 						if ($v['desc_pago']=="CHEQUE A FECHA"){				
 							$chequeafecha += $v['monto_recauda'];
@@ -2742,7 +2770,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$transferencia += 0;
 							$valevista += 0;
 							$credito30dias += 0;
-							$credito60dias += 0;				
+							$credito60dias += 0;
+							$tarjetadiner += 0;				
 						};
 						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
 							$credito30dias += $v['monto_recauda'];
@@ -2754,7 +2783,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$transferencia += 0;
 							$valevista += 0;
 							$credito += 0;
-							$credito60dias += 0;				
+							$credito60dias += 0;
+							$tarjetadiner += 0;				
 						};
 						if ($v['desc_pago']=="CREDITO"){				
 							$credito += $v['monto_recauda'];
@@ -2767,6 +2797,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						
 						if ($v['desc_pago']=="TARJETA DEBITO"){				
@@ -2780,6 +2811,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="TARJETA CREDITO"){				
 							$tarjetacredito += $v['monto_recauda'];
@@ -2792,6 +2824,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
+						};
+						if ($v['desc_pago']=="TARJETA DINER/MASTER/OTRO"){				
+							$tarjetadiner += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$credito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito60dias += 0;
+							$tarjetacredito += 0;
 						};
 						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
 							$transferencia += $v['monto_recauda'];
@@ -2804,6 +2850,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
 							$credito60dias += $v['monto_recauda'];
@@ -2816,6 +2863,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito += 0;
+							$tarjetadiner += 0;
 						};
 						
 						
@@ -2837,6 +2885,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="CHEQUE AL DIA"){				
 							$chequealdia += $v['monto_recauda'];
@@ -2849,6 +2898,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						
 						};
 						if ($v['desc_pago']=="CHEQUE A FECHA"){				
@@ -2862,6 +2912,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						
 						};
 						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
@@ -2875,6 +2926,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						
 						};
 						if ($v['desc_pago']=="CREDITO"){				
@@ -2888,6 +2940,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						
 						if ($v['desc_pago']=="TARJETA DEBITO"){				
@@ -2901,6 +2954,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="TARJETA CREDITO"){;
 							$tarjetacredito += $v['monto_recauda'];
@@ -2913,6 +2967,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
+						};
+						if ($v['desc_pago']=="TARJETA DINER/MASTER/OTRO"){				
+							$tarjetadiner += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$credito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito60dias += 0;
+							$tarjetacredito += 0;
 						};
 						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
 							$transferencia += $v['monto_recauda'];
@@ -2925,6 +2993,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 
 						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
@@ -2938,6 +3007,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito += 0;
+							$tarjetadiner += 0;
 						};
 						
 					}; // FIN if ($v['nom_documento']=="NOTAS DE CREDITO ELECTRONICAS"){
@@ -2955,6 +3025,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="CHEQUE AL DIA"){				
 							$chequealdia += $v['monto_recauda'];
@@ -2967,6 +3038,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						
 						};
 						if ($v['desc_pago']=="CHEQUE A FECHA"){				
@@ -2980,6 +3052,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						
 						};
 						if ($v['desc_pago']=="CREDITO 30 DIAS"){				
@@ -2993,6 +3066,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						
 						};
 						if ($v['desc_pago']=="CREDITO"){				
@@ -3006,6 +3080,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						
 						if ($v['desc_pago']=="TARJETA DEBITO"){				
@@ -3019,6 +3094,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 						if ($v['desc_pago']=="TARJETA CREDITO"){				
 							$tarjetacredito += $v['monto_recauda'];
@@ -3031,6 +3107,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
+						};
+						if ($v['desc_pago']=="TARJETA DINER/MASTER/OTRO"){				
+							$tarjetadiner += $v['monto_recauda'];
+							$chequealdia += 0;
+							$chequeafecha += 0;
+							$boleta += 0;
+							$tarjetadebito += 0;
+							$credito += 0;
+							$transferencia += 0;
+							$valevista += 0;
+							$credito30dias += 0;
+							$credito60dias += 0;
+							$tarjetacredito += 0;
 						};
 						if ($v['desc_pago']=="TRANSFERENCIA BANCARIA"){				
 							$transferencia += $v['monto_recauda'];
@@ -3043,6 +3133,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito60dias += 0;
+							$tarjetadiner += 0;
 						};
 
 						if ($v['desc_pago']=="CREDITO 60 DIAS"){				
@@ -3056,6 +3147,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 							$valevista += 0;
 							$credito30dias += 0;
 							$credito += 0;
+							$tarjetadiner += 0;
+						
 						};
 						
 						
@@ -3070,6 +3163,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 					  $tarjetadebito += 0;
 					  $tarjetacredito += 0;
 					  $transferencia += 0;
+					  $tarjetadiner += 0;
 					  $valevista += 0;
 					  $credito30dias += 0;
 					  $credito60dias += 0;
@@ -3082,21 +3176,22 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 						$body_detail = '
 						<tr>				
-						<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
-						<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
-						<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', ',').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito60dias, 0, ',', '.').'</td>
-						<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
-						<td width="50px" style="text-align:right;font-size:10px">0</td>
-						<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
+						<td width="60px" style="text-align:center;font-size:14px">'.$v['num_doc'].'</td>	
+						<td width="60px" style="text-align:center;font-size:14px">'.$tip.'</td>
+						<td width="177px" style="text-align:left;font-size:14px">'.$v['nom_cliente'].'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.$v['num_comp'].'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta, 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequealdia, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">'.number_format($chequeafecha, 0, ',', ',').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">'.number_format($credito60dias, 0, ',', '.').'</td>
+						<td width="70px" style="text-align:right;font-size:14px">'.number_format($credito30dias, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">'.number_format($tarjetadiner, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">'.number_format($transferencia, 0, ',', '.').'</td>
+						<td width="50px" style="text-align:right;font-size:14px">0</td>
+						<td width="80px" style="text-align:right;font-size:14px">&nbsp;</td>
 						</tr>
 						';		
 
@@ -3108,21 +3203,22 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		    $body_detail = '
 				<tr>				
-				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
-				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
-				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta+$chequealdia+$chequeafecha+$credito60dias+$credito30dias+$tarjetadebito+$tarjetacredito+$transferencia, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($chequeafecha, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($credito60dias, 0, ',', '.').'</td>
-				<td width="70px" style="text-align:right;font-size:10px">'.number_format($credito30dias, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">'.number_format($transferencia, 0, ',', '.').'</td>
-				<td width="50px" style="text-align:right;font-size:10px">0</td>
-				<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
+				<td width="60px" style="text-align:center;font-size:14px">'.$v['num_doc'].'</td>	
+				<td width="60px" style="text-align:center;font-size:14px">'.$tip.'</td>
+				<td width="177px" style="text-align:left;font-size:14px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta+$chequealdia+$chequeafecha+$credito60dias+$credito30dias+$tarjetadebito+$tarjetacredito+$transferencia+$tarjetadiner, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequeafecha, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($credito60dias, 0, ',', '.').'</td>
+				<td width="70px" style="text-align:right;font-size:14px">'.number_format($credito30dias, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetadiner, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">0</td>
+				<td width="80px" style="text-align:right;font-size:14px">&nbsp;</td>
 				</tr>
 				';
 
@@ -3169,6 +3265,12 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 				$cancelado6 +=$transferencia;
 			    };
 				};
+				if ($tarjetadiner>0){
+				$doc7 = "TARJETA DINER/MASTER/OTRO";
+				if ($v['estado']!="NUL"){
+				$cancelado7 +=$tarjetadiner;
+			    };
+				};
 				if ($chequealdia>0){
 				$doc8 = "CHEQUE AL DIA";
 				if ($v['estado']!="NUL"){
@@ -3180,8 +3282,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
      		}; // FIN foreach($users as $t){
 
 
-     		$body_totales = '<table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
-		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
+     		$body_totales = '<table width="1120px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
+		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 16px;" ><b>TOTALES</b></td>
 		</tr>';
 			$footer = "";
 			$cancelado_total = 0;
@@ -3189,8 +3291,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			
 			$footer .= '
 			<tr>
-			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc1.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado1, 0, ',', '.').'</b></td>
+			<td width="1120px"  style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc1.'</b></td>
+			<td width="220px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado1, 0, ',', '.').'</b></td>
 			</tr>
 			';
 			$cancelado_total += $cancelado1;
@@ -3201,8 +3303,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer .= '<tr>
 			<tr>
-			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc2.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado2, 0, ',', '.').'</b></td>
+			<td width="1120px"  style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc2.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado2, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total += $cancelado2;
 		    };
@@ -3211,8 +3313,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer .= '
 			<tr>
-			<td width="867px"   style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc3.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado3, 0, ',', '.').'</b></td>
+			<td width="1120"   style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc3.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado3, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total += $cancelado3;
 		    };
@@ -3221,8 +3323,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer .= '
 			<tr>
-			<td width="867px"    style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc4.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado4, 0, ',', '.').'</b></td>
+			<td width="1120px"    style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc4.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado4, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total += $cancelado4;
 		    };
@@ -3231,8 +3333,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer .= '
 			<tr>
-			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc5.'</b></td>
-			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado5, 0, ',', '.').'</b></td>
+			<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc5.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado5, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total += $cancelado5;
 		    };
@@ -3241,10 +3343,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer .= '
 			<tr>
-			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc6.'</b></td>
-			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado6, 0, ',', '.').'</b></td>
+			<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc6.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado6, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total += $cancelado6;
+		    };
+		    
+		    if($doc7 != ""){
+
+			$footer .= '
+			<tr>
+			<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc7.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado7, 0, ',', '.').'</b></td>
+		    </tr>';
+		    $cancelado_total += $cancelado7;
 		    };	   
 
 		   
@@ -3252,8 +3364,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer .= '
 			<tr>
-			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc8.'</b></td>
-			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado8, 0, ',', '.').'</b></td>
+			<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc8.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado8, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total += $cancelado8;
 		    };	   
@@ -3261,8 +3373,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		    if($doc9 != ""){
 			$footer .= '<tr>
-			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc9.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado9, 0, ',', '.').'</b></td>
+			<td width="1120px"  style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc9.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado9, 0, ',', '.').'</b></td>
 			</tr>
 
 			';
@@ -3270,8 +3382,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		    };
 
 			$footer .= '<tr>
-			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CAJA</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
+			<td width="1120px"  style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL RECAUDACION CAJA</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
 			</tr>';	    
 
 
@@ -3400,14 +3512,14 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 						$body_detail_ctacte = '
 						<tr>				
-						<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
-						<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
-						<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
-						<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
-						<td width="80px" style="text-align:right;font-size:10px">&nbsp;</td>
+						<td width="60px" style="text-align:center;font-size:14px">'.$v['num_doc'].'</td>	
+						<td width="60px" style="text-align:center;font-size:14px">'.$tip.'</td>
+						<td width="177px" style="text-align:left;font-size:14px">'.$v['nom_cliente'].'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.number_format($v['valor_pago'], 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.$v['num_comp'].'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta, 0, ',', '.').'</td>
+						<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequealdia, 0, ',', '.').'</td>
+						<td width="80px" style="text-align:right;font-size:14px">&nbsp;</td>
 						</tr>
 						';	
 
@@ -3419,14 +3531,14 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		    $body_detail_ctacte = '
 				<tr>				
-				<td width="60px" style="text-align:center;font-size:10px">'.$v['num_doc'].'</td>	
-				<td width="60px" style="text-align:center;font-size:10px">'.$tip.'</td>
-				<td width="177px" style="text-align:left;font-size:10px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta+$chequealdia, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:10px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="80px" style="text-align:right;font-size:10px">' . $v['detalle'] . '</td>
+				<td width="60px" style="text-align:center;font-size:14px">'.$v['num_doc'].'</td>	
+				<td width="60px" style="text-align:center;font-size:14px">'.$tip.'</td>
+				<td width="177px" style="text-align:left;font-size:14px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta+$chequealdia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="80px" style="text-align:right;font-size:14px">' . $v['detalle'] . '</td>
 				</tr>
 				';
 
@@ -3449,8 +3561,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
      		}; // FIN foreach($users as $t){
 
 
-     		$body_totales_ctacte = '<table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
-		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
+     		$body_totales_ctacte = '<table width="1120PX" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
+		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 16px;" ><b>TOTALES</b></td>
 		</tr>';
 			$footer_ctacte = "";
 			$cancelado_total_ctacte = 0;
@@ -3459,8 +3571,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer_ctacte .= '<tr>
 			<tr>
-			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc2.'</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($canceladoctacte2, 0, ',', '.').'</b></td>
+			<td width="1120px"  style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc2.'</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($canceladoctacte2, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total_ctacte += $canceladoctacte2;
 		    };
@@ -3474,8 +3586,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 			$footer_ctacte .= '
 			<tr>
-			<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>'.$doc8.'</b></td>
-			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($canceladoctacte8, 0, ',', '.').'</b></td>
+			<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>'.$doc8.'</b></td>
+			<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($canceladoctacte8, 0, ',', '.').'</b></td>
 		    </tr>';
 		    $cancelado_total_ctacte += $canceladoctacte8;
 		    };	   
@@ -3484,8 +3596,8 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 	
 
 			$footer_ctacte .= '<tr>
-			<td width="867px"  style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
-			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
+			<td width="1120px"  style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
+			<td width="120px"  style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
 			</tr>';	    
 
 
@@ -3494,7 +3606,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 
 
-	    $header4 = '</table><br><br><table width="987px" cellspacing="0" cellpadding="0" border="0">
+	    $header4 = '</table><br><br><table width="1120px" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
 	        <td width="182px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc Gasto.</td>
 	        <td width="480px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:left;font-size:14px" >Detalle.</td>
@@ -3519,17 +3631,17 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 						$sum_gastos += $gasto['monto'];
 		        }
 
-		$footer2 .= '</table><table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
-		<td  colspan="4" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
+		$footer2 .= '</table><table width="1120px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr><tr>
+		<td  colspan="4" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 16px;" ><b>TOTALES</b></td>
 		</tr>';		        
 		$footer2 .= '
 		<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GASTOS</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($sum_gastos, 0, ',', '.').'</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL GASTOS</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($sum_gastos, 0, ',', '.').'</b></td>
 	    </tr></table>';
 
 
-		$footer_total .= '</table><table width="987px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr>' ;
+		$footer_total .= '</table><table width="1120px" cellspacing="0" cellpadding="0" border="0"><	tr><td colspan="2">&nbsp;</td></tr>' ;
 
 
 		$query_efectivo_inicial = $this->db->query('SELECT efectivoinicio FROM control_caja
@@ -3541,20 +3653,20 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 
 		$footer_total .= '<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>EFECTIVO INICIAL</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio, 0, ',', '.').'</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>EFECTIVO INICIAL</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($efectivoinicio, 0, ',', '.').'</b></td>
 	    </tr>';
 
 
 		$footer_total .= '<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CAJA</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL RECAUDACION CAJA</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado_total, 0, ',', '.').'</b></td>
 	    </tr>';
 
 		if($cancelado2 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - EFECTIVO DEL D&Iacute;A</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado2, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - EFECTIVO DEL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado2, 0, ',', '.').'</td>
 				    </tr>';
 
 
@@ -3563,38 +3675,45 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		if($cancelado1 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CHEQUE A FECHA</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado1, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL CHEQUE A FECHA</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado1, 0, ',', '.').'</td>
 				    </tr>';
 		}
 
 
 		if($cancelado3 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO 30 D&Iacute;AS</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado3, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO 30 D&Iacute;AS</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado3, 0, ',', '.').'</td>
 				    </tr>';
 		}
 
 		if($cancelado4 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL TARJETA DE CR&Eacute;DITO</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado4, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL TARJETA DE CR&Eacute;DITO</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado4, 0, ',', '.').'</td>
 				    </tr>';
 		}		
 
 		if($cancelado5 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL TARJETA DE D&Eacute;BITO</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado5, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL TARJETA DE D&Eacute;BITO</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado5, 0, ',', '.').'</td>
 				    </tr>';
 		}	
 
 
 		if($cancelado6 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL TRANSFERENCIA BANCARIA</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado6, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL TRANSFERENCIA BANCARIA</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado6, 0, ',', '.').'</td>
+				    </tr>';
+		}
+		
+		if($cancelado7 > 0){
+				$footer_total .= '<tr>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL TARJETA DINER/MASTER</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado7, 0, ',', '.').'</td>
 				    </tr>';
 		}	
 
@@ -3602,52 +3721,52 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		if($cancelado8 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CHEQUE AL D&Iacute;A</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado8, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL CHEQUE AL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado8, 0, ',', '.').'</td>
 				    </tr>';
 		}	
 
 
 		if($cancelado9 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO 60 DIAS</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($cancelado9, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL CR&Eacute;DITO 60 DIAS</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($cancelado9, 0, ',', '.').'</td>
 				    </tr>';
 		}						
 		
 
 
 	    $footer_total .= '<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL RECAUDACION CUENTAS CORRIENTES</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($cancelado_total_ctacte, 0, ',', '.').'</b></td>
 	    </tr>
 	    ';
 
 
 		if($canceladoctacte2 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - EFECTIVO DEL D&Iacute;A</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($canceladoctacte2, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - EFECTIVO DEL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($canceladoctacte2, 0, ',', '.').'</td>
 				    </tr>';
 		}	
 
 
 		if($canceladoctacte8 > 0){
 				$footer_total .= '<tr>
-					<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" >&nbsp;&nbsp; - TOTAL CHEQUE AL D&Iacute;A</td>
-					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" >$ '.number_format($canceladoctacte8, 0, ',', '.').'</td>
+					<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" >&nbsp;&nbsp; - TOTAL CHEQUE AL D&Iacute;A</td>
+					<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" >$ '.number_format($canceladoctacte8, 0, ',', '.').'</td>
 				    </tr>';
 		}	
 
 	    $footer_total .= '<tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL GASTOS</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ - ('.number_format($sum_gastos, 0, ',', '.').')</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL GASTOS</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ - ('.number_format($sum_gastos, 0, ',', '.').')</b></td>
 	    </tr><tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>EFECTIVO FINAL</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado2 + $canceladoctacte2 - $sum_gastos, 0, ',', '.').'</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16x;" ><b>EFECTIVO FINAL</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($efectivoinicio + $cancelado2 + $canceladoctacte2 - $sum_gastos, 0, ',', '.').'</b></td>
 	    </tr><tr>
-		<td width="867px"     style="border-bottom:1pt solid black;text-align:left;font-size: 14px;" ><b>TOTAL RECAUDACI&Oacute;N DEL D&Iacute;A</b></td>
-		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 14px;" ><b>$ '.number_format($efectivoinicio + $cancelado_total + $cancelado_total_ctacte - $sum_gastos, 0, ',', '.').'</b></td>
+		<td width="1120px"     style="border-bottom:1pt solid black;text-align:left;font-size: 16px;" ><b>TOTAL RECAUDACI&Oacute;N DEL D&Iacute;A</b></td>
+		<td width="120px"   style="border-bottom:1pt solid black;text-align:right;font-size: 16px;" ><b>$ '.number_format($efectivoinicio + $cancelado_total + $cancelado_total_ctacte - $sum_gastos, 0, ',', '.').'</b></td>
 	    </tr></table>';
 
 	    $fin_tabla = "</table>
@@ -3661,7 +3780,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			
 			$this->mpdf->mPDF(
 				'',    // mode - default ''
-				'',    // format - A4, for example, default ''
+				'-L',    // format - A4, for example, default ''
 				6,     // font size - default 0
 				'',    // default font family
 				5,    // margin_left
@@ -3810,7 +3929,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 		</head>
 
 		<body>
-		<table width="987px" height="602" border="0">
+		<table width="1120PX" height="602" border="0">
 		  <tr>
 		  <td width="197px"><img src="' . $logo . '" width="150" height="136" /></td>
 		    <td width="493px" style="font-size: 14px;text-align:center;vertical-align:text-top"	>
@@ -3855,22 +3974,22 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 			  $credito60dias = 0;
 
 			  $header .= '
-	    	<table width="987px" cellspacing="0" cellpadding="0" border="0">
+	    	<table width="1120PX" cellspacing="0" cellpadding="0" border="0">
 	      <tr>
-	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:12px" >Num.Doc.</td>
-	        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:12px" >Tip Doc.</td>
-	        <td width="247px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:12px" >Cliente</td>
+	        <td width="60"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Num.Doc.</td>
+	        <td width="60px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Tip Doc.</td>
+	        <td width="247px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;font-size:14px" >Cliente</td>
 	         <!--td width="70px"  style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:center;" >&nbsp;</td-->
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Total</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Compte</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Efectivo</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque al Dia</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cheque a fecha</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Credito 60d</td>
-	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Cred 30d</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Debito</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Tarjeta Credito</td>
-	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:12px" >Transfer.</td>	        	             
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Total</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Compte</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Efectivo</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cheque al Dia</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cheque a fecha</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Credito 60d</td>
+	        <td width="80px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Cred 30d</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Tarjeta Debito</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Tarjeta Credito</td>
+	        <td width="60px"  style="text-align:right;border-bottom:1pt solid black;border-top:1pt solid black;font-size:14px" >Transfer.</td>	        	             
 	       </tr>';	
 	       
 	          $a="ok";
@@ -3927,19 +4046,19 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 				$body_detail .= '
 				<tr>				
-				<td width="60px" style="text-align:center;font-size:12px">'.$v['num_documento'].'</td>	
-				<td width="60px" style="text-align:center;font-size:12px">'.$tip.'</td>
-				<td width="247px" style="text-align:left;font-size:12px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($valor_pago, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequeafecha, 0, ',', ',').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito60dias, 0, ',', '.').'</td>
-				<td width="80px" style="text-align:right;font-size:12px">'.number_format($credito30dias, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:center;font-size:14px">'.$v['num_documento'].'</td>	
+				<td width="60px" style="text-align:center;font-size:14px">'.$tip.'</td>
+				<td width="247px" style="text-align:left;font-size:14px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($valor_pago, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequeafecha, 0, ',', ',').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($credito60dias, 0, ',', '.').'</td>
+				<td width="80px" style="text-align:right;font-size:14px">'.number_format($credito30dias, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetadebito, 0, ',', ',').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($transferencia, 0, ',', '.').'</td>
 				</tr>
 				';				
 
@@ -3947,19 +4066,19 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
 
 		    $body_detail .= '
 				<tr>				
-				<td width="60px" style="text-align:center;font-size:12px">'.$v['num_documento'].'</td>	
-				<td width="60px" style="text-align:center;font-size:12px">'.$tip.'</td>
-				<td width="247px" style="text-align:left;font-size:12px">'.$v['nom_cliente'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($valor_pago, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.$v['num_comp'].'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($boleta, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequealdia, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($chequeafecha, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($credito60dias, 0, ',', '.').'</td>
-				<td width="80px" style="text-align:right;font-size:12px">'.number_format($credito30dias, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
-				<td width="60px" style="text-align:right;font-size:12px">'.number_format($transferencia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:center;font-size:14px">'.$v['num_documento'].'</td>	
+				<td width="60px" style="text-align:center;font-size:14px">'.$tip.'</td>
+				<td width="247px" style="text-align:left;font-size:14px">'.$v['nom_cliente'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($valor_pago, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.$v['num_comp'].'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($boleta, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequealdia, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($chequeafecha, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($credito60dias, 0, ',', '.').'</td>
+				<td width="80px" style="text-align:right;font-size:14px">'.number_format($credito30dias, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetadebito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($tarjetacredito, 0, ',', '.').'</td>
+				<td width="60px" style="text-align:right;font-size:14px">'.number_format($transferencia, 0, ',', '.').'</td>
 				</tr>
 				';
 			}
@@ -4018,7 +4137,7 @@ $header3 = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http
      };
 
 
-     $body_totales = '<table width="987px" cellspacing="0" cellpadding="0" border="0"><tr><td colspan="2">&nbsp;</td></tr><tr>
+     $body_totales = '<table width="1120PX" cellspacing="0" cellpadding="0" border="0"><tr><td colspan="2">&nbsp;</td></tr><tr>
 		<td  colspan="13" style="border-bottom:1pt solid black;border-top:1pt solid black;text-align:right;font-size: 14px;" ><b>TOTALES</b></td>
 		</tr>';
 		$footer = "";
