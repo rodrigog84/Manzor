@@ -2753,7 +2753,7 @@ public function cargacontribuyentes(){
 		$fafecto = $this->input->post('afectofactura');
 		$ftotal = $this->input->post('totalfacturas');
 		$tipodocumento = $this->input->post('tipodocumento');
-		$idbodega = 1;
+		$idbodega = $this->input->post('idbodega');
 		
 		$data3 = array(
 	         'correlativo' => $numfactura
@@ -2765,6 +2765,7 @@ public function cargacontribuyentes(){
 		$factura_cliente = array(
 			'tipo_documento' => $tipodocumento,
 	        'id_cliente' => $idcliente,
+	        'id_bodega' => $idbodega,
 	        'num_factura' => $numfactura,
 	        'id_vendedor' => $vendedor,
 	        'id_sucursal' => $sucursal,
